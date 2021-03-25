@@ -1,2 +1,0 @@
-# Teams
-Teams Spigot plugin
