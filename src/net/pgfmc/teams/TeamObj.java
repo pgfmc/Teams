@@ -1,3 +1,5 @@
+package net.pgfmc.teams;
+
 import java.util.List;
 import java.util.UUID;
 
