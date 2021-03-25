@@ -6,26 +6,27 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class TeamObj { 
-					   /* teams class
-							*notes here*
-					   */ 
+public class TeamObj {
 	
-	UUID owner;
+	String name = "Team123";
+	UUID leader;
 	List<UUID> members;
 	List<TeamObj> allies = null; // Defaults to null if no allies
 	
-	public TeamObj(UUID owner, List<UUID> members, List<TeamObj> allies)
+	public TeamObj(String name, UUID leader, List<UUID> members, List<TeamObj> allies)
 	{
+		this.name = name;
+		this.leader = leader;
 		this.members = members;
 		this.allies = allies;
 	}
 	
 	
 	
-	public TeamObj(UUID owner, List<UUID> members)
+	public TeamObj(String name, UUID leader, List<UUID> members)
 	{
-		this.owner = owner;
+		this.name = name;
+		this.leader = leader;
 		this.members = members;
 	}
 	
@@ -42,15 +43,24 @@ public class TeamObj {
 	}
 	
 	
-	public Player getOwner()
+	public Player getLeader()
 	{
-		return Bukkit.getPlayer(owner);
+		return Bukkit.getPlayer(leader);
 	}
 	
+	public List<TeamObj> getAllies()
+	{
+		return allies;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
 	
 	public boolean kickMember(Player p)
 	{
-		if (p.getUniqueId().equals(owner)) { return false; } // You cannot remove the owner!
+		if (p.getUniqueId().equals(leader)) { return false; } // You cannot remove the owner!
 		
 		members.remove(p.getUniqueId());
 		return true;
@@ -67,7 +77,7 @@ public class TeamObj {
 	
 	public boolean disband(Player sender)
 	{
-		if (!sender.getUniqueId().equals(owner)) { return false; } // You cannot disband a team if you aren't the owner!
+		if (!sender.getUniqueId().equals(leader)) { return false; } // You cannot disband a team if you aren't the owner!
 		// TODO delete from save file
 		
 		// return true if save works.
