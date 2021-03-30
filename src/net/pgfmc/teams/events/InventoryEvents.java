@@ -1,18 +1,14 @@
 package net.pgfmc.teams.events;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import net.pgfmc.teams.Database;
@@ -39,8 +35,9 @@ public class InventoryEvents implements Listener {
 			// -----------------------------------------------------------------------
 			
 			// Sign, "No team."
-			ItemStack item = e.getClickedInventory().getItem(4); // We have to do it this way instead of checking if the player clicked a specific slot number because the top and bottom inventories share slot numbers >:|
-			if (e.getCurrentItem().equals(item))
+			Inventory inv = e.getClickedInventory(); // We have to do it this way instead of checking if the player clicked a specific slot number because the top and bottom inventories share slot numbers >:|
+			ItemStack currItem = e.getCurrentItem();
+			if (currItem.equals(inv.getItem(4)))
 			{
 				p.sendMessage("§cYou are not in a team. Create your own or send a join request to an existing team");
 				e.setCancelled(true);
@@ -51,14 +48,28 @@ public class InventoryEvents implements Listener {
 			
 			// Clock, "Create"
 
+			if (currItem.equals(inv.getItem(3)))
+			{
+				// TODO
+				e.setCancelled(true);
+				
+				
+				return;
+			}
 			
-			inv.setItem(3, item);
 			// -----------------------------------------------------------------------
 			
 			// Compass, "Find"
 
 			
-			inv.setItem(5, item);
+			if (currItem.equals(inv.getItem(5)))
+			{
+				// TODO
+				e.setCancelled(true);
+				
+				
+				return;
+			}
 			
 			// -----------------------------------------------------------------------
 			
