@@ -83,6 +83,9 @@ public class InventoryEvents implements Listener {
 			
 			if (team.getLeader().equals(p.getUniqueId())) // If the player is the leader of the team
 			{
+				
+				Inventory inv = e.getClickedInventory(); // We have to do it this way instead of checking if the player clicked a specific slot number because the top and bottom inventories share slot numbers >:|
+				ItemStack currItem = e.getCurrentItem();
 				// -----------------------------------------------------------------------
 				
 				// Sign, "[Team Name]"
