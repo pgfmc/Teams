@@ -1,0 +1,11 @@
+name: Teams
+version: 1.0.0
+api-version: 1.16
+author: bk
+main: net.pgfmc.teams.Main
+description: Teams API
+commands:
+  team:
+    description: Open the Teams GUI for your team
+    usage: /<command>
+    aliases: [teams, t, guild, faction]

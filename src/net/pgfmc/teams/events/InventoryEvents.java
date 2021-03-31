@@ -90,47 +90,79 @@ public class InventoryEvents implements Listener {
 				
 				// Sign, "[Team Name]"
 
-				inv.setItem(4, item);
+				if (currItem.equals(inv.getItem(4)))
+				{
+					e.setCancelled(true);
+					return;
+				}
 				
 				// -----------------------------------------------------------------------
 				
 				// Player Head, "Members"
-
-				
-				inv.setItem(5, item);
+				if (currItem.equals(inv.getItem(5)))
+				{
+					e.setCancelled(true);
+					return;
+				}
 				// -----------------------------------------------------------------------
 				
 				// Tripwire Hook, "Locked Containers"
-
-				
-				inv.setItem(6, item);
+				if (currItem.equals(inv.getItem(6)))
+				{
+					// TODO
+					e.setCancelled(true);
+					
+					
+					return;
+				}
 				
 				// -----------------------------------------------------------------------
 				
 				// Slime Ball, "Invite"
-
-				
-				inv.setItem(3, item);
+				if (currItem.equals(inv.getItem(3)))
+				{
+					// TODO
+					e.setCancelled(true);
+					
+					
+					return;
+				}
 				
 				// -----------------------------------------------------------------------
 				
 				// Magma Cream, "Kick"
-
-				
-				inv.setItem(2, item);
+				if (currItem.equals(inv.getItem(2)))
+				{
+					// TODO
+					e.setCancelled(true);
+					
+					
+					return;
+				}
 				
 				// -----------------------------------------------------------------------
 				
 				// Wither Rose, "Transfer Leadership"
-				
-				inv.setItem(1, item);
+				if (currItem.equals(inv.getItem(1)))
+				{
+					// TODO
+					e.setCancelled(true);
+					
+					
+					return;
+				}
 				
 				// -----------------------------------------------------------------------
 				
 				// Crying Obsidian, "Disband"
-
-				
-				inv.setItem(0, item);
+				if (currItem.equals(inv.getItem(0)))
+				{
+					// TODO
+					e.setCancelled(true);
+					
+					
+					return;
+				}
 				
 				// -----------------------------------------------------------------------
 				
@@ -138,29 +170,42 @@ public class InventoryEvents implements Listener {
 			}
 			
 			
+			// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+			// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+			// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 			
-			// if the player is not the leader of the team
-			
+			// if the player is not the leader of the team ->
+			Inventory inv = e.getClickedInventory(); // We have to do it this way instead of checking if the player clicked a specific slot number because the top and bottom inventories share slot numbers >:|
+			ItemStack currItem = e.getCurrentItem();
 			
 			// -----------------------------------------------------------------------
 			
 			// Sign, "[Team Name]"
-
-			
-			inv.setItem(4, item);
+			if (currItem.equals(inv.getItem(4)))
+			{
+				e.setCancelled(true);
+				return;
+			}
 			
 			// -----------------------------------------------------------------------
 			
 			// Player Head, "Members"
-
-			
-			inv.setItem(5, item);
+			if (currItem.equals(inv.getItem(5)))
+			{
+				e.setCancelled(true);
+				return;
+			}
 			// -----------------------------------------------------------------------
 			
 			// Tripwire Hook, "Locked Containers"
-
-			
-			inv.setItem(6, item);
+			if (currItem.equals(inv.getItem(6)))
+			{
+				// TODO
+				e.setCancelled(true);
+				
+				
+				return;
+			}
 			
 			// -----------------------------------------------------------------------
 			
