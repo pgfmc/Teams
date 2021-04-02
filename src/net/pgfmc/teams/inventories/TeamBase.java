@@ -34,44 +34,10 @@ public class TeamBase implements InventoryHolder {
 		init(); // Build the inventory
 	}
 	
-	@SuppressWarnings("unlikely-arg-type")
+
 	public void init()
 	{
-		if (database == null)
-		{
-			// -----------------------------------------------------------------------
-			
-			// Sign, "No team."
-			List<String> lore = new ArrayList<>();
-			lore.add("You are not in a team.");
-			lore.add("Create your own or send a join request");
-			lore.add("to an existing team");
-			ItemStack item = createItem("§c§lNo team.", Material.OAK_SIGN, lore);
-			
-			inv.setItem(4, item);
-			
-			// -----------------------------------------------------------------------
-			
-			// Clock, "Create"
-			lore.clear();
-			lore.add("Create your own team");
-			item = createItem("§aCreate", Material.CLOCK, lore);
-			
-			inv.setItem(3, item);
-			// -----------------------------------------------------------------------
-			
-			// Compass, "Find"
-			lore.clear();
-			lore.add("Find a team");
-			item = createItem("§eFind", Material.COMPASS, lore);
-			
-			inv.setItem(5, item);
-			
-			// -----------------------------------------------------------------------
-			
-			
-			return;
-		}
+		
 		if (Database.getTeam(p, database, file) == null) // If the player isn't in a team
 		{
 			// -----------------------------------------------------------------------
@@ -116,7 +82,7 @@ public class TeamBase implements InventoryHolder {
 		{
 			TeamObj team = Database.getTeam(p, database, file);
 			
-			if (team.getLeader().equals(p.getUniqueId())) // If the player is the leader of the team
+			if (team.getLeader().getUniqueId().equals(p.getUniqueId())) // If the player is the leader of the team
 			{
 				// -----------------------------------------------------------------------
 				
