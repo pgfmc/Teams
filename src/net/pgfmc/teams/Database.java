@@ -29,4 +29,12 @@ public class Database {
 		return null; // null if the player isn't in a team
 	}
 
+	@SuppressWarnings("unchecked")
+	public static List<TeamObj> getTeams(FileConfiguration db, File file) {
+		if (db.get("teams") == null) { return null; }
+		
+		
+		return (List<TeamObj>) db.get("teams"); // gets the List<TeamObj> from the database file
+	}
+
 }

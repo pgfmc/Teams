@@ -3,6 +3,7 @@ package net.pgfmc.teams;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.pgfmc.teams.commands.Team;
+import net.pgfmc.teams.events.InventoryEvents;
 
 public class Main extends JavaPlugin { // MAIN // initializes plugin
 	
@@ -16,6 +17,7 @@ public class Main extends JavaPlugin { // MAIN // initializes plugin
 	{
 		plugin = this;
 		getCommand("team").setExecutor(new Team());
+		getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
 		
 	}
 	

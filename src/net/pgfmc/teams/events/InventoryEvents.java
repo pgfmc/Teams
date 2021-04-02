@@ -34,9 +34,10 @@ public class InventoryEvents implements Listener {
 		{
 			// -----------------------------------------------------------------------
 			
-			// Sign, "No team."
 			Inventory inv = e.getClickedInventory(); // We have to do it this way instead of checking if the player clicked a specific slot number because the top and bottom inventories share slot numbers >:|
 			ItemStack currItem = e.getCurrentItem();
+			
+			// Sign, "No team."
 			if (currItem.equals(inv.getItem(4)))
 			{
 				p.sendMessage("§cYou are not in a team. Create your own or send a join request to an existing team");
@@ -86,6 +87,7 @@ public class InventoryEvents implements Listener {
 				
 				Inventory inv = e.getClickedInventory(); // We have to do it this way instead of checking if the player clicked a specific slot number because the top and bottom inventories share slot numbers >:|
 				ItemStack currItem = e.getCurrentItem();
+				
 				// -----------------------------------------------------------------------
 				
 				// Sign, "[Team Name]"
@@ -175,6 +177,7 @@ public class InventoryEvents implements Listener {
 			// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 			
 			// if the player is not the leader of the team ->
+			
 			Inventory inv = e.getClickedInventory(); // We have to do it this way instead of checking if the player clicked a specific slot number because the top and bottom inventories share slot numbers >:|
 			ItemStack currItem = e.getCurrentItem();
 			
