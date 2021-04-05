@@ -1,17 +1,22 @@
 package net.pgfmc.teams;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-public class TeamObj {
-	String name = "Team-" + UUID.randomUUID().toString();
+public class TeamObj {	
+	String name;
 	UUID leader;
 	List<UUID> members;
 	List<TeamObj> allies = null; // Defaults to null if no allies
-	int creationPt = -1;
+	int creationPt;
+	
+	List<UUID> requests = new ArrayList<>();
 	
 	public TeamObj(String name, UUID leader, List<UUID> members, List<TeamObj> allies, int creationPt)
 	{
@@ -24,19 +29,43 @@ public class TeamObj {
 	
 	
 	
-	public TeamObj(String name, UUID leader, List<UUID> members)
+	public TeamObj(String name, UUID leader, List<UUID> members, int creationPt)
 	{
 		this.name = name;
 		this.leader = leader;
 		this.members = members;
+		
+		this.creationPt = creationPt;
 	}
 	
 	
 	
 	
+	public static TeamObj findTeam(String name, FileConfiguration db, File file)
+	{
+		
+		List<TeamObj> teamList = Database.getTeams(db, file);
+		
+		for (TeamObj team : teamList)
+		{
+			if (team.getName().equals(name)) { return team; }
+		}
+		
+		
+		return null; // null = no team found
+	}
 	
 	
 	
+	public List<UUID> getRequests()
+	{
+		return requests;
+	}
+	
+	public void addRequest(Player p)
+	{
+		requests.add(p.getUniqueId());
+	}
 	
 	public List<UUID> getMembers()
 	{

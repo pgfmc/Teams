@@ -14,7 +14,9 @@ import org.bukkit.inventory.ItemStack;
 import net.pgfmc.teams.Database;
 import net.pgfmc.teams.Main;
 import net.pgfmc.teams.TeamObj;
+import net.pgfmc.teams.inventories.CreateTeam;
 import net.pgfmc.teams.inventories.TeamBase;
+import net.pgfmc.teams.inventories.TeamLookup;
 
 public class InventoryEvents implements Listener {
 	
@@ -51,9 +53,11 @@ public class InventoryEvents implements Listener {
 
 			if (currItem.equals(inv.getItem(3)))
 			{
-				// TODO
 				e.setCancelled(true);
+				p.closeInventory();
 				
+				CreateTeam gui = new CreateTeam(p, database, file);
+				p.openInventory(gui.getInventory());
 				
 				return;
 			}
@@ -65,9 +69,11 @@ public class InventoryEvents implements Listener {
 			
 			if (currItem.equals(inv.getItem(5)))
 			{
-				// TODO
 				e.setCancelled(true);
+				p.closeInventory();
 				
+				TeamLookup gui = new TeamLookup(p, database, file);
+				p.openInventory(gui.getInventory());
 				
 				return;
 			}
@@ -246,7 +252,32 @@ public class InventoryEvents implements Listener {
 	@EventHandler
 	public void onClickTeamLookup(InventoryClickEvent e)
 	{
+		if (!(e.getInventory().getHolder() instanceof TeamLookup)) { return; } // return; if the inventory isn't TeamBase
 		
+		Player p = (Player) e.getWhoClicked(); // Not going to check if this is a player or not because it should be, right???
+		
+		
+		if (TeamObj.findTeam(e.getCurrentItem().getItemMeta().getDisplayName(), database, file) == null) // In case a player clicks anything BUT the skulls displayed
+		{
+			e.setCancelled(true);
+			return;
+		}
+		
+		TeamObj team = TeamObj.findTeam(e.getCurrentItem().getItemMeta().getDisplayName(), database, file);
+		
+		if (team.getRequests().contains(p.getUniqueId())) // if a request has been sent already
+		{
+			p.sendMessage("§cYou have already sent a request to this team.");
+			e.setCancelled(true);
+			return;
+		}
+		
+		team.addRequest(p);
+		p.sendMessage("§aRequest has been sent to team " + team.getName() + ".");
+		
+		
+		e.setCancelled(true);
+		return;
 	}
 	
 	
@@ -279,6 +310,10 @@ public class InventoryEvents implements Listener {
 	@EventHandler
 	public void onClickCreateTeam(InventoryClickEvent e)
 	{
+		if (!(e.getInventory().getHolder() instanceof CreateTeam)) { return; } // return; if the inventory isn't TeamBase
+		
+		Player p = (Player) e.getWhoClicked(); // Not going to check if this is a player or not because it should be, right???
+		
 		
 	}
 
