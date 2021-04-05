@@ -24,7 +24,7 @@ public class InventoryEvents implements Listener {
 	
 	@SuppressWarnings("unlikely-arg-type")
 	@EventHandler
-	public void onClick(InventoryClickEvent e)
+	public void onClickTeamBase(InventoryClickEvent e)
 	{
 		if (!(e.getInventory().getHolder() instanceof TeamBase)) { return; } // return; if the inventory isn't TeamBase
 		
@@ -214,6 +214,72 @@ public class InventoryEvents implements Listener {
 			
 			return;
 		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@EventHandler
+	public void onClickTeamLookup(InventoryClickEvent e)
+	{
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@EventHandler
+	public void onClickCreateTeam(InventoryClickEvent e)
+	{
+		
 	}
 
 }

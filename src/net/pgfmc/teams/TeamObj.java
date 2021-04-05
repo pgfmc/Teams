@@ -7,18 +7,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class TeamObj {
-	
-	String name = "Team123";
+	String name = "Team-" + UUID.randomUUID().toString();
 	UUID leader;
 	List<UUID> members;
 	List<TeamObj> allies = null; // Defaults to null if no allies
+	int creationPt = -1;
 	
-	public TeamObj(String name, UUID leader, List<UUID> members, List<TeamObj> allies)
+	public TeamObj(String name, UUID leader, List<UUID> members, List<TeamObj> allies, int creationPt)
 	{
 		this.name = name;
 		this.leader = leader;
 		this.members = members;
 		this.allies = allies;
+		this.creationPt = creationPt;
 	}
 	
 	
@@ -40,6 +41,11 @@ public class TeamObj {
 	public List<UUID> getMembers()
 	{
 		return members;
+	}
+	
+	public int getCreation()
+	{
+		return creationPt;
 	}
 	
 	

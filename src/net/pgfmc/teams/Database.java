@@ -37,4 +37,8 @@ public class Database {
 		return (List<TeamObj>) db.get("teams"); // gets the List<TeamObj> from the database file
 	}
 
+	public static int getNextCreation(FileConfiguration db, File file) {
+		return db.getInt("creation") + 1;
+	}
+
 }
