@@ -15,6 +15,7 @@ import net.pgfmc.teams.Database;
 import net.pgfmc.teams.Main;
 import net.pgfmc.teams.TeamObj;
 import net.pgfmc.teams.inventories.CreateTeam;
+import net.pgfmc.teams.inventories.CreateTeamAnvil;
 import net.pgfmc.teams.inventories.TeamBase;
 import net.pgfmc.teams.inventories.TeamLookup;
 
@@ -263,6 +264,21 @@ public class InventoryEvents implements Listener {
 			return;
 		}
 		
+		Inventory inv = e.getClickedInventory(); // We have to do it this way instead of checking if the player clicked a specific slot number because the top and bottom inventories share slot numbers >:|
+		ItemStack currItem = e.getCurrentItem();
+		
+		// Feather, "Back"
+		if (currItem.equals(inv.getItem(0)))
+		{
+			e.setCancelled(true);
+			p.closeInventory();
+			
+			TeamBase gui = new TeamBase(p, database, file);
+			p.openInventory(gui.getInventory());
+			
+			return;
+		}
+		
 		TeamObj team = TeamObj.findTeam(e.getCurrentItem().getItemMeta().getDisplayName(), database, file);
 		
 		if (team.getRequests().contains(p.getUniqueId())) // if a request has been sent already
@@ -314,7 +330,82 @@ public class InventoryEvents implements Listener {
 		
 		Player p = (Player) e.getWhoClicked(); // Not going to check if this is a player or not because it should be, right???
 		
+		Inventory inv = e.getClickedInventory(); // We have to do it this way instead of checking if the player clicked a specific slot number because the top and bottom inventories share slot numbers >:|
+		ItemStack currItem = e.getCurrentItem();
 		
+		// Feather, "Cancel"
+		
+		if (currItem.equals(inv.getItem(0)))
+		{
+			e.setCancelled(true);
+			p.closeInventory();
+			
+			TeamBase gui = new TeamBase(p, database, file);
+			p.openInventory(gui.getInventory());
+			
+			return;
+		}
+		
+		// -----------------------------------------------------------------------
+		
+		// Paper, "Create name"
+
+		if (currItem.equals(inv.getItem(4)))
+		{
+			e.setCancelled(true);
+			p.closeInventory();
+			
+			CreateTeamAnvil gui = new CreateTeamAnvil(p, database, file);
+			p.openInventory(gui.getInventory());
+			
+			return;
+		}
+		
+		// -----------------------------------------------------------------------
+		
+		// Slime Ball, "Create"
+
+		if (currItem.equals(inv.getItem(8)))
+		{
+			e.setCancelled(true);
+			p.closeInventory();
+			
+			TeamBase gui = new TeamBase(p, database, file);
+			p.openInventory(gui.getInventory());
+			
+			return;
+		}
+
+	}
+	
+	
+	
+	
+	
+	
+	@EventHandler
+	public void onClickCreateTeamAnvil(InventoryClickEvent e)
+	{
+		if (!(e.getInventory().getHolder() instanceof CreateTeamAnvil)) { return; } // return; if the inventory isn't TeamBase
+		
+		Player p = (Player) e.getWhoClicked(); // Not going to check if this is a player or not because it should be, right???
+		
+		Inventory inv = e.getClickedInventory(); // We have to do it this way instead of checking if the player clicked a specific slot number because the top and bottom inventories share slot numbers >:|
+		ItemStack currItem = e.getCurrentItem();
+		
+		// Feather, "Cancel"
+		
+		if (currItem.equals(inv.getItem(3)))
+		{
+			// TODO check if name is used already, create team, open TeamBase inventory
+			
+			
+			e.setCancelled(true);
+			return;
+		}
+
+		e.setCancelled(true);
+
 	}
 
 }

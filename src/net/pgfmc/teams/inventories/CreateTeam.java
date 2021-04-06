@@ -59,7 +59,7 @@ public class CreateTeam implements InventoryHolder {
 			// Slime Ball, "Confirm & Create"
 			lore.clear();
 			lore.add("Confirm the team name and create");
-			item = createItem("§eFind", Material.COMPASS, lore);
+			item = createItem("§eConfirm", Material.SLIME_BALL, lore);
 			
 			inv.setItem(8, item);
 			

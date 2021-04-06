@@ -43,6 +43,7 @@ public class TeamObj {
 	
 	public static TeamObj findTeam(String name, FileConfiguration db, File file)
 	{
+		if (Database.getTeams(db, file) == null) { return null; }
 		
 		List<TeamObj> teamList = Database.getTeams(db, file);
 		

@@ -39,8 +39,24 @@ public class TeamLookup implements InventoryHolder {
 		
 		if (Database.getTeam(p, database, file) == null) // If the player isn't in a team (should be null)
 		{
-			List<TeamObj> teamsList = Database.getTeams(database, file);
+
 			List<String> lore = new ArrayList<>();
+			lore.add("No teams available.");
+			
+			if (Database.getTeams(database, file) == null)
+			{
+				ItemStack item = createItem("§e§lNo teams available", Material.PLAYER_HEAD, lore);
+				inv.setItem(1, item);
+				
+				lore.clear();
+				lore.add("Go back");
+				item = createItem("§cBack", Material.FEATHER, lore);
+				inv.setItem(1, item);
+				
+				return;
+			}
+			
+			List<TeamObj> teamsList = Database.getTeams(database, file);
 			
 			for (int i = 1; i < teamsList.size(); i++)
 			{
