@@ -16,7 +16,7 @@ public class CreateTeamAnvil implements InventoryHolder {
 	
 	public CreateTeamAnvil()
 	{
-		inv = Bukkit.createInventory(this, InventoryType.ANVIL); // Upgrade inventory size to 54 once we get more than 20 teams!!!!!
+		inv = Bukkit.createInventory(this, InventoryType.ANVIL);
 		init(); // Build the inventory
 	}
 	

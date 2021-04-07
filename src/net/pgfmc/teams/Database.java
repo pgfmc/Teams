@@ -1,6 +1,7 @@
 package net.pgfmc.teams;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -39,6 +40,21 @@ public class Database {
 
 	public static int getNextCreation(FileConfiguration db, File file) {
 		return db.getInt("creation") + 1;
+	}
+	
+	public static void saveTeam(TeamObj team, FileConfiguration db, File file)
+	{
+		List<TeamObj> teams = new ArrayList<>();
+		
+		if (getTeams(db, file) == null)
+		{
+			teams.add(team);
+			db.set("teams", teams);
+			return;
+		}
+		
+		teams = getTeams(db, file);
+		db.set("teams", teams);
 	}
 
 }

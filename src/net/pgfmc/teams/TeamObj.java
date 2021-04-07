@@ -14,28 +14,15 @@ public class TeamObj {
 	UUID leader;
 	List<UUID> members;
 	List<TeamObj> allies = null; // Defaults to null if no allies
-	int creationPt;
 	
 	List<UUID> requests = new ArrayList<>();
 	
-	public TeamObj(String name, UUID leader, List<UUID> members, List<TeamObj> allies, int creationPt)
+	
+	public TeamObj(String name, UUID leader)
 	{
 		this.name = name;
 		this.leader = leader;
-		this.members = members;
-		this.allies = allies;
-		this.creationPt = creationPt;
-	}
-	
-	
-	
-	public TeamObj(String name, UUID leader, List<UUID> members, int creationPt)
-	{
-		this.name = name;
-		this.leader = leader;
-		this.members = members;
-		
-		this.creationPt = creationPt;
+		members.add(leader);
 	}
 	
 	
@@ -73,12 +60,6 @@ public class TeamObj {
 		return members;
 	}
 	
-	public int getCreation()
-	{
-		return creationPt;
-	}
-	
-	
 	public Player getLeader()
 	{
 		return Bukkit.getPlayer(leader);
@@ -87,6 +68,11 @@ public class TeamObj {
 	public List<TeamObj> getAllies()
 	{
 		return allies;
+	}
+	
+	public void addAlly(TeamObj ally)
+	{
+		allies.add(ally);
 	}
 	
 	public String getName()

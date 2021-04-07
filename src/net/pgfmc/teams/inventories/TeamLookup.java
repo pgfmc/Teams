@@ -51,7 +51,7 @@ public class TeamLookup implements InventoryHolder {
 				lore.clear();
 				lore.add("Go back");
 				item = createItem("§cBack", Material.FEATHER, lore);
-				inv.setItem(1, item);
+				inv.setItem(0, item);
 				
 				return;
 			}

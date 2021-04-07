@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -231,25 +232,6 @@ public class InventoryEvents implements Listener {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@EventHandler
 	public void onClickTeamLookup(InventoryClickEvent e)
 	{
@@ -257,15 +239,14 @@ public class InventoryEvents implements Listener {
 		
 		Player p = (Player) e.getWhoClicked(); // Not going to check if this is a player or not because it should be, right???
 		
+		Inventory inv = e.getClickedInventory(); // We have to do it this way instead of checking if the player clicked a specific slot number because the top and bottom inventories share slot numbers >:|
+		ItemStack currItem = e.getCurrentItem();
 		
-		if (TeamObj.findTeam(e.getCurrentItem().getItemMeta().getDisplayName(), database, file) == null) // In case a player clicks anything BUT the skulls displayed
+		if (TeamObj.findTeam(e.getCurrentItem().getItemMeta().getDisplayName(), database, file) == null && !(currItem.equals(inv.getItem(0)))) // In case a player clicks anything BUT the skulls displayed
 		{
 			e.setCancelled(true);
 			return;
 		}
-		
-		Inventory inv = e.getClickedInventory(); // We have to do it this way instead of checking if the player clicked a specific slot number because the top and bottom inventories share slot numbers >:|
-		ItemStack currItem = e.getCurrentItem();
 		
 		// Feather, "Back"
 		if (currItem.equals(inv.getItem(0)))
@@ -295,26 +276,6 @@ public class InventoryEvents implements Listener {
 		e.setCancelled(true);
 		return;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -355,7 +316,7 @@ public class InventoryEvents implements Listener {
 			e.setCancelled(true);
 			p.closeInventory();
 			
-			CreateTeamAnvil gui = new CreateTeamAnvil(p, database, file);
+			CreateTeamAnvil gui = new CreateTeamAnvil();
 			p.openInventory(gui.getInventory());
 			
 			return;
@@ -390,22 +351,29 @@ public class InventoryEvents implements Listener {
 		
 		Player p = (Player) e.getWhoClicked(); // Not going to check if this is a player or not because it should be, right???
 		
-		Inventory inv = e.getClickedInventory(); // We have to do it this way instead of checking if the player clicked a specific slot number because the top and bottom inventories share slot numbers >:|
-		ItemStack currItem = e.getCurrentItem();
+		AnvilInventory inv = (AnvilInventory) e.getClickedInventory(); // We have to do it this way instead of checking if the player clicked a specific slot number because the top and bottom inventories share slot numbers >:|
 		
 		// Feather, "Cancel"
 		
-		if (currItem.equals(inv.getItem(3)))
+		String name = inv.getRenameText();
+		
+		if (TeamObj.findTeam(name, database, file) != null)
 		{
-			// TODO check if name is used already, create team, open TeamBase inventory
-			
+			p.sendMessage("§cThis team already exists. Please choose another name");
 			
 			e.setCancelled(true);
 			return;
 		}
-
+		
+		TeamObj team = new TeamObj(name, p.getUniqueId());
+		Database.saveTeam(team, database, file);
+		
 		e.setCancelled(true);
-
+		p.closeInventory();
+		
+		TeamBase gui = new TeamBase(p, database, file);
+		p.openInventory(gui.getInventory());
+		return;
 	}
 
 }
