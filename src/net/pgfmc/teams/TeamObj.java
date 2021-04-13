@@ -10,33 +10,33 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class TeamObj {	
-	String name;
-	UUID leader;
-	List<UUID> members;
+	String name; // Name of team
+	UUID leader; // Team leader UUID
+	List<UUID> members; // list of members of the team
 	List<TeamObj> allies = null; // Defaults to null if no allies
 	
-	List<UUID> requests = new ArrayList<>();
+	List<UUID> requests = new ArrayList<>(); // Used for requests to join this team from non team peoples
 	
 	
-	public TeamObj(String name, UUID leader)
+	public TeamObj(String name, UUID leader) // Constructer that makes a new TeamObj (Obj = Object, Team is used by the command and yeah)
 	{
-		this.name = name;
-		this.leader = leader;
-		members.add(leader);
+		this.name = name; // sets the inputted name to the name
+		this.leader = leader; // ~ ~ ~ leader ~ ~ leader
+		members.add(leader); // the leader is a member
 	}
 	
 	
 	
 	
-	public static TeamObj findTeam(String name, FileConfiguration db, File file)
+	public static TeamObj findTeam(String name, FileConfiguration db, File file) // A static method to find a team from a String name
 	{
-		if (Database.getTeams(db, file) == null) { return null; }
+		if (Database.getTeams(db, file) == null) { return null; } // If it is empty
 		
 		List<TeamObj> teamList = Database.getTeams(db, file);
 		
-		for (TeamObj team : teamList)
+		for (TeamObj team : teamList) // For every team
 		{
-			if (team.getName().equals(name)) { return team; }
+			if (team.getName().equals(name)) { return team; } // Return the matching team
 		}
 		
 		
@@ -44,7 +44,8 @@ public class TeamObj {
 	}
 	
 	
-	
+	// **Most of these methods/getters are completely useless since you could just do <teamname>.requests; to get the requests, but whatever**
+	// Not hard to understand, not going to comment every line lol
 	public List<UUID> getRequests()
 	{
 		return requests;
