@@ -1,16 +1,4 @@
 name: Teams
-<<<<<<< Updated upstream
-version: 1.0.1
-api-version: 1.16
-author: bk
-main: net.pgfmc.teams.Main
-description: Teams API
-commands:
-  team:
-    description: Open the Teams GUI for your team
-    usage: /<command>
-    aliases: [teams, t, guild, faction]
-=======
 version: 1.0.0.a
 api-version: 1.16
 author: bk and CrimsonDart
@@ -56,4 +44,3 @@ commands:
       aliases: [VRT, renameTeam, voteRename,]
       permission: Teams.voterename
       description: Opens a vote to Rename your team to <new Team name>
->>>>>>> Stashed changes

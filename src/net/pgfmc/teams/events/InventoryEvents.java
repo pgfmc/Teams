@@ -1,37 +1,49 @@
 package net.pgfmc.teams.events;
 
+<<<<<<< Updated upstream
 import java.io.File;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+=======
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+>>>>>>> Stashed changes
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+<<<<<<< Updated upstream
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+=======
+import org.bukkit.inventory.Inventory;
+>>>>>>> Stashed changes
 
-import net.pgfmc.teams.Database;
-import net.pgfmc.teams.Main;
+import net.pgfmc.teams.PlayerData;
 import net.pgfmc.teams.TeamObj;
 import net.pgfmc.teams.inventories.CreateTeam;
 import net.pgfmc.teams.inventories.CreateTeamAnvil;
 import net.pgfmc.teams.inventories.TeamBase;
+<<<<<<< Updated upstream
 import net.pgfmc.teams.inventories.TeamLookup;
+=======
+import net.pgfmc.teams.inventories.VoteInventory;
+>>>>>>> Stashed changes
 
 public class InventoryEvents implements Listener {
 	
-	File file = new File(Main.plugin.getDataFolder() + File.separator + "database.yml"); // Creates a File object
-	FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
+	
 
 	
-	@SuppressWarnings("unlikely-arg-type")
 	@EventHandler
 	public void onClickTeamBase(InventoryClickEvent e)
 	{
-		if (!(e.getInventory().getHolder() instanceof TeamBase)) { return; } // return; if the inventory isn't TeamBase
 		
+<<<<<<< Updated upstream
 		Player p = (Player) e.getWhoClicked(); // Not going to check if this is a player or not because it should be, right???
 
 		if (Database.getTeam(p, database, file) == null) // If the player isn't in a team
@@ -84,14 +96,20 @@ public class InventoryEvents implements Listener {
 			
 			return;
 		}
+=======
+		Inventory inv = e.getClickedInventory();
+>>>>>>> Stashed changes
 		
+		if ((inv.getHolder() != null && inv.getHolder() instanceof TeamBase)) {  // return; if the inventory isn't TeamBase
 		
-		if (Database.getTeam(p, database, file) != null) // If the player is in a team
-		{
-			TeamObj team = Database.getTeam(p, database, file);
+		e.setCancelled(true);
 			
-			if (team.getLeader().equals(p.getUniqueId())) // If the player is the leader of the team
+		Player p = (Player) e.getWhoClicked(); // Not going to check if this is a player or not because it should be, right???
+		PlayerData pData = PlayerData.findPlayerData(p);
+		
+			if (pData.getTeam() != null) // If the player isn't in a team, the inventory is static (for now)
 			{
+<<<<<<< Updated upstream
 				
 				Inventory inv = e.getClickedInventory(); // We have to do it this way instead of checking if the player clicked a specific slot number because the top and bottom inventories share slot numbers >:|
 				ItemStack currItem = e.getCurrentItem();
@@ -176,10 +194,29 @@ public class InventoryEvents implements Listener {
 				
 				// -----------------------------------------------------------------------
 				
+=======
+>>>>>>> Stashed changes
 				return;
+				
+			} else {
+				int slot = e.getSlot();
+				switch(slot) {
+				
+				case 3: 	List<UUID> list = new ArrayList<>();
+							list.add(p.getUniqueId());
+							TeamObj team = new TeamObj(list);
+							pData.setTeam(team);
+							p.closeInventory();
+							p.sendMessage("You have started a new team!");
+							team.renameBegin(pData);
+							
+				}
 			}
+		} else if (e.getClickedInventory().getHolder() instanceof VoteInventory) {
 			
+			int slot = e.getSlot();
 			
+<<<<<<< Updated upstream
 			// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 			// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 			// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -374,6 +411,19 @@ public class InventoryEvents implements Listener {
 		TeamBase gui = new TeamBase(p, database, file);
 		p.openInventory(gui.getInventory());
 		return;
+=======
+			e.setCancelled(true);
+			switch (slot) {
+			
+			case 5: ((VoteInventory) e.getClickedInventory().getHolder()).getVote().vote((Player) e.getWhoClicked(), -1); return;
+			case 6: ((VoteInventory) e.getClickedInventory().getHolder()).getVote().vote((Player) e.getWhoClicked(), 0); return;
+			case 7: ((VoteInventory) e.getClickedInventory().getHolder()).getVote().vote((Player) e.getWhoClicked(), 1); return;
+			
+			default: return;
+			}
+		}
+		
+>>>>>>> Stashed changes
 	}
 
 }
