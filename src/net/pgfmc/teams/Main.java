@@ -13,9 +13,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.pgfmc.teams.commands.Team;
-<<<<<<< Updated upstream
-import net.pgfmc.teams.events.InventoryEvents;
-=======
 import net.pgfmc.teams.commands.TeamAccept;
 import net.pgfmc.teams.commands.TeamRequest;
 import net.pgfmc.teams.commands.VoteAllyRequest;
@@ -25,7 +22,6 @@ import net.pgfmc.teams.commands.VoteKick;
 import net.pgfmc.teams.commands.VoteRenameTeam;
 import net.pgfmc.teams.events.InventoryEvents;
 import net.pgfmc.teams.events.PlayerEvents;
->>>>>>> Stashed changes
 
 public class Main extends JavaPlugin {
 	
@@ -59,9 +55,6 @@ public class Main extends JavaPlugin {
 		
 		
 		getCommand("team").setExecutor(new Team());
-<<<<<<< Updated upstream
-		getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
-=======
 		getCommand("teamRequest").setExecutor(new TeamRequest());
 		getCommand("teamAccept").setExecutor(new TeamAccept());
 		getCommand("vote").setExecutor(new VoteCommand());
@@ -103,7 +96,6 @@ public class Main extends JavaPlugin {
 		PlayerData DEFP = PlayerData.findPlayerData(target);
 		
 		if (ATKP.getRequest() == null && DEFP.getRequest() == null) {
->>>>>>> Stashed changes
 		
 			if (ATK != null && ATK == DEF) { // if both players are on the same team // denies request
 				attacker.sendMessage("You are already on the same team as them!");
