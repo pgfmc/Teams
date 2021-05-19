@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -57,7 +58,19 @@ public class PlayerEvents implements Listener {
 		} else {
 			System.out.println("Player already has a PlayerData, so a new one will not be created.");
 		}
-		
+	}
+	
+	@EventHandler
+	public void blockPlace(BlockPlaceEvent e) {
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

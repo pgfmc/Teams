@@ -3,20 +3,25 @@ package net.pgfmc.teams;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import net.pgfmc.voting.Vote;
+import net.pgfmc.voting.Vote.VoteCases;
+
 public class Database {
 	
+	static File file = new File(Main.plugin.getDataFolder() + File.separator + "database.yml"); // Creates a File object
+	static FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
+	
 	public static void saveTeams() { // ----------------- saves all teams to "teams"
-		File file = new File(Main.plugin.getDataFolder() + File.separator + "database.yml"); // Creates a File object
-		FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
-		
 		
 		database.set("teams", null);
 		database.createSection("teams");
@@ -24,9 +29,7 @@ public class Database {
 		
 		for (TeamObj team : TeamObj.getTeams()) {
 			
-			ConfigurationSection teamSection = configSec.getConfigurationSection(team.getID().toString()); // saves the team data to the team's UUID.
-			
-			
+			ConfigurationSection teamSection = configSec.getConfigurationSection(team.getUniqueId().toString()); // saves the team data to the team's UUID.
 			
 			teamSection.set("name", team.getName()); // saves team name
 			
@@ -64,10 +67,12 @@ public class Database {
 	}
 	
 	public static void loadTeams() {// ----------- loads all teams
-		File file = new File(Main.plugin.getDataFolder() + File.separator + "database.yml"); // Creates a File object
-		FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 		
 		ConfigurationSection configSec = database.getConfigurationSection("teams");
+		
+		if (configSec == null) {
+			return;
+		}
 		
 		for (String key : configSec.getKeys(false)) {
 			
@@ -101,9 +106,7 @@ public class Database {
 	}
 	
 	public static void savePlayerData() { // saves all playerdata
-		File file = new File(Main.plugin.getDataFolder() + File.separator + "database.yml"); // Creates a File object
-		FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
-		
+
 		database.set("playerData", null);
 		database.createSection("playerData");
 		ConfigurationSection configSec = database.getConfigurationSection("playerData");
@@ -123,10 +126,12 @@ public class Database {
 	}
 	
 	public static void loadPlayerData() { // -------------------------------------------------------------------------------------- Loads all playerData stored in database.yml
-		File file = new File(Main.plugin.getDataFolder() + File.separator + "database.yml"); // Creates a File object
-		FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 		
 		ConfigurationSection configSec = database.getConfigurationSection("playerData");
+		if (configSec == null) {
+			return;
+		}
+		
 		for (String key : configSec.getKeys(false)) {
 			
 			UUID thimg;
@@ -140,6 +145,88 @@ public class Database {
 			}
 			
 			new PlayerData(UUID.fromString(key), thimg);
+		}
+	}
+	
+	public static void saveVotes() {
+		
+		database.set("Votes", null);
+		ConfigurationSection configSec = database.createSection("Votes");
+		
+		for (Vote vote : Vote.getAllVotes()) {
+			
+			ConfigurationSection saveVote = configSec.createSection(vote.getID().toString());
+			
+			List<String> uuidList = new ArrayList<>(); // saves each player, along with their decision in voting.
+			List<Integer> intList = new ArrayList<>();
+			for (UUID uuid : vote.getVotes().keySet()) {
+				uuidList.add(uuid.toString());
+				intList.add(vote.getVotes().get(uuid));
+			}
+			saveVote.set("Members", uuidList);
+			saveVote.set("MemberVotes", intList);
+			
+			saveVote.set("Team", vote.getTeam().getUniqueId().toString());
+			
+			VoteCases voteCase = vote.getCase();
+			saveVote.set("VoteCase", voteCase.toString());
+			
+			switch(voteCase) { // for the Subject of the vote.
+			case ALLYTEAMACCEPT:
+				saveVote.set("Subject", ((TeamObj) vote.getSubject()).getUniqueId());
+			case ALLYTEAMCANCEL:
+				saveVote.set("Subject", ((TeamObj) vote.getSubject()).getUniqueId());
+			case ALLYTEAMREQUEST:
+				saveVote.set("Subject", ((TeamObj) vote.getSubject()).getUniqueId());
+			case BANPLAYER:
+				saveVote.set("Subject", ((OfflinePlayer) vote.getSubject()).getUniqueId());
+			case CHANGEGOVERNMENT:
+				saveVote.set("Subject", ((OfflinePlayer) vote.getSubject()).getUniqueId());
+			case KICKPLAYER:
+				saveVote.set("Subject", ((OfflinePlayer) vote.getSubject()).getUniqueId());
+			case RENAMETEAM:
+				saveVote.set("Subject", (String) vote.getSubject());
+			}
+		}
+		
+		try {
+			database.save(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+public static void loadVotes() {
+		
+		ConfigurationSection configSec = database.getConfigurationSection("Votes");
+		
+		if (configSec == null) {
+			return;
+		}
+		
+		for (String key : configSec.getKeys(false)) {
+			
+			ConfigurationSection saveVote = configSec.getConfigurationSection(key);
+			
+			Map<UUID, Integer> members = new HashMap<>();
+			for (Object uuidString : saveVote.getList("Members")) {
+				members.put(UUID.fromString((String) uuidString), (Integer) saveVote.getList("MemberVotes").get(saveVote.getList("Members").indexOf(uuidString)));
+			}
+			
+			UUID team = UUID.fromString(saveVote.getString("Team"));
+			VoteCases voteCase = VoteCases.valueOf(saveVote.getString("VoteCase:"));
+			
+			Object subject;
+			
+			switch(voteCase) { // for the Subject of the vote.
+			case RENAMETEAM:
+				subject = saveVote.getString("Subject");
+			default:
+				subject = UUID.fromString(saveVote.getString("Subject"));
+			}
+			
+			new Vote(members, TeamObj.findID(team), subject, voteCase, UUID.fromString(key));
 		}
 	}
 }

@@ -10,6 +10,45 @@ import org.bukkit.entity.Player;
 
 import net.pgfmc.voting.Vote;
 
+/*
+Object Class for Teams; a new object will be created upon the creation of a new team.
+
+Written by Bk and CrimsonDart
+
+-------------------------------------
+
+TeamObj.java functionality:
+
+create a new team
+load an old team upon loading of the plugin
+multiple getters and setters for local variables
+a rename feature
+ability to find a team based on a contained player or UUID
+ability to choose between a leader or democracy decision-making system
+
+External Functionality:
+
+hell no im not doing this
+
+
+
+
+
+
+
+
+future functionality:
+
+ability to disband team
+
+
+
+
+ */
+
+
+
+
 public class TeamObj {
 	
 	String name = "New Team";
@@ -64,7 +103,7 @@ public class TeamObj {
 	
 	public void addAlly(TeamObj ally)
 	{
-		allies.add(ally.getID());
+		allies.add(ally.getUniqueId());
 	}
 	
 	public String getName()
@@ -92,8 +131,10 @@ public class TeamObj {
 		currentVote = vote;
 	}
 	
-	public UUID getID() {
+	public UUID getUniqueId() {
 		return teamID;
+		
+		
 	}
 	
 	// ------------------------------------------------------------------------------------ Renaming functions
@@ -119,7 +160,7 @@ public class TeamObj {
 	
 	public static TeamObj findID(UUID ID) { // searches for the team with the given ID
 		for (TeamObj team : instances) {
-			if (team.getID() == ID) {
+			if (team.getUniqueId() == ID) {
 				return team;
 			}
 		}

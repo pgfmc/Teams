@@ -24,7 +24,6 @@ public class Vote {
 	
 	Map<UUID, Integer> votes; // 0 = indifferent, 1 = suport, -1 = against
 	Object subject;
-	static List<Vote> instances = new ArrayList<>();
 	UUID voteID;
 	TeamObj team;
 	
@@ -39,11 +38,12 @@ public class Vote {
 	}
 	
 	VoteCases voteCase;
+	static List<Vote> instances = new ArrayList<>();
 	
 	public Vote(List<UUID> members, TeamObj team, Object subject, VoteCases voteCase) { // new vote constructor
 		if (team.getVote() == null) {
 			for (UUID uuid : members) {
-				this.votes.put(uuid, null);
+				this.votes.put(uuid, 2);
 			}
 			
 			this.team = team;
@@ -51,7 +51,7 @@ public class Vote {
 			this.voteCase = voteCase;
 			voteID = UUID.randomUUID();
 		} else {
-			System.out.println("New Vote prevented from being created because ");
+			System.out.println("New Vote prevented from being created because of invalid Team");
 		}
 		
 		instances.add(this);
@@ -71,7 +71,7 @@ public class Vote {
 	public void vote(Player p, int position) {
 		for (UUID uuid : votes.keySet()) {
 			if (p.getUniqueId() == uuid) {
-				if (votes.get(uuid) != null) {
+				if (votes.get(uuid) != 2) {
 					p.sendMessage("You have already voted!");
 					return;
 				} else {
@@ -97,6 +97,9 @@ public class Vote {
 					case CHANGEGOVERNMENT: str = str + ("Making the leader of the team " + Bukkit.getPlayer((UUID) subject).getCustomName() + ".");
 					}
 					p.sendMessage(str);
+					
+					// we need to add support for deleted teams; if a team mentioned in a vote is deleted, then all votes mentioning the team should be ended, and all members of the vote should be notified.
+					
 				}
 			}
 		}
@@ -116,6 +119,14 @@ public class Vote {
 		return voteID;
 	}
 	
+	public Map<UUID, Integer> getVotes() {
+		return votes;
+	}
+	
+	public TeamObj getTeam() {
+		return team;
+	}
+	
 	// --------------------------------------------------------------------- static methods
 	
 	public static Vote findInVote(UUID uuid) {
@@ -125,6 +136,10 @@ public class Vote {
 			}
 		}
 		return null;
+	}
+	
+	public static List<Vote> getAllVotes() {
+		return instances;
 	}
 	
 	
