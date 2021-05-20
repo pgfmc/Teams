@@ -67,10 +67,7 @@ public class PlayerData {
 		return team;
 	}
 	
-	public void setTeam(TeamObj team) {
-		this.team = team;
-		teamID = team.getUniqueId();
-	}
+	
 	
 	public void setTeam(UUID teamID) {
 		this.teamID = teamID;

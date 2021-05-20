@@ -12,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.pgfmc.teams.commands.LeaveTeamCommand;
+import net.pgfmc.teams.commands.LeaveTeamConfirmCommand;
 import net.pgfmc.teams.commands.Team;
 import net.pgfmc.teams.commands.TeamAccept;
 import net.pgfmc.teams.commands.TeamRequest;
@@ -41,7 +43,7 @@ public class Main extends JavaPlugin {
 				System.out.println("database.yml already Exists!");
 				
 				Database.loadPlayerData();
-				//Database.loadTeams();
+				Database.loadTeams();
 			}
 			
 		
@@ -62,6 +64,8 @@ public class Main extends JavaPlugin {
 		getCommand("voteBan").setExecutor(new VoteBan());
 		getCommand("voteAllyRequest").setExecutor(new VoteAllyRequest());
 		getCommand("voteRenameTeam").setExecutor(new VoteRenameTeam());
+		getCommand("leaveTeam").setExecutor(new LeaveTeamCommand());
+		getCommand("leaveTeamConfirm").setExecutor(new LeaveTeamConfirmCommand());
 	}
 	
 	@Override

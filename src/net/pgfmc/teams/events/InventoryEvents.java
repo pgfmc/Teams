@@ -14,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 import net.pgfmc.teams.PlayerData;
 import net.pgfmc.teams.TeamObj;
 import net.pgfmc.teams.inventories.TeamBase;
+import net.pgfmc.teams.inventories.TeamLeaveConfirmInventory;
 import net.pgfmc.teams.inventories.VoteInventory;
 
 
@@ -30,12 +31,12 @@ public class InventoryEvents implements Listener {
 		
 		if ((inv.getHolder() != null && inv.getHolder() instanceof TeamBase)) {  // return; if the inventory isn't TeamBase
 		
-		e.setCancelled(true);
-			
-		PlayerData pData = PlayerData.findPlayerData(p);
+			e.setCancelled(true);
+			PlayerData pData = PlayerData.findPlayerData(p);
 		
-			if (pData.getTeam() != null) // If the player isn't in a team, the inventory is static (for now)
-			{
+			if (pData.getTeam() != null) { // If the player isn't in a team, the inventory is static (for now)
+				
+				p.openInventory(new TeamLeaveConfirmInventory(pData.getTeam()).getInventory());
 				
 			} else {
 				int slot = e.getSlot();
@@ -44,14 +45,15 @@ public class InventoryEvents implements Listener {
 				case 3: 	List<UUID> list = new ArrayList<>();
 							list.add(p.getUniqueId());
 							TeamObj team = new TeamObj(list);
-							pData.setTeam(team);
+							pData.setTeam(team.getUniqueId());
 							p.closeInventory();
 							p.sendMessage("You have started a new team!");
 							team.renameBegin(pData);
-							
+							return;
+				default: return;
 				}
 			}
-		} else if (e.getClickedInventory().getHolder() instanceof VoteInventory) {
+		} else if (inv.getHolder() != null && inv.getHolder() instanceof VoteInventory) {
 			
 			int slot = e.getSlot();
 			
@@ -64,6 +66,11 @@ public class InventoryEvents implements Listener {
 			
 			default: return;
 			}
+		} else if (inv.getHolder() != null && inv.getHolder() instanceof TeamLeaveConfirmInventory) {
+			
+			e.setCancelled(true);
+			PlayerData.findPlayerData(p).getTeam().removePlayer(p);
+			PlayerData.findPlayerData(p).setTeam(null);
 		}
 	}	
 }

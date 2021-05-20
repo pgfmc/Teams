@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.voting.Vote;
@@ -29,10 +30,6 @@ ability to choose between a leader or democracy decision-making system
 External Functionality:
 
 hell no im not doing this
-
-
-
-
 
 
 
@@ -133,8 +130,10 @@ public class TeamObj {
 	
 	public UUID getUniqueId() {
 		return teamID;
-		
-		
+	}
+	
+	public void removePlayer(OfflinePlayer p) {
+		members.remove(p.getUniqueId());
 	}
 	
 	// ------------------------------------------------------------------------------------ Renaming functions

@@ -30,6 +30,9 @@ public class Database {
 		for (TeamObj team : TeamObj.getTeams()) {
 			
 			ConfigurationSection teamSection = configSec.getConfigurationSection(team.getUniqueId().toString()); // saves the team data to the team's UUID.
+			if (teamSection == null) {
+				teamSection = configSec.createSection(team.getUniqueId().toString());
+			}
 			
 			teamSection.set("name", team.getName()); // saves team name
 			
@@ -39,11 +42,13 @@ public class Database {
 			}
 			teamSection.set("Members", strings);
 			
-			strings = new ArrayList<>(); // saves team Allies
-			for (UUID uuid : team.allies) {
-				strings.add(uuid.toString());
+			if (team.allies != null) {
+				strings = new ArrayList<>(); // saves team Allies
+				for (UUID uuid : team.allies) {
+					strings.add(uuid.toString());
+				}
+				teamSection.set("Allies", strings);
 			}
-			teamSection.set("Allies", strings);
 			
 			if (team.currentVote == null) { // saves Current vote for the team
 				teamSection.set("Vote", null);
@@ -56,7 +61,10 @@ public class Database {
 			} else {
 				teamSection.set("Leader", team.leader.toString());
 			}
+			
+			configSec.set(team.getUniqueId().toString(), teamSection);
 		}
+		database.set("teams", configSec);
 		
 		try {
 			database.save(file);
@@ -78,6 +86,10 @@ public class Database {
 			
 			ConfigurationSection teamSection = configSec.getConfigurationSection(key); // saves the team data to the team's UUID.
 			
+			if (teamSection == null) {
+				return;
+			}
+			
 			String name = teamSection.getString("name"); // gets team name
 			
 			List<UUID> members = new ArrayList<>();
@@ -85,9 +97,12 @@ public class Database {
 				members.add(UUID.fromString((String) string));
 			}
 			
-			List<UUID> allies = new ArrayList<>();
-			for (Object string : teamSection.getList("Allies")) { // gets all allies
-				allies.add(UUID.fromString((String) string));
+			List<UUID> allies = null;
+			if (teamSection.get("Allies") != null) {
+				allies = new ArrayList<>();
+				for (Object string : teamSection.getList("Allies")) { // gets all allies
+					allies.add(UUID.fromString((String) string));
+				}
 			}
 			
 			UUID vote = null;
@@ -99,7 +114,6 @@ public class Database {
 			if (teamSection.getString("Leader") != null) { // gets Current vote for the team
 				vote = UUID.fromString(teamSection.getString("Leader"));
 			}
-			
 			
 			new TeamObj(name, members, allies, UUID.fromString(key), leader, vote);
 		}
@@ -155,7 +169,10 @@ public class Database {
 		
 		for (Vote vote : Vote.getAllVotes()) {
 			
-			ConfigurationSection saveVote = configSec.createSection(vote.getID().toString());
+			ConfigurationSection saveVote = configSec.getConfigurationSection(vote.getID().toString());
+			if (saveVote == null) {
+				saveVote = configSec.createSection(vote.getID().toString());
+			}
 			
 			List<String> uuidList = new ArrayList<>(); // saves each player, along with their decision in voting.
 			List<Integer> intList = new ArrayList<>();

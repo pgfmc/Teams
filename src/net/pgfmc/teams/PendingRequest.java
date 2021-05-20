@@ -49,8 +49,8 @@ public class PendingRequest {
 	}
 	
 	public void acceptRequest(boolean isAttacker) { // accepts the request; makes both players on the same team.
-		ATK.setTeam(team);
-		DEF.setTeam(team);
+		ATK.setTeam(team.getUniqueId());
+		DEF.setTeam(team.getUniqueId());
 		
 		if (isAttacker) {
 			team.addMember(target);
@@ -63,7 +63,7 @@ public class PendingRequest {
 		List<UUID> list = new ArrayList<>();
 		list.add(attacker.getUniqueId());
 		list.add(target.getUniqueId());
-		TeamObj team = new TeamObj(list);
+		UUID team = new TeamObj(list).getUniqueId();
 		
 		ATK.setTeam(team);
 		DEF.setTeam(team);

@@ -44,3 +44,13 @@ commands:
       aliases: [VRT, renameTeam, voteRename,]
       permission: Teams.voterename
       description: Opens a vote to Rename your team to <new Team name>
+   leaveTeam:
+      usage: /leaveTeam
+      aliases: [LT]
+      permission: Teams.leave
+      description: sends the sender a confirmation message, asking if they are sure that they want to leave their team.
+   leaveTeamConfirm:
+      usage: /leaveTeamConfirm
+      aliases: [LTC]
+      permission: Teams.leaveConfirm
+      description: makes the sender leave their own team.

@@ -66,6 +66,12 @@ public class TeamBase implements InventoryHolder {
 		else { // If the player is in a team
 			TeamObj team = TeamObj.findPlayer(p);
 			
+			
+			 // Leave "[leave Team name]"
+			ItemStack item = Main.createItem("Leave " + team.getName(), Material.ARROW);
+			
+			inv.setItem(3, item);
+			
 			// Sign, "[Team Name]"
 			List<String> lore = new ArrayList<>();
 			lore.add("Stats");
@@ -83,7 +89,7 @@ public class TeamBase implements InventoryHolder {
 			lore.add("Kill Count: (I will implement later!)");
 						
 						
-			ItemStack item = Main.createItem("§c§l" + team.getName(), Material.OAK_SIGN, lore);
+			item = Main.createItem("§c§l" + team.getName(), Material.OAK_SIGN, lore);
 						
 			inv.setItem(4, item);
 						
