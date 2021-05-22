@@ -27,6 +27,6 @@ public class VoteBan implements CommandExecutor {
 			new Vote(team.getMembers(), team, Bukkit.getPlayer(args[0]).getUniqueId(), VoteCases.BANPLAYER).vote((Player) sender, 1);
 		}
 		
-		return false;
+		return true;
 	}
 }

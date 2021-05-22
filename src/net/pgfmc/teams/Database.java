@@ -252,7 +252,7 @@ public class Database {
 	public static void saveBlockLocation(Block block, OfflinePlayer player) { // saves who placed a block
 		
 		
-		if (block.getWorld() == Bukkit.getWorld("Survival")) { 
+		if (block.getWorld() == Bukkit.getWorld("survival")) { 
 			
 			ConfigurationSection configSec = database.getConfigurationSection("Blocks");
 			if (configSec == null) {

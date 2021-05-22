@@ -23,6 +23,6 @@ public class LeaveTeamConfirmCommand implements CommandExecutor {
 		PlayerData playerData = PlayerData.findPlayerData(p);
 		playerData.getTeam().removePlayer(p);
 		p.sendMessage("You have left " + playerData.getTeam().getName() + ".");
-		return false;
+		return true;
 	}
 }

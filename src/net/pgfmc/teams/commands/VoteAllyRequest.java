@@ -29,7 +29,7 @@ public class VoteAllyRequest implements CommandExecutor {
 			new Vote(team.getMembers(), team, Bukkit.getPlayer(args[0]).getUniqueId(), VoteCases.ALLYTEAMREQUEST).vote((Player) sender, 1);
 		}
 		
-		return false;
+		return true;
 	}
 	
 	

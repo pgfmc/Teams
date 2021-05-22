@@ -23,6 +23,6 @@ public class Team implements CommandExecutor {
 		TeamBase gui = new TeamBase(p);
 		p.openInventory(gui.getInventory());
 		
-		return false;
+		return true;
 	}
 }

@@ -21,6 +21,6 @@ public class LeaveTeamCommand implements CommandExecutor {
 		p.sendMessage("Are you sure you want to leave your team?");
 		p.sendMessage("If you leave your team, you can still join back anytime.");
 		p.sendMessage("If you wish to leave, then type /leaveTeamConfirm or /LTC.");
-		return false;
+		return true;
 	}
 }

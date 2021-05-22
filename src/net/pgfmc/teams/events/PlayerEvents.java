@@ -95,7 +95,7 @@ public class PlayerEvents implements Listener {
 	@EventHandler
 	public void blockInteract(PlayerInteractEvent e) {
 		
-		if (e.getClickedBlock() != null && e.getClickedBlock().getWorld() != Bukkit.getWorld("Survival") && e.getClickedBlock().getState() instanceof Container) {
+		if (e.getClickedBlock() != null && e.getClickedBlock().getWorld() != Bukkit.getWorld("survival") && e.getClickedBlock().getState() instanceof Container) {
 			
 			Block block = e.getClickedBlock();
 			Container blockState = (Container) block.getState();

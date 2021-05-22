@@ -23,7 +23,7 @@ public class TeamRequest implements CommandExecutor {
 			Main.requestHandler((Player) sender, (Player) Bukkit.getPlayer(args[0]));
 		}
 		
-		return false;
+		return true;
 	}
 
 }

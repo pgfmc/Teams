@@ -29,6 +29,6 @@ public class VoteCommand implements CommandExecutor {
 		
 		((Player) sender).openInventory(new VoteInventory(TeamObj.findPlayer(((Player) sender)).getVote()).getInventory());
 		
-		return false;
+		return true;
 	}
 }

@@ -26,9 +26,6 @@ public class VoteRenameTeam implements CommandExecutor {
 			new Vote(team.getMembers(), team, args[0], VoteCases.RENAMETEAM).vote((Player) sender, 1);
 		}
 		
-		return false;
+		return true;
 	}
-	
-	
-	
 }
