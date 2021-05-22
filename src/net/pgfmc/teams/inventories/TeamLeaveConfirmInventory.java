@@ -12,6 +12,7 @@ import net.pgfmc.teams.TeamObj;
 public class TeamLeaveConfirmInventory implements InventoryHolder {
 	
 	private Inventory inv;
+	TeamObj team;
 	
 	public TeamLeaveConfirmInventory(TeamObj team) {
 		inv = Bukkit.createInventory(this, 9);
@@ -24,6 +25,12 @@ public class TeamLeaveConfirmInventory implements InventoryHolder {
 		
 		item = Main.createItem("Don't Leave Team", Material.LIME_CONCRETE);
 		inv.setItem(6, item);
+		
+		this.team = team;
+	}
+	
+	public TeamObj getTeam() {
+		return team;
 	}
 	
 	@Override

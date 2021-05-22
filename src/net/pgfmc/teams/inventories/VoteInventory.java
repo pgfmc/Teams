@@ -11,7 +11,7 @@ import org.bukkit.inventory.InventoryHolder;
 
 import net.pgfmc.teams.Main;
 import net.pgfmc.teams.TeamObj;
-import net.pgfmc.voting.Vote;
+import net.pgfmc.teams.Vote;
 
 public class VoteInventory implements InventoryHolder {
 	

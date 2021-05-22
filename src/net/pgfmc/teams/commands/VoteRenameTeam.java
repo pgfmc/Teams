@@ -6,8 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.teams.TeamObj;
-import net.pgfmc.voting.Vote;
-import net.pgfmc.voting.Vote.VoteCases;
+import net.pgfmc.teams.Vote;
+import net.pgfmc.teams.Vote.VoteCases;
 
 public class VoteRenameTeam implements CommandExecutor {
 	

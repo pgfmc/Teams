@@ -6,12 +6,16 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.coreprotect.CoreProtect;
+import net.coreprotect.CoreProtectAPI;
 import net.pgfmc.teams.commands.LeaveTeamCommand;
 import net.pgfmc.teams.commands.LeaveTeamConfirmCommand;
 import net.pgfmc.teams.commands.Team;
@@ -28,11 +32,13 @@ import net.pgfmc.teams.events.PlayerEvents;
 public class Main extends JavaPlugin {
 	
 	public static Main plugin;
+	public static CoreProtectAPI coreProtectAPI;
 	
 	@Override
 	public void onEnable() {
 		
 		plugin = this;
+		
 		
 		File file = new File(plugin.getDataFolder() + "\\database.yml"); // Creates a File object
 		
@@ -42,11 +48,11 @@ public class Main extends JavaPlugin {
 			} else {
 				System.out.println("database.yml already Exists!");
 				
-				Database.loadPlayerData();
 				Database.loadTeams();
+				Database.loadPlayerData();
+				Database.loadVotes();
 			}
 			
-		
 		} catch (IOException e) {
 			System.out.println("database.yml Couldn't be created!");
 			e.printStackTrace();
@@ -66,12 +72,37 @@ public class Main extends JavaPlugin {
 		getCommand("voteRenameTeam").setExecutor(new VoteRenameTeam());
 		getCommand("leaveTeam").setExecutor(new LeaveTeamCommand());
 		getCommand("leaveTeamConfirm").setExecutor(new LeaveTeamConfirmCommand());
+		
+		coreProtectAPI = getCoreProtect();
 	}
 	
 	@Override
 	public void onDisable() {
-		Database.savePlayerData();
 		Database.saveTeams();
+		Database.savePlayerData();
+		Database.saveVotes();
+	}
+	
+	private CoreProtectAPI getCoreProtect() {
+        Plugin plugin = getServer().getPluginManager().getPlugin("CoreProtect");
+     
+        // Check that CoreProtect is loaded
+        if (plugin == null || !(plugin instanceof CoreProtect)) {
+            return null;
+        }
+
+        // Check that the API is enabled
+        CoreProtectAPI CoreProtect = ((CoreProtect) plugin).getAPI();
+        if (CoreProtect.isEnabled() == false) {
+            return null;
+        }
+
+        // Check that a compatible version of the API is loaded
+        if (CoreProtect.APIVersion() < 6) {
+            return null;
+        }
+
+        return CoreProtect;
 	}
 	
 	public static ItemStack createItem(String name, Material mat, List<String> lore)
@@ -93,6 +124,8 @@ public class Main extends JavaPlugin {
 	}
 	
 	public static void requestHandler(Player attacker, Player target) {
+		
+		if (attacker.getGameMode() != GameMode.SURVIVAL && target.getGameMode() != GameMode.SURVIVAL) { return; }
 		
 		TeamObj ATK = TeamObj.findPlayer(attacker);
 		TeamObj DEF = TeamObj.findPlayer(target);

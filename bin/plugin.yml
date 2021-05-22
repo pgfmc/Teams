@@ -11,32 +11,32 @@ commands:
       description: Opens the team inventory.
    teamRequest:
       usage: /teamRequest <Player>
-      aliases: [TR]
+      aliases: [teamRequest, teamreqeust, TR]
       permission: Teams.teamRequest
       description: invites or sends a request to Player <Player>.
    teamAccept:
       usage: teamAccept
-      aliases: [TA]
+      aliases: [teamAccept, teamaccept, TA]
       permission: Teams.teamAccept
       description: Accepts the invite / request sent in teamRequest.
    vote:
       usage: /vote
-      aliases: [V]
+      aliases: [vote, V]
       permission: Teams.vote
       description: Opens the Vote inventory.
    voteKick:
       usage: /voteKick <Teamate>
-      aliases: [VK]
+      aliases: [voteKick, votekick, VK]
       permission: Teams.voteKick
       description: Opens a vote to Kick <Teamate> from your team.
    voteBan:
       usage: /voteBan <Teamate>
-      aliases: [VB]
+      aliases: [voteBan, voteban, VB]
       permission: Teams.voteBan
       description: Opens a vote to Ban <Teamate> from your team.
    voteAllyRequest:
       usage: /voteAllyRequest <other Team>
-      aliases: [VAR]
+      aliases: [voteAllyRequest, voteallyrequest, VAR]
       permission: Teams.voteAllyRequest
       description: Opens a vote to send an ally request to another team.
    voteRenameTeam:
@@ -46,11 +46,11 @@ commands:
       description: Opens a vote to Rename your team to <new Team name>
    leaveTeam:
       usage: /leaveTeam
-      aliases: [LT]
+      aliases: [leaveTeam, leaveteam, LT]
       permission: Teams.leave
       description: sends the sender a confirmation message, asking if they are sure that they want to leave their team.
    leaveTeamConfirm:
       usage: /leaveTeamConfirm
-      aliases: [LTC]
+      aliases: [leaveTeamConfirm, leaveteamconfirm, LTC]
       permission: Teams.leaveConfirm
       description: makes the sender leave their own team.

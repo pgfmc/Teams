@@ -8,13 +8,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import net.pgfmc.voting.Vote;
-import net.pgfmc.voting.Vote.VoteCases;
+import net.pgfmc.teams.Vote.VoteCases;
 
 public class Database {
 	
@@ -214,7 +216,7 @@ public class Database {
 		}
 	}
 	
-public static void loadVotes() {
+	public static void loadVotes() {
 		
 		ConfigurationSection configSec = database.getConfigurationSection("Votes");
 		
@@ -245,5 +247,52 @@ public static void loadVotes() {
 			
 			new Vote(members, TeamObj.findID(team), subject, voteCase, UUID.fromString(key));
 		}
+	}
+	
+	public static void saveBlockLocation(Block block, OfflinePlayer player) { // saves who placed a block
+		
+		
+		if (block.getWorld() == Bukkit.getWorld("Survival")) { 
+			
+			ConfigurationSection configSec = database.getConfigurationSection("Blocks");
+			if (configSec == null) {
+				configSec = database.createSection("Blocks");
+			}
+			
+			Location location = block.getLocation();
+			configSec.set(String.valueOf(location.getBlockX() + "-" + String.valueOf(location.getBlockY()) + "-" + String.valueOf(location.getBlockZ())), player.getUniqueId().toString());
+			database.set("Blocks", configSec);
+			
+			try {
+				database.save(file);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static void deleteBlockLocation(Block block) { // deletes saved block data
+		
+		ConfigurationSection configSec = database.getConfigurationSection("Blocks");
+		if (configSec == null) {
+			return;
+		}
+		
+		Location location = block.getLocation();
+		configSec.set(String.valueOf(location.getBlockX() + "-" + String.valueOf(location.getBlockY()) + "-" + String.valueOf(location.getBlockZ())), null);
+		database.set("Blocks", configSec);
+	}
+	
+	public static OfflinePlayer getBlockPlacer(Block block) { // retruns who placed a stored block.
+		ConfigurationSection configSec = database.getConfigurationSection("Blocks");
+		if (configSec == null) {
+			return null;
+		}
+		
+		Location location = block.getLocation();
+		configSec.getString(String.valueOf(location.getBlockX() + "-" + String.valueOf(location.getBlockY()) + "-" + String.valueOf(location.getBlockZ())));
+		return Bukkit.getOfflinePlayer(UUID.fromString(configSec.getString(String.valueOf(location.getBlockX() + "-" + String.valueOf(location.getBlockY()) + "-" + String.valueOf(location.getBlockZ())))));
+		
 	}
 }

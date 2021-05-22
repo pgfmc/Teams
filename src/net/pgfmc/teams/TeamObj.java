@@ -9,8 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import net.pgfmc.voting.Vote;
-
 /*
 Object Class for Teams; a new object will be created upon the creation of a new team.
 
@@ -148,10 +146,13 @@ public class TeamObj {
 	
 	// ------------------------------------------------------------------------------------ instances manager
 	
-	public static TeamObj findPlayer(Player p) { // searches for a given Player p, and returns the team the player is in
-		for (TeamObj team : instances) {
-			if (team.getMembers().contains(p.getUniqueId())) {
-				return team;
+	public static TeamObj findPlayer(OfflinePlayer p) { // searches for a given Player p, and returns the team the player is in
+		if (p != null) {
+			
+			for (TeamObj team : instances) {
+				if (team.getMembers().contains(p.getUniqueId())) {
+					return team;
+				}
 			}
 		}
 		return null;

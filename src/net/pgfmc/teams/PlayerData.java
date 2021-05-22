@@ -109,7 +109,6 @@ public class PlayerData {
 		Map<String, String> list = new HashMap<>();
 		
 		for (PlayerData playerData : instances) {
-			
 			String strimg;
 			
 			if (playerData.teamID == null) {
@@ -125,10 +124,8 @@ public class PlayerData {
 	
 	public static PlayerData findPlayerData(OfflinePlayer p) { // searches for a player's corresponding PlayerData
 		for (PlayerData playerData : instances) {
-			if (playerData.player.getName().equals(p.getName())) {
+			if (playerData.player.equals(p)) {
 				return playerData;
-			} else {
-				return null;
 			}
 		}
 		return null;
