@@ -90,8 +90,6 @@ public class PlayerEvents implements Listener {
 		}
 	}
  	
-	
-	
 	@EventHandler
 	public void blockInteract(PlayerInteractEvent e) {
 		
