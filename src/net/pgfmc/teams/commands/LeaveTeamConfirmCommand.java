@@ -22,6 +22,7 @@ public class LeaveTeamConfirmCommand implements CommandExecutor {
 		
 		PlayerData playerData = PlayerData.findPlayerData(p);
 		playerData.getTeam().removePlayer(p);
+		playerData.setTeam(null);
 		p.sendMessage("You have left " + playerData.getTeam().getName() + ".");
 		return true;
 	}

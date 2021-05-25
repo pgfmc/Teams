@@ -36,6 +36,8 @@ public class PendingRequest {
 		instances.add(this);
 		ATK = PlayerData.findPlayerData(attacker);
 		DEF = PlayerData.findPlayerData(target);
+		ATK.setRequest(this);
+		DEF.setRequest(this);
 		
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
             
@@ -44,6 +46,8 @@ public class PendingRequest {
             public void run() // 60 second long cooldown, in which the plugin will wait for 
             {
             	instances.remove(this);
+            	ATK.setRequest(null);
+        		DEF.setRequest(null);
             }
         }, 1200);
 	}

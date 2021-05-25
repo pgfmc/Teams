@@ -29,7 +29,7 @@ public class PlayerData {
 	// temporary data
 	
 	boolean isNamingTeam = false;
-	PendingRequest currentRequest;
+	PendingRequest currentRequest = null;
 	
 	
 	public PlayerData(UUID uuid, UUID ID) { // load playerData

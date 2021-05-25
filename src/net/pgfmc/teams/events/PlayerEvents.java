@@ -60,8 +60,6 @@ public class PlayerEvents implements Listener {
 		
 		PlayerData playerData = PlayerData.findPlayerData(e.getPlayer());
 		
-		
-		
 		if (playerData == null) {
 			System.out.println("Player " + e.getPlayer().getName() + " has a new PlayerData!");
 			new PlayerData(e.getPlayer());

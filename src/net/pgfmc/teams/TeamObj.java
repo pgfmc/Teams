@@ -132,6 +132,9 @@ public class TeamObj {
 	
 	public void removePlayer(OfflinePlayer p) {
 		members.remove(p.getUniqueId());
+		if (members.size() < 0) {
+			instances.remove(this);
+		}
 	}
 	
 	// ------------------------------------------------------------------------------------ Renaming functions
@@ -159,9 +162,12 @@ public class TeamObj {
 	}
 	
 	public static TeamObj findID(UUID ID) { // searches for the team with the given ID
-		for (TeamObj team : instances) {
-			if (team.getUniqueId() == ID) {
-				return team;
+		
+		if (ID != null) {
+			for (TeamObj team : instances) {
+				if (team.getUniqueId() == ID) {
+					return team;
+				}
 			}
 		}
 		return null;

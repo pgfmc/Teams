@@ -116,20 +116,20 @@ public class Main extends JavaPlugin {
 				} else if (ATK == null && DEF != null) { // if the attacker isnt in a team, but the target is
 					attacker.sendMessage("Request sent to <name> to join <DEF>");
 					new PendingRequest(attacker, target, DEF);
-					target.sendMessage(attacker.getCustomName() + " has sent you a request to join your team!");
+					target.sendMessage(attacker.getDisplayName() + " has sent you a request to join your team!");
 					target.sendMessage("Hit them with a flower, or type /TA or /teamAccept to accept!");
 				
 				} else if (ATK == null && DEF == null) { // if both players arent on a team
-					attacker.sendMessage("request sent to " + target.getCustomName() + ".");
-					attacker.sendMessage("A new Team will be created upon " + target.getCustomName() + " accepting the Request.");
+					attacker.sendMessage("request sent to " + target.getDisplayName() + ".");
+					attacker.sendMessage("A new Team will be created upon " + target.getDisplayName() + " accepting the Request.");
 					new PendingRequest(attacker, target, null);
-					target.sendMessage(attacker.getCustomName() + " has sent you a request to join your team!");
+					target.sendMessage(attacker.getDisplayName() + " has sent you a request to join your team!");
 					target.sendMessage("Hit them with a flower, or type /TA or /teamAccept to accept!");
 					
 				} else if (ATK != null && DEF == null) { // if the attacker is in a team, but the target isnt
-					attacker.sendMessage("Invite sent to " + target.getCustomName() + " to join your team.");
+					attacker.sendMessage("Invite sent to " + target.getDisplayName() + " to join your team.");
 					new PendingRequest(attacker, target, ATK);
-					target.sendMessage(attacker.getCustomName() + " has invited you to their team, " + ATK.getName() + ".");
+					target.sendMessage(attacker.getDisplayName() + " has invited you to their team, " + ATK.getName() + ".");
 					target.sendMessage("Hit them with a flower, or type /TA or /teamAccept to accept!");
 				}
 				
@@ -145,17 +145,15 @@ public class Main extends JavaPlugin {
 					PR.acceptRequest(false);
 					attacker.sendMessage("You have joined " + ATK.getName() + "!");
 					
-				
 				} else if (ATK == null && DEF == null) { // if both players arent on a team
 					PR.createTeamRequestAccept();
-					attacker.sendMessage("You have joined " + Main.makePossesive(target.getCustomName()) + " team!");
+					attacker.sendMessage("You have joined " + Main.makePossesive(target.getDisplayName()) + " team!");
 					target.sendMessage(attacker.getCustomName() + " has joined your team!");
 					
-				
 				} else if (ATK == null && DEF != null) { // if the attacker is in a team, but the target isnt
 					for (UUID uuid : DEF.getMembers()) {
 						if (Bukkit.getPlayer(uuid) != null) {
-							Bukkit.getPlayer(uuid).sendMessage(attacker.getCustomName() + " has joined your team!");
+							Bukkit.getPlayer(uuid).sendMessage(attacker.getDisplayName() + " has joined your team!");
 						}
 					}
 					PR.acceptRequest(true);
