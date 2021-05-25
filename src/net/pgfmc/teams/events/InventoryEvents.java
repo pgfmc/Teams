@@ -8,8 +8,10 @@ import java.util.UUID;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 
 import net.pgfmc.teams.PlayerData;
 import net.pgfmc.teams.TeamObj;
@@ -25,6 +27,12 @@ public class InventoryEvents implements Listener {
 		
 		if (e.getClickedInventory() != null) {
 			
+			InventoryHolder invHolder = e.getInventory().getHolder();
+			if ((invHolder instanceof TeamBase || invHolder instanceof VoteInventory || invHolder instanceof TeamLeaveConfirmInventory) && (e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT)) {
+				e.setCancelled(true);
+				return;
+			}
+			
 			Player p = (Player) e.getWhoClicked(); // Not going to check if this is a player or not because it should be, right???
 			Inventory inv = e.getClickedInventory();
 
@@ -35,8 +43,10 @@ public class InventoryEvents implements Listener {
 			
 				if (pData.getTeam() != null) { // If the player isn't in a team, the inventory is static (for now)
 					
-					p.openInventory(new TeamLeaveConfirmInventory(pData.getTeam()).getInventory());
-					
+					if (e.getSlot() == 3) {
+						p.openInventory(new TeamLeaveConfirmInventory(pData.getTeam()).getInventory());
+					}
+				
 				} else {
 					int slot = e.getSlot();
 					switch(slot) {

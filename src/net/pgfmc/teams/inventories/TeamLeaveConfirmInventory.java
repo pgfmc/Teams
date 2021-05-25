@@ -17,13 +17,13 @@ public class TeamLeaveConfirmInventory implements InventoryHolder {
 	public TeamLeaveConfirmInventory(TeamObj team) {
 		inv = Bukkit.createInventory(this, 9);
 		
-		ItemStack item = Main.createItem("Leave Team", Material.RED_CONCRETE);
+		ItemStack item = Main.createItem("Leave Team", Material.LIME_CONCRETE);
 		inv.setItem(2, item);
 		
 		item = Main.createItem("Are you sure you want to leave " + team.getName() + "?", Material.OAK_SIGN);
 		inv.setItem(4, item);
 		
-		item = Main.createItem("Don't Leave Team", Material.LIME_CONCRETE);
+		item = Main.createItem("Don't Leave Team", Material.RED_CONCRETE);
 		inv.setItem(6, item);
 		
 		this.team = team;
