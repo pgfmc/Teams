@@ -30,7 +30,7 @@ public class PlayerData {
 	
 	boolean isNamingTeam = false;
 	PendingRequest currentRequest = null;
-	
+	boolean isDebugging = false;
 	
 	public PlayerData(UUID uuid, UUID ID) { // load playerData
 		teamID = ID;
@@ -100,6 +100,14 @@ public class PlayerData {
 	
 	public PendingRequest getRequest() {
 		return currentRequest;
+	}
+	
+	public void setDebug(boolean temp) {
+		isDebugging = temp;
+	}
+	
+	public boolean getDebug() {
+		return isDebugging;
 	}
 	
 	// ----------------------------------------------------------- static functions

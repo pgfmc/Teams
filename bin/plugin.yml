@@ -4,6 +4,7 @@ api-version: 1.16
 author: bk and CrimsonDart
 main: net.pgfmc.teams.Main
 description: implemets the Teams system
+depend: [Multiverse-Core]
 commands:
    team:
       usage: /team
@@ -54,3 +55,8 @@ commands:
       aliases: [leaveTeamConfirm, leaveteamconfirm, LTC]
       permission: Teams.leaveConfirm
       description: makes the sender leave their own team.
+   inspector:
+      usage: /inspector while in Creative Mode.
+      aliases: [insp, INSP]
+      permission: Teams.inspecotor
+      description: toggles inspector mode, which uncovers data about blocks.

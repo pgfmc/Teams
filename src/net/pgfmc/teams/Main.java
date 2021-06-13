@@ -13,6 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.onarandombox.MultiverseCore.api.MultiverseWorld;
+
+import net.pgfmc.teams.commands.InspectCommand;
 import net.pgfmc.teams.commands.LeaveTeamCommand;
 import net.pgfmc.teams.commands.LeaveTeamConfirmCommand;
 import net.pgfmc.teams.commands.Team;
@@ -29,15 +33,15 @@ import net.pgfmc.teams.events.PlayerEvents;
 public class Main extends JavaPlugin {
 	
 	public static Main plugin;
+	public static MultiverseWorld survivalWorld;
 	
 	@Override
 	public void onEnable() {
 		
 		plugin = this;
-		
+		survivalWorld = ((MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core")).getMVWorldManager().getMVWorld("zCloud");
 		
 		File file = new File(plugin.getDataFolder() + "\\database.yml"); // Creates a File object
-		
 		try {
 			if (file.createNewFile()) {
 				System.out.println("database.yml created!");
@@ -52,7 +56,36 @@ public class Main extends JavaPlugin {
 		} catch (IOException e) {
 			System.out.println("database.yml Couldn't be created!");
 			e.printStackTrace();
-		} 
+		}
+		
+		file = new File(plugin.getDataFolder() + "\\EABlockData");
+		try {
+			if (file.createNewFile()) {
+				System.out.println("EABlockData folder created!");
+			} else {
+				System.out.println("EABlockData already Exists!");
+				
+				Database.loadTeams();
+				Database.loadPlayerData();
+				Database.loadVotes();
+			}
+			
+		} catch (IOException e) {
+			System.out.println("EABlockData Couldn't be created!");
+			e.printStackTrace();
+		}
+		
+		file = new File(plugin.getDataFolder() + "\\DeepBlockData");
+		if (file.mkdir()) {
+			System.out.println("DeepBlockData folder created!");
+		} else {
+			System.out.println("DeepBlockData already Exists!");
+			
+			Database.loadTeams();
+			Database.loadPlayerData();
+			Database.loadVotes();
+		}
+		
 		
 		getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
 		getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
@@ -68,6 +101,7 @@ public class Main extends JavaPlugin {
 		getCommand("voteRenameTeam").setExecutor(new VoteRenameTeam());
 		getCommand("leaveTeam").setExecutor(new LeaveTeamCommand());
 		getCommand("leaveTeamConfirm").setExecutor(new LeaveTeamConfirmCommand());
+		getCommand("inspector").setExecutor(new InspectCommand());
 	}
 	
 	@Override
