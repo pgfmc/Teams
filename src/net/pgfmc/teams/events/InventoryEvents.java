@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
@@ -27,7 +28,7 @@ public class InventoryEvents implements Listener {
 		
 		if (e.getClickedInventory() != null) {
 			
-			InventoryHolder invHolder = e.getInventory().getHolder();
+			InventoryHolder invHolder = e.getClickedInventory().getHolder();
 			if ((invHolder instanceof TeamBase || invHolder instanceof VoteInventory || invHolder instanceof TeamLeaveConfirmInventory) && (e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT)) {
 				e.setCancelled(true);
 				return;
@@ -62,6 +63,8 @@ public class InventoryEvents implements Listener {
 					default: return;
 					}
 				}
+				
+				
 			} else if (inv.getHolder() != null && inv.getHolder() instanceof VoteInventory) {
 				
 				int slot = e.getSlot();
@@ -75,6 +78,9 @@ public class InventoryEvents implements Listener {
 				
 				default: return;
 				}
+				
+				
+				
 			} else if (inv.getHolder() != null && inv.getHolder() instanceof TeamLeaveConfirmInventory) {
 				
 				e.setCancelled(true);
@@ -84,6 +90,7 @@ public class InventoryEvents implements Listener {
 				case 2: 
 					PlayerData.findPlayerData(p).getTeam().removePlayer(p);
 					PlayerData.findPlayerData(p).setTeam(null);
+					
 					p.closeInventory();
 					p.sendMessage("You have left " + ((TeamLeaveConfirmInventory) inv.getHolder()).getTeam().getName());
 					
@@ -94,4 +101,12 @@ public class InventoryEvents implements Listener {
 			}
 		}
 	}	
+	
+	public void onslideEvent(InventoryDragEvent e) {
+		InventoryHolder invHolder = e.getInventory().getHolder();
+		if (invHolder instanceof TeamBase || invHolder instanceof VoteInventory || invHolder instanceof TeamLeaveConfirmInventory) {
+			e.setCancelled(true);
+			return;
+		}
+	}
 }

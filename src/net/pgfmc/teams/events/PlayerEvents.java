@@ -97,11 +97,6 @@ public class PlayerEvents implements Listener {
 				
 				Material mat = e.getBlock().getType();
 				
-				
-				
-				
-				
-				
 				// checks to see if the block can hold items
 				// if so, it checks in database.yml for who placed it
 				// if the breaker team == placer team, then the block can be broken
@@ -135,7 +130,8 @@ public class PlayerEvents implements Listener {
 		
 		// controls clicking containers and beacons;
 		
-		if (e.getPlayer() != null && e.getPlayer().getGameMode() == GameMode.SURVIVAL && e.getClickedBlock() != null && e.getClickedBlock().getWorld() == Main.survivalWorld) {
+		if (e.getClickedBlock() != null && e.getPlayer() != null && e.getPlayer().getGameMode() == GameMode.SURVIVAL && e.getClickedBlock().getWorld() == Main.survivalWorld) {
+
 			Material mat = e.getClickedBlock().getType();
 			if (mat == Material.CHEST || mat == Material.BEACON || mat == Material.FURNACE || mat == Material.BLAST_FURNACE || mat == Material.SMOKER || 
 					mat == Material.DISPENSER || mat == Material.DROPPER || mat == Material.TRAPPED_CHEST || mat == Material.BARREL || mat == Material.CAMPFIRE || 
@@ -146,16 +142,19 @@ public class PlayerEvents implements Listener {
 				TeamObj team = TeamObj.findPlayer(player);
 				Pair<OfflinePlayer, Boolean> pair = BlockDataManager.getContainerData(block);
 				
-				if (team == null || pair == null) {
+				if (pair == null) {
 					return;
 				}
 				
+				TeamObj placerTeam = TeamObj.findPlayer(pair.getFirst());
+				
 				if (pair.getSecond()) {
-					if (team != TeamObj.findPlayer(pair.getFirst())) {
-
+					
+					if (team != placerTeam) {
+						
 						e.setCancelled(true);
 						
-						switch(block.getType()) {
+						switch(mat) {
 						
 						case BARREL: player.sendMessage("This barrel is locked!");
 						case BLAST_FURNACE: player.sendMessage("This blast furnace is locked!");
@@ -172,20 +171,28 @@ public class PlayerEvents implements Listener {
 						}
 						return;
 						
-					} else if (player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) { // unlocks block if conditions are met
+					} else if (player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK && player == pair.getFirst()) { // unlocks block if conditions are met
 						e.setCancelled(true);
 						
 						player.sendMessage("Unlocked!");
 						player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 						BlockDataManager.setLocked(block, false);
+						return;
+						
+					} else if (player == pair.getFirst() || team == placerTeam) {
+						return;
 					}
 					
-				} else if (team == TeamObj.findPlayer(pair.getFirst()) && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+				} else if ((player == pair.getFirst() || team == placerTeam) && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+					
 					e.setCancelled(true);
 					
 					player.sendMessage("Locked!");
 					player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+					
 					BlockDataManager.setLocked(block, true);
+					return;
+					
 				}
 			}
 		}

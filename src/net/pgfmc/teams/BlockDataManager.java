@@ -18,39 +18,29 @@ import org.bukkit.entity.Player;
 
 import com.mojang.datafixers.util.Pair;
 
-
-
-
 public class BlockDataManager {
 	
-	
-	
+	static File file = new File(Main.plugin.getDataFolder() + File.separator + "containers.yml"); // Creates a File object
+	static FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
+
 	// quick access cache VV
 	
 	public static void saveContainerLocation(Block block, OfflinePlayer player) { // saves who placed a block
 		
-		File file = new File(Main.plugin.getDataFolder() + File.separator + "database.yml"); // Creates a File object
-		FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
-		
-		ConfigurationSection configSec = database.getConfigurationSection("Blocks");
-		if (configSec == null) {
-			configSec = database.createSection("Blocks");
-		}
-		
 		Location location = block.getLocation();
-		ConfigurationSection blocc = configSec.getConfigurationSection("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()));
+		ConfigurationSection blocc = database.getConfigurationSection("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()));
 		if (blocc == null) {
-			blocc = configSec.createSection("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()));
+			blocc = database.createSection("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()));
 		}
 		
 		blocc.set("player", player.getUniqueId().toString());
 		blocc.set("isLocked", true);
 		
-		configSec.set("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()), blocc);
-		database.set("Blocks", configSec);
+		database.set("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()), blocc);
 		
 		try {
 			database.save(file);
+			System.out.println("Container location saved!");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -59,20 +49,12 @@ public class BlockDataManager {
 	
 	public static void deleteContainerLocation(Block block) { // deletes saved block data
 		
-		File file = new File(Main.plugin.getDataFolder() + File.separator + "database.yml"); // Creates a File object
-		FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
-		
-		ConfigurationSection configSec = database.getConfigurationSection("Blocks");
-		if (configSec == null) {
-			return;
-		}
-		
 		Location location = block.getLocation();
-		configSec.set("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()), null);
-		database.set("Blocks", configSec);
+		database.set("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()), null);
 		
 		try {
 			database.save(file);
+			System.out.println("Container location deleted!");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -81,17 +63,10 @@ public class BlockDataManager {
 	
 	public static Pair<OfflinePlayer, Boolean> getContainerData(Block block) { // retruns who placed a stored block.
 		
-		File file = new File(Main.plugin.getDataFolder() + File.separator + "database.yml"); // Creates a File object
-		FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
-		
-		ConfigurationSection configSec = database.getConfigurationSection("Blocks");
-		if (configSec == null) {
-			return null;
-		}
-		
 		Location location = block.getLocation();
 		ConfigurationSection blocc = database.getConfigurationSection("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()));
 		if (blocc == null) {
+			System.out.println("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()) + " not found in Blocks");
 			return null;
 		}
 		
@@ -101,20 +76,7 @@ public class BlockDataManager {
 		return new Pair<OfflinePlayer, Boolean>(Bukkit.getOfflinePlayer(UUID.fromString(uuid)), bool);
 	}
 	
-	
-	
-	
-	
 	public static void setLocked(Block block, boolean lock) { // locks a container
-		
-		File file = new File(Main.plugin.getDataFolder() + File.separator + "database.yml"); // Creates a File object
-		FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
-		
-		ConfigurationSection configSec = database.getConfigurationSection("Blocks");
-		if (configSec == null) {
-			System.out.println("Failed to change lock status of a block!");
-			return;
-		}
 		
 		Location location = block.getLocation();
 		ConfigurationSection blocc = database.getConfigurationSection("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()));
@@ -124,7 +86,7 @@ public class BlockDataManager {
 		}
 		
 		blocc.set("isLocked", lock);
-		configSec.set("Blocks", blocc);
+		database.set("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()), blocc);
 		
 		try {
 			database.save(file);

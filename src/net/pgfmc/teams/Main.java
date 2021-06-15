@@ -8,13 +8,13 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
-import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 
 import net.pgfmc.teams.commands.InspectCommand;
 import net.pgfmc.teams.commands.LeaveTeamCommand;
@@ -33,13 +33,13 @@ import net.pgfmc.teams.events.PlayerEvents;
 public class Main extends JavaPlugin {
 	
 	public static Main plugin;
-	public static MultiverseWorld survivalWorld;
+	public static World survivalWorld;
 	
 	@Override
 	public void onEnable() {
 		
 		plugin = this;
-		survivalWorld = ((MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core")).getMVWorldManager().getMVWorld("zCloud");
+		survivalWorld = ((MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core")).getMVWorldManager().getMVWorld("survival").getCBWorld();
 		
 		File file = new File(plugin.getDataFolder() + "\\database.yml"); // Creates a File object
 		try {
@@ -59,20 +59,10 @@ public class Main extends JavaPlugin {
 		}
 		
 		file = new File(plugin.getDataFolder() + "\\EABlockData");
-		try {
-			if (file.createNewFile()) {
-				System.out.println("EABlockData folder created!");
-			} else {
-				System.out.println("EABlockData already Exists!");
-				
-				Database.loadTeams();
-				Database.loadPlayerData();
-				Database.loadVotes();
-			}
-			
-		} catch (IOException e) {
-			System.out.println("EABlockData Couldn't be created!");
-			e.printStackTrace();
+		if (file.mkdir()) {
+			System.out.println("EABlockData folder created!");
+		} else {
+			System.out.println("EABlockData already Exists!");
 		}
 		
 		file = new File(plugin.getDataFolder() + "\\DeepBlockData");
@@ -80,16 +70,10 @@ public class Main extends JavaPlugin {
 			System.out.println("DeepBlockData folder created!");
 		} else {
 			System.out.println("DeepBlockData already Exists!");
-			
-			Database.loadTeams();
-			Database.loadPlayerData();
-			Database.loadVotes();
 		}
-		
 		
 		getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
 		getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
-		
 		
 		getCommand("team").setExecutor(new Team());
 		getCommand("teamRequest").setExecutor(new TeamRequest());

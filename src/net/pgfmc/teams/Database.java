@@ -28,6 +28,10 @@ public class Database {
 		
 		for (TeamObj team : TeamObj.getTeams()) {
 			
+			if (team.getMembers().size() < 1) {
+				break;
+			}
+			
 			ConfigurationSection teamSection = configSec.getConfigurationSection(team.getUniqueId().toString()); // saves the team data to the team's UUID.
 			if (teamSection == null) {
 				teamSection = configSec.createSection(team.getUniqueId().toString());
@@ -165,6 +169,10 @@ public class Database {
 		
 		database.set("Votes", null);
 		ConfigurationSection configSec = database.createSection("Votes");
+		
+		if (Vote.getAllVotes() == null) {
+			return;
+		}
 		
 		for (Vote vote : Vote.getAllVotes()) {
 			
