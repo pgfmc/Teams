@@ -11,10 +11,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
+import org.bukkit.block.DoubleChest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import com.mojang.datafixers.util.Pair;
 
@@ -22,30 +24,6 @@ public class BlockDataManager {
 	
 	static File file = new File(Main.plugin.getDataFolder() + File.separator + "containers.yml"); // Creates a File object
 	static FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
-
-	// quick access cache VV
-	
-	public static void saveContainerLocation(Block block, OfflinePlayer player) { // saves who placed a block
-		
-		Location location = block.getLocation();
-		ConfigurationSection blocc = database.getConfigurationSection("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()));
-		if (blocc == null) {
-			blocc = database.createSection("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()));
-		}
-		
-		blocc.set("player", player.getUniqueId().toString());
-		blocc.set("isLocked", true);
-		
-		database.set("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()), blocc);
-		
-		try {
-			database.save(file);
-			System.out.println("Container location saved!");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
 	public static void deleteContainerLocation(Block block) { // deletes saved block data
 		
@@ -136,7 +114,81 @@ public class BlockDataManager {
 		Material mat = block.getType();
 		if (mat == Material.CHEST || mat == Material.BEACON || mat == Material.FURNACE || mat == Material.BLAST_FURNACE || mat == Material.SMOKER || mat == Material.DISPENSER || mat == Material.DROPPER || mat == Material.TRAPPED_CHEST || mat == Material.BARREL || mat == Material.CAMPFIRE || mat == Material.SOUL_CAMPFIRE || mat == Material.SHULKER_BOX || mat == Material.JUKEBOX || mat == Material.LECTERN || mat == Material.HOPPER || mat == Material.BREWING_STAND) {
 			if (isPlaced) {
-				saveContainerLocation(block, player);
+				
+				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
+					@Override
+					public void run() {
+						
+						Location location = block.getLocation();
+						if (Main.survivalWorld.getBlockAt(block.getLocation()).getState() instanceof DoubleChest) {
+							
+							Inventory inv = ((DoubleChest) Main.survivalWorld.getBlockAt(block.getLocation()).getState()).getInventory();
+							
+							if (Main.survivalWorld.getBlockAt(location.add(1, 0, 0)).getState() instanceof DoubleChest && inv == ((DoubleChest) Main.survivalWorld.getBlockAt(location.add(1, 0, 0)).getState()).getInventory()) {
+								
+								ConfigurationSection blocc = database.getConfigurationSection("x" + String.valueOf(location.getBlockX() + 1) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()));
+								if (blocc == null) {
+									System.out.println("x" + String.valueOf(location.getBlockX() + 1) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()) + " not found in Blocks");
+									return;
+								}
+								
+								database.set("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()), blocc);
+								
+							} else if (Main.survivalWorld.getBlockAt(location.add(-1, 0, 0)).getState() instanceof DoubleChest && inv == ((DoubleChest) Main.survivalWorld.getBlockAt(location.add(-1, 0, 0)).getState()).getInventory()) {
+								
+								ConfigurationSection blocc = database.getConfigurationSection("x" + String.valueOf(location.getBlockX() - 1) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()));
+								if (blocc == null) {
+									System.out.println("x" + String.valueOf(location.getBlockX() - 1) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()) + " not found in Blocks");
+									return;
+								}
+								
+								database.set("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()), blocc);
+								
+							} else if (Main.survivalWorld.getBlockAt(location.add(0, 0, 1)).getState() instanceof DoubleChest && inv == ((DoubleChest) Main.survivalWorld.getBlockAt(location.add(0, 0, 1)).getState()).getInventory()) {
+								
+								ConfigurationSection blocc = database.getConfigurationSection("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ() + 1));
+								if (blocc == null) {
+									System.out.println("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ() + 1) + " not found in Blocks");
+									return;
+								}
+								
+								database.set("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()), blocc);
+								
+							} else if (Main.survivalWorld.getBlockAt(location.add(0, 0, -1)).getState() instanceof DoubleChest && inv == ((DoubleChest) Main.survivalWorld.getBlockAt(location.add(0, 0, -1)).getState()).getInventory()) {
+								
+								ConfigurationSection blocc = database.getConfigurationSection("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ() - 1));
+								if (blocc == null) {
+									System.out.println("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ() - 1) + " not found in Blocks");
+									return;
+								}
+								
+								database.set("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()), blocc);
+							}
+						
+						} else {
+							
+							// saves the container in a seperate file for easy access
+							
+							ConfigurationSection blocc = database.getConfigurationSection("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()));
+							if (blocc == null) {
+								blocc = database.createSection("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()));
+							}
+							
+							blocc.set("player", player.getUniqueId().toString());
+							blocc.set("isLocked", true);
+							
+							database.set("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()), blocc);
+							
+							try {
+								database.save(file);
+								System.out.println("Container location saved!");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+				}, 1);
 			} else {
 				deleteContainerLocation(block);
 			}

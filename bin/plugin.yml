@@ -1,5 +1,5 @@
 name: Teams
-version: 1.0.0.b
+version: 1.0.1.b
 api-version: 1.16
 author: bk and CrimsonDart
 main: net.pgfmc.teams.Main
@@ -42,7 +42,7 @@ commands:
       description: Opens a vote to send an ally request to another team.
    voteRenameTeam:
       usage: /voteRenameTeam <new Team name>
-      aliases: [VRT, renameTeam, voteRename,]
+      aliases: [VRT, renameTeam, voteRename]
       permission: Teams.voterename
       description: Opens a vote to Rename your team to <new Team name>
    leaveTeam:
