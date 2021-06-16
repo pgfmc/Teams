@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -39,9 +41,34 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 		
 		plugin = this;
-		survivalWorld = ((MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core")).getMVWorldManager().getMVWorld("survival").getCBWorld();
 		
-		File file = new File(plugin.getDataFolder() + "\\database.yml"); // Creates a File object
+		File file = new File(plugin.getDataFolder() + "\\config.yml"); // Creates a File object
+		try {
+			if (file.createNewFile()) {
+				System.out.println("config.yml created!");
+				
+				FileConfiguration database = YamlConfiguration.loadConfiguration(file);
+				database.set("Survival World", "zCloud");
+				survivalWorld = ((MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core")).getMVWorldManager().getMVWorld(database.getString("Survival World")).getCBWorld();
+				
+				try {
+					database.save(file);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				System.out.println("config.yml already Exists, none created!");
+				
+				FileConfiguration database = YamlConfiguration.loadConfiguration(file);
+				survivalWorld = ((MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core")).getMVWorldManager().getMVWorld(database.getString("Survival World")).getCBWorld();
+			}
+		} catch (IOException e) {
+			System.out.println("config.yml Couldn't be created!");
+			e.printStackTrace();
+		}
+		
+		file = new File(plugin.getDataFolder() + "\\database.yml"); // Creates a File object
 		try {
 			if (file.createNewFile()) {
 				System.out.println("database.yml created!");

@@ -29,7 +29,10 @@ public class PlayerEvents implements Listener {
 		// checks if the input is a flower
 		// is only used in playerAttackEvent, it has its own function to make the code more readable
 		
-		if (material == Material.BLUE_ORCHID || material == Material.ROSE_BUSH || material == Material.DANDELION || material == Material.ORANGE_TULIP || material == Material.PINK_TULIP || material == Material.RED_TULIP || material == Material.WHITE_TULIP || material == Material.SUNFLOWER || material == Material.OXEYE_DAISY || material == Material.POPPY || material == Material.ALLIUM || material == Material.AZURE_BLUET || material == Material.CORNFLOWER || material == Material.LILY_OF_THE_VALLEY || material == Material.WITHER_ROSE || material == Material.PEONY || material == Material.LILAC) {
+		if (material == Material.BLUE_ORCHID || material == Material.ROSE_BUSH || material == Material.DANDELION 
+				|| material == Material.ORANGE_TULIP || material == Material.PINK_TULIP || material == Material.RED_TULIP || material == Material.WHITE_TULIP || material == Material.SUNFLOWER || material == Material.OXEYE_DAISY 
+				|| material == Material.POPPY || material == Material.ALLIUM || material == Material.AZURE_BLUET ||
+				material == Material.CORNFLOWER || material == Material.LILY_OF_THE_VALLEY || material == Material.WITHER_ROSE || material == Material.PEONY || material == Material.LILAC) {
 			return true;
 		}
 		return false;
@@ -192,7 +195,6 @@ public class PlayerEvents implements Listener {
 					
 					BlockDataManager.setLocked(block, true);
 					return;
-					
 				}
 			}
 		}
