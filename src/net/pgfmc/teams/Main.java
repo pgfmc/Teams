@@ -42,6 +42,8 @@ public class Main extends JavaPlugin {
 		
 		plugin = this;
 		
+		plugin.getDataFolder().mkdir();
+		
 		File file = new File(plugin.getDataFolder() + "\\config.yml"); // Creates a File object
 		try {
 			if (file.createNewFile()) {
