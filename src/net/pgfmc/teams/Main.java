@@ -2,6 +2,7 @@ package net.pgfmc.teams;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,8 +10,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.block.Beacon;
+import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -29,48 +31,31 @@ import net.pgfmc.teams.commands.VoteBan;
 import net.pgfmc.teams.commands.VoteCommand;
 import net.pgfmc.teams.commands.VoteKick;
 import net.pgfmc.teams.commands.VoteRenameTeam;
+import net.pgfmc.teams.events.AttackEvent;
+import net.pgfmc.teams.events.BBEvent;
+import net.pgfmc.teams.events.BPE;
+import net.pgfmc.teams.events.BlockInteractEvent;
 import net.pgfmc.teams.events.InventoryEvents;
-import net.pgfmc.teams.events.PlayerEvents;
+import net.pgfmc.teams.events.JoinEvent;
+import net.pgfmc.teams.events.MessageEvent;
 
 public class Main extends JavaPlugin {
 	
 	public static Main plugin;
 	public static World survivalWorld;
+	public static List<Beacon> beacons;
 	
 	@Override
 	public void onEnable() {
 		
 		plugin = this;
 		
-		plugin.getDataFolder().mkdir();
+		plugin.getDataFolder().mkdirs();
 		
-		File file = new File(plugin.getDataFolder() + "\\config.yml"); // Creates a File object
-		try {
-			if (file.createNewFile()) {
-				System.out.println("config.yml created!");
-				
-				FileConfiguration database = YamlConfiguration.loadConfiguration(file);
-				database.set("Survival World", "zCloud");
-				survivalWorld = ((MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core")).getMVWorldManager().getMVWorld(database.getString("Survival World")).getCBWorld();
-				
-				try {
-					database.save(file);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else {
-				System.out.println("config.yml already Exists, none created!");
-				
-				FileConfiguration database = YamlConfiguration.loadConfiguration(file);
-				survivalWorld = ((MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core")).getMVWorldManager().getMVWorld(database.getString("Survival World")).getCBWorld();
-			}
-		} catch (IOException e) {
-			System.out.println("config.yml Couldn't be created!");
-			e.printStackTrace();
-		}
+		survivalWorld = ((MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core")).getMVWorldManager().getMVWorld("zCloud").getCBWorld();
 		
-		file = new File(plugin.getDataFolder() + "\\database.yml"); // Creates a File object
+		
+		File file = new File(plugin.getDataFolder() + "\\database.yml"); // Creates a File object
 		try {
 			if (file.createNewFile()) {
 				System.out.println("database.yml created!");
@@ -88,21 +73,28 @@ public class Main extends JavaPlugin {
 		}
 		
 		file = new File(plugin.getDataFolder() + "\\EABlockData");
-		if (file.mkdir()) {
+		if (file.mkdirs()) {
 			System.out.println("EABlockData folder created!");
 		} else {
 			System.out.println("EABlockData already Exists!");
 		}
 		
 		file = new File(plugin.getDataFolder() + "\\DeepBlockData");
-		if (file.mkdir()) {
+		if (file.mkdirs()) {
 			System.out.println("DeepBlockData folder created!");
 		} else {
 			System.out.println("DeepBlockData already Exists!");
 		}
 		
+		beacons = BlockDataManager.getBeacons();
+		
 		getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
-		getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
+		getServer().getPluginManager().registerEvents(new BlockInteractEvent(), this);
+		getServer().getPluginManager().registerEvents(new AttackEvent(), this);
+		getServer().getPluginManager().registerEvents(new BBEvent(), this);
+		getServer().getPluginManager().registerEvents(new BPE(), this);
+		getServer().getPluginManager().registerEvents(new JoinEvent(), this);
+		getServer().getPluginManager().registerEvents(new MessageEvent(), this);
 		
 		getCommand("team").setExecutor(new Team());
 		getCommand("teamRequest").setExecutor(new TeamRequest());
@@ -218,5 +210,23 @@ public class Main extends JavaPlugin {
 		meta.setDisplayName(name);
 		item.setItemMeta(meta);
 		return item;
+	}
+	
+	public static boolean playerInForcefield(Player player) {
+		
+		for (Beacon beacon : beacons) {
+			
+			Collection<LivingEntity> playersList = beacon.getEntitiesInRange();
+			
+			Block block = beacon.getBlock();
+			
+			TeamObj DEF = TeamObj.findPlayer(BlockDataManager.getContainerData(block).getFirst());
+			
+			if (TeamObj.findPlayer(player) != DEF && playersList.contains(player)) {
+				return true;
+			}
+		}
+		return false;
+		
 	}
 }

@@ -3,7 +3,9 @@ package net.pgfmc.teams;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -12,6 +14,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Container;
@@ -28,27 +31,13 @@ public class BlockDataManager {
 	static File file = new File(Main.plugin.getDataFolder() + File.separator + "containers.yml"); // Creates a File object
 	static FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 	
-	public static void deleteContainerLocation(Block block) { // deletes saved block data
-		
-		Location location = block.getLocation();
-		database.set("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()), null);
-		
-		try {
-			database.save(file);
-			System.out.println("Container location deleted!");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	public static Pair<OfflinePlayer, Boolean> getContainerData(Block block) { // retruns who placed a stored block.
 		
 		Location location = block.getLocation();
 		ConfigurationSection blocc = database.getConfigurationSection("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()));
 		if (blocc == null) {
 			System.out.println("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()) + " not found in Blocks");
-			return new Pair<OfflinePlayer, Boolean>(null, null);
+			return null;
 		}
 		
 		String uuid = blocc.getString("player");
@@ -163,8 +152,26 @@ public class BlockDataManager {
 						}
 					}
 				}, 1);
+				
+				if (mat == Material.BEACON) {
+					Main.beacons.add((Beacon) block.getState());
+				}
+				
+				
+				
+				
 			} else {
-				deleteContainerLocation(block);
+				
+				Location location = block.getLocation();
+				BlockDataManager.database.set("x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ()), null);
+				
+				try {
+					BlockDataManager.database.save(BlockDataManager.file);
+					System.out.println("Container location deleted!");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		
@@ -252,5 +259,33 @@ public class BlockDataManager {
 			}
 		}
 		return null;
+	}
+	
+	public static List<Beacon> getBeacons() {
+		
+		List<Beacon> beacons = new ArrayList<Beacon>();
+		
+		for (String key : database.getKeys(false)) {
+			
+			
+			key = key.replace("x", "");
+			
+			String[] sting = key.split("y");
+			
+			String[] sting2 = sting[1].split("z");
+			
+			
+			
+			Block block = Main.survivalWorld.getBlockAt(new Location(Main.survivalWorld, Double.parseDouble(sting[0]), Double.parseDouble(sting2[0]), Double.parseDouble(sting2[1])));
+			
+			if (block.getType() == Material.BEACON && block.getState() instanceof Beacon) {
+				beacons.add((Beacon) block.getState());
+				System.out.println("Added " + key + " to beacons!");
+			}
+			
+		}
+		
+		return beacons;
+		
 	}
 }
