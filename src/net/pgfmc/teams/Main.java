@@ -20,6 +20,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
+import net.pgfmc.pgfessentials.EssentialsMain;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.commands.InspectCommand;
 import net.pgfmc.teams.commands.LeaveTeamCommand;
 import net.pgfmc.teams.commands.LeaveTeamConfirmCommand;
@@ -36,7 +38,6 @@ import net.pgfmc.teams.events.BBEvent;
 import net.pgfmc.teams.events.BPE;
 import net.pgfmc.teams.events.BlockInteractEvent;
 import net.pgfmc.teams.events.InventoryEvents;
-import net.pgfmc.teams.events.JoinEvent;
 import net.pgfmc.teams.events.MessageEvent;
 
 public class Main extends JavaPlugin {
@@ -44,6 +45,7 @@ public class Main extends JavaPlugin {
 	public static Main plugin;
 	public static World survivalWorld;
 	public static List<Beacon> beacons;
+	
 	
 	@Override
 	public void onEnable() {
@@ -63,8 +65,9 @@ public class Main extends JavaPlugin {
 				System.out.println("database.yml already Exists!");
 				
 				Database.loadTeams();
-				Database.loadPlayerData();
+				//Database.loadPlayerData();
 				Database.loadVotes();
+				((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new Database(), false);
 			}
 			
 		} catch (IOException e) {
@@ -93,7 +96,7 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new AttackEvent(), this);
 		getServer().getPluginManager().registerEvents(new BBEvent(), this);
 		getServer().getPluginManager().registerEvents(new BPE(), this);
-		getServer().getPluginManager().registerEvents(new JoinEvent(), this);
+		//getServer().getPluginManager().registerEvents(new JoinEvent(), this);
 		getServer().getPluginManager().registerEvents(new MessageEvent(), this);
 		
 		getCommand("team").setExecutor(new Team());
@@ -107,12 +110,14 @@ public class Main extends JavaPlugin {
 		getCommand("leaveTeam").setExecutor(new LeaveTeamCommand());
 		getCommand("leaveTeamConfirm").setExecutor(new LeaveTeamConfirmCommand());
 		getCommand("inspector").setExecutor(new InspectCommand());
+		
+		
 	}
 	
 	@Override
 	public void onDisable() {
 		Database.saveTeams();
-		Database.savePlayerData();
+		((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new Database(), true);
 		Database.saveVotes();
 	}
 	
@@ -138,12 +143,13 @@ public class Main extends JavaPlugin {
 		
 		if (attacker.getGameMode() == GameMode.SURVIVAL && target.getGameMode() == GameMode.SURVIVAL) {
 			
-			TeamObj ATK = TeamObj.findPlayer(attacker);
-			TeamObj DEF = TeamObj.findPlayer(target);
-			PlayerData ATKP = PlayerData.findPlayerData(attacker);
-			PlayerData DEFP = PlayerData.findPlayerData(target);
+			TeamObj ATK = TeamObj.getTeam(attacker);
+			TeamObj DEF = TeamObj.getTeam(target);
+			PlayerData ATKP = PlayerData.getPlayerData(attacker);
+			PlayerData DEFP = PlayerData.getPlayerData(target);
 			
-			if (ATKP.getRequest() == null && DEFP.getRequest() == null) {
+			if (ATKP.getData("request") == null && DEFP.getData("request") == null) {
+				
 			
 				if (ATK != null && ATK == DEF) { // if both players are on the same team // denies request
 					attacker.sendMessage("You are already on the same team as them!");
@@ -172,8 +178,8 @@ public class Main extends JavaPlugin {
 					target.sendMessage("Hit them with a flower, or type /TA or /teamAccept to accept!");
 				}
 				
-			} else if (ATKP.getRequest() != null && ATKP.getRequest() == DEFP.getRequest()) {
-				PendingRequest PR = ATKP.getRequest();
+			} else if (ATKP.getData("request") != null && ATKP.getData("request") == DEFP.getData("request")) {
+				PendingRequest PR = (PendingRequest) ATKP.getData("request");
 				
 				if (ATK != null && DEF == null) { // if the attacker isnt in a team, but the target is
 					for (UUID uuid : ATK.getMembers()) {
@@ -220,9 +226,9 @@ public class Main extends JavaPlugin {
 			
 			Block block = beacon.getBlock();
 			
-			TeamObj DEF = TeamObj.findPlayer(BlockDataManager.getContainerData(block).getFirst());
+			TeamObj DEF = TeamObj.getTeam(BlockDataManager.getContainerData(block).getFirst());
 			
-			if (TeamObj.findPlayer(player) != DEF && playersList.contains(player)) {
+			if (TeamObj.getTeam(player) != DEF && playersList.contains(player)) {
 				return true;
 			}
 		}

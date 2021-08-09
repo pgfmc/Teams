@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import net.pgfmc.teams.PlayerData;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 
 /*
 Command to Enable and Disable Inspector mode (only in creative mode)
@@ -28,12 +28,12 @@ public class InspectCommand implements CommandExecutor {
 			return true;
 		}
 		
-		PlayerData PD = PlayerData.findPlayerData((Player) sender);
-		if (PD.getDebug()) {
-			PD.setDebug(false);
+		PlayerData PD = PlayerData.getPlayerData((Player) sender);
+		if (PD.getData("debug") != null) {
+			PD.setData("debug", null);
 			sender.sendMessage("Disabled Inspect Mode.");
 		} else {
-			PD.setDebug(true);
+			PD.setData("debug", true);
 			sender.sendMessage("Enabled Inspect Mode.");
 		}
 		

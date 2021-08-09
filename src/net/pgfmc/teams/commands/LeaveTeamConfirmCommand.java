@@ -5,7 +5,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import net.pgfmc.teams.PlayerData;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.teams.TeamObj;
 
 public class LeaveTeamConfirmCommand implements CommandExecutor {
 	
@@ -20,11 +21,11 @@ public class LeaveTeamConfirmCommand implements CommandExecutor {
 		
 		Player p = (Player) sender;
 		
-		PlayerData playerData = PlayerData.findPlayerData(p);
-		if (playerData.getTeam() != null) {
-			playerData.getTeam().removePlayer(p);
-			playerData.setTeam(null);
-			p.sendMessage("You have left " + playerData.getTeam().getName() + ".");
+		PlayerData playerData = PlayerData.getPlayerData(p);
+		if (playerData.getData("team") != null) {
+			((TeamObj) playerData.getData("team")).removePlayer(p);
+			playerData.setData("team", null);
+			p.sendMessage("You have left " + ((TeamObj) playerData.getData("team")).getName() + ".");
 			return true;
 		} else {
 			p.sendMessage("You aren't in a team!");

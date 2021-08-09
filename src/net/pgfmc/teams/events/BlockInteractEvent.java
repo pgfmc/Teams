@@ -36,14 +36,14 @@ public class BlockInteractEvent implements Listener {
 				
 				Block block = e.getClickedBlock(); 
 				Player player = e.getPlayer();
-				TeamObj team = TeamObj.findPlayer(player);
+				TeamObj team = TeamObj.getTeam(player);
 				Pair<OfflinePlayer, Boolean> pair = BlockDataManager.getContainerData(block);
 				
 				if (pair == null) {
 					return;
 				}
 				
-				TeamObj placerTeam = TeamObj.findPlayer(pair.getFirst());
+				TeamObj placerTeam = TeamObj.getTeam(pair.getFirst());
 				
 				if (pair.getSecond()) {
 					

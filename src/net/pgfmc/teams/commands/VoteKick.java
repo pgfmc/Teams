@@ -21,9 +21,9 @@ public class VoteKick implements CommandExecutor {
 			return true;
 		}
 		
-		TeamObj team = TeamObj.findPlayer((Player) sender);
+		TeamObj team = TeamObj.getTeam((Player) sender);
 		
-		if (Bukkit.getPlayer(args[0]) != null && TeamObj.findPlayer(Bukkit.getPlayer(args[0])) == team) {
+		if (Bukkit.getPlayer(args[0]) != null && TeamObj.getTeam(Bukkit.getPlayer(args[0])) == team) {
 			new Vote(team.getMembers(), team, Bukkit.getPlayer(args[0]).getUniqueId(), VoteCases.KICKPLAYER).vote((Player) sender, 1);
 		}
 		

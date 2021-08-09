@@ -19,9 +19,10 @@ temporaraily stored information is not recorded in Database.
 written by CrimsonDart
  */
 
-public class PlayerData {
+@Deprecated
+public class OldPlayerData {
 	
-	static private List<PlayerData> instances = new ArrayList<>();
+	static private List<OldPlayerData> instances = new ArrayList<>();
 	OfflinePlayer player;
 	TeamObj team;
 	UUID teamID;
@@ -32,7 +33,8 @@ public class PlayerData {
 	PendingRequest currentRequest = null;
 	boolean isDebugging = false;
 	
-	public PlayerData(UUID uuid, UUID ID) { // load playerData
+	
+	public OldPlayerData(UUID uuid, UUID ID) { // load playerData
 		teamID = ID;
 		
 		player = Bukkit.getOfflinePlayer(uuid);
@@ -48,7 +50,7 @@ public class PlayerData {
 		instances.add(this);
 	}
 	
-	public PlayerData(Player player) { // create playerData
+	public OldPlayerData(Player player) { // create playerData
 
 		this.player = (OfflinePlayer) player;
 		this.team = null;
@@ -112,11 +114,12 @@ public class PlayerData {
 	
 	// ----------------------------------------------------------- static functions
 	
+	@Deprecated
 	public static Map<String, String> getAllRawPlayerData() { // serializes all Player data to be sent to Database.
 		
 		Map<String, String> list = new HashMap<>();
 		
-		for (PlayerData playerData : instances) {
+		for (OldPlayerData playerData : instances) {
 			String strimg;
 			
 			if (playerData.teamID == null) {
@@ -130,8 +133,8 @@ public class PlayerData {
 		return list;
 	}
 	
-	public static PlayerData findPlayerData(OfflinePlayer p) { // searches for a player's corresponding PlayerData
-		for (PlayerData playerData : instances) {
+	public static OldPlayerData findPlayerData(OfflinePlayer p) { // searches for a player's corresponding PlayerData
+		for (OldPlayerData playerData : instances) {
 			if (playerData.player.equals(p)) {
 				return playerData;
 			}

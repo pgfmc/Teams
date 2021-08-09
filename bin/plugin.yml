@@ -4,7 +4,7 @@ api-version: 1.16
 author: bk and CrimsonDart
 main: net.pgfmc.teams.Main
 description: implemets the Teams system
-depend: [Multiverse-Core]
+depend: [Multiverse-Core, PGF-Essentials]
 commands:
    team:
       usage: /team

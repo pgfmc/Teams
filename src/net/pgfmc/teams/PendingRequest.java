@@ -7,6 +7,8 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+
 /*
 
 Class used to process a pending request
@@ -34,10 +36,10 @@ public class PendingRequest {
 		this.attacker = attacker;
 		this.target = target;
 		instances.add(this);
-		ATK = PlayerData.findPlayerData(attacker);
-		DEF = PlayerData.findPlayerData(target);
-		ATK.setRequest(this);
-		DEF.setRequest(this);
+		ATK = PlayerData.getPlayerData(attacker);
+		DEF = PlayerData.getPlayerData(target);
+		ATK.setData("request", this);
+		DEF.setData("request", this);
 		
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
             
@@ -46,15 +48,15 @@ public class PendingRequest {
             public void run() // 60 second long cooldown, in which the plugin will wait for 
             {
             	instances.remove(this);
-            	ATK.setRequest(null);
-        		DEF.setRequest(null);
+            	ATK.setData("request", null);;
+        		DEF.setData("request", null);;
             }
         }, 1200);
 	}
 	
 	public void acceptRequest(boolean isAttacker) { // accepts the request; makes both players on the same team.
-		ATK.setTeam(team.getUniqueId());
-		DEF.setTeam(team.getUniqueId());
+		ATK.setData("team", team);
+		DEF.setData("team", team);
 		
 		if (isAttacker) {
 			team.addMember(target);
@@ -67,10 +69,10 @@ public class PendingRequest {
 		List<UUID> list = new ArrayList<>();
 		list.add(attacker.getUniqueId());
 		list.add(target.getUniqueId());
-		UUID team = new TeamObj(list).getUniqueId();
+		TeamObj team = new TeamObj(list);
 		
-		ATK.setTeam(team);
-		DEF.setTeam(team);
+		ATK.setData("team", team);
+		DEF.setData("team", team);
 	}
 	
 	public void deleteRequest() { // deletes the request for one reason or another.

@@ -1,13 +1,16 @@
 package net.pgfmc.teams;
 
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 
 /*
 Object Class for Teams; a new object will be created upon the creation of a new team.
@@ -49,8 +52,8 @@ public class TeamObj {
 	String name = "New Team";
 	List<UUID> members;
 	List<UUID> allies = null; // Defaults to null if no allies
-	static List<TeamObj> instances = new ArrayList<TeamObj>();
-	UUID teamID;
+	static IdentityHashMap<UUID, TeamObj> instances = new IdentityHashMap<UUID, TeamObj>();
+	UUID ID;
 	Vote currentVote = null;
 	UUID leader = null;
 	
@@ -61,19 +64,17 @@ public class TeamObj {
 		this.name = name;
 		this.members = members;
 		this.allies = allies;
-		teamID = ID;
 		this.leader = leader;
 		currentVote = Vote.findInVote(vote);
-		instances.add(this);
+		instances.put(ID, this);
 	}
 	
 	public TeamObj(List<UUID> members) {
 		this.members = members;
-		teamID = UUID.randomUUID();
 		
 		
 		
-		instances.add(this);
+		instances.put(UUID.randomUUID(), this);
 	}
 	
 	// ------------------------------------------------------------------------------------ getters and setters
@@ -127,7 +128,7 @@ public class TeamObj {
 	}
 	
 	public UUID getUniqueId() {
-		return teamID;
+		return 
 	}
 	
 	public void removePlayer(OfflinePlayer p) {
@@ -144,19 +145,15 @@ public class TeamObj {
 		player.sendMessage("You can now change your team's name!");
 		player.sendMessage("For the next 4 minutes, you can change your ");
 		player.sendMessage("team's name by typing into the chat box!");
-		p.setNamingTrue();
+		p.setData("naming", true);
 	}
 	
 	// ------------------------------------------------------------------------------------ instances manager
 	
-	public static TeamObj findPlayer(OfflinePlayer p) { // searches for a given Player p, and returns the team the player is in
+	public static TeamObj getTeam(OfflinePlayer p) { // searches for a given Player p, and returns the team the player is in
 		if (p != null) {
+			return (TeamObj) PlayerData.getData(p, "team");
 			
-			for (TeamObj team : instances) {
-				if (team.getMembers().contains(p.getUniqueId())) {
-					return team;
-				}
-			}
 		}
 		return null;
 	}
@@ -164,16 +161,26 @@ public class TeamObj {
 	public static TeamObj findID(UUID ID) { // searches for the team with the given ID
 		
 		if (ID != null) {
-			for (TeamObj team : instances) {
-				if (team.getUniqueId() == ID) {
-					return team;
-				}
-			}
+			System.out.println("    gimmar");
+			return(instances.get(ID));
+			
 		}
+		
+		System.out.println("    gamer");
 		return null;
 	}
 	
 	public static List<TeamObj> getTeams() { // returns all teams
-		return instances;
+		return instances.entrySet().;
+	}
+	
+	
+	public static void listTeams() {
+		
+		for (UUID team : instances.keySet()) {
+			
+		}
+		
+		
 	}
 }

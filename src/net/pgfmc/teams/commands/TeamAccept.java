@@ -8,9 +8,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.Main;
 import net.pgfmc.teams.PendingRequest;
-import net.pgfmc.teams.PlayerData;
 import net.pgfmc.teams.TeamObj;
 
 public class TeamAccept implements CommandExecutor {
@@ -24,17 +24,17 @@ public class TeamAccept implements CommandExecutor {
 			
 			Player attacker = (Player) sender;
 			
-			TeamObj ATK = TeamObj.findPlayer(attacker);
-			PlayerData ATKP = PlayerData.findPlayerData(attacker);
+			TeamObj ATK = TeamObj.getTeam(attacker);
+			PlayerData ATKP = PlayerData.getPlayerData(attacker);
 			
-			if (ATKP.getRequest() != null) {
-				Player target = ATKP.getRequest().getAttacker();
-				TeamObj DEF = TeamObj.findPlayer(target);
-				PlayerData DEFP = PlayerData.findPlayerData(target);
+			if (ATKP.getData("request") != null) {
+				Player target = ((PendingRequest) ATKP.getData("request")).getAttacker();
+				TeamObj DEF = TeamObj.getTeam(target);
+				PlayerData DEFP = PlayerData.getPlayerData(target);
 				
-				if (ATKP.getRequest() != null && ATKP.getRequest() == DEFP.getRequest()) {
+				if (ATKP.getData("request") != null && ATKP.getData("request") == DEFP.getData("request")) {
 					
-					PendingRequest PR = ATKP.getRequest();
+					PendingRequest PR = ((PendingRequest) ATKP.getData("request"));
 					
 					if (ATK != null && DEF == null) { // if the attacker isnt in a team, but the target is
 						for (UUID uuid : ATK.getMembers()) {

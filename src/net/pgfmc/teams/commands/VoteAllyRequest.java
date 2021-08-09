@@ -23,7 +23,7 @@ public class VoteAllyRequest implements CommandExecutor {
 			return true;
 		}
 		
-		TeamObj team = TeamObj.findPlayer((Player) sender);
+		TeamObj team = TeamObj.getTeam((Player) sender);
 		
 		if (TeamObj.findID(UUID.fromString(args[0])) != null && TeamObj.findID(UUID.fromString(args[0])) != team) {
 			new Vote(team.getMembers(), team, Bukkit.getPlayer(args[0]).getUniqueId(), VoteCases.ALLYTEAMREQUEST).vote((Player) sender, 1);

@@ -13,12 +13,16 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerDataListener;
 import net.pgfmc.teams.Vote.VoteCases;
 
-public class Database {
+public class Database implements PlayerDataListener {
+	
 	
 	static File file = new File(Main.plugin.getDataFolder() + File.separator + "database.yml"); // Creates a File object
 	static FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
+	static ConfigurationSection playerDataList = database.getConfigurationSection("playerData");
 	
 	public static void saveTeams() { // ----------------- saves all teams to "teams"
 		
@@ -122,16 +126,16 @@ public class Database {
 		}
 	}
 	
+	@Deprecated
 	public static void savePlayerData() { // saves all playerdata
 
 		database.set("playerData", null);
 		database.createSection("playerData");
-		ConfigurationSection configSec = database.getConfigurationSection("playerData");
 		
-		Map<String, String> list = PlayerData.getAllRawPlayerData();
+		Map<String, String> list = OldPlayerData.getAllRawPlayerData();
 		
 		for (String string : list.keySet()) {
-			configSec.set(string, list.get(string));
+			playerDataList.set(string, list.get(string));
 		}
 		
 		try {
@@ -142,26 +146,26 @@ public class Database {
 		}
 	}
 	
+	@Deprecated
 	public static void loadPlayerData() { // -------------------------------------------------------------------------------------- Loads all playerData stored in database.yml
 		
-		ConfigurationSection configSec = database.getConfigurationSection("playerData");
-		if (configSec == null) {
+		if (playerDataList == null) {
 			return;
 		}
 		
-		for (String key : configSec.getKeys(false)) {
+		for (String key : playerDataList.getKeys(false)) {
 			
 			UUID thimg;
 			
-			System.out.println(configSec.get(key));
+			System.out.println(playerDataList.get(key));
 			
 			try {
-				thimg = UUID.fromString((String) configSec.getString(key));
+				thimg = UUID.fromString((String) playerDataList.getString(key));
 			} catch (IllegalArgumentException e) {
 				thimg = null;
 			}
 			
-			new PlayerData(UUID.fromString(key), thimg);
+			new OldPlayerData(UUID.fromString(key), thimg);
 		}
 	}
 	
@@ -251,6 +255,67 @@ public class Database {
 			}
 			
 			new Vote(members, TeamObj.findID(team), subject, voteCase, UUID.fromString(key));
+		}
+	}
+	
+	
+
+	@Override
+	public void OfflinePlayerDataDeInitialization(PlayerData playerData) {
+		
+		
+		if (playerDataList != null) {
+			if (playerData.getData("team") != null) {
+				playerDataList.set(playerData.getPlayer().getUniqueId().toString(), ((TeamObj) playerData.getData("team")).getUniqueId().toString());
+			} else {
+				playerDataList.set(playerData.getPlayer().getUniqueId().toString(), null);
+			}
+			
+		} else {
+			
+			ConfigurationSection playerDataList = database.createSection("playerData");
+			
+			if (playerData.getData("team") != null) {
+				playerDataList.set(playerData.getPlayer().getUniqueId().toString(), ((TeamObj) playerData.getData("team")).getUniqueId().toString());
+			} else {
+				playerDataList.set(playerData.getPlayer().getUniqueId().toString(), null);
+			}
+		}
+		
+		try {
+			database.save(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void OfflinePlayerDataInitialization(PlayerData playerData) {
+		
+		if (playerDataList == null) {
+			System.out.println("No PlayerData to load!");
+			return;
+		}
+		
+		System.out.println(playerDataList.get(playerData.getPlayer().getUniqueId().toString()));
+		System.out.println("Attempting to load teams data... ");
+		
+		String uuid = (String) playerDataList.get(playerData.getPlayer().getUniqueId().toString());
+		
+		if (uuid != null) {
+			
+			TeamObj team = TeamObj.findID(UUID.fromString(uuid));
+			System.out.println(UUID.fromString(uuid));
+			System.out.println(team);
+			playerData.setData("team", team);
+			System.out.println(uuid);
+			System.out.println("Team loaded!");
+			
+		} else {
+			playerData.setData("team", null);
+			System.out.println("no team to load!");
+			
 		}
 	}
 }

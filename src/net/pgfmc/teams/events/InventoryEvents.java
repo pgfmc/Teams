@@ -14,7 +14,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
-import net.pgfmc.teams.PlayerData;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.TeamObj;
 import net.pgfmc.teams.inventories.TeamBase;
 import net.pgfmc.teams.inventories.TeamLeaveConfirmInventory;
@@ -40,12 +40,12 @@ public class InventoryEvents implements Listener {
 			if (inv.getHolder() != null && inv.getHolder() instanceof TeamBase) {  // return; if the inventory isn't TeamBase
 			
 				e.setCancelled(true);
-				PlayerData pData = PlayerData.findPlayerData(p);
+				PlayerData pData = PlayerData.getPlayerData(p);
 			
-				if (pData.getTeam() != null) { // If the player isn't in a team, the inventory is static (for now)
+				if (pData.getData("team") != null) { // If the player isn't in a team, the inventory is static (for now)
 					
 					if (e.getSlot() == 3) {
-						p.openInventory(new TeamLeaveConfirmInventory(pData.getTeam()).getInventory());
+						p.openInventory(new TeamLeaveConfirmInventory((TeamObj) pData.getData("team")).getInventory());
 					}
 				
 				} else {
@@ -55,7 +55,7 @@ public class InventoryEvents implements Listener {
 					case 3: 	List<UUID> list = new ArrayList<>();
 								list.add(p.getUniqueId());
 								TeamObj team = new TeamObj(list);
-								pData.setTeam(team.getUniqueId());
+								pData.setData("team", team);
 								p.closeInventory();
 								p.sendMessage("You have started a new team!");
 								team.renameBegin(pData);
@@ -87,9 +87,9 @@ public class InventoryEvents implements Listener {
 				
 				switch(e.getSlot()) {
 				
-				case 2: 
-					PlayerData.findPlayerData(p).getTeam().removePlayer(p);
-					PlayerData.findPlayerData(p).setTeam(null);
+				case 2:
+					((TeamObj) PlayerData.getPlayerData(p).getData("team")).removePlayer(p);
+					PlayerData.getPlayerData(p).setData("team", null);
 					
 					p.closeInventory();
 					p.sendMessage("You have left " + ((TeamLeaveConfirmInventory) inv.getHolder()).getTeam().getName());

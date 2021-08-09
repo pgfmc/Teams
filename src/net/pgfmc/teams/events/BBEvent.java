@@ -6,9 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.BlockDataManager;
 import net.pgfmc.teams.Main;
-import net.pgfmc.teams.PlayerData;
 import net.pgfmc.teams.TeamObj;
 
 public class BBEvent implements Listener {
@@ -17,7 +17,7 @@ public class BBEvent implements Listener {
 	public void blockBreak(BlockBreakEvent e) {
 		
 		if (e.getPlayer() != null && e.getBlock() != null && e.getBlock().getWorld().getName().equals(Main.survivalWorld.getName())) {
-			PlayerData PD = PlayerData.findPlayerData(e.getPlayer());
+			PlayerData PD = PlayerData.getPlayerData(e.getPlayer());
 			
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 				
@@ -35,8 +35,8 @@ public class BBEvent implements Listener {
 					if (mat == Material.CHEST || mat == Material.BEACON || mat == Material.FURNACE || mat == Material.BLAST_FURNACE || mat == Material.SMOKER || 
 							mat == Material.DISPENSER || mat == Material.DROPPER || mat == Material.TRAPPED_CHEST || mat == Material.BARREL || mat == Material.CAMPFIRE || 
 							mat == Material.SOUL_CAMPFIRE || mat == Material.SHULKER_BOX || mat == Material.JUKEBOX || mat == Material.LECTERN || mat == Material.HOPPER || mat == Material.BREWING_STAND) {
-						TeamObj team = TeamObj.findPlayer(BlockDataManager.getContainerData(e.getBlock()).getFirst());
-						if (team != null && team != TeamObj.findPlayer(e.getPlayer())) {
+						TeamObj team = TeamObj.getTeam(BlockDataManager.getContainerData(e.getBlock()).getFirst());
+						if (team != null && team != TeamObj.getTeam(e.getPlayer())) {
 							e.setCancelled(true);
 							e.getPlayer().sendMessage("You can't break that block, it's owned by another team!");
 							
@@ -49,7 +49,7 @@ public class BBEvent implements Listener {
 					return;
 				}
 				
-			} else if (PD.getDebug() && e.getPlayer().getGameMode() == GameMode.CREATIVE) { // inspector mode only
+			} else if (PD.getData("debug") != null && e.getPlayer().getGameMode() == GameMode.CREATIVE) { // inspector mode only
 					e.setCancelled(true);
 					BlockDataManager.returnBlockData(e.getBlock(), e.getPlayer());
 					return;

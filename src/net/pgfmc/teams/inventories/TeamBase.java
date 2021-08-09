@@ -28,7 +28,7 @@ public class TeamBase implements InventoryHolder {
 	
 	public void init()
 	{
-		if (TeamObj.findPlayer(p) == null) // If the player isn't in a team
+		if (TeamObj.getTeam(p) == null) // If the player isn't in a team
 		{
 			// -----------------------------------------------------------------------
 			
@@ -64,7 +64,7 @@ public class TeamBase implements InventoryHolder {
 		}
 		
 		else { // If the player is in a team
-			TeamObj team = TeamObj.findPlayer(p);
+			TeamObj team = TeamObj.getTeam(p);
 			
 			
 			 // Leave "[leave Team name]"

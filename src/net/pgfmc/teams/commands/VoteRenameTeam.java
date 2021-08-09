@@ -20,7 +20,7 @@ public class VoteRenameTeam implements CommandExecutor {
 			return true;
 		}
 		
-		TeamObj team = TeamObj.findPlayer((Player) sender);
+		TeamObj team = TeamObj.getTeam((Player) sender);
 		
 		if (team.getName() != args[0]) {
 			new Vote(team.getMembers(), team, args[0], VoteCases.RENAMETEAM).vote((Player) sender, 1);
