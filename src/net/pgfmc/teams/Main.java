@@ -54,7 +54,7 @@ public class Main extends JavaPlugin {
 		
 		plugin.getDataFolder().mkdirs();
 		
-		survivalWorld = ((MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core")).getMVWorldManager().getMVWorld("zCloud").getCBWorld();
+		survivalWorld = ((MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core")).getMVWorldManager().getMVWorld("survival").getCBWorld();
 		
 		
 		File file = new File(plugin.getDataFolder() + "\\database.yml"); // Creates a File object

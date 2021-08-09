@@ -1,7 +1,6 @@
 package net.pgfmc.teams;
 
 
-import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.UUID;
@@ -66,15 +65,16 @@ public class TeamObj {
 		this.allies = allies;
 		this.leader = leader;
 		currentVote = Vote.findInVote(vote);
-		instances.put(ID, this);
+		this.ID = ID;
+		instances.put(this.ID, this);
 	}
 	
 	public TeamObj(List<UUID> members) {
 		this.members = members;
 		
+		ID = UUID.randomUUID();
 		
-		
-		instances.put(UUID.randomUUID(), this);
+		instances.put(ID, this);
 	}
 	
 	// ------------------------------------------------------------------------------------ getters and setters
@@ -128,13 +128,13 @@ public class TeamObj {
 	}
 	
 	public UUID getUniqueId() {
-		return 
+		return ID;
 	}
 	
 	public void removePlayer(OfflinePlayer p) {
 		members.remove(p.getUniqueId());
 		if (members.size() < 0) {
-			instances.remove(this);
+			instances.remove(this.getUniqueId());
 		}
 	}
 	
@@ -160,27 +160,48 @@ public class TeamObj {
 	
 	public static TeamObj findID(UUID ID) { // searches for the team with the given ID
 		
+		listTeams();
+		
+		
 		if (ID != null) {
-			System.out.println("    gimmar");
-			return(instances.get(ID));
 			
+			for (UUID uuid : instances.keySet()) {
+				
+				if (ID.toString().equals(uuid.toString())) {
+					return instances.get(uuid);
+				}
+				
+				
+				
+			}
+			System.out.println("checking for ");
 		}
 		
 		System.out.println("    gamer");
 		return null;
 	}
 	
-	public static List<TeamObj> getTeams() { // returns all teams
-		return instances.entrySet().;
+	public static IdentityHashMap<UUID, TeamObj> getTeams() { // returns all teams
+		return instances;
 	}
 	
 	
 	public static void listTeams() {
 		
-		for (UUID team : instances.keySet()) {
+		for (UUID key : instances.keySet()) {
 			
+			TeamObj team = instances.get(key);
+			
+			System.out.println(team.getName());
+			
+			for (UUID playerUUID : team.getMembers()) {
+				OfflinePlayer player = Bukkit.getOfflinePlayer(playerUUID);
+				System.out.println("   " + player.getName());
+			}
+			
+			System.out.println(team.getUniqueId());
+			System.out.println(key);
 		}
-		
-		
+		System.out.println(instances);
 	}
 }

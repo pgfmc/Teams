@@ -30,7 +30,8 @@ public class Database implements PlayerDataListener {
 		database.createSection("teams");
 		ConfigurationSection configSec = database.getConfigurationSection("teams");
 		
-		for (TeamObj team : TeamObj.getTeams()) {
+		for (UUID key : TeamObj.getTeams().keySet()) {
+			TeamObj team = TeamObj.getTeams().get(key);
 			
 			if (team.getMembers().size() < 1) {
 				break;
@@ -285,7 +286,6 @@ public class Database implements PlayerDataListener {
 		try {
 			database.save(file);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
