@@ -6,9 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import net.pgfmc.teams.teamscore.TeamsCore;
-
-public class TeamRequest implements CommandExecutor {
+public class InviteCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -20,7 +18,7 @@ public class TeamRequest implements CommandExecutor {
 		}
 		
 		if (Bukkit.getPlayer(args[0]) != null) {
-			TeamsCore.requestHandler((Player) sender, (Player) Bukkit.getPlayer(args[0]));
+			PendingRequest.requestHandler((Player) sender, (Player) Bukkit.getPlayer(args[0]));
 		}
 		
 		return true;

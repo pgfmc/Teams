@@ -18,7 +18,7 @@ public class TeamCommand implements CommandExecutor {
 		
 		Player p = (Player) sender;
 		
-		TeamBase gui = new TeamBase(p);
+		TeamInventory gui = new TeamInventory(p);
 		p.openInventory(gui.getInventory());
 		
 		return true;

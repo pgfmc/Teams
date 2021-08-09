@@ -1,5 +1,5 @@
 name: Teams
-version: 1.1.2.b
+version: 1.2.2.b
 api-version: 1.16
 author: bk and CrimsonDart
 main: net.pgfmc.teamsCore.TeamsCore
@@ -10,14 +10,14 @@ commands:
       usage: /team
       permission: Teams.team
       description: Opens the team inventory.
-   teamRequest:
-      usage: /teamRequest <Player>
-      aliases: [teamRequest, teamreqeust, TR]
+   Invite:
+      usage: /Invite <Player>
+      aliases: [invite, i]
       permission: Teams.teamRequest
       description: invites or sends a request to Player <Player>.
    teamAccept:
       usage: teamAccept
-      aliases: [teamAccept, teamaccept, TA]
+      aliases: [teamAccept, teamaccept, tma]
       permission: Teams.teamAccept
       description: Accepts the invite / request sent in teamRequest.
 #   vote:
@@ -47,12 +47,12 @@ commands:
 #      description: Opens a vote to Rename your team to <new Team name>
    leaveTeam:
       usage: /leaveTeam
-      aliases: [leaveTeam, leaveteam, LT]
+      aliases: [leaveTeam, leaveteam, lt]
       permission: Teams.leave
       description: sends the sender a confirmation message, asking if they are sure that they want to leave their team.
    leaveTeamConfirm:
       usage: /leaveTeamConfirm
-      aliases: [leaveTeamConfirm, leaveteamconfirm, LTC]
+      aliases: [leaveTeamConfirm, leaveteamconfirm, ltc]
       permission: Teams.leaveConfirm
       description: makes the sender leave their own team.
 #   inspector:

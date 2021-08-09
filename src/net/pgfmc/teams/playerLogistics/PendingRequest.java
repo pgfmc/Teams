@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
@@ -26,62 +27,135 @@ public class PendingRequest {
 	// variable declaration
 	
 	Team team;
-	Player attacker;
-	Player target;
-	PlayerData ATK;
-	PlayerData DEF;
-	static List<PendingRequest> instances = new ArrayList<>();
+	PlayerData INV;
+	PlayerData JOI;
 	
-	public PendingRequest(Player attacker, Player target, Team team) { // constructor
+	private PendingRequest(Player attacker, Player target, Team team) { // constructor
 		
 		this.team = team;
-		this.attacker = attacker;
-		this.target = target;
-		instances.add(this);
-		ATK = PlayerData.getPlayerData(attacker);
-		DEF = PlayerData.getPlayerData(target);
-		ATK.setData("request", this);
-		DEF.setData("request", this);
+		
+		INV = PlayerData.getPlayerData(attacker);
+		JOI = PlayerData.getPlayerData(target);
+		INV.setData("request", this);
+		JOI.setData("request", this);
 		
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TeamsCore.plugin, new Runnable() {
             
-            @SuppressWarnings("unlikely-arg-type")
 			@Override
             public void run() // 60 second long cooldown, in which the plugin will wait for 
             {
-            	instances.remove(this);
-            	ATK.setData("request", null);;
-        		DEF.setData("request", null);;
+            	INV.setData("request", null);;
+        		JOI.setData("request", null);;
             }
         }, 1200);
 	}
 	
-	public void acceptRequest(boolean isAttacker) { // accepts the request; makes both players on the same team.
-		ATK.setData("team", team);
-		DEF.setData("team", team);
+	public void acceptRequest(boolean isInvitor) { // accepts the request; makes both players on the same team.
+		INV.setData("team", team);
+		JOI.setData("team", team);
 		
-		if (isAttacker) {
-			team.addMember(target);
+		if (isInvitor) {
+			team.addMember(JOI.getPlayer());
 		} else {
-			team.addMember(attacker);
+			team.addMember(INV.getPlayer());
 		}
 	}
 	
 	public void createTeamRequestAccept() { // creates a new team for when 
 		List<UUID> list = new ArrayList<>();
-		list.add(attacker.getUniqueId());
-		list.add(target.getUniqueId());
+		list.add(INV.getPlayer().getUniqueId());
+		list.add(JOI.getPlayer().getUniqueId());
 		Team team = new Team(list);
 		
-		ATK.setData("team", team);
-		DEF.setData("team", team);
+		INV.setData("team", team);
+		JOI.setData("team", team);
+		INV.setData("request", null);
+		JOI.setData("request", null);
+		team.renameBegin(INV);
 	}
 	
-	public void deleteRequest() { // deletes the request for one reason or another.
-		instances.remove(this);
+	public OfflinePlayer getInvitor() {
+		return INV.getPlayer();
 	}
 	
-	public Player getAttacker() {
-		return attacker;
+	public static void requestHandler(Player attacker, Player target) {
+		
+		PlayerData ATKP = PlayerData.getPlayerData(attacker);
+		PlayerData DEFP = PlayerData.getPlayerData(target);
+		Team ATK = (Team) ATKP.getData("team");
+		Team DEF = (Team) DEFP.getData("team");
+		
+		if (ATKP.getData("request") == null && DEFP.getData("request") == null) {
+			
+			if (ATK != null && ATK == DEF) { // if both players are on the same team // denies request
+				attacker.sendMessage("§cYou are already on the same team as §9" + target.getName() + "§c!");
+				return;
+			
+			} else if (ATK != null && DEF != null && ATK != DEF) { // if both players are on different teams // denies request
+				attacker.sendMessage("§9" + target.getName() + " §cis already in a team!");
+				attacker.sendMessage("§cIf you want to join §9" + TeamsCore.makePossesive(target.getName())  +  " §cteam, leave your current team and ask for another request!");
+				return;
+			
+			} else if (ATK == null && DEF != null) { // if the attacker isnt in a team, but the target is
+				attacker.sendMessage("§dRequest sent to §9" + target.getName() + " §dto join their team, " + DEF.getName());
+				new PendingRequest(attacker, target, DEF);
+				target.sendMessage("§9" + attacker.getName() + " §dhas sent you a request to join your team!");
+				target.sendMessage("§dHit them with a flower, or type §b/tma §dto accept!");
+				return;
+			
+			} else if (ATK == null && DEF == null) { // if both players arent on a team
+				attacker.sendMessage("§dRequest sent to §9" + target.getName() + "§d.");
+				attacker.sendMessage("§dA new Team will be created upon §9" + target.getName() + " §daccepting the Request.");
+				new PendingRequest(attacker, target, null);
+				target.sendMessage("§9" + attacker.getName() + " §dhas sent you a request to join their team!");
+				target.sendMessage("§dHit them with a flower, or type §b/tma §dto accept!");
+				return;
+				
+			} else if (ATK != null && DEF == null) { // if the attacker is in a team, but the target isnt
+				attacker.sendMessage("§dInvite sent to §9" + target.getName() + " §dto join your team.");
+				new PendingRequest(attacker, target, ATK);
+				target.sendMessage("§9" + attacker.getName() + " §dhas invited you to their team, §a§l" + ATK.getName() + "§r§d.");
+				target.sendMessage("§dHit them with a flower, or type §b/tma §dto accept!");
+				return;
+			}
+			
+		} else if (ATKP.getData("request") != null && ATKP.getData("request") == DEFP.getData("request")) { // if both requests are the same.
+			PendingRequest PR = (PendingRequest) ATKP.getData("request");
+			
+			if (ATK != null && DEF == null) { // if the invitor isnt in a team, but the joiner is
+				for (UUID uuid : ATK.getMembers()) {
+					if (Bukkit.getPlayer(uuid) != null) {
+						target.sendMessage("§9" + attacker.getName() + " §dhas joined your team!");
+						attacker.sendMessage("§dYou have joined §a§l" + ATK.getName() + "§r§d!");
+						PR.acceptRequest(false);
+						return;
+					} else {
+						target.sendMessage("§9" + attacker.getName() + " §dis already in your team!");
+						attacker.sendMessage("§dCouldn't join §a§l" + ATK.getName() + "§r§d; you are already in it!");
+						Bukkit.getServer().broadcastMessage("§cthis message shouldn't appear. if it does, report it in #feedback! exception #1234");
+					}
+				}
+				
+			} else if (ATK == null && DEF == null) { // if both players arent on a team
+				attacker.sendMessage("§dYou have joined §9" + TeamsCore.makePossesive(target.getName()) + " §dnew team!");
+				target.sendMessage("§9" + attacker.getName() + " §dhas joined your team!");
+				PR.createTeamRequestAccept();
+				return;
+				
+			} else if (ATK == null && DEF != null) { // if the attacker is in a team, but the target isnt
+				for (UUID uuid : DEF.getMembers()) {
+					if (Bukkit.getPlayer(uuid) != null) {
+						Bukkit.getPlayer(uuid).sendMessage("§9" + attacker.getName() + " §dhas joined your team!");
+						attacker.sendMessage("§9You have joined the team §a§l" + DEF.getName() + "§r§9!");
+						PR.acceptRequest(true);
+						return;
+					} else {
+						target.sendMessage("§dCouldn't join §a§l" + DEF.getName() + "§r§d; you are already in it!");
+						attacker.sendMessage("§9" + attacker.getName() + " §dis already in your team!");
+						Bukkit.getServer().broadcastMessage("§cthis message shouldn't appear. if it does, report it in #feedback! exception #4269");
+					}
+				}
+			}
+		}
 	}
 }

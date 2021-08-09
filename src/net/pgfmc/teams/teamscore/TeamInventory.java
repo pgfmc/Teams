@@ -11,12 +11,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
-public class TeamBase implements InventoryHolder {
+public class TeamInventory implements InventoryHolder {
 	
 	private Inventory inv;
 	private Player p;
 	
-	public TeamBase(Player p) // constructor
+	public TeamInventory(Player p) // constructor
 	{
 		this.p = p;
 		inv = Bukkit.createInventory(this, 9, "Team"); // Initiates the declared Inventory object

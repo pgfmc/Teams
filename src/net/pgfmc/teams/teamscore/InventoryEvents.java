@@ -26,7 +26,7 @@ public class InventoryEvents implements Listener {
 		if (e.getClickedInventory() != null) {
 			
 			InventoryHolder invHolder = e.getClickedInventory().getHolder();
-			if ((invHolder instanceof TeamBase || invHolder instanceof TeamLeaveConfirmInventory) && (e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT)) {
+			if ((invHolder instanceof TeamInventory || invHolder instanceof TeamLeaveConfirmInventory) && (e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT)) {
 				e.setCancelled(true);
 				return;
 			}
@@ -34,7 +34,7 @@ public class InventoryEvents implements Listener {
 			Player p = (Player) e.getWhoClicked(); // Not going to check if this is a player or not because it should be, right???
 			Inventory inv = e.getClickedInventory();
 
-			if (inv.getHolder() != null && inv.getHolder() instanceof TeamBase) {  // return; if the inventory isn't TeamBase
+			if (inv.getHolder() != null && inv.getHolder() instanceof TeamInventory) {  // return; if the inventory isn't TeamBase
 			
 				e.setCancelled(true);
 				PlayerData pData = PlayerData.getPlayerData(p);
@@ -54,7 +54,7 @@ public class InventoryEvents implements Listener {
 								Team team = new Team(list);
 								pData.setData("team", team);
 								p.closeInventory();
-								p.sendMessage("You have started a new team!");
+								p.sendMessage("§dYou have started a new team!");
 								team.renameBegin(pData);
 								return;
 					default: return;
@@ -73,11 +73,10 @@ public class InventoryEvents implements Listener {
 					PlayerData.getPlayerData(p).setData("team", null);
 					
 					p.closeInventory();
-					p.sendMessage("You have left " + ((TeamLeaveConfirmInventory) inv.getHolder()).getTeam().getName());
+					p.sendMessage("§dYou have left §a§l" + ((TeamLeaveConfirmInventory) inv.getHolder()).getTeam().getName() + "§r§d.");
 					
 				case 6:
 					p.closeInventory();
-					p.sendMessage("");
 				}
 			}
 		}
@@ -85,7 +84,7 @@ public class InventoryEvents implements Listener {
 	
 	public void onslideEvent(InventoryDragEvent e) {
 		InventoryHolder invHolder = e.getInventory().getHolder();
-		if (invHolder instanceof TeamBase || invHolder instanceof TeamLeaveConfirmInventory) {
+		if (invHolder instanceof TeamInventory || invHolder instanceof TeamLeaveConfirmInventory) {
 			e.setCancelled(true);
 			return;
 		}

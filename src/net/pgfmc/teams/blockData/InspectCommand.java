@@ -25,17 +25,17 @@ public class InspectCommand implements CommandExecutor {
 			sender.sendMessage("You must be in game to run this command.");
 			return true;
 		} else if (((Player) sender).getGameMode() != GameMode.CREATIVE) {
-			sender.sendMessage("You must be in Creative mode to run this command.");
+			sender.sendMessage("§cYou must be in Creative mode to run this command.");
 			return true;
 		}
 		
 		PlayerData PD = PlayerData.getPlayerData((Player) sender);
 		if (PD.getData("debug") != null) {
 			PD.setData("debug", null);
-			sender.sendMessage("Disabled Inspect Mode.");
+			sender.sendMessage("§bDisabled Inspect Mode.");
 		} else {
 			PD.setData("debug", true);
-			sender.sendMessage("Enabled Inspect Mode.");
+			sender.sendMessage("§bEnabled Inspect Mode.");
 		}
 		
 		return true;

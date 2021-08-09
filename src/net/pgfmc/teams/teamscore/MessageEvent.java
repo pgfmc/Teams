@@ -13,8 +13,9 @@ public class MessageEvent implements Listener {
 		if (PlayerData.getPlayerData(e.getPlayer()).getData("naming") != null) {
 			PlayerData playerData = PlayerData.getPlayerData(e.getPlayer());
 			((Team) playerData.getData("team")).setName(e.getMessage());
-			e.getPlayer().sendMessage(e.getMessage() + " is now the name of your team!");
+			e.getPlayer().sendMessage("\"§a§l" + e.getMessage() + "§r§d\" is now the name of your team!");
 			playerData.setData("naming", null);
+			
 			e.setCancelled(true);
 		}
 	}
