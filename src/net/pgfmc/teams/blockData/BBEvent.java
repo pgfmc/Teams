@@ -1,4 +1,4 @@
-package net.pgfmc.teams.events;
+package net.pgfmc.teams.blockData;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -7,21 +7,21 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.BlockDataManager;
-import net.pgfmc.teams.Main;
-import net.pgfmc.teams.TeamObj;
+import net.pgfmc.teams.teamscore.Team;
+import net.pgfmc.teams.teamscore.TeamsCore;
 
+@Deprecated
 public class BBEvent implements Listener {
 	
 	@EventHandler
 	public void blockBreak(BlockBreakEvent e) {
 		
-		if (e.getPlayer() != null && e.getBlock() != null && e.getBlock().getWorld().getName().equals(Main.survivalWorld.getName())) {
+		if (e.getPlayer() != null && e.getBlock() != null && e.getBlock().getWorld().getName().equals(TeamsCore.survivalWorld.getName())) {
 			PlayerData PD = PlayerData.getPlayerData(e.getPlayer());
 			
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 				
-				if (Main.playerInForcefield(e.getPlayer())) {
+				if (TeamsCore.playerInForcefield(e.getPlayer())) {
 					e.setCancelled(true);
 				} else {
 					
@@ -35,8 +35,8 @@ public class BBEvent implements Listener {
 					if (mat == Material.CHEST || mat == Material.BEACON || mat == Material.FURNACE || mat == Material.BLAST_FURNACE || mat == Material.SMOKER || 
 							mat == Material.DISPENSER || mat == Material.DROPPER || mat == Material.TRAPPED_CHEST || mat == Material.BARREL || mat == Material.CAMPFIRE || 
 							mat == Material.SOUL_CAMPFIRE || mat == Material.SHULKER_BOX || mat == Material.JUKEBOX || mat == Material.LECTERN || mat == Material.HOPPER || mat == Material.BREWING_STAND) {
-						TeamObj team = TeamObj.getTeam(BlockDataManager.getContainerData(e.getBlock()).getFirst());
-						if (team != null && team != TeamObj.getTeam(e.getPlayer())) {
+						Team team = Team.getTeam(BlockDataManager.getContainerData(e.getBlock()).getFirst());
+						if (team != null && team != Team.getTeam(e.getPlayer())) {
 							e.setCancelled(true);
 							e.getPlayer().sendMessage("You can't break that block, it's owned by another team!");
 							

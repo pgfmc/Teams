@@ -1,4 +1,4 @@
-package net.pgfmc.teams.commands;
+package net.pgfmc.teams.playerLogistics;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import net.pgfmc.teams.Main;
+import net.pgfmc.teams.teamscore.TeamsCore;
 
 public class TeamRequest implements CommandExecutor {
 
@@ -20,7 +20,7 @@ public class TeamRequest implements CommandExecutor {
 		}
 		
 		if (Bukkit.getPlayer(args[0]) != null) {
-			Main.requestHandler((Player) sender, (Player) Bukkit.getPlayer(args[0]));
+			TeamsCore.requestHandler((Player) sender, (Player) Bukkit.getPlayer(args[0]));
 		}
 		
 		return true;

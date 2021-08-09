@@ -1,4 +1,4 @@
-package net.pgfmc.teams.events;
+package net.pgfmc.teams.teamscore;
 
 
 import java.util.ArrayList;
@@ -15,9 +15,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.TeamObj;
-import net.pgfmc.teams.inventories.TeamBase;
-import net.pgfmc.teams.inventories.TeamLeaveConfirmInventory;
+import net.pgfmc.teams.playerLogistics.TeamLeaveConfirmInventory;
 
 
 public class InventoryEvents implements Listener {
@@ -44,7 +42,7 @@ public class InventoryEvents implements Listener {
 				if (pData.getData("team") != null) { // If the player isn't in a team, the inventory is static (for now)
 					
 					if (e.getSlot() == 3) {
-						p.openInventory(new TeamLeaveConfirmInventory((TeamObj) pData.getData("team")).getInventory());
+						p.openInventory(new TeamLeaveConfirmInventory((Team) pData.getData("team")).getInventory());
 					}
 				
 				} else {
@@ -53,7 +51,7 @@ public class InventoryEvents implements Listener {
 					
 					case 3: 	List<UUID> list = new ArrayList<>();
 								list.add(p.getUniqueId());
-								TeamObj team = new TeamObj(list);
+								Team team = new Team(list);
 								pData.setData("team", team);
 								p.closeInventory();
 								p.sendMessage("You have started a new team!");
@@ -71,7 +69,7 @@ public class InventoryEvents implements Listener {
 				switch(e.getSlot()) {
 				
 				case 2:
-					((TeamObj) PlayerData.getPlayerData(p).getData("team")).removePlayer(p);
+					((Team) PlayerData.getPlayerData(p).getData("team")).removePlayer(p);
 					PlayerData.getPlayerData(p).setData("team", null);
 					
 					p.closeInventory();

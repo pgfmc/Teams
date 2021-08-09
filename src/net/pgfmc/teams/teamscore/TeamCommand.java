@@ -1,11 +1,11 @@
-package net.pgfmc.teams.commands;
+package net.pgfmc.teams.teamscore;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class LeaveTeamCommand implements CommandExecutor {
+public class TeamCommand implements CommandExecutor {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
@@ -18,9 +18,9 @@ public class LeaveTeamCommand implements CommandExecutor {
 		
 		Player p = (Player) sender;
 		
-		p.sendMessage("Are you sure you want to leave your team?");
-		p.sendMessage("If you leave your team, you can still join back anytime.");
-		p.sendMessage("If you wish to leave, then type /leaveTeamConfirm or /LTC.");
+		TeamBase gui = new TeamBase(p);
+		p.openInventory(gui.getInventory());
+		
 		return true;
 	}
 }

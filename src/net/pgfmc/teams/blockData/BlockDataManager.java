@@ -1,4 +1,4 @@
-package net.pgfmc.teams;
+package net.pgfmc.teams.blockData;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,9 +26,12 @@ import org.bukkit.entity.Player;
 
 import com.mojang.datafixers.util.Pair;
 
+import net.pgfmc.teams.teamscore.TeamsCore;
+
+@Deprecated
 public class BlockDataManager {
 	
-	static File file = new File(Main.plugin.getDataFolder() + File.separator + "containers.yml"); // Creates a File object
+	static File file = new File(TeamsCore.plugin.getDataFolder() + File.separator + "containers.yml"); // Creates a File object
 	static FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 	
 	public static Pair<OfflinePlayer, Boolean> getContainerData(Block block) { // retruns who placed a stored block.
@@ -72,7 +75,7 @@ public class BlockDataManager {
 	public static void updateBlock(Block block, OfflinePlayer player, boolean isPlaced) { // saves association with location, block editor, 
 	// loads file
 		Chunk chunk = block.getChunk();
-		File file = new File(Main.plugin.getDataFolder() + File.separator + "EABlockData" + File.separator + "x" + String.valueOf(chunk.getX()) + "z" + String.valueOf(chunk.getZ()) + ".yml");
+		File file = new File(TeamsCore.plugin.getDataFolder() + File.separator + "EABlockData" + File.separator + "x" + String.valueOf(chunk.getX()) + "z" + String.valueOf(chunk.getZ()) + ".yml");
 		
 		try {
 			if (file.createNewFile()) {
@@ -107,7 +110,7 @@ public class BlockDataManager {
 		if (mat == Material.CHEST || mat == Material.BEACON || mat == Material.FURNACE || mat == Material.BLAST_FURNACE || mat == Material.SMOKER || mat == Material.DISPENSER || mat == Material.DROPPER || mat == Material.TRAPPED_CHEST || mat == Material.BARREL || mat == Material.CAMPFIRE || mat == Material.SOUL_CAMPFIRE || mat == Material.SHULKER_BOX || mat == Material.JUKEBOX || mat == Material.LECTERN || mat == Material.HOPPER || mat == Material.BREWING_STAND) {
 			if (isPlaced) {
 				
-				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
+				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TeamsCore.plugin, new Runnable() {
 					@Override
 					public void run() {
 						
@@ -154,7 +157,7 @@ public class BlockDataManager {
 				}, 1);
 				
 				if (mat == Material.BEACON) {
-					Main.beacons.add((Beacon) block.getState());
+					TeamsCore.beacons.add((Beacon) block.getState());
 				}
 				
 				
@@ -188,7 +191,7 @@ public class BlockDataManager {
 		
 		// loads file
 		Chunk chunk = block.getChunk();
-		File file = new File(Main.plugin.getDataFolder() + File.separator + "EABlockData" + File.separator + "x" + String.valueOf(chunk.getX()) + "z" + String.valueOf(chunk.getZ()) + ".yml");
+		File file = new File(TeamsCore.plugin.getDataFolder() + File.separator + "EABlockData" + File.separator + "x" + String.valueOf(chunk.getX()) + "z" + String.valueOf(chunk.getZ()) + ".yml");
 		if (!file.exists()) {
 			player.sendMessage("No data on that block was found!");
 			return;
@@ -209,7 +212,7 @@ public class BlockDataManager {
 	
 	// stores data from Surface block data and moves it into deep block data, so keep 
 	public static void saveDeepBlock(ConfigurationSection data, Chunk chunk, String name) {
-		File file = new File(Main.plugin.getDataFolder() + File.separator + "DeepBlockData" + File.separator + "x" + String.valueOf(chunk.getX()) + "z" + String.valueOf(chunk.getZ()) + ".yml");
+		File file = new File(TeamsCore.plugin.getDataFolder() + File.separator + "DeepBlockData" + File.separator + "x" + String.valueOf(chunk.getX()) + "z" + String.valueOf(chunk.getZ()) + ".yml");
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
@@ -246,10 +249,10 @@ public class BlockDataManager {
 			
 			Set<Block> blocks = new HashSet<Block>();
 			
-			blocks.add(Main.survivalWorld.getBlockAt(chest.getLocation().add(1, 0, 0)));
-			blocks.add(Main.survivalWorld.getBlockAt(chest.getLocation().add(-1, 0, 0)));
-			blocks.add(Main.survivalWorld.getBlockAt(chest.getLocation().add(0, 0, 1)));
-			blocks.add(Main.survivalWorld.getBlockAt(chest.getLocation().add(0, 0, -1)));
+			blocks.add(TeamsCore.survivalWorld.getBlockAt(chest.getLocation().add(1, 0, 0)));
+			blocks.add(TeamsCore.survivalWorld.getBlockAt(chest.getLocation().add(-1, 0, 0)));
+			blocks.add(TeamsCore.survivalWorld.getBlockAt(chest.getLocation().add(0, 0, 1)));
+			blocks.add(TeamsCore.survivalWorld.getBlockAt(chest.getLocation().add(0, 0, -1)));
 			
 			for (Block block : blocks) {
 				if (block != null && block.getType() == Material.CHEST && ((Chest) block.getState()).getInventory().getHolder() instanceof DoubleChest && 
@@ -276,7 +279,7 @@ public class BlockDataManager {
 			
 			
 			
-			Block block = Main.survivalWorld.getBlockAt(new Location(Main.survivalWorld, Double.parseDouble(sting[0]), Double.parseDouble(sting2[0]), Double.parseDouble(sting2[1])));
+			Block block = TeamsCore.survivalWorld.getBlockAt(new Location(TeamsCore.survivalWorld, Double.parseDouble(sting[0]), Double.parseDouble(sting2[0]), Double.parseDouble(sting2[1])));
 			
 			if (block.getType() == Material.BEACON && block.getState() instanceof Beacon) {
 				beacons.add((Beacon) block.getState());

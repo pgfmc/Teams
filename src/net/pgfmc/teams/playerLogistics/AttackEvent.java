@@ -1,4 +1,4 @@
-package net.pgfmc.teams.events;
+package net.pgfmc.teams.playerLogistics;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import net.pgfmc.teams.Main;
+import net.pgfmc.teams.teamscore.TeamsCore;
 
 public class AttackEvent implements Listener {
 	
@@ -28,7 +28,7 @@ public class AttackEvent implements Listener {
 	public void playerAttackEvent(EntityDamageByEntityEvent e) { // hit another player with a flower to ask to be on the same team.
 		
 		if (e.getDamager() instanceof Player && e.getEntity() instanceof Player && isFlower(((Player) e.getDamager()).getInventory().getItemInMainHand().getType())) {
-			Main.requestHandler((Player) e.getDamager(), (Player) e.getEntity());
+			TeamsCore.requestHandler((Player) e.getDamager(), (Player) e.getEntity());
 		}
 	}
 	

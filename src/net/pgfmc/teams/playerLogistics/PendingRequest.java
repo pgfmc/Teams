@@ -1,4 +1,4 @@
-package net.pgfmc.teams;
+package net.pgfmc.teams.playerLogistics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.teams.teamscore.Team;
+import net.pgfmc.teams.teamscore.TeamsCore;
 
 /*
 
@@ -23,14 +25,14 @@ public class PendingRequest {
 	
 	// variable declaration
 	
-	TeamObj team;
+	Team team;
 	Player attacker;
 	Player target;
 	PlayerData ATK;
 	PlayerData DEF;
 	static List<PendingRequest> instances = new ArrayList<>();
 	
-	public PendingRequest(Player attacker, Player target, TeamObj team) { // constructor
+	public PendingRequest(Player attacker, Player target, Team team) { // constructor
 		
 		this.team = team;
 		this.attacker = attacker;
@@ -41,7 +43,7 @@ public class PendingRequest {
 		ATK.setData("request", this);
 		DEF.setData("request", this);
 		
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TeamsCore.plugin, new Runnable() {
             
             @SuppressWarnings("unlikely-arg-type")
 			@Override
@@ -69,7 +71,7 @@ public class PendingRequest {
 		List<UUID> list = new ArrayList<>();
 		list.add(attacker.getUniqueId());
 		list.add(target.getUniqueId());
-		TeamObj team = new TeamObj(list);
+		Team team = new Team(list);
 		
 		ATK.setData("team", team);
 		DEF.setData("team", team);

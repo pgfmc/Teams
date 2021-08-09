@@ -1,4 +1,4 @@
-package net.pgfmc.teams.commands;
+package net.pgfmc.teams.blockData;
 
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -15,6 +15,7 @@ in PlayerEvents there is a function setup that automatically disables inspector 
 Written By CrimsonDart
  */
 
+@Deprecated
 public class InspectCommand implements CommandExecutor {
 
 	@Override

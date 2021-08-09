@@ -1,4 +1,4 @@
-package net.pgfmc.teams.commands;
+package net.pgfmc.teams.playerLogistics;
 
 import java.util.UUID;
 
@@ -9,9 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.Main;
-import net.pgfmc.teams.PendingRequest;
-import net.pgfmc.teams.TeamObj;
+import net.pgfmc.teams.teamscore.Team;
+import net.pgfmc.teams.teamscore.TeamsCore;
 
 public class TeamAccept implements CommandExecutor {
 
@@ -24,12 +23,12 @@ public class TeamAccept implements CommandExecutor {
 			
 			Player attacker = (Player) sender;
 			
-			TeamObj ATK = TeamObj.getTeam(attacker);
+			Team ATK = Team.getTeam(attacker);
 			PlayerData ATKP = PlayerData.getPlayerData(attacker);
 			
 			if (ATKP.getData("request") != null) {
 				Player target = ((PendingRequest) ATKP.getData("request")).getAttacker();
-				TeamObj DEF = TeamObj.getTeam(target);
+				Team DEF = Team.getTeam(target);
 				PlayerData DEFP = PlayerData.getPlayerData(target);
 				
 				if (ATKP.getData("request") != null && ATKP.getData("request") == DEFP.getData("request")) {
@@ -48,7 +47,7 @@ public class TeamAccept implements CommandExecutor {
 					
 					} else if (ATK == null && DEF == null) { // if both players arent on a team
 						PR.createTeamRequestAccept();
-						attacker.sendMessage("You have joined " + Main.makePossesive(target.getCustomName()) + " team!");
+						attacker.sendMessage("You have joined " + TeamsCore.makePossesive(target.getCustomName()) + " team!");
 						target.sendMessage(attacker.getCustomName() + " has joined your team!");
 						
 					

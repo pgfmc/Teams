@@ -1,4 +1,4 @@
-package net.pgfmc.teams.events;
+package net.pgfmc.teams.blockData;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -12,10 +12,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.mojang.datafixers.util.Pair;
 
-import net.pgfmc.teams.BlockDataManager;
-import net.pgfmc.teams.Main;
-import net.pgfmc.teams.TeamObj;
+import net.pgfmc.teams.teamscore.Team;
+import net.pgfmc.teams.teamscore.TeamsCore;
 
+
+@Deprecated
 public class BlockInteractEvent implements Listener {
 	
 	
@@ -27,7 +28,7 @@ public class BlockInteractEvent implements Listener {
 		
 		// controls clicking containers and beacons;
 		
-		if (e.getClickedBlock() != null && e.getPlayer() != null && e.getPlayer().getGameMode() == GameMode.SURVIVAL && e.getClickedBlock().getWorld() == Main.survivalWorld) {
+		if (e.getClickedBlock() != null && e.getPlayer() != null && e.getPlayer().getGameMode() == GameMode.SURVIVAL && e.getClickedBlock().getWorld() == TeamsCore.survivalWorld) {
 
 			Material mat = e.getClickedBlock().getType();
 			if (mat == Material.CHEST || mat == Material.BEACON || mat == Material.FURNACE || mat == Material.BLAST_FURNACE || mat == Material.SMOKER || 
@@ -36,14 +37,14 @@ public class BlockInteractEvent implements Listener {
 				
 				Block block = e.getClickedBlock(); 
 				Player player = e.getPlayer();
-				TeamObj team = TeamObj.getTeam(player);
+				Team team = Team.getTeam(player);
 				Pair<OfflinePlayer, Boolean> pair = BlockDataManager.getContainerData(block);
 				
 				if (pair == null) {
 					return;
 				}
 				
-				TeamObj placerTeam = TeamObj.getTeam(pair.getFirst());
+				Team placerTeam = Team.getTeam(pair.getFirst());
 				
 				if (pair.getSecond()) {
 					
