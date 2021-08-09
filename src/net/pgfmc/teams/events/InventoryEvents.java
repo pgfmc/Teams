@@ -18,7 +18,6 @@ import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.TeamObj;
 import net.pgfmc.teams.inventories.TeamBase;
 import net.pgfmc.teams.inventories.TeamLeaveConfirmInventory;
-import net.pgfmc.teams.inventories.VoteInventory;
 
 
 public class InventoryEvents implements Listener {
@@ -29,7 +28,7 @@ public class InventoryEvents implements Listener {
 		if (e.getClickedInventory() != null) {
 			
 			InventoryHolder invHolder = e.getClickedInventory().getHolder();
-			if ((invHolder instanceof TeamBase || invHolder instanceof VoteInventory || invHolder instanceof TeamLeaveConfirmInventory) && (e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT)) {
+			if ((invHolder instanceof TeamBase || invHolder instanceof TeamLeaveConfirmInventory) && (e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT)) {
 				e.setCancelled(true);
 				return;
 			}
@@ -65,22 +64,6 @@ public class InventoryEvents implements Listener {
 				}
 				
 				
-			} else if (inv.getHolder() != null && inv.getHolder() instanceof VoteInventory) {
-				
-				int slot = e.getSlot();
-				
-				e.setCancelled(true);
-				switch (slot) {
-				
-				case 5: ((VoteInventory) e.getClickedInventory().getHolder()).getVote().vote((Player) e.getWhoClicked(), -1); return;
-				case 6: ((VoteInventory) e.getClickedInventory().getHolder()).getVote().vote((Player) e.getWhoClicked(), 0); return;
-				case 7: ((VoteInventory) e.getClickedInventory().getHolder()).getVote().vote((Player) e.getWhoClicked(), 1); return;
-				
-				default: return;
-				}
-				
-				
-				
 			} else if (inv.getHolder() != null && inv.getHolder() instanceof TeamLeaveConfirmInventory) {
 				
 				e.setCancelled(true);
@@ -104,7 +87,7 @@ public class InventoryEvents implements Listener {
 	
 	public void onslideEvent(InventoryDragEvent e) {
 		InventoryHolder invHolder = e.getInventory().getHolder();
-		if (invHolder instanceof TeamBase || invHolder instanceof VoteInventory || invHolder instanceof TeamLeaveConfirmInventory) {
+		if (invHolder instanceof TeamBase || invHolder instanceof TeamLeaveConfirmInventory) {
 			e.setCancelled(true);
 			return;
 		}

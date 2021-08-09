@@ -43,9 +43,6 @@ ability to disband team
 
  */
 
-
-
-
 public class TeamObj {
 	
 	String name = "New Team";
@@ -53,7 +50,7 @@ public class TeamObj {
 	List<UUID> allies = null; // Defaults to null if no allies
 	static IdentityHashMap<UUID, TeamObj> instances = new IdentityHashMap<UUID, TeamObj>();
 	UUID ID;
-	Vote currentVote = null;
+	
 	UUID leader = null;
 	
 	// ------------------------------------------------------------------------------------ constructors
@@ -64,7 +61,7 @@ public class TeamObj {
 		this.members = members;
 		this.allies = allies;
 		this.leader = leader;
-		currentVote = Vote.findInVote(vote);
+		
 		this.ID = ID;
 		instances.put(this.ID, this);
 	}
@@ -119,14 +116,6 @@ public class TeamObj {
 		return true;
 	}
 	
-	public Vote getVote() {
-		return currentVote;
-	}
-	
-	public void setVote(Vote vote) {
-		currentVote = vote;
-	}
-	
 	public UUID getUniqueId() {
 		return ID;
 	}
@@ -160,9 +149,6 @@ public class TeamObj {
 	
 	public static TeamObj findID(UUID ID) { // searches for the team with the given ID
 		
-		listTeams();
-		
-		
 		if (ID != null) {
 			
 			for (UUID uuid : instances.keySet()) {
@@ -170,38 +156,12 @@ public class TeamObj {
 				if (ID.toString().equals(uuid.toString())) {
 					return instances.get(uuid);
 				}
-				
-				
-				
 			}
-			System.out.println("checking for ");
 		}
-		
-		System.out.println("    gamer");
 		return null;
 	}
 	
 	public static IdentityHashMap<UUID, TeamObj> getTeams() { // returns all teams
 		return instances;
-	}
-	
-	
-	public static void listTeams() {
-		
-		for (UUID key : instances.keySet()) {
-			
-			TeamObj team = instances.get(key);
-			
-			System.out.println(team.getName());
-			
-			for (UUID playerUUID : team.getMembers()) {
-				OfflinePlayer player = Bukkit.getOfflinePlayer(playerUUID);
-				System.out.println("   " + player.getName());
-			}
-			
-			System.out.println(team.getUniqueId());
-			System.out.println(key);
-		}
-		System.out.println(instances);
 	}
 }

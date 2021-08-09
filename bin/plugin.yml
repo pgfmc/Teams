@@ -1,5 +1,5 @@
 name: Teams
-version: 1.0.3.b
+version: 1.1.0.b
 api-version: 1.16
 author: bk and CrimsonDart
 main: net.pgfmc.teams.Main
@@ -20,31 +20,31 @@ commands:
       aliases: [teamAccept, teamaccept, TA]
       permission: Teams.teamAccept
       description: Accepts the invite / request sent in teamRequest.
-   vote:
-      usage: /vote
-      aliases: [vote, V]
-      permission: Teams.vote
-      description: Opens the Vote inventory.
-   voteKick:
-      usage: /voteKick <Teamate>
-      aliases: [voteKick, votekick, VK]
-      permission: Teams.voteKick
-      description: Opens a vote to Kick <Teamate> from your team.
-   voteBan:
-      usage: /voteBan <Teamate>
-      aliases: [voteBan, voteban, VB]
-      permission: Teams.voteBan
-      description: Opens a vote to Ban <Teamate> from your team.
-   voteAllyRequest:
-      usage: /voteAllyRequest <other Team>
-      aliases: [voteAllyRequest, voteallyrequest, VAR]
-      permission: Teams.voteAllyRequest
-      description: Opens a vote to send an ally request to another team.
-   voteRenameTeam:
-      usage: /voteRenameTeam <new Team name>
-      aliases: [VRT, renameTeam, voteRename]
-      permission: Teams.voterename
-      description: Opens a vote to Rename your team to <new Team name>
+#   vote:
+#      usage: /vote
+#      aliases: [vote, V]
+#      permission: Teams.vote
+#      description: Opens the Vote inventory.
+#  voteKick:
+#      usage: /voteKick <Teamate>
+#      aliases: [voteKick, votekick, VK]
+#      permission: Teams.voteKick
+#      description: Opens a vote to Kick <Teamate> from your team.
+#   voteBan:
+#      usage: /voteBan <Teamate>
+#      aliases: [voteBan, voteban, VB]
+#      permission: Teams.voteBan
+#      description: Opens a vote to Ban <Teamate> from your team.
+#   voteAllyRequest:
+#      usage: /voteAllyRequest <other Team>
+#      aliases: [voteAllyRequest, voteallyrequest, VAR]
+#      permission: Teams.voteAllyRequest
+#      description: Opens a vote to send an ally request to another team.
+#   voteRenameTeam:
+#      usage: /voteRenameTeam <new Team name>
+#      aliases: [VRT, renameTeam, voteRename]
+#      permission: Teams.voterename
+#      description: Opens a vote to Rename your team to <new Team name>
    leaveTeam:
       usage: /leaveTeam
       aliases: [leaveTeam, leaveteam, LT]

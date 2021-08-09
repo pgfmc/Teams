@@ -3,19 +3,15 @@ package net.pgfmc.teams;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerDataListener;
-import net.pgfmc.teams.Vote.VoteCases;
 
 public class Database implements PlayerDataListener {
 	
@@ -23,6 +19,7 @@ public class Database implements PlayerDataListener {
 	static File file = new File(Main.plugin.getDataFolder() + File.separator + "database.yml"); // Creates a File object
 	static FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 	static ConfigurationSection playerDataList = database.getConfigurationSection("playerData");
+	static boolean playerInit = false;
 	
 	public static void saveTeams() { // ----------------- saves all teams to "teams"
 		
@@ -58,11 +55,12 @@ public class Database implements PlayerDataListener {
 				teamSection.set("Allies", strings);
 			}
 			
+			/*
 			if (team.currentVote == null) { // saves Current vote for the team
 				teamSection.set("Vote", null);
 			} else {
 				teamSection.set("Vote", team.currentVote.getID().toString());
-			}
+			}*/
 			
 			if (team.leader == null) { // saves Leader for the team
 				teamSection.set("Leader", null);
@@ -127,6 +125,7 @@ public class Database implements PlayerDataListener {
 		}
 	}
 	
+	/*
 	@Deprecated
 	public static void savePlayerData() { // saves all playerdata
 
@@ -169,7 +168,7 @@ public class Database implements PlayerDataListener {
 			new OldPlayerData(UUID.fromString(key), thimg);
 		}
 	}
-	
+	@Deprecated
 	public static void saveVotes() {
 		
 		database.set("Votes", null);
@@ -226,6 +225,7 @@ public class Database implements PlayerDataListener {
 		}
 	}
 	
+	@Deprecated
 	public static void loadVotes() {
 		
 		ConfigurationSection configSec = database.getConfigurationSection("Votes");
@@ -238,7 +238,7 @@ public class Database implements PlayerDataListener {
 			
 			ConfigurationSection saveVote = configSec.getConfigurationSection(key);
 			
-			Map<UUID, Integer> members = new HashMap<>();
+			HashMap<UUID, Integer> members = new HashMap<>();
 			for (Object uuidString : saveVote.getList("Members")) {
 				members.put(UUID.fromString((String) uuidString), (Integer) saveVote.getList("MemberVotes").get(saveVote.getList("Members").indexOf(uuidString)));
 			}
@@ -259,10 +259,12 @@ public class Database implements PlayerDataListener {
 		}
 	}
 	
-	
+	*/
 
 	@Override
 	public void OfflinePlayerDataDeInitialization(PlayerData playerData) {
+		
+		if (!playerInit) {return;}
 		
 		
 		if (playerDataList != null) {
@@ -288,6 +290,7 @@ public class Database implements PlayerDataListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		playerInit = false;
 	}
 
 	@Override
@@ -317,5 +320,6 @@ public class Database implements PlayerDataListener {
 			System.out.println("no team to load!");
 			
 		}
+		playerInit = true;
 	}
 }

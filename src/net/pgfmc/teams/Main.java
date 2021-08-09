@@ -28,11 +28,6 @@ import net.pgfmc.teams.commands.LeaveTeamConfirmCommand;
 import net.pgfmc.teams.commands.Team;
 import net.pgfmc.teams.commands.TeamAccept;
 import net.pgfmc.teams.commands.TeamRequest;
-import net.pgfmc.teams.commands.VoteAllyRequest;
-import net.pgfmc.teams.commands.VoteBan;
-import net.pgfmc.teams.commands.VoteCommand;
-import net.pgfmc.teams.commands.VoteKick;
-import net.pgfmc.teams.commands.VoteRenameTeam;
 import net.pgfmc.teams.events.AttackEvent;
 import net.pgfmc.teams.events.BBEvent;
 import net.pgfmc.teams.events.BPE;
@@ -65,8 +60,7 @@ public class Main extends JavaPlugin {
 				System.out.println("database.yml already Exists!");
 				
 				Database.loadTeams();
-				//Database.loadPlayerData();
-				Database.loadVotes();
+				
 				((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new Database(), false);
 			}
 			
@@ -96,17 +90,11 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new AttackEvent(), this);
 		getServer().getPluginManager().registerEvents(new BBEvent(), this);
 		getServer().getPluginManager().registerEvents(new BPE(), this);
-		//getServer().getPluginManager().registerEvents(new JoinEvent(), this);
 		getServer().getPluginManager().registerEvents(new MessageEvent(), this);
 		
 		getCommand("team").setExecutor(new Team());
 		getCommand("teamRequest").setExecutor(new TeamRequest());
 		getCommand("teamAccept").setExecutor(new TeamAccept());
-		getCommand("vote").setExecutor(new VoteCommand());
-		getCommand("voteKick").setExecutor(new VoteKick());
-		getCommand("voteBan").setExecutor(new VoteBan());
-		getCommand("voteAllyRequest").setExecutor(new VoteAllyRequest());
-		getCommand("voteRenameTeam").setExecutor(new VoteRenameTeam());
 		getCommand("leaveTeam").setExecutor(new LeaveTeamCommand());
 		getCommand("leaveTeamConfirm").setExecutor(new LeaveTeamConfirmCommand());
 		getCommand("inspector").setExecutor(new InspectCommand());
@@ -118,7 +106,6 @@ public class Main extends JavaPlugin {
 	public void onDisable() {
 		Database.saveTeams();
 		((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new Database(), true);
-		Database.saveVotes();
 	}
 	
 	public static ItemStack createItem(String name, Material mat, List<String> lore)
