@@ -59,6 +59,9 @@ public class PendingRequest {
 		} else {
 			team.addMember(INV.getPlayer());
 		}
+		
+		INV.setData("request", null);
+		JOI.setData("request", null);
 	}
 	
 	public void createTeamRequestAccept() { // creates a new team for when 
@@ -123,18 +126,9 @@ public class PendingRequest {
 			PendingRequest PR = (PendingRequest) ATKP.getData("request");
 			
 			if (ATK != null && DEF == null) { // if the invitor isnt in a team, but the joiner is
-				for (UUID uuid : ATK.getMembers()) {
-					if (Bukkit.getPlayer(uuid) != null) {
-						target.sendMessage("§9" + attacker.getName() + " §dhas joined your team!");
-						attacker.sendMessage("§dYou have joined §a§l" + ATK.getName() + "§r§d!");
-						PR.acceptRequest(false);
-						return;
-					} else {
-						target.sendMessage("§9" + attacker.getName() + " §dis already in your team!");
-						attacker.sendMessage("§dCouldn't join §a§l" + ATK.getName() + "§r§d; you are already in it!");
-						Bukkit.getServer().broadcastMessage("§cthis message shouldn't appear. if it does, report it in #feedback! exception #1234");
-					}
-				}
+				attacker.sendMessage("§9" + attacker.getName() + " §dhas joined your team!");
+				((PendingRequest) PlayerData.getData(attacker, "request")).getInvitor().getPlayer().sendMessage("§dYou have joined the team §a§l" + ATK.getName() + "§r§d!");
+				PR.acceptRequest(true);
 				
 			} else if (ATK == null && DEF == null) { // if both players arent on a team
 				attacker.sendMessage("§dYou have joined §9" + TeamsCore.makePossesive(target.getName()) + " §dnew team!");
@@ -143,18 +137,9 @@ public class PendingRequest {
 				return;
 				
 			} else if (ATK == null && DEF != null) { // if the attacker is in a team, but the target isnt
-				for (UUID uuid : DEF.getMembers()) {
-					if (Bukkit.getPlayer(uuid) != null) {
-						Bukkit.getPlayer(uuid).sendMessage("§9" + attacker.getName() + " §dhas joined your team!");
-						attacker.sendMessage("§9You have joined the team §a§l" + DEF.getName() + "§r§9!");
-						PR.acceptRequest(true);
-						return;
-					} else {
-						target.sendMessage("§dCouldn't join §a§l" + DEF.getName() + "§r§d; you are already in it!");
-						attacker.sendMessage("§9" + attacker.getName() + " §dis already in your team!");
-						Bukkit.getServer().broadcastMessage("§cthis message shouldn't appear. if it does, report it in #feedback! exception #4269");
-					}
-				}
+				attacker.sendMessage("§dYou have joined the team §a§l" + DEF.getName() + "§r§d!");
+				((PendingRequest) PlayerData.getData(attacker, "request")).getInvitor().getPlayer().sendMessage("§9" + attacker.getName() + " §dhas joined your team!");
+				PR.acceptRequest(true);
 			}
 		}
 	}

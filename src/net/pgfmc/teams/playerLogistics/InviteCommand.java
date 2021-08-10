@@ -23,5 +23,4 @@ public class InviteCommand implements CommandExecutor {
 		
 		return true;
 	}
-
 }

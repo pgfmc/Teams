@@ -23,9 +23,16 @@ public class LeaveTeamConfirmCommand implements CommandExecutor {
 		
 		PlayerData playerData = PlayerData.getPlayerData(p);
 		if (playerData.getData("team") != null) {
-			p.sendMessage("§dYou have left §a§l" + ((Team) playerData.getData("team")).getName() + "§r§d.");
-			((Team) playerData.getData("team")).removePlayer(p);
-			playerData.setData("team", null);
+			
+			String name = ((Team) playerData.getData("team")).getName();
+			
+			
+			if (((Team) playerData.getData("team")).removePlayer(p)) {
+				p.sendMessage("§dYou have left §a§l" + name + "§r§d.");
+			} else {
+				p.sendMessage("§cYou can't leave §a§l" + name + "§r§c!");
+				p.sendMessage("§cCheck if you have any Pending Requests.");
+			}
 			return true;
 		} else {
 			p.sendMessage("§cYou aren't in a team!");

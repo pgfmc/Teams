@@ -69,11 +69,20 @@ public class InventoryEvents implements Listener {
 				switch(e.getSlot()) {
 				
 				case 2:
-					((Team) PlayerData.getPlayerData(p).getData("team")).removePlayer(p);
-					PlayerData.getPlayerData(p).setData("team", null);
+					
+					PlayerData playerData = PlayerData.getPlayerData(p);
+					
+					
+					String name = ((Team) playerData.getData("team")).getName();
+					
+					if (((Team) playerData.getData("team")).removePlayer(p)) {
+						p.sendMessage("§dYou have left §a§l" + name + "§r§d.");
+					} else {
+						p.sendMessage("§cYou can't leave §a§l" + name + "§r§c!");
+						p.sendMessage("§cCheck if you have any Pending Requests.");
+					}
 					
 					p.closeInventory();
-					p.sendMessage("§dYou have left §a§l" + ((TeamLeaveConfirmInventory) inv.getHolder()).getTeam().getName() + "§r§d.");
 					
 				case 6:
 					p.closeInventory();

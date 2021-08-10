@@ -110,6 +110,7 @@ public class Database implements PlayerDataListener {
 			} else {
 				playerDataList.set(playerData.getPlayer().getUniqueId().toString(), null);
 			}
+			database.set("playerData", playerDataList);
 		}
 		
 		try {
@@ -127,6 +128,7 @@ public class Database implements PlayerDataListener {
 		
 		if (playerDataList == null) {
 			System.out.println("No PlayerData to load!");
+			playerData.setData("team", null);
 			return;
 		}
 		

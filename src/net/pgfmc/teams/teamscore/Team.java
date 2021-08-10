@@ -5,6 +5,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -79,9 +80,10 @@ public class Team {
 	
 	public boolean addMember(OfflinePlayer offlinePlayer)
 	{
-		if (members.contains(offlinePlayer.getUniqueId())) { return false; } // You cannot add an existing member to the team
+		if (members.contains(offlinePlayer.getUniqueId()) || PlayerData.getData(offlinePlayer, "team") != null) { return false; } // You cannot add an existing member to the team
 		
 		members.add(offlinePlayer.getUniqueId());
+		PlayerData.setData(offlinePlayer, "team", this);
 		return true;
 	}
 	
@@ -89,20 +91,47 @@ public class Team {
 		return ID;
 	}
 	
-	public void removePlayer(OfflinePlayer p) {
-		members.remove(p.getUniqueId());
-		if (members.size() < 0) {
-			instances.remove(this.getUniqueId());
+	public boolean removePlayer(OfflinePlayer p) {
+		PlayerData pd = PlayerData.getPlayerData(p);
+		
+		
+		
+		if (pd.getData("naming") == null && pd.getData("request") == null) {
+			members.remove(p.getUniqueId());
+			if (members.size() < 0) {
+				instances.remove(this.getUniqueId());
+			}
+			PlayerData.setData(p, "team", null);
+			return true;
+		} else {
+			return false;
 		}
+		
+		
+		
 	}
 	
 	// ------------------------------------------------------------------------------------ Renaming function
 	
 	public void renameBegin(PlayerData p) { // initializes naming mode for player p.getPlayer.
-		Player player = p.getPlayer().getPlayer();
-		player.sendMessage("§dFor the next 4 minutes, you can change your ");
-		player.sendMessage("§dteam's name by typing into the chat box!");
-		p.setData("naming", true);
+		if (p.getPlayer().getPlayer() != null) {
+			Player player = p.getPlayer().getPlayer();
+			player.sendMessage("§dFor the next 4 minutes, you can change your ");
+			player.sendMessage("§dteam's name by typing into the chat box!");
+			p.setData("naming", true);
+			
+			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TeamsCore.plugin, new Runnable() {
+	            
+				@Override
+	            public void run() // 60 second long cooldown, in which the plugin will wait for 
+	            {
+					if (p.getData("naming") != null) {
+						p.setData("naming", null);
+		            	player.sendMessage("§cTime has run out to rename your team.");
+					}
+	            }
+	        }, 2400);
+		}
 	}
 	
 	// ------------------------------------------------------------------------------------ instances manager
@@ -129,7 +158,7 @@ public class Team {
 		return null;
 	}
 	
-	public static IdentityHashMap<UUID, Team> getTeams() { // returns all teams
+	public static IdentityHashMap<UUID, Team> getTeams() {
 		return instances;
 	}
 }
