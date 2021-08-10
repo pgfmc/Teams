@@ -27,7 +27,7 @@ public class TeamAccept implements CommandExecutor {
 			PlayerData ATKP = PlayerData.getPlayerData(attacker);
 			
 			if (ATKP.getData("request") != null) {
-				Player target = (Player) ((PendingRequest) ATKP.getData("request")).getInvitor();
+				Player target = ((PendingRequest) ATKP.getData("request")).getInvitor().getPlayer();
 				Team DEF = Team.getTeam(target);
 				PlayerData DEFP = PlayerData.getPlayerData(target);
 				

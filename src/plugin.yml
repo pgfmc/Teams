@@ -17,7 +17,7 @@ commands:
       description: invites or sends a request to Player <Player>.
    teamAccept:
       usage: teamAccept
-      aliases: [teamAccept, teamaccept, tma]
+      aliases: [teamaccept, tma]
       permission: Teams.teamAccept
       description: Accepts the invite / request sent in teamRequest.
 #   vote:
