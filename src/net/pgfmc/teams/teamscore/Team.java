@@ -100,7 +100,6 @@ public class Team {
 	
 	public void renameBegin(PlayerData p) { // initializes naming mode for player p.getPlayer.
 		Player player = p.getPlayer().getPlayer();
-		player.sendMessage("§dYou can now change your team's name!");
 		player.sendMessage("§dFor the next 4 minutes, you can change your ");
 		player.sendMessage("§dteam's name by typing into the chat box!");
 		p.setData("naming", true);

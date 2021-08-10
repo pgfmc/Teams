@@ -54,7 +54,7 @@ public class InventoryEvents implements Listener {
 								Team team = new Team(list);
 								pData.setData("team", team);
 								p.closeInventory();
-								p.sendMessage("§dYou have started a new team!");
+								p.sendMessage("§dYou have created a new team!");
 								team.renameBegin(pData);
 								return;
 					default: return;

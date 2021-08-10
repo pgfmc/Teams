@@ -29,5 +29,4 @@ public class AttackEvent implements Listener {
 			PendingRequest.requestHandler((Player) e.getDamager(), (Player) e.getEntity());
 		}
 	}
-	
 }
