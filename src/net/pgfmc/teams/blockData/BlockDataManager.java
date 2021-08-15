@@ -31,8 +31,8 @@ import net.pgfmc.teams.teamscore.TeamsCore;
 @Deprecated
 public class BlockDataManager {
 	
-	static File file = new File(TeamsCore.plugin.getDataFolder() + File.separator + "containers.yml"); // Creates a File object
-	static FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
+	private static File file = new File(TeamsCore.plugin.getDataFolder() + File.separator + "containers.yml"); // Creates a File object
+	private static FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 	
 	public static Pair<OfflinePlayer, Boolean> getContainerData(Block block) { // retruns who placed a stored block.
 		
