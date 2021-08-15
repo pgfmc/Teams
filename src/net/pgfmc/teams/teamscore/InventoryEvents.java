@@ -14,7 +14,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.pgfessentials.PlayerData;
 import net.pgfmc.teams.playerLogistics.TeamLeaveConfirmInventory;
 
 

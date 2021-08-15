@@ -17,10 +17,10 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.teams.playerLogistics.AttackEvent;
+import net.pgfmc.teams.playerLogistics.InviteCommand;
 import net.pgfmc.teams.playerLogistics.LeaveTeamCommand;
 import net.pgfmc.teams.playerLogistics.LeaveTeamConfirmCommand;
 import net.pgfmc.teams.playerLogistics.TeamAccept;
-import net.pgfmc.teams.playerLogistics.InviteCommand;
 
 public class TeamsCore extends JavaPlugin {
 	
