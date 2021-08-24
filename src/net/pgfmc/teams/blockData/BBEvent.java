@@ -6,7 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+
+import net.pgfmc.pgfessentials.PlayerData;
+import net.pgfmc.teams.teamscore.Team;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
 public class BBEvent implements Listener {
