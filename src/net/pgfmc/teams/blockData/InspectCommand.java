@@ -5,8 +5,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.teams.teamscore.TeamsCore;
 
 /*
 Command to Enable and Disable Inspector mode (only in creative mode)
@@ -15,8 +20,7 @@ in PlayerEvents there is a function setup that automatically disables inspector 
 Written By CrimsonDart
  */
 
-@Deprecated
-public class InspectCommand implements CommandExecutor {
+public class InspectCommand implements CommandExecutor, Listener {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
@@ -39,5 +43,22 @@ public class InspectCommand implements CommandExecutor {
 		}
 		
 		return true;
+	}
+
+	@EventHandler
+	public void gamemodeChange(PlayerGameModeChangeEvent e) { // if gamemode changes from 
+		
+		if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
+			PlayerData.setData(e.getPlayer(), "debug", null);
+		}
+	}
+	
+	
+	@EventHandler
+	public void move(PlayerMoveEvent e) { // if player moves from survival world to anywhere else, disables inspect mode.
+		
+		if (e.getPlayer().getLocation().getWorld() == TeamsCore.survivalWorld && e.getTo().getWorld() != TeamsCore.survivalWorld) {
+			PlayerData.setData(e.getPlayer(), "debug", null);
+		}
 	}
 }

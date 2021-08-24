@@ -55,8 +55,12 @@ commands:
       aliases: [leaveTeamConfirm, leaveteamconfirm, ltc]
       permission: Teams.leaveConfirm
       description: makes the sender leave their own team.
-#   inspector:
-#      usage: /inspector while in Creative Mode.
-#      aliases: [insp, INSP]
-#      permission: Teams.inspecotor
-#      description: toggles inspector mode, which uncovers data about blocks.
+   inspector:
+      usage: /inspector while in Creative Mode.
+      aliases: [insp, INSP]
+      permission: Teams.inspecotor
+      description: toggles inspector mode, which uncovers data about blocks.
+#
+# -------------------------------||------------------------------
+#
+#PlayerData entries used in Teams:

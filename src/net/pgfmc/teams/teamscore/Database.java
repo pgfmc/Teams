@@ -59,7 +59,7 @@ public class Database implements PlayerDataListener {
 		}
 	}
 	
-	public static void loadTeams() {// ----------- loads all teams
+	public static void loadTeams() { // ----------- loads all teams
 		
 		ConfigurationSection configSec = database.getConfigurationSection("teams");
 		

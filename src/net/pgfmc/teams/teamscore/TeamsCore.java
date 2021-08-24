@@ -16,11 +16,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
+import net.pgfmc.teams.blockData.BBEvent;
+import net.pgfmc.teams.blockData.BPE;
+import net.pgfmc.teams.blockData.BlockInteractEvent;
+import net.pgfmc.teams.blockData.InspectCommand;
 import net.pgfmc.teams.playerLogistics.AttackEvent;
+import net.pgfmc.teams.playerLogistics.InviteCommand;
 import net.pgfmc.teams.playerLogistics.LeaveTeamCommand;
 import net.pgfmc.teams.playerLogistics.LeaveTeamConfirmCommand;
 import net.pgfmc.teams.playerLogistics.TeamAccept;
-import net.pgfmc.teams.playerLogistics.InviteCommand;
 
 public class TeamsCore extends JavaPlugin {
 	
@@ -73,20 +77,19 @@ public class TeamsCore extends JavaPlugin {
 		//beacons = BlockDataManager.getBeacons();
 		
 		getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
-		//getServer().getPluginManager().registerEvents(new BlockInteractEvent(), this);
+		getServer().getPluginManager().registerEvents(new BlockInteractEvent(), this);
 		getServer().getPluginManager().registerEvents(new AttackEvent(), this);
-		//getServer().getPluginManager().registerEvents(new BBEvent(), this);
-		//getServer().getPluginManager().registerEvents(new BPE(), this);
+		getServer().getPluginManager().registerEvents(new BBEvent(), this);
+		getServer().getPluginManager().registerEvents(new BPE(), this);
 		getServer().getPluginManager().registerEvents(new MessageEvent(), this);
+		getServer().getPluginManager().registerEvents(new InspectCommand(), this);
 		
 		getCommand("team").setExecutor(new TeamCommand());
 		getCommand("Invite").setExecutor(new InviteCommand());
 		getCommand("teamAccept").setExecutor(new TeamAccept());
 		getCommand("leaveTeam").setExecutor(new LeaveTeamCommand());
 		getCommand("leaveTeamConfirm").setExecutor(new LeaveTeamConfirmCommand());
-		//getCommand("inspector").setExecutor(new InspectCommand());
-		
-		
+		getCommand("inspector").setExecutor(new InspectCommand());
 	}
 	
 	@Override

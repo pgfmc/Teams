@@ -1,6 +1,7 @@
 package net.pgfmc.teams.blockData;
 
 import org.bukkit.GameMode;
+import org.bukkit.block.Container;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -9,35 +10,25 @@ import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
 
-@Deprecated
 public class BPE implements Listener {
 	
 	@EventHandler
 	public void blockPlace(BlockPlaceEvent e) {
 		
-		System.out.println(TeamsCore.survivalWorld);
-		System.out.println(e.getBlock().getWorld());
-		
-		if (e.getPlayer() != null && e.getPlayer().getGameMode() == GameMode.SURVIVAL && e.getBlock() != null && e.getBlock().getWorld() == TeamsCore.survivalWorld) { // Inspector mode enabled
-			PlayerData PD = PlayerData.getPlayerData(e.getPlayer());
+		if (e.getPlayer().getWorld().equals(TeamsCore.survivalWorld)) { // if in survival world
 			
+			Object debugg = PlayerData.getPlayerData(e.getPlayer()).getData("debug");
 			
-			
-			System.out.println("Block place successful!");
-			
-			if (PD.getData("debug") != null && e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-				e.setCancelled(true);
-				BlockDataManager.returnBlockData(e.getBlock(), e.getPlayer()); // ----------------------- CHANGE IN FUTURE!!!!
-				return;
+			if (debugg == null || e.getPlayer().getGameMode() != GameMode.CREATIVE) { // ---------------------------------------------- if debug mode off / not creative mode
+				SurvivalManager.updateBlock(e.getBlock(), e.getPlayer(), true);
 				
-			} else if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // Inspector Mode disabled
-				
-				if (TeamsCore.playerInForcefield(e.getPlayer())) {
-					e.setCancelled(true);
-				} else {
-					BlockDataManager.updateBlock(e.getBlock(), e.getPlayer(), true);
-					return;
+				if (e.getBlock().getState() instanceof Container) { // -------------------------------------------- if the block is a container, saves who places it.
+					ContainerManager.saveContainer(e.getBlock(), e.getPlayer());
+					
 				}
+			} else { // ----------------------------------------------------------- if debug mode is on
+				e.setCancelled(true);
+				CreativeManager.outputBlockData(e.getBlockAgainst(), e.getPlayer());
 			}
 		}
 	}
