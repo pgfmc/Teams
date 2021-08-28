@@ -21,6 +21,5 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="E:/Eclipse/My Plugins/GitHub/PGF-Essentials/PGF-Essentials 2.2.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

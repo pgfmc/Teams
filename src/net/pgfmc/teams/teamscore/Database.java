@@ -10,8 +10,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import net.pgfmc.pgfessentials.PlayerData;
-import net.pgfmc.pgfessentials.PlayerDataListener;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerDataListener;
 
 public class Database implements PlayerDataListener {
 	

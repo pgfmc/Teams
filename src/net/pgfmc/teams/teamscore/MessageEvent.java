@@ -4,7 +4,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import net.pgfmc.pgfessentials.PlayerData;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 
 public class MessageEvent implements Listener {
 	

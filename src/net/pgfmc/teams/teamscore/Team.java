@@ -9,7 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import net.pgfmc.pgfessentials.PlayerData;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 
 /*
 Object Class for Teams; a new object will be created upon the creation of a new team.

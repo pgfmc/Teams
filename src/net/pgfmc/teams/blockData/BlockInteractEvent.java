@@ -2,6 +2,7 @@ package net.pgfmc.teams.blockData;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
@@ -36,6 +37,7 @@ public class BlockInteractEvent implements Listener {
 				
 				if (block.getState() instanceof Container) {
 					
+					OfflinePlayer blockPlayer = ContainerManager.getPlacer(block);
 					Team blockTeam = (Team) PlayerData.getData(ContainerManager.getPlacer(block), "team");	
 					Team playerTeam = (Team) PlayerData.getData(player, "team");
 					
@@ -67,9 +69,9 @@ public class BlockInteractEvent implements Listener {
 						}
 					}
 					
-					if (blockTeam == null) {
+					if (blockPlayer == null) { // container isnt registered under a player
 						return;
-					} else if (playerTeam == null && blockTeam != null) {
+					} else if (playerTeam == null && blockTeam != null) { // player doesnt have a team, block does
 						
 						if (ContainerManager.getLocked(block)) {
 							e.setCancelled(true);
@@ -97,7 +99,7 @@ public class BlockInteractEvent implements Listener {
 						}
 						
 						
-					} else if (playerTeam != null && blockTeam != null && playerTeam != blockTeam) {
+					} else if (playerTeam != null && blockTeam != null && playerTeam != blockTeam) { // both are on different teams
 						
 						if (ContainerManager.getLocked(block)) {
 							e.setCancelled(true);
@@ -119,6 +121,9 @@ public class BlockInteractEvent implements Listener {
 								default:
 									break;
 							}
+							
+							
+							
 							return;
 						} else {
 							return;
@@ -127,11 +132,13 @@ public class BlockInteractEvent implements Listener {
 						
 						
 						
-					} else if (playerTeam == blockTeam) {
+					} else if (playerTeam != null && blockTeam != null && playerTeam == blockTeam) { // both are on the same team
 						
 						if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 							
 							if (ContainerManager.getLocked(block)) {
+								
+								
 								
 								e.setCancelled(true);
 								
