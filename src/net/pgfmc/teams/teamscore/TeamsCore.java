@@ -6,14 +6,11 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Beacon;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.onarandombox.MultiverseCore.MultiverseCore;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.teams.blockData.BBEvent;
@@ -29,7 +26,6 @@ import net.pgfmc.teams.playerLogistics.TeamAccept;
 public class TeamsCore extends JavaPlugin {
 	
 	public static TeamsCore plugin;
-	public static World survivalWorld;
 	public static List<Beacon> beacons;
 	
 	
@@ -39,9 +35,6 @@ public class TeamsCore extends JavaPlugin {
 		plugin = this;
 		
 		plugin.getDataFolder().mkdirs();
-		
-		survivalWorld = ((MultiverseCore) Bukkit.getPluginManager().getPlugin("Multiverse-Core")).getMVWorldManager().getMVWorld("survival").getCBWorld();
-		
 		
 		File file = new File(plugin.getDataFolder() + "\\database.yml"); // Creates a File object
 		try {

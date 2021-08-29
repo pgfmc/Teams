@@ -12,9 +12,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.teamscore.Team;
-import net.pgfmc.teams.teamscore.TeamsCore;
 
 
 public class BlockInteractEvent implements Listener {
@@ -28,7 +28,7 @@ public class BlockInteractEvent implements Listener {
 		
 		// controls clicking containers and beacons;
 		
-		if (e.getClickedBlock() != null && e.getPlayer() != null && e.getClickedBlock().getWorld() == TeamsCore.survivalWorld && e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+		if (e.getClickedBlock() != null && e.getPlayer() != null && EssentialsMain.isSurvivalWorld(e.getClickedBlock().getWorld()) && e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			
 			Block block = e.getClickedBlock();
 			Player player = e.getPlayer();

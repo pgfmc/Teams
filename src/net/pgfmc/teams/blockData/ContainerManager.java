@@ -18,6 +18,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
 public class ContainerManager {
@@ -99,10 +100,10 @@ public class ContainerManager {
 			
 			Set<Block> blocks = new HashSet<Block>();
 			
-			blocks.add(TeamsCore.survivalWorld.getBlockAt(chest.getLocation().add(1, 0, 0)));
-			blocks.add(TeamsCore.survivalWorld.getBlockAt(chest.getLocation().add(-1, 0, 0)));
-			blocks.add(TeamsCore.survivalWorld.getBlockAt(chest.getLocation().add(0, 0, 1)));
-			blocks.add(TeamsCore.survivalWorld.getBlockAt(chest.getLocation().add(0, 0, -1)));
+			blocks.add(EssentialsMain.survivalWorld.getBlockAt(chest.getLocation().add(1, 0, 0)));
+			blocks.add(EssentialsMain.survivalWorld.getBlockAt(chest.getLocation().add(-1, 0, 0)));
+			blocks.add(EssentialsMain.survivalWorld.getBlockAt(chest.getLocation().add(0, 0, 1)));
+			blocks.add(EssentialsMain.survivalWorld.getBlockAt(chest.getLocation().add(0, 0, -1)));
 			
 			for (Block block : blocks) {
 				if (block != null && block.getType() == Material.CHEST && ((Chest) block.getState()).getInventory().getHolder() instanceof DoubleChest && 

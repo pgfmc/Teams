@@ -9,8 +9,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+
+import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.teamscore.TeamsCore;
 
 
 /*
@@ -57,7 +58,7 @@ public class InspectCommand implements CommandExecutor, Listener {
 	@EventHandler
 	public void move(PlayerMoveEvent e) { // if player moves from survival world to anywhere else, disables inspect mode.
 		
-		if (e.getPlayer().getLocation().getWorld() == TeamsCore.survivalWorld && e.getTo().getWorld() != TeamsCore.survivalWorld) {
+		if (EssentialsMain.isSurvivalWorld(e.getPlayer().getLocation().getWorld()) && !EssentialsMain.isSurvivalWorld(e.getTo().getWorld())) {
 			PlayerData.setData(e.getPlayer(), "debug", null);
 		}
 	}

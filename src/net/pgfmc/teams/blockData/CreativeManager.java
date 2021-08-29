@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 
 import com.mojang.datafixers.util.Pair;
 
+import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
 public class CreativeManager {
@@ -100,7 +101,7 @@ public class CreativeManager {
 			
 			
 			
-			Block block = TeamsCore.survivalWorld.getBlockAt(new Location(TeamsCore.survivalWorld, Double.parseDouble(sting[0]), Double.parseDouble(sting2[0]), Double.parseDouble(sting2[1])));
+			Block block = EssentialsMain.survivalWorld.getBlockAt(new Location(EssentialsMain.survivalWorld, Double.parseDouble(sting[0]), Double.parseDouble(sting2[0]), Double.parseDouble(sting2[1])));
 			
 			if (block.getType() == Material.BEACON && block.getState() instanceof Beacon) {
 				beacons.add((Beacon) block.getState());

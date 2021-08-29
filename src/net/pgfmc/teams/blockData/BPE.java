@@ -6,8 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.teamscore.TeamsCore;
 
 
 public class BPE implements Listener {
@@ -15,7 +15,7 @@ public class BPE implements Listener {
 	@EventHandler
 	public void blockPlace(BlockPlaceEvent e) {
 		
-		if (e.getPlayer().getWorld().equals(TeamsCore.survivalWorld)) { // if in survival world
+		if (EssentialsMain.isSurvivalWorld(e.getPlayer().getWorld())) { // if in survival world
 			
 			Object debugg = PlayerData.getPlayerData(e.getPlayer()).getData("debug");
 			
