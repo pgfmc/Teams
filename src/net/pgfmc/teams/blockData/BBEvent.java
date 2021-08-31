@@ -8,6 +8,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.teams.blockData.types.Beacons;
+import net.pgfmc.teams.blockData.types.BlockContainer;
+import net.pgfmc.teams.blockData.types.Containers.Security;
 
 public class BBEvent implements Listener {
 	
@@ -19,10 +22,21 @@ public class BBEvent implements Listener {
 			Object debugg = PlayerData.getPlayerData(e.getPlayer()).getData("debug");
 			
 			if (debugg == null && e.getPlayer().getGameMode() != GameMode.CREATIVE) { // ---------------------------------------------- if debug mode off / not creative mode
+				
+				Beacons beacon = Beacons.findBeacon(e.getPlayer());
+				
+				if (beacon != null) {
+					if (beacon.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
+						e.getPlayer().sendMessage("§cYou can't place blocks here!");
+						e.setCancelled(true);
+						return;
+					}
+				}
+				
 				SurvivalManager.updateBlock(e.getBlock(), e.getPlayer(), false);
 				
 				if (e.getBlock().getState() instanceof Container) { // -------------------------------------------- if the block is a container, delete it.
-					ContainerManager.deleteContainer(e.getBlock(), e.getPlayer());
+					BlockContainer.remove(e.getBlock());
 					
 				}
 			} else { // ----------------------------------------------------------- if debug mode is on

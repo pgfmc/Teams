@@ -12,6 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
 public class SurvivalManager {
@@ -108,7 +109,7 @@ public class SurvivalManager {
 	
 	public static String locToString(Location location) { // converts location to string.
 		
-		return "x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ());
+		return "w" + String.valueOf(EssentialsMain.worldToInt(location.getWorld())) + "x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ());
 		
 	}
 	

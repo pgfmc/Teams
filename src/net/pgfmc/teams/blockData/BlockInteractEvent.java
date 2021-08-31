@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.teams.blockData.types.BlockContainer;
 import net.pgfmc.teams.teamscore.Team;
 
 
@@ -35,23 +36,25 @@ public class BlockInteractEvent implements Listener {
 			
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 				
-				if (block.getState() instanceof Container) {
+				if (block.getState() instanceof Container && BlockContainer.getContainer(block) != null) {
 					
-					OfflinePlayer blockPlayer = ContainerManager.getPlacer(block);
-					Team blockTeam = (Team) PlayerData.getData(ContainerManager.getPlacer(block), "team");	
+					BlockContainer cont = BlockContainer.getContainer(block);
+					
+					OfflinePlayer blockPlayer = cont.getPlayer();
+					Team blockTeam = (Team) PlayerData.getData(cont.getPlayer(), "team");	
 					Team playerTeam = (Team) PlayerData.getData(player, "team");
 					
-					if (player == ContainerManager.getPlacer(block)) {
+					if (player == cont.getPlayer()) {
 						
 						if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 							
-							if (ContainerManager.getLocked(block)) {
+							if (cont.isLocked()) {
 								
 								e.setCancelled(true);
 								
 								player.sendMessage("§6Unlocked!");
 								player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								ContainerManager.setLocked(block, false);
+								cont.setLocked(false);
 								return;
 								
 							} else {
@@ -60,7 +63,7 @@ public class BlockInteractEvent implements Listener {
 								
 								player.sendMessage("§6Locked!");
 								player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								ContainerManager.setLocked(block, true);
+								cont.setLocked(true);
 								return;
 							}
 							
@@ -73,7 +76,7 @@ public class BlockInteractEvent implements Listener {
 						return;
 					} else if (playerTeam == null && blockTeam != null) { // player doesnt have a team, block does
 						
-						if (ContainerManager.getLocked(block)) {
+						if (cont.isLocked()) {
 							e.setCancelled(true);
 							
 							Material mat = e.getClickedBlock().getType();
@@ -101,7 +104,7 @@ public class BlockInteractEvent implements Listener {
 						
 					} else if (playerTeam != null && blockTeam != null && playerTeam != blockTeam) { // both are on different teams
 						
-						if (ContainerManager.getLocked(block)) {
+						if (cont.isLocked()) {
 							e.setCancelled(true);
 							
 							Material mat = e.getClickedBlock().getType();
@@ -136,7 +139,7 @@ public class BlockInteractEvent implements Listener {
 						
 						if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 							
-							if (ContainerManager.getLocked(block)) {
+							if (cont.isLocked()) {
 								
 								
 								
@@ -144,7 +147,7 @@ public class BlockInteractEvent implements Listener {
 								
 								player.sendMessage("§6Unlocked!");
 								player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								ContainerManager.setLocked(block, false);
+								cont.setLocked(false);
 								return;
 								
 							} else {
@@ -153,12 +156,9 @@ public class BlockInteractEvent implements Listener {
 								
 								player.sendMessage("§6Locked!");
 								player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								ContainerManager.setLocked(block, true);
+								cont.setLocked(true);
 								return;
 							}
-							
-							
-							
 							
 						} else {
 							return;

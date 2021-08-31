@@ -17,6 +17,7 @@ import net.pgfmc.teams.blockData.BBEvent;
 import net.pgfmc.teams.blockData.BPE;
 import net.pgfmc.teams.blockData.BlockInteractEvent;
 import net.pgfmc.teams.blockData.InspectCommand;
+import net.pgfmc.teams.blockData.containers.ContainerDatabase;
 import net.pgfmc.teams.playerLogistics.AttackEvent;
 import net.pgfmc.teams.playerLogistics.InviteCommand;
 import net.pgfmc.teams.playerLogistics.LeaveTeamCommand;
@@ -53,6 +54,23 @@ public class TeamsCore extends JavaPlugin {
 			e.printStackTrace();
 		}
 		
+		file = new File(plugin.getDataFolder() + "\\BlockContainers.yml"); // Creates a File object
+		try {
+			if (file.createNewFile()) {
+				System.out.println("BlockContainers.yml created!");
+			} else {
+				System.out.println("BlockContainers.yml already Exists!");
+				
+				Database.loadTeams();
+				
+				((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new Database(), false);
+			}
+			
+		} catch (IOException e) {
+			System.out.println("BlockContainers.yml Couldn't be created!");
+			e.printStackTrace();
+		}
+		
 		file = new File(plugin.getDataFolder() + "\\EABlockData");
 		if (file.mkdirs()) {
 			System.out.println("EABlockData folder created!");
@@ -66,6 +84,9 @@ public class TeamsCore extends JavaPlugin {
 		} else {
 			System.out.println("DeepBlockData already Exists!");
 		}
+		
+		
+		ContainerDatabase.loadContainers();
 		
 		//beacons = BlockDataManager.getBeacons();
 		
@@ -88,6 +109,7 @@ public class TeamsCore extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		Database.saveTeams();
+		ContainerDatabase.saveContainers();
 		((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new Database(), true);
 	}
 	
