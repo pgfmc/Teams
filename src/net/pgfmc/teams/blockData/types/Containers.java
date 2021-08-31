@@ -57,7 +57,12 @@ public abstract class Containers {
 			return Security.UNLOCKED;
 		} else if (owner != null && owner != stranger && lock) {
 			return Security.DISALLOWED;
+		} else if (owner == null && !lock) {
+			return Security.UNLOCKED;
+		} else if (owner == null && lock) {
+			return Security.DISALLOWED;
 		}
+		
 		return Security.EXCEPTION;
 		
 		

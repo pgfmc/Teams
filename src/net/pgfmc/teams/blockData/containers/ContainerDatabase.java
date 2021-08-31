@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -38,7 +40,7 @@ public class ContainerDatabase {
 				
 				Location loc = StringtoLoc(key);
 				
-				BlockContainer.createBlockContainer(configSec.getOfflinePlayer("player"), configSec.getBoolean("isLocked"), loc.getWorld().getBlockAt(loc));
+				BlockContainer.createBlockContainer(Bukkit.getOfflinePlayer(UUID.fromString(configSec.getString("player"))), configSec.getBoolean("isLocked"), loc.getWorld().getBlockAt(loc));
 			}
 		}
 	}
@@ -102,10 +104,6 @@ public class ContainerDatabase {
 			}
 			
 		} // ------------------------------------ end loop
-		
-		
-		
-		
 		
 	}
 	
