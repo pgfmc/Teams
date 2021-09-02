@@ -6,6 +6,16 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+Message Event (only for when renaming a team)
+
+-----------------------------------
+ */
+
 public class MessageEvent implements Listener {
 	
 	@EventHandler

@@ -13,6 +13,16 @@ import org.bukkit.entity.Player;
 import net.pgfmc.teams.blockData.types.BlockContainer;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+manages inspector data.
+
+-----------------------------------
+ */
+
 public class CreativeManager {
 	
 	// Moderation tools below ( slow access ) VV

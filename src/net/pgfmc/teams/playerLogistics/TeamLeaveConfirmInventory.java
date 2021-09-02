@@ -9,6 +9,16 @@ import org.bukkit.inventory.ItemStack;
 import net.pgfmc.teams.teamscore.Team;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+Inventory for leaving a team
+
+-----------------------------------
+ */
+
 public class TeamLeaveConfirmInventory implements InventoryHolder {
 	
 	private Inventory inv;

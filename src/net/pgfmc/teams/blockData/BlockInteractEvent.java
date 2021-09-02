@@ -16,7 +16,15 @@ import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.blockData.types.BlockContainer;
 import net.pgfmc.teams.blockData.types.Containers.Security;
 
+/*
+Written by CrimsonDart
 
+-----------------------------------
+
+Interact Event.
+
+-----------------------------------
+ */
 public class BlockInteractEvent implements Listener {
 	
 	

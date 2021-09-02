@@ -12,6 +12,15 @@ import net.pgfmc.teams.blockData.types.Beacons;
 import net.pgfmc.teams.blockData.types.BlockContainer;
 import net.pgfmc.teams.blockData.types.Containers.Security;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+Block Place Event.
+
+-----------------------------------
+ */
 
 public class BPE implements Listener {
 	

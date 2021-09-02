@@ -11,6 +11,19 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+shows information on the player's team.
+has a "leave team" option as well
+
+If the player has no team, it will allow them to create one.
+
+-----------------------------------
+ */
+
 public class TeamInventory implements InventoryHolder {
 	
 	private Inventory inv;

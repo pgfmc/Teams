@@ -6,6 +6,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+Attack Event.
+
+-----------------------------------
+ */
+
 public class AttackEvent implements Listener {
 	
 	private boolean isFlower(Material material) {

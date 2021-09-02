@@ -15,6 +15,16 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+Handles saving who placed and broke blocks that were broken in the survival world.
+
+-----------------------------------
+ */
+
 public class SurvivalManager {
 	
 	public static void updateBlock(Block block, OfflinePlayer player, boolean isPlaced) {

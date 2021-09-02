@@ -1,6 +1,5 @@
 package net.pgfmc.teams.teamscore;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +16,15 @@ import org.bukkit.inventory.InventoryHolder;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.playerLogistics.TeamLeaveConfirmInventory;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+All inventory Events.
+
+-----------------------------------
+ */
 
 public class InventoryEvents implements Listener {
 	

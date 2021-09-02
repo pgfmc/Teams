@@ -6,6 +6,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+Invite Command (for inviting people to your team)
+
+-----------------------------------
+ */
+
 public class InviteCommand implements CommandExecutor {
 
 	@Override

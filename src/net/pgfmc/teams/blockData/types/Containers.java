@@ -6,6 +6,22 @@ import org.bukkit.entity.Player;
 
 import net.pgfmc.teams.teamscore.Team;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+abstract class extended by other container classes
+
+subclasses:
+
+BlockContainer
+Beacons
+EntityContainer
+
+-----------------------------------
+ */
+
 public abstract class Containers {
 	
 	OfflinePlayer player;

@@ -7,6 +7,22 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 
+/*
+
+Written by CrimsonDart
+
+-----------------------------------
+Stores data for container blocks
+subclasses: 
+
+Beacons.java
+
+-----------------------------------
+
+
+ */
+
+
 public class BlockContainer extends Containers {
 	
 	

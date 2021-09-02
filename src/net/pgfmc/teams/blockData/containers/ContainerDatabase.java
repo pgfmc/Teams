@@ -24,6 +24,16 @@ import net.pgfmc.teams.blockData.SurvivalManager;
 import net.pgfmc.teams.blockData.types.BlockContainer;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+Handles saving and loading containers.
+
+-----------------------------------
+ */
+
 public class ContainerDatabase {
 	
 	

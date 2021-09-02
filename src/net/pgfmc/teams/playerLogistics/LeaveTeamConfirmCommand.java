@@ -8,6 +8,16 @@ import org.bukkit.entity.Player;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.teamscore.Team;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+the sender leaves their current team (unless if they dont have a team)
+
+-----------------------------------
+ */
+
 public class LeaveTeamConfirmCommand implements CommandExecutor {
 	
 	@Override

@@ -7,7 +7,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Beacon;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -139,24 +138,5 @@ public class TeamsCore extends JavaPlugin {
 		meta.setDisplayName(name);
 		item.setItemMeta(meta);
 		return item;
-	}
-	
-	@Deprecated
-	public static boolean playerInForcefield(Player player) {
-		
-		//for (Beacon beacon : beacons) {
-			
-			//Collection<LivingEntity> playersList = beacon.getEntitiesInRange();
-			
-			//Block block = beacon.getBlock();
-			
-			//Team DEF = Team.getTeam(BlockDataManager.getContainerData(block).getFirst());
-			
-			//if (Team.getTeam(player) != DEF && playersList.contains(player)) {
-			//	return true;
-			//}
-		//}
-		return false;
-		
 	}
 }

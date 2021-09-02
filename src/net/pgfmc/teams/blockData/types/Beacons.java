@@ -1,5 +1,21 @@
 package net.pgfmc.teams.blockData.types;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+Stores data for beacons in the survival world.
+
+Beacons create a forcefield equal to the area that players can receive a buff from.
+The player who placed the beacon and the team they are on are not effected by the beacon.
+Strangers from outside the team cannot break, place, or interact with anything within the 
+	beacon's range if the beacon is locked (locked by default)
+	otherwise, strangers have free reign.
+
+-----------------------------------
+ */
+
 import java.util.LinkedHashMap;
 
 import org.bukkit.Material;

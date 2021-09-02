@@ -1,5 +1,15 @@
 package net.pgfmc.teams.blockData.containers;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+Unused error apparently? ill keep it anyways.
+
+-----------------------------------
+ */
+
 public class InvalidBeaconException extends RuntimeException {
 
 

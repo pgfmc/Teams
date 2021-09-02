@@ -13,6 +13,16 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerDataListener;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+Handles saving and loading teams.
+
+-----------------------------------
+ */
+
 public class Database implements PlayerDataListener {
 	
 	

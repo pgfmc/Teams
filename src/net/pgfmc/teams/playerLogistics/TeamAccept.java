@@ -10,6 +10,16 @@ import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.teamscore.Team;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+Command for accepting requests
+
+-----------------------------------
+ */
+
 public class TeamAccept implements CommandExecutor {
 
 	@Override

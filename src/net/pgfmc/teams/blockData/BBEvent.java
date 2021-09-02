@@ -12,6 +12,17 @@ import net.pgfmc.teams.blockData.types.Beacons;
 import net.pgfmc.teams.blockData.types.BlockContainer;
 import net.pgfmc.teams.blockData.types.Containers.Security;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+Block Break Event.
+
+-----------------------------------
+ */
+
+
 public class BBEvent implements Listener {
 	
 	@EventHandler

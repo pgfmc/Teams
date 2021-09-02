@@ -5,6 +5,20 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+/*
+Written by CrimsonDart
+
+-----------------------------------
+
+Opens a player's team inventory.
+shows information on the player's team.
+has a "leave team" option as well
+
+If the player has no team, it will allow them to create one.
+
+-----------------------------------
+ */
+
 public class TeamCommand implements CommandExecutor {
 	
 	@Override
