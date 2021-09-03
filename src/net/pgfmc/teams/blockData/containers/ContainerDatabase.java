@@ -21,7 +21,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.teams.blockData.SurvivalManager;
-import net.pgfmc.teams.blockData.types.BlockContainer;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
 /*

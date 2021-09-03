@@ -22,6 +22,7 @@ import net.pgfmc.teams.playerLogistics.InviteCommand;
 import net.pgfmc.teams.playerLogistics.LeaveTeamCommand;
 import net.pgfmc.teams.playerLogistics.LeaveTeamConfirmCommand;
 import net.pgfmc.teams.playerLogistics.TeamAccept;
+import net.pgfmc.teams.teamscore.debug.DebugCommand;
 
 public class TeamsCore extends JavaPlugin {
 	
@@ -43,9 +44,9 @@ public class TeamsCore extends JavaPlugin {
 			} else {
 				System.out.println("database.yml already Exists!");
 				
-				Database.loadTeams();
+				TeamsDatabase.loadTeams();
 				
-				((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new Database(), false);
+				((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new TeamsDatabase(), false);
 			}
 			
 		} catch (IOException e) {
@@ -60,9 +61,9 @@ public class TeamsCore extends JavaPlugin {
 			} else {
 				System.out.println("BlockContainers.yml already Exists!");
 				
-				Database.loadTeams();
+				TeamsDatabase.loadTeams();
 				
-				((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new Database(), false);
+				((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new TeamsDatabase(), false);
 			}
 			
 		} catch (IOException e) {
@@ -87,8 +88,6 @@ public class TeamsCore extends JavaPlugin {
 		
 		ContainerDatabase.loadContainers();
 		
-		//beacons = BlockDataManager.getBeacons();
-		
 		getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
 		getServer().getPluginManager().registerEvents(new BlockInteractEvent(), this);
 		getServer().getPluginManager().registerEvents(new AttackEvent(), this);
@@ -103,13 +102,14 @@ public class TeamsCore extends JavaPlugin {
 		getCommand("leaveTeam").setExecutor(new LeaveTeamCommand());
 		getCommand("leaveTeamConfirm").setExecutor(new LeaveTeamConfirmCommand());
 		getCommand("inspector").setExecutor(new InspectCommand());
+		getCommand("debug").setExecutor(new DebugCommand());
 	}
 	
 	@Override
 	public void onDisable() {
-		Database.saveTeams();
+		TeamsDatabase.saveTeams();
 		ContainerDatabase.saveContainers();
-		((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new Database(), true);
+		((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new TeamsDatabase(), true);
 	}
 	
 	public static ItemStack createItem(String name, Material mat, List<String> lore)

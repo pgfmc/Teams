@@ -13,10 +13,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.blockData.types.BlockContainer;
-import net.pgfmc.teams.blockData.types.Containers.Security;
+import net.pgfmc.teams.blockData.containers.BlockContainer;
+import net.pgfmc.teams.blockData.containers.Containers.Security;
 
-/*
+/**
 Written by CrimsonDart
 
 -----------------------------------
@@ -115,16 +115,16 @@ public class BlockInteractEvent implements Listener {
 							
 							switch(mat) {
 							
-								case BARREL: player.sendMessage("§cThis barrel is locked!");
-								case BLAST_FURNACE: player.sendMessage("§cThis blast furnace is locked!");
-								case BREWING_STAND: player.sendMessage("§cThis brewing stand is locked!");
-								case CHEST: player.sendMessage("§cThis chest is locked!");
-								case DISPENSER: player.sendMessage("§cThis dispenser is locked!");
-								case DROPPER: player.sendMessage("§cThis dropper is locked!");
-								case FURNACE: player.sendMessage("§cThis furnace is locked!");
-								case HOPPER: player.sendMessage("§cThis hopper is locked!");
-								case SHULKER_BOX: player.sendMessage("§cThis shulker box is locked!");
-								case SMOKER: player.sendMessage("§cThis smoker is locked!");
+								case BARREL: player.sendMessage("§cThis barrel is locked!"); return;
+								case BLAST_FURNACE: player.sendMessage("§cThis blast furnace is locked!"); return;
+								case BREWING_STAND: player.sendMessage("§cThis brewing stand is locked!"); return;
+								case CHEST: player.sendMessage("§cThis chest is locked!"); return;
+								case DISPENSER: player.sendMessage("§cThis dispenser is locked!"); return;
+								case DROPPER: player.sendMessage("§cThis dropper is locked!"); return;
+								case FURNACE: player.sendMessage("§cThis furnace is locked!"); return;
+								case HOPPER: player.sendMessage("§cThis hopper is locked!"); return;
+								case SHULKER_BOX: player.sendMessage("§cThis shulker box is locked!"); return;
+								case SMOKER: player.sendMessage("§cThis smoker is locked!"); return;
 								default:
 									return;
 							}
@@ -136,7 +136,7 @@ public class BlockInteractEvent implements Listener {
 					}
 				}
 				
-			} else if (e.getPlayer().getGameMode() == GameMode.CREATIVE && (boolean) PlayerData.getData(player, "debug")) {
+			} else if (e.getPlayer().getGameMode() == GameMode.CREATIVE && PlayerData.getData(player, "debug") != null) {
 				e.setCancelled(true);
 				CreativeManager.outputBlockData(e.getClickedBlock(), e.getPlayer());
 			}

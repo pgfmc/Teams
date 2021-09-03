@@ -1,4 +1,4 @@
-package net.pgfmc.teams.blockData.types;
+package net.pgfmc.teams.blockData.containers;
 
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -43,6 +43,10 @@ public abstract class Containers {
 		
 	}
 	
+	//public static void remove(containerType cont) {
+		
+	//}
+	
 	// --------------------------------------------------- getters and setters
 	
 	public OfflinePlayer getPlayer() {
@@ -80,12 +84,5 @@ public abstract class Containers {
 		}
 		
 		return Security.EXCEPTION;
-		
-		
 	}
-	
-	
-	
-	
-	
 }

@@ -60,6 +60,10 @@ commands:
       aliases: [insp, INSP]
       permission: Teams.inspecotor
       description: toggles inspector mode, which uncovers data about blocks.
+   debug:
+      usage: /debug
+      permission: Teams.debug
+      description: toggles debug mode, which floods the console with text lol
 #
 # -------------------------------||------------------------------
 #

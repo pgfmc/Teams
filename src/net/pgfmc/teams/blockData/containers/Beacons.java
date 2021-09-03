@@ -1,7 +1,8 @@
-package net.pgfmc.teams.blockData.types;
+package net.pgfmc.teams.blockData.containers;
 
-/*
-Written by CrimsonDart
+/**
+@author CrimsonDart
+@version a.1.0.0
 
 -----------------------------------
 
@@ -24,7 +25,7 @@ import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import net.pgfmc.teams.blockData.containers.InvalidBeaconException;
+import net.pgfmc.teams.teamscore.debug.Debug;
 
 public class Beacons extends BlockContainer {
 	
@@ -34,13 +35,18 @@ public class Beacons extends BlockContainer {
 	
 	public Beacons(OfflinePlayer player, Block block, boolean lock) throws InvalidBeaconException {
 		
+		/**
+		
+		 */
+		
 		super(player, lock, block);
 		
 		if (block.getType() == Material.BEACON) {
-			
+			Debug.out("New Beacon Created!", new Object[] {player, lock, block});
 			
 			beacons.put(block, this);
 		} else {
+			Debug.out("New Beacon Created!", new Object[] {player, lock, block});
 			throw new InvalidBeaconException("Block is not a Beacon!");
 		}
 		

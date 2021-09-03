@@ -23,7 +23,7 @@ Handles saving and loading teams.
 -----------------------------------
  */
 
-public class Database implements PlayerDataListener {
+public class TeamsDatabase implements PlayerDataListener {
 	
 	
 	static File file = new File(TeamsCore.plugin.getDataFolder() + File.separator + "database.yml"); // Creates a File object

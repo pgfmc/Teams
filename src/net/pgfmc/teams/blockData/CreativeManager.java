@@ -10,7 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import net.pgfmc.teams.blockData.types.BlockContainer;
+import net.pgfmc.teams.blockData.containers.BlockContainer;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
 /*

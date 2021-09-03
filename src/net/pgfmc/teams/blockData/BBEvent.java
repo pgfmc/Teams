@@ -8,11 +8,12 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.blockData.types.Beacons;
-import net.pgfmc.teams.blockData.types.BlockContainer;
-import net.pgfmc.teams.blockData.types.Containers.Security;
+import net.pgfmc.teams.blockData.containers.Beacons;
+import net.pgfmc.teams.blockData.containers.BlockContainer;
+import net.pgfmc.teams.blockData.containers.Containers.Security;
+import net.pgfmc.teams.teamscore.debug.Debug;
 
-/*
+/**
 Written by CrimsonDart
 
 -----------------------------------
@@ -28,6 +29,8 @@ public class BBEvent implements Listener {
 	@EventHandler
 	public void blockBreak(BlockBreakEvent e) {
 		
+		Debug.out("Block Broken!", new Object[] {e.getPlayer(), e.getPlayer().getWorld(), PlayerData.getPlayerData(e.getPlayer()).getData("debug")});
+		
 		if (EssentialsMain.isSurvivalWorld(e.getPlayer().getWorld())) { // if in survival world
 			
 			Object debugg = PlayerData.getPlayerData(e.getPlayer()).getData("debug");
@@ -40,20 +43,23 @@ public class BBEvent implements Listener {
 					if (beacon.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
 						e.getPlayer().sendMessage("§cYou can't place blocks here!");
 						e.setCancelled(true);
+						
 						return;
 					}
 				}
+				
 				
 				SurvivalManager.updateBlock(e.getBlock(), e.getPlayer(), false);
 				
 				if (e.getBlock().getState() instanceof Container) { // -------------------------------------------- if the block is a container, delete it.
 					BlockContainer.remove(e.getBlock());
-					
+					return;
 				}
 			} else { // ----------------------------------------------------------- if debug mode is on
 				// CreativeManager. ---------- | function to output all past data of the block clicked | ------------
 				e.setCancelled(true);
 				e.getPlayer().sendMessage("| -- insert block data here -- |");
+				return;
 			}
 		}
 	}

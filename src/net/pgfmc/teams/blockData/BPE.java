@@ -8,9 +8,9 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.blockData.types.Beacons;
-import net.pgfmc.teams.blockData.types.BlockContainer;
-import net.pgfmc.teams.blockData.types.Containers.Security;
+import net.pgfmc.teams.blockData.containers.Beacons;
+import net.pgfmc.teams.blockData.containers.BlockContainer;
+import net.pgfmc.teams.blockData.containers.Containers.Security;
 
 /*
 Written by CrimsonDart

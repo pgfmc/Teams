@@ -1,4 +1,4 @@
-package net.pgfmc.teams.blockData.types;
+package net.pgfmc.teams.blockData.containers;
 
 import java.util.LinkedHashMap;
 
