@@ -3,6 +3,7 @@ package net.pgfmc.teams.blockData;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
 import org.bukkit.entity.Player;
@@ -43,7 +44,7 @@ public class BlockInteractEvent implements Listener {
 			
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 				
-				if (block.getState() instanceof Container && BlockContainer.getContainer(block) != null) {
+				if ((block.getState() instanceof Container || block.getState() instanceof Beacon) && BlockContainer.getContainer(block) != null) {
 					
 					BlockContainer cont = BlockContainer.getContainer(block);
 					
@@ -125,6 +126,7 @@ public class BlockInteractEvent implements Listener {
 								case HOPPER: player.sendMessage("§cThis hopper is locked!"); return;
 								case SHULKER_BOX: player.sendMessage("§cThis shulker box is locked!"); return;
 								case SMOKER: player.sendMessage("§cThis smoker is locked!"); return;
+								case BEACON: player.sendMessage("§cThis beacon is locked!"); return;
 								default:
 									return;
 							}

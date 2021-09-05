@@ -11,7 +11,6 @@ import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.blockData.containers.Beacons;
 import net.pgfmc.teams.blockData.containers.BlockContainer;
 import net.pgfmc.teams.blockData.containers.Containers.Security;
-import net.pgfmc.teams.teamscore.debug.Debug;
 
 /**
 Written by CrimsonDart
@@ -29,13 +28,13 @@ public class BBEvent implements Listener {
 	@EventHandler
 	public void blockBreak(BlockBreakEvent e) {
 		
-		Debug.out("Block Broken!", new Object[] {e.getPlayer(), e.getPlayer().getWorld(), PlayerData.getPlayerData(e.getPlayer()).getData("debug")});
+		//Debug.out("Block Broken!", new Object[] {e.getPlayer(), e.getPlayer().getWorld(), PlayerData.getPlayerData(e.getPlayer()).getData("debug")});
 		
 		if (EssentialsMain.isSurvivalWorld(e.getPlayer().getWorld())) { // if in survival world
 			
 			Object debugg = PlayerData.getPlayerData(e.getPlayer()).getData("debug");
 			
-			if (debugg == null && e.getPlayer().getGameMode() != GameMode.CREATIVE) { // ---------------------------------------------- if debug mode off / not creative mode
+			if (debugg == null || e.getPlayer().getGameMode() != GameMode.CREATIVE) { // ---------------------------------------------- if debug mode off / not creative mode
 				
 				Beacons beacon = Beacons.findBeacon(e.getPlayer());
 				

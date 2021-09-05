@@ -31,8 +31,6 @@ public class Beacons extends BlockContainer {
 	
 	private static LinkedHashMap<Block, Beacons> beacons = new LinkedHashMap<>();
 	
-	
-	
 	public Beacons(OfflinePlayer player, Block block, boolean lock) throws InvalidBeaconException {
 		
 		/**
@@ -49,8 +47,6 @@ public class Beacons extends BlockContainer {
 			Debug.out("New Beacon Created!", new Object[] {player, lock, block});
 			throw new InvalidBeaconException("Block is not a Beacon!");
 		}
-		
-		
 	}
 	
 	public void removeContainer() { // deletes a beacon
@@ -83,10 +79,4 @@ public class Beacons extends BlockContainer {
 		}
 		return null;
 	}
-	
-	
-
 }
-
-
-

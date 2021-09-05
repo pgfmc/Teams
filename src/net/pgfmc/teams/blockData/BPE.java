@@ -1,6 +1,7 @@
 package net.pgfmc.teams.blockData;
 
 import org.bukkit.GameMode;
+import org.bukkit.block.Beacon;
 import org.bukkit.block.Container;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -47,8 +48,10 @@ public class BPE implements Listener {
 				SurvivalManager.updateBlock(e.getBlock(), e.getPlayer(), true);
 				
 				if (e.getBlock().getState() instanceof Container) { // -------------------------------------------- if the block is a container, saves who places it.
-					BlockContainer.createBlockContainer(e.getPlayer(), true, e.getBlock());
+					new BlockContainer(e.getPlayer(), true, e.getBlock());
 					
+				} else if (e.getBlock().getState() instanceof Beacon){ // -------------------------------------------- if the block is a Beacon, saves who places it. 
+					new Beacons(e.getPlayer(), e.getBlock(), true);
 				}
 			} else { // ----------------------------------------------------------- if debug mode is on
 				e.setCancelled(true);

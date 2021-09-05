@@ -2,6 +2,7 @@ package net.pgfmc.teams.teamscore;
 
 
 import java.util.IdentityHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,6 +11,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.teams.blockData.containers.Containers;
 
 /*
 Object Class for Teams; a new object will be created upon the creation of a new team.
@@ -41,6 +43,7 @@ public class Team {
 	String name = "New Team";
 	List<UUID> members;
 	static IdentityHashMap<UUID, Team> instances = new IdentityHashMap<UUID, Team>();
+	LinkedList<Containers> containers = new LinkedList<Containers>();
 	UUID ID;
 	
 	// ------------------------------------------------------------------------------------ constructors
@@ -63,15 +66,28 @@ public class Team {
 	
 	// ------------------------------------------------------------------------------------ getters and setters
 
-	
-	public List<UUID> getMembers()
-	{
+	public List<UUID> getMembers() {
 		return members;
 	}
 	
 	public String getName()
 	{
 		return name;
+	}
+	
+	public void setContainer(Containers cont) {
+		containers.add(cont);
+	}
+	
+	public void removeContainer(Containers cont) {
+		containers.remove(cont);
+	}
+	
+	public boolean hasContainer(Containers container) {
+		if (containers.contains(container)) {
+			return true;
+		}
+		return false;
 	}
 	
 	public void setName(String string) {

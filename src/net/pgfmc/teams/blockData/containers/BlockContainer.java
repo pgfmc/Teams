@@ -35,7 +35,11 @@ public class BlockContainer extends Containers {
 		super(player, lock);
 		
 		this.block = block;
-		containers.put(block, this);
+		
+		
+		if (block.getType() != Material.BEACON) {
+			containers.put(block, this);
+		}
 	}
 	
 	
