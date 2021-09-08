@@ -25,6 +25,7 @@ EntityContainer
 public abstract class Containers {
 	
 	OfflinePlayer player;
+	Team team;
 	boolean lock;
 	
 	public enum Security {
@@ -35,7 +36,7 @@ public abstract class Containers {
 		EXCEPTION
 	}
 	
-	public Containers(OfflinePlayer player,  boolean lock) { // class constructor
+	public Containers(OfflinePlayer player,  boolean lock, Team team) { // class constructor
 		
 		this.player = player;
 		
@@ -63,23 +64,26 @@ public abstract class Containers {
 		lock = sug;
 	}
 	
+	public Team getTeam() {
+		return team;
+	}
+	
 	public Security isAllowed(Player player) {
 		
-		Team owner = Team.getTeam(this.player);
 		Team stranger = Team.getTeam(player);
 		
 		
 		if (this.player == player) {
 			return Security.OWNER;
-		} else if (owner != null && owner == stranger) {
+		} else if (team != null && team == stranger) {
 			return Security.TEAMMATE;
-		} else if (owner != null && owner != stranger && !lock) {
+		} else if (team != null && team != stranger && !lock) {
 			return Security.UNLOCKED;
-		} else if (owner != null && owner != stranger && lock) {
+		} else if (team != null && team != stranger && lock) {
 			return Security.DISALLOWED;
-		} else if (owner == null && !lock) {
+		} else if (team == null && !lock) {
 			return Security.UNLOCKED;
-		} else if (owner == null && lock) {
+		} else if (team == null && lock) {
 			return Security.DISALLOWED;
 		}
 		

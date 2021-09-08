@@ -36,17 +36,13 @@ public class BBEvent implements Listener {
 			
 			if (debugg == null || e.getPlayer().getGameMode() != GameMode.CREATIVE) { // ---------------------------------------------- if debug mode off / not creative mode
 				
-				Beacons beacon = Beacons.findBeacon(e.getPlayer());
+				Beacons beacon = Beacons.getBeacon(e.getPlayer(), null);
 				
-				if (beacon != null) {
-					if (beacon.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
-						e.getPlayer().sendMessage("§cYou can't place blocks here!");
-						e.setCancelled(true);
-						
-						return;
-					}
+				if (beacon.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
+					e.getPlayer().sendMessage("§cYou can't break blocks here!");
+					e.setCancelled(true);
+					return;
 				}
-				
 				
 				SurvivalManager.updateBlock(e.getBlock(), e.getPlayer(), false);
 				

@@ -20,7 +20,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.blockData.SurvivalManager;
+import net.pgfmc.teams.teamscore.Team;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
 /*
@@ -49,7 +51,17 @@ public class ContainerDatabase {
 				
 				Location loc = StringtoLoc(key);
 				
-				BlockContainer.createBlockContainer(Bukkit.getOfflinePlayer(UUID.fromString(configSec.getString("player"))), configSec.getBoolean("isLocked"), loc.getWorld().getBlockAt(loc));
+				OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(configSec.getString("player")));
+				try {
+					Team team = Team.findID(UUID.fromString(configSec.getString("team")));
+					BlockContainer.createBlockContainer(player, configSec.getBoolean("isLocked"), loc.getWorld().getBlockAt(loc), team);
+				} catch(Exception e) {
+					
+					
+					
+					Team team = (Team) PlayerData.getData(player, "team");
+					BlockContainer.createBlockContainer(player, configSec.getBoolean("isLocked"), loc.getWorld().getBlockAt(loc), team);
+				}
 			}
 		}
 	}
@@ -74,6 +86,7 @@ public class ContainerDatabase {
 			
 			blocc.set("player", player.getUniqueId().toString());
 			blocc.set("isLocked", cont.isLocked());
+			blocc.set("team", cont.getTeam().getUniqueId().toString());
 			database.set(SurvivalManager.locToString(location), blocc);
 			
 			/*

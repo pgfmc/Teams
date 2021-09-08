@@ -7,6 +7,8 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 
+import net.pgfmc.teams.teamscore.Team;
+
 /*
 
 Written by CrimsonDart
@@ -30,9 +32,9 @@ public class BlockContainer extends Containers {
 	
 	Block block;
 	
-	public BlockContainer(OfflinePlayer player, boolean lock, Block block) { // Constructor
+	public BlockContainer(OfflinePlayer player, boolean lock, Block block, Team team) { // Constructor
 		
-		super(player, lock);
+		super(player, lock, team);
 		
 		this.block = block;
 		
@@ -43,11 +45,11 @@ public class BlockContainer extends Containers {
 	}
 	
 	
-	public static void createBlockContainer(OfflinePlayer player, boolean lock, Block block) { // a router between Beacons and BlockContainer
+	public static void createBlockContainer(OfflinePlayer player, boolean lock, Block block, Team team) { // a router between Beacons and BlockContainer
 		if (block.getType() == Material.BEACON) {
-			new Beacons(player, block, lock);
+			new Beacons(player, block, lock, team);
 		} else {
-			new BlockContainer(player, lock, block);
+			new BlockContainer(player, lock, block, team);
 		}
 	}
 	

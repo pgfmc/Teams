@@ -12,6 +12,7 @@ import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.blockData.containers.Beacons;
 import net.pgfmc.teams.blockData.containers.BlockContainer;
 import net.pgfmc.teams.blockData.containers.Containers.Security;
+import net.pgfmc.teams.teamscore.Team;
 
 /*
 Written by CrimsonDart
@@ -34,24 +35,23 @@ public class BPE implements Listener {
 			
 			if (debugg == null || e.getPlayer().getGameMode() != GameMode.CREATIVE) { // ---------------------------------------------- if debug mode off / not creative mode
 				
-				Beacons beacon = Beacons.findBeacon(e.getPlayer());
+				Beacons beacon = Beacons.getBeacon(e.getPlayer(), null);
 				
-				
-				if (beacon != null) {
-					if (beacon.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
-						e.getPlayer().sendMessage("§cYou can't place blocks here!");
-						e.setCancelled(true);
-						return;
-					}
+				if (beacon.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
+					e.getPlayer().sendMessage("§cYou can't place blocks here!");
+					e.setCancelled(true);
+					return;
 				}
+					
+				
 				
 				SurvivalManager.updateBlock(e.getBlock(), e.getPlayer(), true);
 				
 				if (e.getBlock().getState() instanceof Container) { // -------------------------------------------- if the block is a container, saves who places it.
-					new BlockContainer(e.getPlayer(), true, e.getBlock());
+					new BlockContainer(e.getPlayer(), true, e.getBlock(), (Team) PlayerData.getData(e.getPlayer(), "team"));
 					
 				} else if (e.getBlock().getState() instanceof Beacon){ // -------------------------------------------- if the block is a Beacon, saves who places it. 
-					new Beacons(e.getPlayer(), e.getBlock(), true);
+					new Beacons(e.getPlayer(), e.getBlock(), true, (Team) PlayerData.getData(e.getPlayer(), "team"));
 				}
 			} else { // ----------------------------------------------------------- if debug mode is on
 				e.setCancelled(true);

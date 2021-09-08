@@ -6,6 +6,8 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 
+import net.pgfmc.teams.teamscore.Team;
+
 /*
 
 Written by CrimsonDart
@@ -41,8 +43,8 @@ public class EntityContainer extends Containers {
 	
 	
 	
-	public EntityContainer(OfflinePlayer player, boolean lock, Entity entity) {
-		super(player, lock);
+	public EntityContainer(OfflinePlayer player, boolean lock, Entity entity, Team team) {
+		super(player, lock, team);
 		
 		this.entity = entity;
 		entities.put(entity, this);

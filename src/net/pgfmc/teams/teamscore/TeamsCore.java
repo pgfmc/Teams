@@ -22,7 +22,6 @@ import net.pgfmc.teams.playerLogistics.InviteCommand;
 import net.pgfmc.teams.playerLogistics.LeaveTeamCommand;
 import net.pgfmc.teams.playerLogistics.LeaveTeamConfirmCommand;
 import net.pgfmc.teams.playerLogistics.TeamAccept;
-import net.pgfmc.teams.teamscore.debug.DebugCommand;
 
 public class TeamsCore extends JavaPlugin {
 	
@@ -102,7 +101,7 @@ public class TeamsCore extends JavaPlugin {
 		getCommand("leaveTeam").setExecutor(new LeaveTeamCommand());
 		getCommand("leaveTeamConfirm").setExecutor(new LeaveTeamConfirmCommand());
 		getCommand("inspector").setExecutor(new InspectCommand());
-		getCommand("debug").setExecutor(new DebugCommand());
+		
 	}
 	
 	@Override
