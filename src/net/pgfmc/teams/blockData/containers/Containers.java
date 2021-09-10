@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.teamscore.Team;
 
 /*
@@ -39,6 +40,13 @@ public abstract class Containers {
 	public Containers(OfflinePlayer player,  boolean lock, Team team) { // class constructor
 		
 		this.player = player;
+		
+		
+		if (team == null) {
+			this.team = (Team) PlayerData.getData(player, "team");
+		} else {
+			this.team = team;
+		}
 		
 		this.lock = lock;
 		

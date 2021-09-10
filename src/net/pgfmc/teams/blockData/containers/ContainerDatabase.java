@@ -57,8 +57,6 @@ public class ContainerDatabase {
 					BlockContainer.createBlockContainer(player, configSec.getBoolean("isLocked"), loc.getWorld().getBlockAt(loc), team);
 				} catch(Exception e) {
 					
-					
-					
 					Team team = (Team) PlayerData.getData(player, "team");
 					BlockContainer.createBlockContainer(player, configSec.getBoolean("isLocked"), loc.getWorld().getBlockAt(loc), team);
 				}
@@ -86,7 +84,13 @@ public class ContainerDatabase {
 			
 			blocc.set("player", player.getUniqueId().toString());
 			blocc.set("isLocked", cont.isLocked());
-			blocc.set("team", cont.getTeam().getUniqueId().toString());
+			
+			if (cont.getTeam() != null) {
+				blocc.set("team", cont.getTeam().getUniqueId().toString());
+			} else {
+				blocc.set("team", null);
+			}
+			
 			database.set(SurvivalManager.locToString(location), blocc);
 			
 			/*

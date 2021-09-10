@@ -37,7 +37,7 @@ public class BPE implements Listener {
 				
 				Beacons beacon = Beacons.getBeacon(e.getPlayer(), null);
 				
-				if (beacon.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
+				if (beacon != null && beacon.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
 					e.getPlayer().sendMessage("§cYou can't place blocks here!");
 					e.setCancelled(true);
 					return;
