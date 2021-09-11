@@ -11,7 +11,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.blockData.containers.Containers;
+import net.pgfmc.teams.data.containers.Containers;
 
 /*
 Object Class for Teams; a new object will be created upon the creation of a new team.

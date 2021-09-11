@@ -1,4 +1,4 @@
-package net.pgfmc.teams.blockData.containers;
+package net.pgfmc.teams.data.containers;
 
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;

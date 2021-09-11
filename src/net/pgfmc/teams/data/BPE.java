@@ -1,4 +1,4 @@
-package net.pgfmc.teams.blockData;
+package net.pgfmc.teams.data;
 
 import org.bukkit.GameMode;
 import org.bukkit.block.Beacon;
@@ -9,9 +9,9 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.blockData.containers.Beacons;
-import net.pgfmc.teams.blockData.containers.BlockContainer;
-import net.pgfmc.teams.blockData.containers.Containers.Security;
+import net.pgfmc.teams.data.containers.Beacons;
+import net.pgfmc.teams.data.containers.BlockContainer;
+import net.pgfmc.teams.data.containers.Containers.Security;
 import net.pgfmc.teams.teamscore.Team;
 
 /*
@@ -43,8 +43,6 @@ public class BPE implements Listener {
 					return;
 				}
 					
-				
-				
 				SurvivalManager.updateBlock(e.getBlock(), e.getPlayer(), true);
 				
 				if (e.getBlock().getState() instanceof Container) { // -------------------------------------------- if the block is a container, saves who places it.

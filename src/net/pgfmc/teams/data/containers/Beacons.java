@@ -1,4 +1,4 @@
-package net.pgfmc.teams.blockData.containers;
+package net.pgfmc.teams.data.containers;
 
 import java.util.ArrayList;
 
@@ -81,12 +81,9 @@ public class Beacons extends BlockContainer {
 			return true;
 		}
 		return false;
-		
-		
-		
 	}
 	
-	public double getDistance(Location loc) {
+	public double getDistance(Location loc) { // returns the distance from this to the location input.
 		
 		Location bloke = block.getLocation();
 		

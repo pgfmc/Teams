@@ -1,4 +1,4 @@
-package net.pgfmc.teams.blockData.containers;
+package net.pgfmc.teams.data.containers;
 
 import java.util.LinkedHashMap;
 
@@ -46,10 +46,18 @@ public class BlockContainer extends Containers {
 	
 	
 	public static void createBlockContainer(OfflinePlayer player, boolean lock, Block block, Team team) { // a router between Beacons and BlockContainer
+		
+		Block bloke = DoubleChests.getOtherSide(block);
+		
 		if (block.getType() == Material.BEACON) {
 			new Beacons(player, block, lock, team);
+			
+		} else if (bloke != null && BlockContainer.getContainer(block) != null && BlockContainer.getContainer(block).getTeam() == team) {
+			
+			new DoubleChests(player, lock, block, team, bloke);
 		} else {
 			new BlockContainer(player, lock, block, team);
+			
 		}
 	}
 	
@@ -81,6 +89,8 @@ public class BlockContainer extends Containers {
 		}
 		return null;
 	}
+	
+	
 	
 	
 }

@@ -12,11 +12,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
-import net.pgfmc.teams.blockData.BBEvent;
-import net.pgfmc.teams.blockData.BPE;
-import net.pgfmc.teams.blockData.BlockInteractEvent;
-import net.pgfmc.teams.blockData.InspectCommand;
-import net.pgfmc.teams.blockData.containers.ContainerDatabase;
+import net.pgfmc.teams.data.BBEvent;
+import net.pgfmc.teams.data.BPE;
+import net.pgfmc.teams.data.BlockInteractEvent;
+import net.pgfmc.teams.data.InspectCommand;
+import net.pgfmc.teams.data.containers.ContainerDatabase;
 import net.pgfmc.teams.playerLogistics.AttackEvent;
 import net.pgfmc.teams.playerLogistics.InviteCommand;
 import net.pgfmc.teams.playerLogistics.LeaveTeamCommand;

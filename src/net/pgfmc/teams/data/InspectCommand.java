@@ -1,4 +1,4 @@
-package net.pgfmc.teams.blockData;
+package net.pgfmc.teams.data;
 
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;

@@ -1,4 +1,4 @@
-package net.pgfmc.teams.blockData.containers;
+package net.pgfmc.teams.data.containers;
 
 import java.util.LinkedHashMap;
 
@@ -34,14 +34,12 @@ Any Nametagged mob (maybe?)
 
  */
 
-
+@Deprecated
 public class EntityContainer extends Containers {
 	
 	public static LinkedHashMap<Entity, EntityContainer> entities = new LinkedHashMap<>();
 	
 	Entity entity;
-	
-	
 	
 	public EntityContainer(OfflinePlayer player, boolean lock, Entity entity, Team team) {
 		super(player, lock, team);
@@ -55,7 +53,7 @@ public class EntityContainer extends Containers {
 	}
 	
 	@Override
-	Location getLocation() {
+	public Location getLocation() {
 		return entity.getLocation();
 	}
 	

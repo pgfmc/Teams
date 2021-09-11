@@ -1,4 +1,4 @@
-package net.pgfmc.teams.blockData;
+package net.pgfmc.teams.data;
 
 import java.io.File;
 import java.io.IOException;

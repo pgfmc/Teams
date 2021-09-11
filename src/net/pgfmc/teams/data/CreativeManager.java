@@ -1,4 +1,4 @@
-package net.pgfmc.teams.blockData;
+package net.pgfmc.teams.data;
 
 import java.io.File;
 import java.util.UUID;
@@ -10,7 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import net.pgfmc.teams.blockData.containers.BlockContainer;
+import net.pgfmc.teams.data.containers.BlockContainer;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
 /*
