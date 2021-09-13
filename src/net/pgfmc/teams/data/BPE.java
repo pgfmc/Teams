@@ -33,7 +33,7 @@ public class BPE implements Listener {
 			
 			Object debugg = PlayerData.getPlayerData(e.getPlayer()).getData("debug");
 			
-			if (debugg == null || e.getPlayer().getGameMode() != GameMode.CREATIVE) { // ---------------------------------------------- if debug mode off / not creative mode
+			if (debugg == null && e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 				
 				Beacons beacon = Beacons.getBeacon(e.getPlayer(), null);
 				
@@ -47,11 +47,13 @@ public class BPE implements Listener {
 				
 				if (e.getBlock().getState() instanceof Container) { // -------------------------------------------- if the block is a container, saves who places it.
 					new BlockContainer(e.getPlayer(), true, e.getBlock(), (Team) PlayerData.getData(e.getPlayer(), "team"));
+					return;
 					
 				} else if (e.getBlock().getState() instanceof Beacon){ // -------------------------------------------- if the block is a Beacon, saves who places it. 
 					new Beacons(e.getPlayer(), e.getBlock(), true, (Team) PlayerData.getData(e.getPlayer(), "team"));
+					return;
 				}
-			} else { // ----------------------------------------------------------- if debug mode is on
+			} else if (debugg != null && e.getPlayer().getGameMode() == GameMode.CREATIVE) { // ----------------------------------------------------------- if debug mode is on
 				e.setCancelled(true);
 				CreativeManager.outputBlockData(e.getBlockAgainst(), e.getPlayer());
 			}

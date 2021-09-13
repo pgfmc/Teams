@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 
+import net.pgfmc.teams.data.SurvivalManager;
 import net.pgfmc.teams.teamscore.Team;
 
 /*
@@ -43,7 +44,6 @@ public class BlockContainer extends Containers {
 			containers.put(block, this);
 		}
 	}
-	
 	
 	public static void createBlockContainer(OfflinePlayer player, boolean lock, Block block, Team team) { // a router between Beacons and BlockContainer
 		
@@ -90,7 +90,24 @@ public class BlockContainer extends Containers {
 		return null;
 	}
 	
-	
-	
-	
+	public static void outputData() { // outputs stored container data.
+		
+		System.out.println("Container Data:");
+		
+		for (Block block : containers.keySet()) {
+			
+			if (containers.get(block).getTeam() != null) {
+				System.out.println("	" + SurvivalManager.locToString(block.getLocation()) + 
+						":\n      type: " + block.getType().toString() + 
+						" \n      player: " + containers.get(block).player.getName() + 
+						" \n      team:" + containers.get(block).team.getName() + 
+						" \n      locked? :" + containers.get(block).lock);
+			} else {
+				System.out.println("	" + SurvivalManager.locToString(block.getLocation()) + 
+						":\n      type: " + block.getType().toString() + 
+						" \n      player: " + containers.get(block).player.getName() + 
+						" \n      locked? :" + containers.get(block).lock);
+			}
+		}
+	}
 }

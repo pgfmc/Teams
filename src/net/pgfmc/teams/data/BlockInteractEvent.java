@@ -34,13 +34,15 @@ public class BlockInteractEvent implements Listener {
 		
 		// controls clicking containers and beacons;
 		
-		if (e.getPlayer() != null && EssentialsMain.isSurvivalWorld(e.getClickedBlock().getWorld()) && e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+		if (e.getClickedBlock() != null && e.getPlayer() != null && EssentialsMain.isSurvivalWorld(e.getClickedBlock().getWorld()) && e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			
 			if (e.getClickedBlock() != null) {
 				Block block = e.getClickedBlock();
 				Player player = e.getPlayer();
 				
-				if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
+				Object debugg = PlayerData.getPlayerData(e.getPlayer()).getData("debug");
+				
+				if (debugg == null && e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 					
 					if ((block.getState() instanceof Container || block.getState() instanceof Beacon) && BlockContainer.getContainer(block) != null) {
 						
@@ -136,7 +138,7 @@ public class BlockInteractEvent implements Listener {
 						}
 					}
 					
-				} else if (e.getPlayer().getGameMode() == GameMode.CREATIVE && PlayerData.getData(player, "debug") != null) {
+				} else if (debugg != null && e.getPlayer().getGameMode() == GameMode.CREATIVE) {
 					e.setCancelled(true);
 					CreativeManager.outputBlockData(e.getClickedBlock(), e.getPlayer());
 				}

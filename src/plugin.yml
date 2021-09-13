@@ -64,6 +64,10 @@ commands:
       usage: /debug
       permission: Teams.debug
       description: toggles debug mode, which floods the console with text lol
+   containerDump:
+      usage: /containerDump
+      permission: Teams.dump
+      description: dumps all container data into the console, for debug purposes.
 #
 # -------------------------------||------------------------------
 #

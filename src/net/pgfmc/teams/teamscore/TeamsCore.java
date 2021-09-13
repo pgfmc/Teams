@@ -16,6 +16,7 @@ import net.pgfmc.teams.data.BBEvent;
 import net.pgfmc.teams.data.BPE;
 import net.pgfmc.teams.data.BlockInteractEvent;
 import net.pgfmc.teams.data.InspectCommand;
+import net.pgfmc.teams.data.containers.ContainerDataOutputCommand;
 import net.pgfmc.teams.data.containers.ContainerDatabase;
 import net.pgfmc.teams.playerLogistics.AttackEvent;
 import net.pgfmc.teams.playerLogistics.InviteCommand;
@@ -101,6 +102,7 @@ public class TeamsCore extends JavaPlugin {
 		getCommand("leaveTeam").setExecutor(new LeaveTeamCommand());
 		getCommand("leaveTeamConfirm").setExecutor(new LeaveTeamConfirmCommand());
 		getCommand("inspector").setExecutor(new InspectCommand());
+		getCommand("containerDump").setExecutor(new ContainerDataOutputCommand());
 		
 	}
 	

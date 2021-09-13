@@ -127,9 +127,6 @@ public class ContainerDatabase {
 		
 	}
 	
-	
-	
-	
 	private static Location StringtoLoc(String string) { // converts a specific string to a location object
 		
 		char[] chars = string.toCharArray();

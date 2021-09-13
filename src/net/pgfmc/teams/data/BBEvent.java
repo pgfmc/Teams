@@ -34,7 +34,7 @@ public class BBEvent implements Listener {
 			
 			Object debugg = PlayerData.getPlayerData(e.getPlayer()).getData("debug");
 			
-			if (debugg == null || e.getPlayer().getGameMode() != GameMode.CREATIVE) { // ---------------------------------------------- if debug mode off / not creative mode
+			if (debugg == null && e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 				
 				Beacons beacon = Beacons.getBeacon(e.getPlayer(), null);
 				
@@ -50,7 +50,7 @@ public class BBEvent implements Listener {
 					BlockContainer.remove(e.getBlock());
 					return;
 				}
-			} else { // ----------------------------------------------------------- if debug mode is on
+			} else if (debugg != null && e.getPlayer().getGameMode() == GameMode.CREATIVE) { // ----------------------------------------------------------- if debug mode is on
 				// CreativeManager. ---------- | function to output all past data of the block clicked | ------------
 				e.setCancelled(true);
 				e.getPlayer().sendMessage("| -- insert block data here -- |");
