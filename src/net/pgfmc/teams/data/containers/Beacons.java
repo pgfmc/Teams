@@ -37,7 +37,7 @@ public class Beacons extends BlockContainer {
 	
 	private static LinkedHashMap<Block, Beacons> beacons = new LinkedHashMap<>();
 	
-	public Beacons(OfflinePlayer player, Block block, boolean lock, Team team) throws InvalidBeaconException {
+	public Beacons(OfflinePlayer player, Block block, Lock lock, Team team) throws InvalidBeaconException {
 		
 		/**
 		
@@ -56,8 +56,8 @@ public class Beacons extends BlockContainer {
 	}
 	
 	public void removeContainer() { // deletes a beacon
-		BlockContainer.remove(block);
-		beacons.remove(block);
+		BlockContainer.remove(chest);
+		beacons.remove(chest);
 	}
 	
 	
@@ -71,8 +71,8 @@ public class Beacons extends BlockContainer {
 	
 	public boolean inRange(Location loc) { // input a player, and find if its in range
 		
-		int mod = (((Beacon) block.getState()).getTier() * 10) + 10;
-		Location bloke = block.getLocation();
+		int mod = (((Beacon) chest.getState()).getTier() * 10) + 10;
+		Location bloke = chest.getLocation();
 		
 		if (bloke.getBlockX() - mod <= loc.getBlockX() && 
 				loc.getBlockX() <= bloke.getBlockX() + mod && 
@@ -86,7 +86,7 @@ public class Beacons extends BlockContainer {
 	
 	public double getDistance(Location loc) { // returns the distance from this to the location input.
 		
-		Location bloke = block.getLocation();
+		Location bloke = chest.getLocation();
 		
 		return Math.sqrt( Math.pow(loc.getX() + bloke.getX(), 2) + Math.pow(loc.getY() + bloke.getY(), 2) + Math.pow(loc.getZ() + bloke.getZ(), 2));
 	}

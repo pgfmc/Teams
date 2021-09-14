@@ -11,6 +11,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.teams.data.containers.BlockContainer;
+import net.pgfmc.teams.data.containers.Containers.Lock;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
 /*
@@ -44,15 +45,23 @@ public class CreativeManager {
 				player.sendMessage("The block at " + block.getX() + ", " + block.getY() + ", " + block.getZ() + " was Placed at time " + 
 			database.getConfigurationSection(data).get("time") + " by " + Bukkit.getPlayer(UUID.fromString(database.getConfigurationSection(data).getString("Player"))).getName() + ".");
 				
-				Boolean lock = BlockContainer.getContainer(block).isLocked();
+				Lock lock = BlockContainer.getContainer(block).getLock();
 				if (lock != null) {
 					
-					if (lock) {
+					switch(lock) {
+					case LOCKED:
 						player.sendMessage("This container is Locked!");
-					} else {
+						break;
+					case TEAM_ONLY:
+						player.sendMessage("This container is Team Locked!");
+						break;
+					case UNLOCKED:
 						player.sendMessage("This container isn't Locked!");
-					}
+						break;
+					default:
+						break;
 					
+					}
 				}
 			} else {
 				player.sendMessage("The block at " + block.getX() + ", " + block.getY() + ", " + block.getZ() + " was Broken at time " + 

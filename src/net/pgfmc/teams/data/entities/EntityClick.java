@@ -1,18 +1,6 @@
 package net.pgfmc.teams.data.entities;
 
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-
-import net.pgfmc.pgfessentials.EssentialsMain;
-import net.pgfmc.teams.data.containers.EntityContainer;
-import net.pgfmc.teams.data.containers.Containers.Security;
-
+/*
 @Deprecated
 public class EntityClick implements Listener {
 	
@@ -51,13 +39,13 @@ public class EntityClick implements Listener {
 				case OWNER: {
 					if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 						
-						if (cont.isLocked()) {
+						if (cont.getLock()) {
 							
 							e.setCancelled(true);
 							
 							player.sendMessage("§6Unlocked!");
 							player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-							cont.setLocked(false);
+							cont.setLock(false);
 							return;
 							
 						} else {
@@ -66,7 +54,7 @@ public class EntityClick implements Listener {
 							
 							player.sendMessage("§6Locked!");
 							player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-							cont.setLocked(true);
+							cont.setLock(true);
 							return;
 						}
 						
@@ -77,13 +65,13 @@ public class EntityClick implements Listener {
 				case TEAMMATE: {
 					if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 						
-						if (cont.isLocked()) {
+						if (cont.getLock()) {
 							
 							e.setCancelled(true);
 							
 							player.sendMessage("§6Unlocked!");
 							player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-							cont.setLocked(false);
+							cont.setLock(false);
 							return;
 							
 						} else {
@@ -92,7 +80,7 @@ public class EntityClick implements Listener {
 							
 							player.sendMessage("§6Locked!");
 							player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-							cont.setLocked(true);
+							cont.setLock(true);
 							return;
 						}
 						
@@ -103,7 +91,7 @@ public class EntityClick implements Listener {
 				case UNLOCKED: return;
 				
 				case DISALLOWED: {
-					if (cont.isLocked()) {
+					if (cont.getLock()) {
 						e.setCancelled(true);
 						
 						EntityType mat = e.getRightClicked().getType();
@@ -135,7 +123,7 @@ public class EntityClick implements Listener {
 											name = name + new String(charArray) + " ";
 										}
 										name = name.stripTrailing();
-										player.sendMessage("§cThis " + name + " is locked!"); */
+										player.sendMessage("§cThis " + name + " is locked!"); */ /*
 										return;
 						}
 					} else {
@@ -149,4 +137,4 @@ public class EntityClick implements Listener {
 			}
 		}
 	}
-}
+}*/

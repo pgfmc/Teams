@@ -2,7 +2,6 @@ package net.pgfmc.teams.data.containers;
 
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.teamscore.Team;
@@ -25,9 +24,9 @@ EntityContainer
 
 public abstract class Containers {
 	
-	OfflinePlayer player;
+	OfflinePlayer placer;
 	Team team;
-	boolean lock;
+	Lock lock;
 	
 	public enum Security {
 		OWNER,
@@ -37,9 +36,16 @@ public abstract class Containers {
 		EXCEPTION
 	}
 	
-	public Containers(OfflinePlayer player,  boolean lock, Team team) { // class constructor
+	public enum Lock {
+		UNLOCKED,
+		TEAM_ONLY,
+		ALLIES_ONLY, //unused for now
+		LOCKED
+	}
+	
+	public Containers(OfflinePlayer player,  Lock lock, Team team) { // class constructor
 		
-		this.player = player;
+		this.placer = player;
 		
 		
 		if (team == null) {
@@ -59,16 +65,16 @@ public abstract class Containers {
 	// --------------------------------------------------- getters and setters
 	
 	public OfflinePlayer getPlayer() {
-		return player;
+		return placer;
 	}
 	
 	abstract Location getLocation();
 	
-	public boolean isLocked() {
+	public Lock getLock() {
 		return lock;
 	}
 	
-	public void setLocked(boolean sug) {
+	public void setLock(Lock sug) {
 		lock = sug;
 	}
 	
@@ -76,25 +82,31 @@ public abstract class Containers {
 		return team;
 	}
 	
-	public Security isAllowed(Player player) {
+	public void setTeam(Team team) {
+		this.team = team;
+	}
+	
+	public Security isAllowed(OfflinePlayer player) {
 		
 		Team stranger = Team.getTeam(player);
 		
+		switch(lock) {
+		case LOCKED: // ------------------------ nobody but the player can access. Also, the container's team is tied to the player. | WIP
+			if (this.placer == player) {
+				return Security.OWNER;
+			}
+			return Security.DISALLOWED;
+			
+		case TEAM_ONLY: // --------------------- only Teammates can access.
+			if (team != null && team == stranger) { return Security.TEAMMATE; } else
+			if (team != stranger) { return Security.DISALLOWED; }
+		case UNLOCKED: // --------------------- anybody can access.
+			if (team != null && team == stranger) { return Security.TEAMMATE; } else
+			if (team != stranger) { return Security.UNLOCKED; }
+			
+		default:
+			return Security.EXCEPTION;
 		
-		if (this.player == player) {
-			return Security.OWNER;
-		} else if (team != null && team == stranger) {
-			return Security.TEAMMATE;
-		} else if (team != null && team != stranger && !lock) {
-			return Security.UNLOCKED;
-		} else if (team != null && team != stranger && lock) {
-			return Security.DISALLOWED;
-		} else if (team == null && !lock) {
-			return Security.UNLOCKED;
-		} else if (team == null && lock) {
-			return Security.DISALLOWED;
 		}
-		
-		return Security.EXCEPTION;
 	}
 }

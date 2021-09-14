@@ -41,7 +41,7 @@ public class EntityContainer extends Containers {
 	
 	Entity entity;
 	
-	public EntityContainer(OfflinePlayer player, boolean lock, Entity entity, Team team) {
+	public EntityContainer(OfflinePlayer player, Lock lock, Entity entity, Team team) {
 		super(player, lock, team);
 		
 		this.entity = entity;

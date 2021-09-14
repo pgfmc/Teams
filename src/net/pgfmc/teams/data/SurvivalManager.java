@@ -59,12 +59,19 @@ public class SurvivalManager {
 		}
 		
 		// sets data
-		ConfigurationSection configSec = database.createSection(data);
-		configSec.set("Player", player.getUniqueId().toString());
-		configSec.set("isPlaced?", isPlaced);
-		configSec.set("time", LocalTime.now().toString());
-		configSec.set("block", block.getType().toString());
-				
+		
+		
+		ConfigurationSection configSec;
+		if (player == null) {
+			configSec = null;
+		} else {
+			configSec = database.createSection(data);
+			configSec.set("Player", player.getUniqueId().toString());
+			configSec.set("isPlaced?", isPlaced);
+			configSec.set("time", LocalTime.now().toString());
+			configSec.set("block", block.getType().toString());
+		}
+		
 		database.set(data, configSec);
 		
 		// saves file

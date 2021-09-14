@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.containers.BlockContainer;
+import net.pgfmc.teams.data.containers.Containers.Lock;
 import net.pgfmc.teams.data.containers.Containers.Security;
 
 /**
@@ -57,23 +58,39 @@ public class BlockInteractEvent implements Listener {
 						case OWNER: {
 							if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 								
-								if (cont.isLocked()) {
+								// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
+								
+								switch(cont.getLock()) {
+								case LOCKED:
 									
+									e.setCancelled(true);
+									
+									player.sendMessage("§6Only Teammates have access now!");
+									player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+									cont.setLock(Lock.TEAM_ONLY);
+									return;
+									
+								case TEAM_ONLY:
+
 									e.setCancelled(true);
 									
 									player.sendMessage("§6Unlocked!");
 									player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-									cont.setLocked(false);
+									cont.setLock(Lock.UNLOCKED);
 									return;
 									
-								} else {
+								case UNLOCKED:
 									
 									e.setCancelled(true);
 									
-									player.sendMessage("§6Locked!");
+									player.sendMessage("§6Fully Locked!");
 									player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-									cont.setLocked(true);
+									cont.setLock(Lock.LOCKED);
 									return;
+									
+								default:
+									return;
+								
 								}
 								
 							} else {
@@ -83,23 +100,39 @@ public class BlockInteractEvent implements Listener {
 						case TEAMMATE: {
 							if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 								
-								if (cont.isLocked()) {
+								
+								// LOCKED -X TEAM_ONLY -> UNLOCKED -> TEAM_ONLY -> start over...
+								
+								switch(cont.getLock()) {
+								case LOCKED:
 									
+									e.setCancelled(true);
+									
+									player.sendMessage("§c" + cont.getPlayer().getName() + " has this container fully locked!");
+									player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+									return;
+									
+								case TEAM_ONLY:
+
 									e.setCancelled(true);
 									
 									player.sendMessage("§6Unlocked!");
 									player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-									cont.setLocked(false);
+									cont.setLock(Lock.UNLOCKED);
 									return;
 									
-								} else {
+								case UNLOCKED:
 									
 									e.setCancelled(true);
 									
-									player.sendMessage("§6Locked!");
+									player.sendMessage("§6Only Teammates have access now!");
 									player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-									cont.setLocked(true);
+									cont.setLock(Lock.TEAM_ONLY);
 									return;
+									
+								default:
+									return;
+								
 								}
 								
 							} else {
@@ -109,29 +142,25 @@ public class BlockInteractEvent implements Listener {
 						case UNLOCKED: return;
 						
 						case DISALLOWED: {
-							if (cont.isLocked()) {
-								e.setCancelled(true);
-								
-								Material mat = e.getClickedBlock().getType();
-								
-								switch(mat) {
-								
-									case BARREL: player.sendMessage("§cThis barrel is locked!"); return;
-									case BLAST_FURNACE: player.sendMessage("§cThis blast furnace is locked!"); return;
-									case BREWING_STAND: player.sendMessage("§cThis brewing stand is locked!"); return;
-									case CHEST: player.sendMessage("§cThis chest is locked!"); return;
-									case DISPENSER: player.sendMessage("§cThis dispenser is locked!"); return;
-									case DROPPER: player.sendMessage("§cThis dropper is locked!"); return;
-									case FURNACE: player.sendMessage("§cThis furnace is locked!"); return;
-									case HOPPER: player.sendMessage("§cThis hopper is locked!"); return;
-									case SHULKER_BOX: player.sendMessage("§cThis shulker box is locked!"); return;
-									case SMOKER: player.sendMessage("§cThis smoker is locked!"); return;
-									case BEACON: player.sendMessage("§cThis beacon is locked!"); return;
-									default:
-										return;
-								}
-							} else {
-								return;
+							e.setCancelled(true);
+							
+							Material mat = e.getClickedBlock().getType();
+							
+							switch(mat) {
+							
+								case BARREL: player.sendMessage("§cThis barrel is locked!"); return;
+								case BLAST_FURNACE: player.sendMessage("§cThis blast furnace is locked!"); return;
+								case BREWING_STAND: player.sendMessage("§cThis brewing stand is locked!"); return;
+								case CHEST: player.sendMessage("§cThis chest is locked!"); return;
+								case DISPENSER: player.sendMessage("§cThis dispenser is locked!"); return;
+								case DROPPER: player.sendMessage("§cThis dropper is locked!"); return;
+								case FURNACE: player.sendMessage("§cThis furnace is locked!"); return;
+								case HOPPER: player.sendMessage("§cThis hopper is locked!"); return;
+								case SHULKER_BOX: player.sendMessage("§cThis shulker box is locked!"); return;
+								case SMOKER: player.sendMessage("§cThis smoker is locked!"); return;
+								case BEACON: player.sendMessage("§cThis beacon is locked!"); return;
+								default:
+									return;
 							}
 						}
 						case EXCEPTION: System.out.println("cont.isAllowed() returned Security.EXCEPTION!");

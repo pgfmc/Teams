@@ -16,6 +16,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.SurvivalManager;
+import net.pgfmc.teams.data.containers.Containers.Lock;
 import net.pgfmc.teams.teamscore.Team;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
@@ -46,13 +47,27 @@ public class ContainerDatabase {
 				Location loc = StringtoLoc(key);
 				
 				OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(configSec.getString("player")));
+				
+				
+				Lock lock;
+				
+				if (configSec.getString("Lock") == null) {
+					if (configSec.getBoolean("isLocked")) {
+						lock = Lock.TEAM_ONLY;
+					} else {
+						lock = Lock.UNLOCKED;
+					}
+				} else {
+					lock = Lock.valueOf(configSec.getString("Lock"));
+				}
+				
 				try {
 					Team team = Team.findID(UUID.fromString(configSec.getString("team")));
-					BlockContainer.createBlockContainer(player, configSec.getBoolean("isLocked"), loc.getWorld().getBlockAt(loc), team);
+					BlockContainer.createBlockContainer(player, lock, loc.getWorld().getBlockAt(loc), team);
 				} catch(Exception e) {
 					
 					Team team = (Team) PlayerData.getData(player, "team");
-					BlockContainer.createBlockContainer(player, configSec.getBoolean("isLocked"), loc.getWorld().getBlockAt(loc), team);
+					BlockContainer.createBlockContainer(player, lock, loc.getWorld().getBlockAt(loc), team);
 				}
 			}
 		}
@@ -63,6 +78,7 @@ public class ContainerDatabase {
 		File file = new File(TeamsCore.plugin.getDataFolder() + File.separator + "BlockContainers.yml"); // Creates a File object
 		FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 		
+		BlockContainer.updateTeams();
 		
 		for (Block block : BlockContainer.containers.keySet()) { // for all BlockContainers and beacons.
 			
@@ -76,8 +92,9 @@ public class ContainerDatabase {
 				blocc = database.createSection(SurvivalManager.locToString(location));
 			}
 			
+			blocc.set("isLocked", null);
 			blocc.set("player", player.getUniqueId().toString());
-			blocc.set("isLocked", cont.isLocked());
+			blocc.set("Lock", cont.getLock().toString());
 			
 			if (cont.getTeam() != null) {
 				blocc.set("team", cont.getTeam().getUniqueId().toString());
@@ -86,32 +103,6 @@ public class ContainerDatabase {
 			}
 			
 			database.set(SurvivalManager.locToString(location), blocc);
-			
-			/*
-			Block bloke = getOtherSide(block);
-			 
-			
-			
-			// ------------------------------------ FIX HERE
-			
-			
-			if (bloke != null) { // saves the other side of the double chest (if the container was a double chest)
-				
-				location = bloke.getLocation();
-				
-				blocc = database.getConfigurationSection(SurvivalManager.locToString(location));
-				if (blocc == null) {
-					blocc = database.createSection(SurvivalManager.locToString(location));
-				}
-				
-				blocc.set("player", player.getUniqueId().toString());
-				blocc.set("isLocked", cont.isLocked());
-				
-				database.set(SurvivalManager.locToString(location), blocc);
-			}
-			*/
-			
-			// ------------------------------------- FIX HERE // implement into BlockContainer.java
 			
 			// saves data.
 			try {

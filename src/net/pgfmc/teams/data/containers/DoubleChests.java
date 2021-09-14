@@ -4,36 +4,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Container;
 import org.bukkit.block.DoubleChest;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
-import net.pgfmc.teams.teamscore.Team;
 
-public class DoubleChests extends BlockContainer {
-	
-	
-	
-	
-	
-	BlockContainer otherSide;
-	
-	public DoubleChests(OfflinePlayer player, boolean lock, Block block, Team team, Block otherSide) {
-		super(player, lock, block, team);
-		
-		if (otherSide == null || otherSide.getType() != Material.CHEST || ((Chest) otherSide.getState()).getInventory().getHolder() instanceof DoubleChest && 
-				!((DoubleChest) ((Chest) otherSide.getState()).getInventory().getHolder()).getRightSide().toString().equals(((DoubleChest) 
-						((Chest) block.getState()).getInventory().getHolder()).getRightSide().toString())) {
-			
-			
-		}
-		
-		this.otherSide = BlockContainer.getContainer(otherSide);
-	}
-	
+public class DoubleChests {
 	
 	
 	public static Block getOtherSide(Block chest) { // gets the other side of a double chest after one side is placed.

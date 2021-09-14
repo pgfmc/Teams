@@ -7,11 +7,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTameEvent;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.containers.Beacons;
 import net.pgfmc.teams.data.containers.Containers.Security;
-import net.pgfmc.teams.data.containers.EntityContainer;
-import net.pgfmc.teams.teamscore.Team;
 
 @Deprecated
 public class TameEvent implements Listener {
@@ -32,7 +29,7 @@ public class TameEvent implements Listener {
 					e.setCancelled(true);
 					return;
 				} else {
-					new EntityContainer(player, true, e.getEntity(), (Team) PlayerData.getData(player, "team"));
+					//new EntityContainer(player, true, e.getEntity(), (Team) PlayerData.getData(player, "team"));
 				}
 			}
 		}
