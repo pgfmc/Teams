@@ -60,6 +60,7 @@ public class Team {
 		ID = UUID.randomUUID();
 		
 		instances.put(ID, this);
+		
 	}
 	
 	// ------------------------------------------------------------------------------------ getters and setters
@@ -98,9 +99,9 @@ public class Team {
 			members.remove(p.getUniqueId());
 			if (members.size() < 0) {
 				instances.remove(this.getUniqueId());
+				BlockContainer.updateTeams();
 			}
 			PlayerData.setData(p, "team", null);
-			BlockContainer.updateTeams();
 			return true;
 		} else {
 			return false;

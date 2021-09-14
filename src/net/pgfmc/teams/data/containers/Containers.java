@@ -90,6 +90,11 @@ public abstract class Containers {
 		
 		Team stranger = Team.getTeam(player);
 		
+		if (team == null && lock == Lock.LOCKED && placer == player) {
+			BlockContainer.updateTeams();
+			return Security.OWNER;
+		}
+		
 		switch(lock) {
 		case LOCKED: // ------------------------ nobody but the player can access. Also, the container's team is tied to the player. | WIP
 			if (this.placer == player) {
@@ -98,11 +103,26 @@ public abstract class Containers {
 			return Security.DISALLOWED;
 			
 		case TEAM_ONLY: // --------------------- only Teammates can access.
-			if (team != null && team == stranger) { return Security.TEAMMATE; } else
-			if (team != stranger) { return Security.DISALLOWED; }
+			
+			if (team == stranger) {
+				
+				if (this.placer == player) {
+					return Security.OWNER;
+					
+				}
+				return Security.TEAMMATE; 
+			} 
+			else { return Security.DISALLOWED; } 
 		case UNLOCKED: // --------------------- anybody can access.
-			if (team != null && team == stranger) { return Security.TEAMMATE; } else
-			if (team != stranger) { return Security.UNLOCKED; }
+			if (team == stranger) {
+				
+				if (this.placer == player) {
+					return Security.OWNER;
+					
+				}
+				return Security.TEAMMATE; 
+			}
+			else { return Security.UNLOCKED; }
 			
 		default:
 			return Security.EXCEPTION;

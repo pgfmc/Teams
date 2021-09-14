@@ -106,8 +106,7 @@ public class BlockContainer extends Containers {
 				if (black != null && 
 						(black.getType() == Material.CHEST || black.getType() == Material.TRAPPED_CHEST) && 
 						black.getType() == block.getType() && 
-						((Directional) black.getBlockData()).getFacing() == ((Directional) block.getBlockData()).getFacing() &&
-						BlockContainer.getContainer(black).isAllowed(player) == Security.OWNER) {
+						((Directional) black.getBlockData()).getFacing() == ((Directional) block.getBlockData()).getFacing()) {
 					
 					BlockContainer cont = BlockContainer.getContainer(black);
 					
@@ -161,8 +160,7 @@ public class BlockContainer extends Containers {
 				if (black != null && 
 						(black.getType() == Material.CHEST || black.getType() == Material.TRAPPED_CHEST) && 
 						black.getType() == chest.getType() && 
-						((Directional) black.getBlockData()).getFacing() == ((Directional) chest.getBlockData()).getFacing() &&
-						BlockContainer.getContainer(black).isAllowed(placer) == Security.OWNER) {
+						((Directional) black.getBlockData()).getFacing() == ((Directional) chest.getBlockData()).getFacing()) {
 					
 					BlockContainer cont = BlockContainer.getContainer(black);
 					
