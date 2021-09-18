@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.teamscore.Team;
 import net.pgfmc.teams.teamscore.TeamsCore;
+import net.pgfmc.teams.teamscore.Utility;
 
 /*
 
@@ -39,7 +40,7 @@ public class PendingRequest {
 		INV.setData("request", this);
 		JOI.setData("request", this);
 		
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TeamsCore.plugin, new Runnable() {
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TeamsCore.getPlugin(), new Runnable() {
             
 			@Override
             public void run() // 60 second long cooldown, in which the plugin will wait for 
@@ -96,7 +97,7 @@ public class PendingRequest {
 			
 			} else if (ATK != null && DEF != null && ATK != DEF) { // if both players are on different teams // denies request
 				attacker.sendMessage("§9" + target.getName() + " §cis already in a team!");
-				attacker.sendMessage("§cIf you want to join §9" + TeamsCore.makePossesive(target.getName())  +  " §cteam, leave your current team and ask for another request!");
+				attacker.sendMessage("§cIf you want to join §9" + Utility.makePossesive(target.getName())  +  " §cteam, leave your current team and ask for another request!");
 				return;
 			
 			} else if (ATK == null && DEF != null) { // if the attacker isnt in a team, but the target is
@@ -131,7 +132,7 @@ public class PendingRequest {
 				PR.acceptRequest(true);
 				
 			} else if (ATK == null && DEF == null) { // if both players arent on a team
-				attacker.sendMessage("§dYou have joined §9" + TeamsCore.makePossesive(target.getName()) + " §dnew team!");
+				attacker.sendMessage("§dYou have joined §9" + Utility.makePossesive(target.getName()) + " §dnew team!");
 				target.sendMessage("§9" + attacker.getName() + " §dhas joined your team!");
 				PR.createTeamRequestAccept();
 				return;

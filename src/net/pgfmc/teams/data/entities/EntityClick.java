@@ -14,11 +14,12 @@ import net.pgfmc.teams.data.containers.Containers.Lock;
 import net.pgfmc.teams.data.containers.Containers.Security;
 import net.pgfmc.teams.data.containers.EntityContainer;
 
-@Deprecated
 public class EntityClick implements Listener {
 	
 	@EventHandler
 	public void EntityInteract(PlayerInteractAtEntityEvent e) {
+		
+		System.out.println("PlayerInteractAtEntityEvent has been ran!");
 		
 		
 		if (e.getPlayer() != null && e.getRightClicked() != null && EssentialsMain.isSurvivalWorld(e.getRightClicked().getWorld()) && e.getPlayer().getGameMode() == GameMode.SURVIVAL) {

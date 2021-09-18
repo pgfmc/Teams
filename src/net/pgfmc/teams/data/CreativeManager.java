@@ -32,7 +32,7 @@ public class CreativeManager {
 		
 		// loads file
 		Chunk chunk = block.getChunk();
-		File file = new File(TeamsCore.plugin.getDataFolder() + File.separator + "EABlockData" + File.separator + "x" + String.valueOf(chunk.getX()) + "z" + String.valueOf(chunk.getZ()) + ".yml");
+		File file = new File(TeamsCore.getPlugin().getDataFolder() + File.separator + "EABlockData" + File.separator + "x" + String.valueOf(chunk.getX()) + "z" + String.valueOf(chunk.getZ()) + ".yml");
 		if (!file.exists()) {
 			player.sendMessage("No data on that block was found!");
 			return;
@@ -67,8 +67,6 @@ public class CreativeManager {
 				player.sendMessage("The block at " + block.getX() + ", " + block.getY() + ", " + block.getZ() + " was Broken at time " + 
 			database.getConfigurationSection(data).get("time") + " by " + Bukkit.getPlayer(UUID.fromString(database.getConfigurationSection(data).getString("Player"))).getName() + ".");
 			}
-			
-			
 			
 		} else {
 			player.sendMessage("No data on that block was found!");

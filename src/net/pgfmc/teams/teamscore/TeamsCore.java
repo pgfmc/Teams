@@ -2,13 +2,8 @@ package net.pgfmc.teams.teamscore;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Beacon;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
@@ -18,6 +13,8 @@ import net.pgfmc.teams.data.BlockInteractEvent;
 import net.pgfmc.teams.data.InspectCommand;
 import net.pgfmc.teams.data.containers.ContainerDataOutputCommand;
 import net.pgfmc.teams.data.containers.ContainerDatabase;
+import net.pgfmc.teams.data.entities.EntityClick;
+import net.pgfmc.teams.data.entities.TameEvent;
 import net.pgfmc.teams.playerLogistics.AttackEvent;
 import net.pgfmc.teams.playerLogistics.InviteCommand;
 import net.pgfmc.teams.playerLogistics.LeaveTeamCommand;
@@ -26,9 +23,7 @@ import net.pgfmc.teams.playerLogistics.TeamAccept;
 
 public class TeamsCore extends JavaPlugin {
 	
-	public static TeamsCore plugin;
-	public static List<Beacon> beacons;
-	
+	private static TeamsCore plugin;
 	
 	@Override
 	public void onEnable() {
@@ -85,7 +80,6 @@ public class TeamsCore extends JavaPlugin {
 			System.out.println("DeepBlockData already Exists!");
 		}
 		
-		
 		ContainerDatabase.loadContainers();
 		
 		getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
@@ -95,6 +89,8 @@ public class TeamsCore extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new BPE(), this);
 		getServer().getPluginManager().registerEvents(new MessageEvent(), this);
 		getServer().getPluginManager().registerEvents(new InspectCommand(), this);
+		getServer().getPluginManager().registerEvents(new EntityClick(), this);
+		getServer().getPluginManager().registerEvents(new TameEvent(), this);
 		
 		getCommand("team").setExecutor(new TeamCommand());
 		getCommand("Invite").setExecutor(new InviteCommand());
@@ -113,31 +109,7 @@ public class TeamsCore extends JavaPlugin {
 		((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new TeamsDatabase(), true);
 	}
 	
-	public static ItemStack createItem(String name, Material mat, List<String> lore)
-	{
-		ItemStack item = new ItemStack(mat, 1);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(name);
-		meta.setLore(lore);
-		item.setItemMeta(meta);
-		return item;
-	}
-	
-	public static String makePossesive(String name) {
-		if (name.endsWith("s")) {
-			return (name + "'");
-		} else {
-			return (name + "'s");
-		}
-	}
-	
-	public static ItemStack createItem(String name, Material mat) // function for creating an item with a custom name
-	{
-		ItemStack item = new ItemStack(mat, 1);
-		ItemMeta meta = item.getItemMeta();
-		
-		meta.setDisplayName(name);
-		item.setItemMeta(meta);
-		return item;
+	public static JavaPlugin getPlugin() {
+		return plugin;
 	}
 }

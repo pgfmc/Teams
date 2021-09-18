@@ -5,14 +5,12 @@ import java.io.IOException;
 import java.time.LocalTime;
 
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
 /*
@@ -29,13 +27,11 @@ public class SurvivalManager {
 	
 	public static void updateBlock(Block block, OfflinePlayer player, boolean isPlaced) {
 		
-		
-		
 		// loads file
 		// if file for the corresponding Chunk is not found, a new one is created.
 		
 		Chunk chunk = block.getChunk();
-		File file = new File(TeamsCore.plugin.getDataFolder() + File.separator + "EABlockData" + File.separator + "x" + String.valueOf(chunk.getX()) + "z" + String.valueOf(chunk.getZ()) + ".yml");
+		File file = new File(TeamsCore.getPlugin().getDataFolder() + File.separator + "EABlockData" + File.separator + "x" + String.valueOf(chunk.getX()) + "z" + String.valueOf(chunk.getZ()) + ".yml");
 				
 		try {
 			if (file.createNewFile()) {
@@ -90,7 +86,7 @@ public class SurvivalManager {
 		// loads file
 		// if file for the corresponding Chunk is not found, a new one is created.
 		
-		File file = new File(TeamsCore.plugin.getDataFolder() + File.separator + "DeepBlockData" + File.separator + "x" + String.valueOf(chunk.getX()) + "z" + String.valueOf(chunk.getZ()) + ".yml");
+		File file = new File(TeamsCore.getPlugin().getDataFolder() + File.separator + "DeepBlockData" + File.separator + "x" + String.valueOf(chunk.getX()) + "z" + String.valueOf(chunk.getZ()) + ".yml");
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
@@ -123,21 +119,4 @@ public class SurvivalManager {
 			e.printStackTrace();
 		}
 	}
-	
-	public static String locToString(Location location) { // converts location to string.
-		
-		return "w" + String.valueOf(EssentialsMain.worldToInt(location.getWorld())) + "x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ());
-		
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

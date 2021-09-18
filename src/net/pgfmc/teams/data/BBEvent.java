@@ -57,13 +57,11 @@ public class BBEvent implements Listener {
 		
 		if (EssentialsMain.isSurvivalWorld(e.getPlayer().getWorld())) { // if in survival world
 			
-			Object debugg = PlayerData.getPlayerData(e.getPlayer()).getData("debug");
-			
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 				
 				Beacons beacon = Beacons.getBeacon(e.getPlayer(), e.getBlock().getLocation());
 				
-				if (beacon != null && beacon.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
+				if (beacon != null) {
 					e.getPlayer().sendMessage("§cYou can't break blocks here!");
 					e.getPlayer().sendMessage("§cIt belongs to another Team!");
 					e.setCancelled(true);
@@ -83,14 +81,13 @@ public class BBEvent implements Listener {
 						e.setCancelled(true);
 						return;
 					}
-					
 				}
 				
 				SurvivalManager.updateBlock(e.getBlock(), e.getPlayer(), false);
 				
 			} else if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
 				
-				if (debugg != null) {// ----------------------------------------------------------- if debug mode is on
+				if (PlayerData.getPlayerData(e.getPlayer()).getData("debug") != null) {// ----------------------------------------------------------- if debug mode is on
 					// CreativeManager. ---------- | function to output all past data of the block clicked | ------------
 					e.setCancelled(true);
 					e.getPlayer().sendMessage("| -- insert block data here -- |");

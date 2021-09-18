@@ -29,8 +29,4 @@ public class MessageEvent implements Listener {
 			e.setCancelled(true);
 		}
 	}
-	
-	
-	
-	
 }

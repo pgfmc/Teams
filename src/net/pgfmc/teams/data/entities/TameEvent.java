@@ -8,9 +8,9 @@ import org.bukkit.event.entity.EntityTameEvent;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.teams.data.containers.Beacons;
-import net.pgfmc.teams.data.containers.Containers.Security;
+import net.pgfmc.teams.data.containers.Containers.Lock;
+import net.pgfmc.teams.data.containers.EntityContainer;
 
-@Deprecated
 public class TameEvent implements Listener {
 	
 	@EventHandler
@@ -23,13 +23,13 @@ public class TameEvent implements Listener {
 				
 				Beacons beacon = Beacons.getBeacon(player, null);
 				
-				if (beacon != null && beacon.isAllowed(player) == Security.DISALLOWED) {
+				if (beacon != null) {
 					player.sendMessage("§cYou can't Tame that animal here!");
 					player.sendMessage("§cYou're on someone else's land!");
 					e.setCancelled(true);
 					return;
 				} else {
-					//new EntityContainer(player, true, e.getEntity(), (Team) PlayerData.getData(player, "team"));
+					new EntityContainer(player, Lock.TEAM_ONLY, e.getEntity());
 				}
 			}
 		}

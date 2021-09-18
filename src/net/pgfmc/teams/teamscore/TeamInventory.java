@@ -47,7 +47,7 @@ public class TeamInventory implements InventoryHolder {
 			lore.add("You are not in a team.");
 			lore.add("Create your own or send a join request");
 			lore.add("to an existing team");
-			ItemStack item = TeamsCore.createItem("§c§lNo team.", Material.OAK_SIGN, lore);
+			ItemStack item = Utility.createItem("§c§lNo team.", Material.OAK_SIGN, lore);
 			
 			inv.setItem(4, item);
 			
@@ -56,7 +56,7 @@ public class TeamInventory implements InventoryHolder {
 			// Clock, "Create"
 			lore.clear();
 			lore.add("Create your own team");
-			item = TeamsCore.createItem("§aCreate", Material.CLOCK, lore);
+			item = Utility.createItem("§aCreate", Material.CLOCK, lore);
 			
 			inv.setItem(3, item);
 			// -----------------------------------------------------------------------
@@ -64,7 +64,7 @@ public class TeamInventory implements InventoryHolder {
 			// Compass, "Find"
 			lore.clear();
 			lore.add("Find a team");
-			item = TeamsCore.createItem("§eFind", Material.COMPASS, lore);
+			item = Utility.createItem("§eFind", Material.COMPASS, lore);
 			
 			inv.setItem(5, item);
 			
@@ -78,7 +78,7 @@ public class TeamInventory implements InventoryHolder {
 			
 			
 			 // Leave "[leave Team name]"
-			ItemStack item = TeamsCore.createItem("Leave " + team.getName(), Material.ARROW);
+			ItemStack item = Utility.createItem("Leave " + team.getName(), Material.ARROW);
 			
 			inv.setItem(3, item);
 			
@@ -99,7 +99,7 @@ public class TeamInventory implements InventoryHolder {
 			lore.add("Kill Count: (I will implement later!)");
 						
 						
-			item = TeamsCore.createItem("§c§l" + team.getName(), Material.OAK_SIGN, lore);
+			item = Utility.createItem("§c§l" + team.getName(), Material.OAK_SIGN, lore);
 						
 			inv.setItem(4, item);
 						
@@ -113,7 +113,7 @@ public class TeamInventory implements InventoryHolder {
 			{
 				lore.add(Bukkit.getPlayer(member).getName());
 			}
-			item = TeamsCore.createItem("§eMembers", Material.PLAYER_HEAD, lore);
+			item = Utility.createItem("§eMembers", Material.PLAYER_HEAD, lore);
 						
 			inv.setItem(5, item);
 			// -----------------------------------------------------------------------
@@ -122,7 +122,7 @@ public class TeamInventory implements InventoryHolder {
 			lore.clear();
 			lore.add("List of locked containers");
 			lore.add("Coming soon :))");
-			item = TeamsCore.createItem("§9Locked Containers", Material.TRIPWIRE_HOOK, lore);
+			item = Utility.createItem("§9Locked Containers", Material.TRIPWIRE_HOOK, lore);
 						
 			inv.setItem(6, item);
 						

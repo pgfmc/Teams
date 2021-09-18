@@ -103,12 +103,10 @@ public class Team {
 			}
 			PlayerData.setData(p, "team", null);
 			return true;
+			
 		} else {
 			return false;
 		}
-		
-		
-		
 	}
 	
 	// ------------------------------------------------------------------------------------ Renaming function
@@ -120,7 +118,7 @@ public class Team {
 			player.sendMessage("§dteam's name by typing into the chat box!");
 			p.setData("naming", true);
 			
-			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TeamsCore.plugin, new Runnable() {
+			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TeamsCore.getPlugin(), new Runnable() {
 	            
 				@Override
 	            public void run() // 60 second long cooldown, in which the plugin will wait for 

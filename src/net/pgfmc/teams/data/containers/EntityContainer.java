@@ -6,16 +6,10 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 
-import net.pgfmc.teams.teamscore.Team;
+/**
 
-/*
+Stores data for container entities.
 
-Written by CrimsonDart
-
------------------------------------
-Stores data for container entities
-
------------------------------------
 
 Possible entities:
 
@@ -30,19 +24,20 @@ Any Nametagged mob (maybe?)
 
 -----------------------------------
 
-
+@author CrimsonDart
 
  */
 
-@Deprecated
 public class EntityContainer extends Containers {
 	
 	public static LinkedHashMap<Entity, EntityContainer> entities = new LinkedHashMap<>();
 	
 	Entity entity;
 	
-	public EntityContainer(OfflinePlayer player, Lock lock, Entity entity, Team team) {
-		super(player, lock, team);
+	public EntityContainer(OfflinePlayer player, Lock lock, Entity entity) {
+		super(player, lock);
+		
+		System.out.println("New Entity Contaiener Created!");
 		
 		this.entity = entity;
 		entities.put(entity, this);
@@ -59,5 +54,11 @@ public class EntityContainer extends Containers {
 	
 	public static EntityContainer getContainer(Entity entity) {
 		return entities.get(entity);
+	}
+
+	@Override
+	public Security isAllowed(OfflinePlayer player) {
+		
+		return null;
 	}
 }

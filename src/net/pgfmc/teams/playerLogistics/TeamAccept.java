@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.teamscore.Team;
-import net.pgfmc.teams.teamscore.TeamsCore;
+import net.pgfmc.teams.teamscore.Utility;
 
 /*
 Written by CrimsonDart
@@ -52,7 +52,7 @@ public class TeamAccept implements CommandExecutor {
 							return true;
 							
 						} else if (ATK == null && DEF == null) { // if both players arent on a team
-							attacker.sendMessage("§dYou have joined §9" + TeamsCore.makePossesive(target.getName()) + " §dteam!");
+							attacker.sendMessage("§dYou have joined §9" + Utility.makePossesive(target.getName()) + " §dteam!");
 							PR.createTeamRequestAccept();
 							return true;
 							
@@ -82,7 +82,7 @@ public class TeamAccept implements CommandExecutor {
 						return true;
 						
 					} else if (ATK == null && DEF == null) { // if both players arent on a team
-						attacker.sendMessage("§dYou have joined §9" + TeamsCore.makePossesive(target.getName()) + " §dteam!");
+						attacker.sendMessage("§dYou have joined §9" + Utility.makePossesive(target.getName()) + " §dteam!");
 						target.sendMessage("§9" + attacker.getName() + " §dhas joined your team!");
 						PR.createTeamRequestAccept();
 						return true;

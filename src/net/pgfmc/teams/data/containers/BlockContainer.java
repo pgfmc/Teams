@@ -7,13 +7,14 @@ import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Directional;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.data.SurvivalManager;
 import net.pgfmc.teams.teamscore.Team;
+import net.pgfmc.teams.teamscore.Utility;
 
 /*
 
@@ -36,13 +37,15 @@ public class BlockContainer extends Containers {
 	
 	public static LinkedHashMap<Block, BlockContainer> containers = new LinkedHashMap<>();
 	
-	Block chest;
+	Block block;
+	Team team;
 	
 	public BlockContainer(OfflinePlayer player, Lock lock, Block block, Team team) { // Constructor
 		
-		super(player, lock, team);
+		super(player, lock);
 		
-		this.chest = block;
+		this.team = team;
+		this.block = block;
 		
 		
 		if (block.getType() != Material.BEACON) {
@@ -96,11 +99,12 @@ public class BlockContainer extends Containers {
 		if ((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST) && EssentialsMain.isSurvivalWorld(block.getWorld())) {
 			
 			Set<Block> blocks = new HashSet<Block>();
+			World world = block.getLocation().getWorld();
 			
-			blocks.add(EssentialsMain.survivalWorld.getBlockAt(block.getLocation().add(1, 0, 0)));
-			blocks.add(EssentialsMain.survivalWorld.getBlockAt(block.getLocation().add(-1, 0, 0)));
-			blocks.add(EssentialsMain.survivalWorld.getBlockAt(block.getLocation().add(0, 0, 1)));
-			blocks.add(EssentialsMain.survivalWorld.getBlockAt(block.getLocation().add(0, 0, -1)));
+			blocks.add(world.getBlockAt(block.getLocation().add(1, 0, 0)));
+			blocks.add(world.getBlockAt(block.getLocation().add(-1, 0, 0)));
+			blocks.add(world.getBlockAt(block.getLocation().add(0, 0, 1)));
+			blocks.add(world.getBlockAt(block.getLocation().add(0, 0, -1)));
 			
 			for (Block black : blocks) {
 				if (black != null && 
@@ -144,23 +148,32 @@ public class BlockContainer extends Containers {
 		}
 	}
 	
+	public Team getTeam() {
+		return team;
+	}
+	
+	public void setTeam(Team team) {
+		this.team = team;
+	}
+	
 	@Override
 	public void setLock(Lock lock) {
 		
-		if ((chest.getType() == Material.CHEST || chest.getType() == Material.TRAPPED_CHEST) && EssentialsMain.isSurvivalWorld(chest.getWorld())) {
+		if ((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST) && EssentialsMain.isSurvivalWorld(block.getWorld())) {
 			
 			Set<Block> blocks = new HashSet<Block>();
+			World world = block.getLocation().getWorld();
 			
-			blocks.add(EssentialsMain.survivalWorld.getBlockAt(chest.getLocation().add(1, 0, 0)));
-			blocks.add(EssentialsMain.survivalWorld.getBlockAt(chest.getLocation().add(-1, 0, 0)));
-			blocks.add(EssentialsMain.survivalWorld.getBlockAt(chest.getLocation().add(0, 0, 1)));
-			blocks.add(EssentialsMain.survivalWorld.getBlockAt(chest.getLocation().add(0, 0, -1)));
+			blocks.add(world.getBlockAt(block.getLocation().add(1, 0, 0)));
+			blocks.add(world.getBlockAt(block.getLocation().add(-1, 0, 0)));
+			blocks.add(world.getBlockAt(block.getLocation().add(0, 0, 1)));
+			blocks.add(world.getBlockAt(block.getLocation().add(0, 0, -1)));
 			
 			for (Block black : blocks) {
 				if (black != null && 
 						(black.getType() == Material.CHEST || black.getType() == Material.TRAPPED_CHEST) && 
-						black.getType() == chest.getType() && 
-						((Directional) black.getBlockData()).getFacing() == ((Directional) chest.getBlockData()).getFacing()) {
+						black.getType() == block.getType() && 
+						((Directional) black.getBlockData()).getFacing() == ((Directional) block.getBlockData()).getFacing()) {
 					
 					BlockContainer cont = BlockContainer.getContainer(black);
 					
@@ -194,7 +207,7 @@ public class BlockContainer extends Containers {
 	
 	@Override
 	Location getLocation() {
-		return chest.getLocation();
+		return block.getLocation();
 		
 	}
 	
@@ -224,13 +237,13 @@ public class BlockContainer extends Containers {
 		for (Block block : containers.keySet()) {
 			
 			if (containers.get(block).getTeam() != null) {
-				System.out.println("	" + SurvivalManager.locToString(block.getLocation()) + 
+				System.out.println("	" + Utility.locToString(block.getLocation()) + 
 						":\n      type: " + block.getType().toString() + 
 						" \n      player: " + containers.get(block).placer.getName() + 
 						" \n      team:" + containers.get(block).team.getName() + 
 						" \n      locked? :" + containers.get(block).lock);
 			} else {
-				System.out.println("	" + SurvivalManager.locToString(block.getLocation()) + 
+				System.out.println("	" + Utility.locToString(block.getLocation()) + 
 						":\n      type: " + block.getType().toString() + 
 						" \n      player: " + containers.get(block).placer.getName() + 
 						" \n      locked? :" + containers.get(block).lock);
@@ -250,6 +263,54 @@ public class BlockContainer extends Containers {
 				
 				cont.setTeam(((Team) PlayerData.getData(cont.getPlayer(), "team")));
 			}
+		}
+	}
+	
+	@Override
+	public Security isAllowed(OfflinePlayer player) {
+		
+		Team stranger = Team.getTeam(player);
+		
+		if (team == null && lock == Lock.LOCKED && placer == player) {
+			BlockContainer.updateTeams();
+			return Security.OWNER;
+		}
+		
+		switch(lock) {
+		case LOCKED: // ------------------------ nobody but the player can access. Also, the container's team is tied to the player. | WIP
+			if (this.placer == player) {
+				return Security.OWNER;
+			}
+			return Security.DISALLOWED;
+			
+		case TEAM_ONLY: // --------------------- only Teammates can access.
+			
+			if (team != null && team == stranger) {
+				
+				if (this.placer == player) {
+					return Security.OWNER;
+				}
+				return Security.TEAMMATE; 
+			} else 
+			if (team == null && this.placer == player) {
+				return Security.OWNER;
+			}
+			return Security.DISALLOWED;
+		case UNLOCKED: // --------------------- anybody can access.
+			if (team != null && team == stranger) {
+				
+				if (this.placer == player) {
+					return Security.OWNER;
+				}
+				return Security.TEAMMATE; 
+			} else 
+			if (team == null && this.placer == player) {
+				return Security.OWNER;
+			}
+			return Security.UNLOCKED;
+		default:
+			return Security.EXCEPTION;
+		
 		}
 	}
 }

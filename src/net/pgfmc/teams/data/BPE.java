@@ -10,7 +10,6 @@ import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.containers.Beacons;
 import net.pgfmc.teams.data.containers.BlockContainer;
 import net.pgfmc.teams.data.containers.Containers.Lock;
-import net.pgfmc.teams.data.containers.Containers.Security;
 import net.pgfmc.teams.teamscore.Team;
 
 /*
@@ -30,14 +29,13 @@ public class BPE implements Listener {
 		
 		if (EssentialsMain.isSurvivalWorld(e.getPlayer().getWorld())) { // if in survival world
 			
-			Object debugg = PlayerData.getPlayerData(e.getPlayer()).getData("debug");
-			
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 				
 				Beacons beacon = Beacons.getBeacon(e.getPlayer(), e.getBlock().getLocation());
 				
-				if (beacon != null && beacon.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
+				if (beacon != null) {
 					e.getPlayer().sendMessage("§cYou can't place blocks here!");
+					e.getPlayer().sendMessage("§cThis Land belongs to Someone Else!");
 					e.setCancelled(true);
 					return;
 				}
@@ -50,7 +48,7 @@ public class BPE implements Listener {
 					BlockContainer.remove(e.getBlock());
 					
 				}
-			} else if (debugg != null && e.getPlayer().getGameMode() == GameMode.CREATIVE) { // ----------------------------------------------------------- if debug mode is on
+			} else if (PlayerData.getPlayerData(e.getPlayer()).getData("debug") != null && e.getPlayer().getGameMode() == GameMode.CREATIVE) { // ----------------------------------------------------------- if debug mode is on
 				e.setCancelled(true);
 				CreativeManager.outputBlockData(e.getBlockAgainst(), e.getPlayer());
 			}

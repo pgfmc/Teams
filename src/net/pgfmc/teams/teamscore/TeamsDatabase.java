@@ -26,7 +26,7 @@ Handles saving and loading teams.
 public class TeamsDatabase implements PlayerDataListener {
 	
 	
-	static File file = new File(TeamsCore.plugin.getDataFolder() + File.separator + "database.yml"); // Creates a File object
+	static File file = new File(TeamsCore.getPlugin().getDataFolder() + File.separator + "database.yml"); // Creates a File object
 	static FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 	
 	static boolean playerInit = false;

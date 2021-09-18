@@ -1,7 +1,5 @@
 package net.pgfmc.teams.data.containers;
 
-import java.util.ArrayList;
-
 /**
 @author CrimsonDart
 @version a.1.0.0
@@ -29,9 +27,8 @@ import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.data.SurvivalManager;
 import net.pgfmc.teams.teamscore.Team;
+import net.pgfmc.teams.teamscore.Utility;
 
 public class Beacons extends BlockContainer {
 	
@@ -56,8 +53,8 @@ public class Beacons extends BlockContainer {
 	}
 	
 	public void removeContainer() { // deletes a beacon
-		BlockContainer.remove(chest);
-		beacons.remove(chest);
+		BlockContainer.remove(block);
+		beacons.remove(block);
 	}
 	
 	
@@ -71,8 +68,8 @@ public class Beacons extends BlockContainer {
 	
 	public boolean inRange(Location loc) { // input a player, and find if its in range
 		
-		int mod = (((Beacon) chest.getState()).getTier() * 10) + 10;
-		Location bloke = chest.getLocation();
+		int mod = (((Beacon) block.getState()).getTier() * 10) + 10;
+		Location bloke = block.getLocation();
 		
 		if (bloke.getBlockX() - mod <= loc.getBlockX() && 
 				loc.getBlockX() <= bloke.getBlockX() + mod && 
@@ -86,7 +83,7 @@ public class Beacons extends BlockContainer {
 	
 	public double getDistance(Location loc) { // returns the distance from this to the location input.
 		
-		Location bloke = chest.getLocation();
+		Location bloke = block.getLocation();
 		
 		return Math.sqrt( Math.pow(loc.getX() + bloke.getX(), 2) + Math.pow(loc.getY() + bloke.getY(), 2) + Math.pow(loc.getZ() + bloke.getZ(), 2));
 	}
@@ -100,23 +97,9 @@ public class Beacons extends BlockContainer {
 			loca = loc;
 		}
 		
-		ArrayList<Team> tem = new ArrayList<>();
-		
 		Optional<Beacons> b = beacons.keySet().stream().map(x -> beacons.get(x)) // stream to funnel down the beacons into the closest enemy beacon.
 		.filter(x -> x.getLocation().getWorld() == player.getWorld())
-		.filter(x -> x.getPlayer() != player)
-		.filter(x -> x.getTeam() != (Team) PlayerData.getData(player, "team"))
-		.filter(x -> {
-			if (tem.size() == 0) {
-				tem.add(x.getTeam());
-				return true;
-			} else if (tem.contains(x.getTeam())) {
-				return false;
-			} else {
-				tem.add(x.getTeam());
-				return true;
-			}
-		})
+		.filter(x -> x.isAllowed(player) == Security.DISALLOWED)
 		.reduce((B, x) -> {
 			double brah = x.getDistance(loca);
 			if (B == null) {
@@ -131,17 +114,11 @@ public class Beacons extends BlockContainer {
 			}
 		});
 		
-		
-		
 		if (b.isPresent()) {
-			System.out.println("Beacons.getBeacon " + SurvivalManager.locToString(b.get().getLocation()));
+			System.out.println("Beacons.getBeacon " + Utility.locToString(b.get().getLocation()));
 			return b.get();
 		} else {
 			return null;
 		}
-		
-		
-		
-		
 	}
 }
