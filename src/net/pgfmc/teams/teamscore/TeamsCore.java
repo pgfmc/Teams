@@ -13,6 +13,7 @@ import net.pgfmc.teams.data.BlockInteractEvent;
 import net.pgfmc.teams.data.InspectCommand;
 import net.pgfmc.teams.data.containers.ContainerDataOutputCommand;
 import net.pgfmc.teams.data.containers.ContainerDatabase;
+import net.pgfmc.teams.data.entities.DeathEvent;
 import net.pgfmc.teams.data.entities.EntityClick;
 import net.pgfmc.teams.data.entities.TameEvent;
 import net.pgfmc.teams.playerLogistics.AttackEvent;
@@ -91,6 +92,7 @@ public class TeamsCore extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new InspectCommand(), this);
 		getServer().getPluginManager().registerEvents(new EntityClick(), this);
 		getServer().getPluginManager().registerEvents(new TameEvent(), this);
+		getServer().getPluginManager().registerEvents(new DeathEvent(), this);
 		
 		getCommand("team").setExecutor(new TeamCommand());
 		getCommand("Invite").setExecutor(new InviteCommand());

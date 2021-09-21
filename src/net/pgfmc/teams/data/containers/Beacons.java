@@ -99,8 +99,9 @@ public class Beacons extends BlockContainer {
 		
 		Optional<Beacons> b = beacons.keySet().stream().map(x -> beacons.get(x)) // stream to funnel down the beacons into the closest enemy beacon.
 		.filter(x -> x.getLocation().getWorld() == player.getWorld())
-		.filter(x -> x.isAllowed(player) == Security.DISALLOWED)
+		//.filter(x -> x.isAllowed(player) == Security.DISALLOWED)
 		.reduce((B, x) -> {
+			System.out.println("beacon at " + x.getLocation().toString() + " loaded.");
 			double brah = x.getDistance(loca);
 			if (B == null) {
 				

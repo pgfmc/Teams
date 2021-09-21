@@ -34,15 +34,4 @@ public class TameEvent implements Listener {
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

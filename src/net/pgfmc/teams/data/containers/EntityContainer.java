@@ -53,7 +53,10 @@ public class EntityContainer extends Containers {
 	}
 	
 	public static EntityContainer getContainer(Entity entity) {
-		return entities.get(entity);
+		if (entity != null) {
+			return entities.get(entity);
+		}
+		return null;
 	}
 
 	@Override
