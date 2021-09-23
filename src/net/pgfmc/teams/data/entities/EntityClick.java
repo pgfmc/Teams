@@ -14,6 +14,7 @@ import net.pgfmc.teams.data.containers.Containers.Lock;
 import net.pgfmc.teams.data.containers.Containers.Security;
 import net.pgfmc.teams.data.containers.EntityContainer;
 
+@Deprecated
 public class EntityClick implements Listener {
 	
 	@EventHandler
@@ -21,13 +22,12 @@ public class EntityClick implements Listener {
 		
 		System.out.println("PlayerInteractAtEntityEvent has been ran!");
 		
-		
 		if (e.getPlayer() != null && e.getRightClicked() != null && EssentialsMain.isSurvivalWorld(e.getRightClicked().getWorld()) && e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 			
 			Player player = e.getPlayer();
 			
 			
-		
+			
 			if ((e.getRightClicked().getType() == EntityType.MINECART_CHEST || 
 					e.getRightClicked().getType() == EntityType.MINECART_HOPPER ||
 					e.getRightClicked().getType() == EntityType.ITEM_FRAME ||
@@ -35,10 +35,9 @@ public class EntityClick implements Listener {
 					e.getRightClicked().getType() == EntityType.ARMOR_STAND ||
 					e.getRightClicked().getType() == EntityType.HORSE ||
 					e.getRightClicked().getType() == EntityType.DONKEY ||
-					e.getRightClicked().getType() == EntityType.MULE || 
-					e.getRightClicked().getCustomName() != null
+					e.getRightClicked().getType() == EntityType.MULE
 				
-					// if the entity has an inventory, or if it has a name.
+					// if the entity has an inventory.
 				
 				)) {
 				

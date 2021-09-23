@@ -14,7 +14,7 @@ import net.pgfmc.teams.data.InspectCommand;
 import net.pgfmc.teams.data.containers.ContainerDataOutputCommand;
 import net.pgfmc.teams.data.containers.ContainerDatabase;
 import net.pgfmc.teams.data.entities.DeathEvent;
-import net.pgfmc.teams.data.entities.EntityClick;
+import net.pgfmc.teams.data.entities.InvOpenEvent;
 import net.pgfmc.teams.data.entities.TameEvent;
 import net.pgfmc.teams.playerLogistics.AttackEvent;
 import net.pgfmc.teams.playerLogistics.InviteCommand;
@@ -58,8 +58,21 @@ public class TeamsCore extends JavaPlugin {
 				System.out.println("BlockContainers.yml already Exists!");
 				
 				TeamsDatabase.loadTeams();
+			}
+			
+		} catch (IOException e) {
+			System.out.println("BlockContainers.yml Couldn't be created!");
+			e.printStackTrace();
+		}
+		
+		file = new File(plugin.getDataFolder() + "\\EntityContainers.yml"); // Creates a File object
+		try {
+			if (file.createNewFile()) {
+				System.out.println("EntityContainers.yml created!");
+			} else {
+				System.out.println("EntityContainers.yml already Exists!");
 				
-				((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new TeamsDatabase(), false);
+				TeamsDatabase.loadTeams();
 			}
 			
 		} catch (IOException e) {
@@ -90,9 +103,10 @@ public class TeamsCore extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new BPE(), this);
 		getServer().getPluginManager().registerEvents(new MessageEvent(), this);
 		getServer().getPluginManager().registerEvents(new InspectCommand(), this);
-		getServer().getPluginManager().registerEvents(new EntityClick(), this);
+		//getServer().getPluginManager().registerEvents(new EntityClick(), this);
 		getServer().getPluginManager().registerEvents(new TameEvent(), this);
 		getServer().getPluginManager().registerEvents(new DeathEvent(), this);
+		getServer().getPluginManager().registerEvents(new InvOpenEvent(), this);
 		
 		getCommand("team").setExecutor(new TeamCommand());
 		getCommand("Invite").setExecutor(new InviteCommand());

@@ -11,6 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.containers.Containers.Lock;
@@ -69,6 +70,26 @@ public class ContainerDatabase {
 				}
 			}
 		}
+		
+		// Entity Containers
+		
+		file = new File(TeamsCore.getPlugin().getDataFolder() + File.separator + "EntityContainers.yml"); // Creates a File object
+		database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
+		
+		if (database != null) {
+			for (String key : database.getKeys(false)) {
+				
+				ConfigurationSection configSec = database.getConfigurationSection(key);
+				
+				UUID uuid = UUID.fromString(key);
+				
+				OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(configSec.getString("player")));
+				
+				Lock lock = Lock.valueOf(configSec.getString("Lock"));
+				
+				new EntityContainer(player, lock, Bukkit.getEntity(uuid));
+			}
+		}
 	}
 	
 	public static void saveContainers() {
@@ -114,5 +135,32 @@ public class ContainerDatabase {
 			
 		} // ------------------------------------ end loop
 		
+		// Entity Containers
+		
+		file = new File(TeamsCore.getPlugin().getDataFolder() + File.separator + "EntityContainers.yml"); // Creates a File object
+		database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
+		
+		for (Entity entity : EntityContainer.getContainers().keySet()) { // for all BlockContainers and beacons.
+			
+			EntityContainer ent = EntityContainer.getContainer(entity);
+			OfflinePlayer player = ent.getPlayer();
+			
+			// if location is not found, a new one is created.
+			ConfigurationSection blocc = database.getConfigurationSection(ent.getEntity().getUniqueId().toString());
+			
+			blocc.set("player", player.getUniqueId().toString());
+			blocc.set("Lock", ent);
+			database.set(ent.getEntity().getUniqueId().toString(), blocc);
+			
+			// saves data.
+			try {
+				database.save(file);
+				System.out.println("Container location saved!");
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+				
+			}
+		}
 	}
 }

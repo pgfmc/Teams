@@ -179,7 +179,6 @@ public class BlockInteractEvent implements Listener {
 					System.out.println(e.getAction());
 					System.out.println(e.hasBlock());
 					System.out.println(e.hasItem() );
-					System.out.println(e.getItem().getType());
 					System.out.println(block.getType());
 					
 					if (e.getAction() == Action.RIGHT_CLICK_BLOCK &&

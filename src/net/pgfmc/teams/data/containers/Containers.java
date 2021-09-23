@@ -68,6 +68,4 @@ public abstract class Containers {
 	}
 	
 	public abstract Security isAllowed(OfflinePlayer player);
-	
-	
 }

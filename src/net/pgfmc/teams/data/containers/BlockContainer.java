@@ -271,46 +271,60 @@ public class BlockContainer extends Containers {
 		
 		Team stranger = Team.getTeam(player);
 		
-		if (team == null && lock == Lock.LOCKED && placer == player) {
+		if (team == null && lock == Lock.LOCKED && placer.getUniqueId().equals(player.getUniqueId())) {
 			BlockContainer.updateTeams();
 			return Security.OWNER;
 		}
 		
 		switch(lock) {
 		case LOCKED: // ------------------------ nobody but the player can access. Also, the container's team is tied to the player. | WIP
-			if (this.placer == player) {
+			
+			System.out.println(placer);
+			System.out.println(player);
+			
+			if (placer.getUniqueId().equals(player.getUniqueId())) {
+				System.out.println("out 1");
+				
 				return Security.OWNER;
 			}
+			System.out.println("out 2");
 			return Security.DISALLOWED;
 			
 		case TEAM_ONLY: // --------------------- only Teammates can access.
 			
 			if (team != null && team == stranger) {
 				
-				if (this.placer == player) {
+				if (placer.getUniqueId().equals(player.getUniqueId())) {
+					System.out.println("out 3");
 					return Security.OWNER;
 				}
+				System.out.println("out 4");
 				return Security.TEAMMATE; 
 			} else 
-			if (team == null && this.placer == player) {
+			if (team == null && placer.getUniqueId().equals(player.getUniqueId())) {
+				System.out.println("out 5");
 				return Security.OWNER;
 			}
+			System.out.println("out 6");
 			return Security.DISALLOWED;
 		case UNLOCKED: // --------------------- anybody can access.
 			if (team != null && team == stranger) {
 				
-				if (this.placer == player) {
+				if (placer.getUniqueId().equals(player.getUniqueId())) {
+					System.out.println("out 7");
 					return Security.OWNER;
 				}
+				System.out.println("out 8");
 				return Security.TEAMMATE; 
 			} else 
-			if (team == null && this.placer == player) {
+			if (team == null && placer.getUniqueId().equals(player.getUniqueId())) {
+				System.out.println("out 9");
 				return Security.OWNER;
 			}
+			System.out.println("out 10");
 			return Security.UNLOCKED;
 		default:
 			return Security.EXCEPTION;
-		
 		}
 	}
 }
