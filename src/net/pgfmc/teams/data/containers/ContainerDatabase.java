@@ -11,7 +11,6 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.containers.Containers.Lock;
@@ -87,7 +86,7 @@ public class ContainerDatabase {
 				
 				Lock lock = Lock.valueOf(configSec.getString("Lock"));
 				
-				new EntityContainer(player, lock, Bukkit.getEntity(uuid));
+				new EntityContainer(player, lock, uuid);
 			}
 		}
 	}
@@ -140,17 +139,20 @@ public class ContainerDatabase {
 		file = new File(TeamsCore.getPlugin().getDataFolder() + File.separator + "EntityContainers.yml"); // Creates a File object
 		database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 		
-		for (Entity entity : EntityContainer.getContainers().keySet()) { // for all BlockContainers and beacons.
+		for (UUID entity : EntityContainer.getContainers().keySet()) { // for all BlockContainers and beacons.
 			
 			EntityContainer ent = EntityContainer.getContainer(entity);
 			OfflinePlayer player = ent.getPlayer();
 			
 			// if location is not found, a new one is created.
 			ConfigurationSection blocc = database.getConfigurationSection(ent.getEntity().getUniqueId().toString());
+			if (blocc == null) {
+				blocc = database.createSection(ent.getEntity().getUniqueId().toString());
+			}
 			
 			blocc.set("player", player.getUniqueId().toString());
-			blocc.set("Lock", ent);
-			database.set(ent.getEntity().getUniqueId().toString(), blocc);
+			blocc.set("Lock", ent.getLock().toString());
+			database.set(entity.toString(), blocc);
 			
 			// saves data.
 			try {

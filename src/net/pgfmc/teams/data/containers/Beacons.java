@@ -71,7 +71,8 @@ public class Beacons extends BlockContainer {
 		int mod = (((Beacon) block.getState()).getTier() * 10) + 10;
 		Location bloke = block.getLocation();
 		
-		if (bloke.getBlockX() - mod <= loc.getBlockX() && 
+		if (mod != 10 &&
+				bloke.getBlockX() - mod <= loc.getBlockX() && 
 				loc.getBlockX() <= bloke.getBlockX() + mod && 
 				bloke.getBlockZ() - mod <= loc.getBlockZ() && 
 				loc.getBlockZ() <= bloke.getBlockZ() + mod && 
@@ -99,7 +100,8 @@ public class Beacons extends BlockContainer {
 		
 		Optional<Beacons> b = beacons.keySet().stream().map(x -> beacons.get(x)) // stream to funnel down the beacons into the closest enemy beacon.
 		.filter(x -> x.getLocation().getWorld() == player.getWorld())
-		//.filter(x -> x.isAllowed(player) == Security.DISALLOWED)
+		.filter(x -> x.inRange(loca))
+		.filter(x -> x.isAllowed(player) == Security.DISALLOWED)
 		.reduce((B, x) -> {
 			System.out.println("beacon at " + x.getLocation().toString() + " loaded.");
 			double brah = x.getDistance(loca);

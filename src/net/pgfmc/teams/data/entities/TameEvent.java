@@ -29,7 +29,7 @@ public class TameEvent implements Listener {
 					e.setCancelled(true);
 					return;
 				} else {
-					new EntityContainer(player, Lock.TEAM_ONLY, e.getEntity());
+					new EntityContainer(player, Lock.TEAM_ONLY, e.getEntity().getUniqueId());
 				}
 			}
 		}

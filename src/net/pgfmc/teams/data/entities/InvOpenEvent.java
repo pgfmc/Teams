@@ -22,6 +22,8 @@ public class InvOpenEvent implements Listener {
 		
 		if (EssentialsMain.isSurvivalWorld(e.getPlayer().getWorld()) && e.getPlayer().getGameMode() == GameMode.SURVIVAL && e.getPlayer() instanceof CraftPlayer && e.getInventory().getHolder() instanceof Entity) {
 			
+			System.out.println(((Entity) e.getInventory().getHolder()).getUniqueId());
+			
 			EntityContainer ent = EntityContainer.getContainer((Entity) e.getInventory().getHolder());
 			
 			if (ent != null) {
@@ -171,6 +173,7 @@ public class InvOpenEvent implements Listener {
 					}
 				}
 			}
+			System.out.println("out 1");
 		}
 	}
 }

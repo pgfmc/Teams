@@ -14,6 +14,7 @@ import net.pgfmc.teams.data.InspectCommand;
 import net.pgfmc.teams.data.containers.ContainerDataOutputCommand;
 import net.pgfmc.teams.data.containers.ContainerDatabase;
 import net.pgfmc.teams.data.entities.DeathEvent;
+import net.pgfmc.teams.data.entities.EntityClick;
 import net.pgfmc.teams.data.entities.InvOpenEvent;
 import net.pgfmc.teams.data.entities.TameEvent;
 import net.pgfmc.teams.playerLogistics.AttackEvent;
@@ -103,7 +104,7 @@ public class TeamsCore extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new BPE(), this);
 		getServer().getPluginManager().registerEvents(new MessageEvent(), this);
 		getServer().getPluginManager().registerEvents(new InspectCommand(), this);
-		//getServer().getPluginManager().registerEvents(new EntityClick(), this);
+		getServer().getPluginManager().registerEvents(new EntityClick(), this);
 		getServer().getPluginManager().registerEvents(new TameEvent(), this);
 		getServer().getPluginManager().registerEvents(new DeathEvent(), this);
 		getServer().getPluginManager().registerEvents(new InvOpenEvent(), this);
@@ -115,7 +116,6 @@ public class TeamsCore extends JavaPlugin {
 		getCommand("leaveTeamConfirm").setExecutor(new LeaveTeamConfirmCommand());
 		getCommand("inspector").setExecutor(new InspectCommand());
 		getCommand("containerDump").setExecutor(new ContainerDataOutputCommand());
-		
 	}
 	
 	@Override

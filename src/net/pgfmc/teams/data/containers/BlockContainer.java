@@ -10,6 +10,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Directional;
+import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
@@ -183,9 +184,9 @@ public class BlockContainer extends Containers {
 						
 						case OWNER:
 							
-							cont.setLock(lock);
+							this.lock = lock;
 						case TEAMMATE:
-							cont.setLock(lock);
+							this.lock = lock;
 							
 						default:
 							System.out.println("how does this even happen !?!?!??!??!?!?");
@@ -269,10 +270,18 @@ public class BlockContainer extends Containers {
 	@Override
 	public Security isAllowed(OfflinePlayer player) {
 		
+		boolean same;
+		if (player instanceof Player) {
+			same = (placer.getPlayer() != null && player == placer.getPlayer());
+		} else {
+			same = (placer == player);
+		}
+		
 		Team stranger = Team.getTeam(player);
 		
-		if (team == null && lock == Lock.LOCKED && placer.getUniqueId().equals(player.getUniqueId())) {
+		if (team == null && lock == Lock.LOCKED && same) {
 			BlockContainer.updateTeams();
+			System.out.println("out 0");
 			return Security.OWNER;
 		}
 		
@@ -281,8 +290,9 @@ public class BlockContainer extends Containers {
 			
 			System.out.println(placer);
 			System.out.println(player);
+			System.out.println(placer.getPlayer());
 			
-			if (placer.getUniqueId().equals(player.getUniqueId())) {
+			if (same) {
 				System.out.println("out 1");
 				
 				return Security.OWNER;
@@ -294,14 +304,14 @@ public class BlockContainer extends Containers {
 			
 			if (team != null && team == stranger) {
 				
-				if (placer.getUniqueId().equals(player.getUniqueId())) {
+				if (same) {
 					System.out.println("out 3");
 					return Security.OWNER;
 				}
 				System.out.println("out 4");
 				return Security.TEAMMATE; 
 			} else 
-			if (team == null && placer.getUniqueId().equals(player.getUniqueId())) {
+			if (team == null && same) {
 				System.out.println("out 5");
 				return Security.OWNER;
 			}
@@ -310,14 +320,14 @@ public class BlockContainer extends Containers {
 		case UNLOCKED: // --------------------- anybody can access.
 			if (team != null && team == stranger) {
 				
-				if (placer.getUniqueId().equals(player.getUniqueId())) {
+				if (same) {
 					System.out.println("out 7");
 					return Security.OWNER;
 				}
 				System.out.println("out 8");
 				return Security.TEAMMATE; 
 			} else 
-			if (team == null && placer.getUniqueId().equals(player.getUniqueId())) {
+			if (team == null && same) {
 				System.out.println("out 9");
 				return Security.OWNER;
 			}

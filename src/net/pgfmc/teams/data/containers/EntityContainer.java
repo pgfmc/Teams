@@ -1,10 +1,13 @@
 package net.pgfmc.teams.data.containers;
 
 import java.util.LinkedHashMap;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import net.pgfmc.teams.teamscore.Team;
 
@@ -32,11 +35,11 @@ Any Nametagged mob (maybe?)
 
 public class EntityContainer extends Containers {
 	
-	public static LinkedHashMap<Entity, EntityContainer> entities = new LinkedHashMap<>();
+	public static LinkedHashMap<UUID, EntityContainer> entities = new LinkedHashMap<>();
 	
-	Entity entity;
+	UUID entity;
 	
-	public EntityContainer(OfflinePlayer player, Lock lock, Entity entity) {
+	public EntityContainer(OfflinePlayer player, Lock lock, UUID entity) {
 		super(player, lock);
 		
 		System.out.println("New Entity Contaiener Created!");
@@ -46,15 +49,26 @@ public class EntityContainer extends Containers {
 	}
 	
 	public static void remove(Entity entitiy) {
+		entities.remove(entitiy.getUniqueId());
+	}
+	
+	public static void remove(UUID entitiy) {
 		entities.remove(entitiy);
 	}
 	
 	@Override
 	public Location getLocation() {
-		return entity.getLocation();
+		return Bukkit.getEntity(entity).getLocation();
 	}
 	
 	public static EntityContainer getContainer(Entity entity) {
+		if (entity != null) {
+			return entities.get(entity.getUniqueId());
+		}
+		return null;
+	}
+	
+	public static EntityContainer getContainer(UUID entity) {
 		if (entity != null) {
 			return entities.get(entity);
 		}
@@ -64,57 +78,79 @@ public class EntityContainer extends Containers {
 	@Override
 	public Security isAllowed(OfflinePlayer player) {
 		
-		Team stranger = Team.getTeam(player);
-		Team team = Team.getTeam(getPlayer());
+		boolean same;
+		if (player instanceof Player) {
+			same = (placer.getPlayer() != null && player == placer.getPlayer());
+		} else {
+			same = (placer == player);
+		}
 		
-		if (team == null && lock == Lock.LOCKED && placer == player) {
-			BlockContainer.updateTeams();
+		Team team = Team.getTeam(placer);
+		Team stranger = Team.getTeam(player);
+		
+		if (team == null && lock == Lock.LOCKED && same) {
+			System.out.println("out 0");
 			return Security.OWNER;
 		}
 		
 		switch(lock) {
 		case LOCKED: // ------------------------ nobody but the player can access. Also, the container's team is tied to the player. | WIP
-			if (this.placer == player) {
+			
+			System.out.println(placer);
+			System.out.println(player);
+			System.out.println(placer.getPlayer());
+			
+			if (same) {
+				System.out.println("out 1");
+				
 				return Security.OWNER;
 			}
+			System.out.println("out 2");
 			return Security.DISALLOWED;
 			
 		case TEAM_ONLY: // --------------------- only Teammates can access.
 			
 			if (team != null && team == stranger) {
 				
-				if (this.placer == player) {
+				if (same) {
+					System.out.println("out 3");
 					return Security.OWNER;
 				}
+				System.out.println("out 4");
 				return Security.TEAMMATE; 
 			} else 
-			if (team == null && this.placer == player) {
+			if (team == null && same) {
+				System.out.println("out 5");
 				return Security.OWNER;
 			}
+			System.out.println("out 6");
 			return Security.DISALLOWED;
 		case UNLOCKED: // --------------------- anybody can access.
 			if (team != null && team == stranger) {
 				
-				if (this.placer == player) {
+				if (same) {
+					System.out.println("out 7");
 					return Security.OWNER;
 				}
+				System.out.println("out 8");
 				return Security.TEAMMATE; 
 			} else 
-			if (team == null && this.placer == player) {
+			if (team == null && same) {
+				System.out.println("out 9");
 				return Security.OWNER;
 			}
+			System.out.println("out 10");
 			return Security.UNLOCKED;
 		default:
 			return Security.EXCEPTION;
-		
 		}
 	}
 	
 	public Entity getEntity() {
-		return entity;
+		return Bukkit.getEntity(entity);
 	}
 	
-	public static LinkedHashMap<Entity, EntityContainer> getContainers() {
+	public static LinkedHashMap<UUID, EntityContainer> getContainers() {
 		return entities;
 	}
 }

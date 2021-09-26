@@ -246,7 +246,7 @@ public class BlockInteractEvent implements Listener {
 								});
 								
 								if (entity.isPresent()) {
-									new EntityContainer(player, Lock.TEAM_ONLY, entity.get());
+									new EntityContainer(player, Lock.TEAM_ONLY, entity.get().getUniqueId());
 								}
 								
 				            }
