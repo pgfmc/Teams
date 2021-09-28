@@ -63,14 +63,21 @@ public class EntityContainer extends Containers {
 	
 	public static EntityContainer getContainer(Entity entity) {
 		if (entity != null) {
-			return entities.get(entity.getUniqueId());
+			return getContainer(entity.getUniqueId());
 		}
 		return null;
 	}
 	
 	public static EntityContainer getContainer(UUID entity) {
 		if (entity != null) {
-			return entities.get(entity);
+			
+			for (UUID uuid : entities.keySet()) {
+				if (uuid.equals(entity)) {
+					return entities.get(uuid);
+				}
+			}
+			
+			return null;
 		}
 		return null;
 	}

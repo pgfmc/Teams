@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Container;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -54,9 +55,16 @@ public class BlockInteractEvent implements Listener {
 						
 						BlockContainer cont = BlockContainer.getContainer(block);
 						
-						if (cont == null) { return; }
+						System.out.println("is Container");
+						System.out.println(e.getClickedBlock().getType().toString());
+						System.out.println(cont.getLock().toString());
+						
+						if (cont.getTeam() != null) {
+							System.out.println(cont.getTeam().getName());
+						}
 						
 						Security sec = cont.isAllowed(player);
+						System.out.println(sec.toString());
 						
 						switch(sec) {
 						
@@ -176,10 +184,7 @@ public class BlockInteractEvent implements Listener {
 						}
 					}
 					
-					System.out.println(e.getAction());
-					System.out.println(e.hasBlock());
-					System.out.println(e.hasItem() );
-					System.out.println(block.getType());
+					
 					
 					if (e.getAction() == Action.RIGHT_CLICK_BLOCK &&
 						e.hasBlock() && 
@@ -196,7 +201,7 @@ public class BlockInteractEvent implements Listener {
 						// --------------------------------
 					{
 						
-						System.out.println();
+						
 						
 						Beacons beacon = Beacons.getBeacon(player, block.getLocation());
 						
@@ -220,6 +225,42 @@ public class BlockInteractEvent implements Listener {
 								if (e.getItem().getType() == Material.ITEM_FRAME ||
 										e.getItem().getType() == Material.GLOW_ITEM_FRAME) {
 									bb = block.getRelative(e.getBlockFace());
+								} else if ((e.getItem().getType() == Material.ARMOR_STAND)) {
+									
+									// gets the block above where the armor stand is projected to be (because that is technically where the armor stand would be located)
+									
+									Block bloke = block.getRelative(e.getBlockFace()).getRelative(BlockFace.UP);
+									bb = block.getRelative(e.getBlockFace());
+									
+									ArrayList<Entity> entities = new ArrayList<>();
+									
+									for (Entity entity : bloke.getChunk().getEntities()) { // gets all entities in the chunk of the block location.
+										
+										if (entity != null) {
+											entities.add(entity);
+										}
+									}
+									
+									Optional<Entity> entity = entities.stream()
+									.filter(x -> { // gets the youngest entity at the rail's position
+										return (x.getLocation().getBlock().equals(bloke) || x.getLocation().getBlock().equals(bb));})
+									.reduce((t, x) -> { // reduces the filtered selection of minecart Chests / Hoppers to the one that lived the least.
+										if (t == null && x.getTicksLived() == 1) {
+											return x;
+										} else if (t.getTicksLived() > x.getTicksLived() && x.getTicksLived() == 1) {
+											return x;
+										} else {
+											return t;
+										}
+									});
+									
+									if (entity.isPresent()) {
+										new EntityContainer(player, Lock.TEAM_ONLY, entity.get().getUniqueId());
+										return;
+									}
+									
+									return;
+									
 								} else {
 									bb = block;
 								}
@@ -247,6 +288,7 @@ public class BlockInteractEvent implements Listener {
 								
 								if (entity.isPresent()) {
 									new EntityContainer(player, Lock.TEAM_ONLY, entity.get().getUniqueId());
+									return;
 								}
 								
 				            }

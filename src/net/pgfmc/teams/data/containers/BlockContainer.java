@@ -48,10 +48,7 @@ public class BlockContainer extends Containers {
 		this.team = team;
 		this.block = block;
 		
-		
-		if (block.getType() != Material.BEACON) {
-			containers.put(block, this);
-		}
+		containers.put(block, this);
 	}
 	
 	public static boolean createBlockContainer(OfflinePlayer player, Lock lock, Block block, Team team) { // a router between Beacons and BlockContainer

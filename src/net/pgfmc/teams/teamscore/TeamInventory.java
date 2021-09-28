@@ -27,17 +27,13 @@ If the player has no team, it will allow them to create one.
 public class TeamInventory implements InventoryHolder {
 	
 	private Inventory inv;
-	private Player p;
 	
 	public TeamInventory(Player p) // constructor
 	{
-		this.p = p;
+		
 		inv = Bukkit.createInventory(this, 9, "Team"); // Initiates the declared Inventory object
-		init(); // Build the inventory
-	}
+		// Build the inventory
 	
-	public void init()
-	{
 		if (Team.getTeam(p) == null) // If the player isn't in a team
 		{
 			// -----------------------------------------------------------------------
@@ -61,6 +57,7 @@ public class TeamInventory implements InventoryHolder {
 			inv.setItem(3, item);
 			// -----------------------------------------------------------------------
 			
+			/*
 			// Compass, "Find"
 			lore.clear();
 			lore.add("Find a team");
@@ -69,6 +66,7 @@ public class TeamInventory implements InventoryHolder {
 			inv.setItem(5, item);
 			
 			// -----------------------------------------------------------------------
+			*/
 			
 			return;
 		}
@@ -84,10 +82,13 @@ public class TeamInventory implements InventoryHolder {
 			
 			// Sign, "[Team Name]"
 			List<String> lore = new ArrayList<>();
-			lore.add("Stats");
+			lore.add(team.getName());
 			lore.add("---------");
-			lore.add("Members: " + String.valueOf(team.getMembers().size())); // # of members
-						
+			lore.add("Members:"); // # of members
+			for (UUID uuid : team.getMembers()) {
+				lore.add(Bukkit.getOfflinePlayer(uuid).getName());
+			}
+				
 			// Gets how many team members are currently online
 			int onlineCount = 0;
 			for (UUID member : team.getMembers())
@@ -109,15 +110,14 @@ public class TeamInventory implements InventoryHolder {
 			lore.clear();
 						
 			// Gets the list of members and adds it to the lore
-			for (UUID member : team.getMembers())
-			{
+			for (UUID member : team.getMembers()) {
 				lore.add(Bukkit.getPlayer(member).getName());
 			}
 			item = Utility.createItem("§eMembers", Material.PLAYER_HEAD, lore);
 						
 			inv.setItem(5, item);
 			// -----------------------------------------------------------------------
-						
+			/*			
 			// Tripwire Hook, "Locked Containers"
 			lore.clear();
 			lore.add("List of locked containers");
@@ -127,12 +127,9 @@ public class TeamInventory implements InventoryHolder {
 			inv.setItem(6, item);
 						
 			// -----------------------------------------------------------------------
-			
-			
-			
+			*/
 			return;
 		}
-
 	}
 	@Override
 	public Inventory getInventory() { return inv; }
