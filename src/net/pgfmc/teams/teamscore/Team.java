@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.containers.BlockContainer;
+import net.pgfmc.teams.voting.Vote;
 
 /*
 Object Class for Teams; a new object will be created upon the creation of a new team.
@@ -39,14 +40,15 @@ ability to disband team
 
 public class Team {
 	
-	String name = "New Team";
-	List<UUID> members;
-	static IdentityHashMap<UUID, Team> instances = new IdentityHashMap<UUID, Team>();
-	UUID ID;
+	private String name = "New Team";
+	private List<UUID> members;
+	private static IdentityHashMap<UUID, Team> instances = new IdentityHashMap<UUID, Team>();
+	private UUID ID;
+	private Vote<?> vote;
 	
 	// ------------------------------------------------------------------------------------ constructors
 	
-	public Team(String name, List<UUID> members, UUID ID)
+	public Team(String name, List<UUID> members, UUID ID, UUID vote)
 	{
 		this.name = name;
 		this.members = members;
@@ -112,6 +114,15 @@ public class Team {
 			return false;
 		}
 	}
+	
+	public void setVote(Vote<?> vote) {
+		this.vote = vote;
+	}
+	
+	public Vote<?> getVote() {
+		return vote;
+	}
+	
 	
 	// ------------------------------------------------------------------------------------ Renaming function
 	

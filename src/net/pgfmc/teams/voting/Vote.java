@@ -27,7 +27,8 @@ public class Vote<E> {
 	 * 		if Subject == MAKE_LEADER, it will be the suggested new leader.
 	 */
 	private E chungus;
-	boolean isOver = false;
+	transient boolean isOver = false;
+	private UUID uuid;
 	
 	/**
 	 * Vote Subject states.
@@ -70,9 +71,19 @@ public class Vote<E> {
 			for (UUID uuid : team.getMembers()) {
 				votes.put(uuid, Answer.UNDECIDED);
 			}
+			uuid = UUID.randomUUID();
 		} else {
 			isOver = true;
 		}
+	}
+	@Deprecated
+	private Vote(Team team, Subject subject, E chungus, UUID uuid, HashMap<UUID, Answer> votes) {
+		
+		this.team = team;
+		this.subject = subject;
+		this.chungus = chungus;
+		this.uuid = uuid;
+		this.votes = votes;
 	}
 	
 	/**
@@ -95,6 +106,7 @@ public class Vote<E> {
 		} else { return false; }
 	}
 	
+	// ---------------------------------------- getters and setters
 	public Team getTeam() {
 		return team;
 	}
@@ -124,5 +136,9 @@ public class Vote<E> {
 	
 	public E getChungus() {
 		return chungus;
+	}
+	
+	public UUID getUniqueID() {
+		return uuid;
 	}
 }

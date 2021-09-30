@@ -57,6 +57,12 @@ public class TeamsDatabase implements PlayerDataListener {
 			}
 			teamSection.set("Members", strings);
 			
+			if (team.getVote() == null) { // saves Vote
+				teamSection.set("Vote", null);
+			} else {
+				teamSection.set("Vote", team.getVote().getUniqueID().toString());
+			}
+			
 			configSec.set(team.getUniqueId().toString(), teamSection);
 		}
 		database.set("teams", configSec);
@@ -92,7 +98,15 @@ public class TeamsDatabase implements PlayerDataListener {
 				members.add(UUID.fromString((String) string));
 			}
 			
-			new Team(name, members, UUID.fromString(key));
+			
+			UUID vote;
+			if (teamSection.isSet("Vote")) {
+				vote = UUID.fromString(teamSection.getString("Vote"));
+			} else {
+				vote = null;
+			}
+			
+			new Team(name, members, UUID.fromString(key), vote);
 		}
 	}
 

@@ -13,20 +13,32 @@ import org.bukkit.inventory.meta.ItemMeta;
  * @author CrimsonDart
  *
  */
-public class InventoryButton {
+public class Button {
 	
 	// fields
 	
 	Butto function;
 	ItemStack item;
 	int position;
-	InteractableInventory inv;
 	
 	public static Butto defaultButto = (x) -> {return;};
 	
 	// constructor
 	
-	public InventoryButton(Material mat, int pos, Butto function, String name, String lore, InteractableInventory inv) {
+	/**
+	 * 
+	 * Creates a new Button for an InteractableInventory. includes support for custom names, lore, and Full button clicking action!
+	 * 
+	 * @param mat The material of the item.
+	 * @param pos The Item's slot number in the InteractableInventory
+	 * @param function The lambda function that is ran when the item is clicked. (bk, this is a lambda tutorial for you)
+	 * 		where the "Butto function" parameter goes, type:      (x) -> { /* code here /* }      and thats it    also x is the player who clicked the item
+	 * 		You can also set function to null to just do nothing.
+	 * @param name The name of the item. (set to null to not change the name)
+	 * @param lore The lore of the item.  Syntax:    "line1\nline2\nline3..... and so on"
+	 * @param inv The Interactable Inventory that this button belongs to.
+	 */
+	public Button(Material mat, int pos, Butto function, String name, String lore) {
 		
 		if (function == null) {
 			this.function = defaultButto;
@@ -36,14 +48,12 @@ public class InventoryButton {
 		
 		this.item = new ItemStack(mat);
 		position = pos;
-		this.inv = inv;
 		
 		ItemMeta imeta = this.item.getItemMeta();
 		
 		if (name != null) {
 			imeta.setDisplayName(name);
 		}
-		
 		
 		// sets lore
 		if (lore != null) {
@@ -57,10 +67,9 @@ public class InventoryButton {
 		item.setItemMeta(imeta);
 	}
 	
-	public InventoryButton(int position, InteractableInventory inv) {
+	public Button(int position) {
 		this.function = defaultButto;
 		this.item = new ItemStack(Material.AIR);
-		this.inv = inv;
 		this.position = position;
 	}
 	
@@ -69,9 +78,6 @@ public class InventoryButton {
 	/**
 	 *  Initializes the item into the parent inventory. (inv)
 	 */
-	public void init() {
-		inv.getInventory().setItem(position, item);
-	}
 	
 	/**
 	 * runs the lambda expression Butto

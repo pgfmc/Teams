@@ -16,7 +16,7 @@ public abstract class InteractableInventory implements InventoryHolder {
 	
 	// fields
 	
-	protected ArrayList<InventoryButton> buttons = new ArrayList<>();
+	protected ArrayList<Button> buttons = new ArrayList<>();
 	protected int size;
 	protected Inventory inv;
 	
@@ -53,7 +53,7 @@ public abstract class InteractableInventory implements InventoryHolder {
 		} while (shiza != size);
 	}
 	
-	protected abstract InventoryButton makeButton(int pos);
+	protected abstract Button makeButton(int pos);
 	
 	public void press(int slot, Player p) {
 		buttons.get(slot).run(p);

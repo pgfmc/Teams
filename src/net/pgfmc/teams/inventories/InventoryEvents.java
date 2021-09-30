@@ -44,30 +44,6 @@ public class InventoryEvents implements Listener {
 				
 				((TeamInventory) inv.getHolder()).press(e.getSlot(), p);
 				
-				/*
-				if (pData.getData("team") != null) { // If the player isn't in a team, the inventory is static (for now)
-					
-					if (e.getSlot() == 3) {
-						p.openInventory(new TeamLeaveConfirmInventory((Team) pData.getData("team")).getInventory());
-					}
-				
-				} else {
-					int slot = e.getSlot();
-					switch(slot) {
-					
-					case 3: 	List<UUID> list = new ArrayList<>();
-								list.add(p.getUniqueId());
-								Team team = new Team(list);
-								pData.setData("team", team);
-								p.closeInventory();
-								p.sendMessage("§dYou have created a new team!");
-								team.renameBegin(pData);
-								return;
-					default: return;
-					}
-				}
-				*/
-				
 			} else if (inv.getHolder() != null && inv.getHolder() instanceof TeamLeaveConfirmInventory) {
 				
 				e.setCancelled(true);

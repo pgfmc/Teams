@@ -42,14 +42,14 @@ public class TeamInventory extends InteractableInventory {
 	
 	@Override
 	@NotNull
-	protected InventoryButton makeButton(int pos) {
+	protected Button makeButton(int pos) {
 		
 		if (team == null) {
 			
 			switch(pos) {
 			
 			case 3: { // Clock || create new Team
-				return new InventoryButton(Material.CLOCK, pos, (x) -> {
+				return new Button(Material.CLOCK, pos, (x) -> {
 					List<UUID> list = new ArrayList<>();
 					list.add(x.getUniqueId());
 					Team team = new Team(list);
@@ -57,18 +57,18 @@ public class TeamInventory extends InteractableInventory {
 					x.sendMessage("§dYou have created a new team!");
 					team.renameBegin(x);
 					return;
-				}, "§aCreate", "Create your own team!", this);
+				}, "§aCreate", "Create your own team!");
 			}
 			
 			case 4: { // oak sign || Team Data
-				return new InventoryButton(Material.OAK_SIGN, pos, null, "§c§lNo team.", 
+				return new Button(Material.OAK_SIGN, pos, null, "§c§lNo team.", 
 						
 						"You are not in a team.\n"
 						+ "Create your own or send a join request\n"
-						+ "to an existing team", this);
+						+ "to an existing team");
 			}
 			
-			default: return new InventoryButton(pos, this);
+			default: return new Button(pos);
 			}
 			
 		} else {
@@ -76,32 +76,12 @@ public class TeamInventory extends InteractableInventory {
 			switch(pos) {
 			
 			case 3: { // Arrow || leave Confirm Inventory open
-				return new InventoryButton(Material.ARROW, pos, (x) -> {
+				return new Button(Material.ARROW, pos, (x) -> {
 					
 					x.openInventory(new TeamLeaveConfirmInventory(team).getInventory());
 					return;
-				}, "Leave", null, this);
+				}, "Leave", null);
 			}
-			
-			/*case 4: { // idk actually
-				
-				Optional<String> names = team.getMembers().stream()
-				.map((x) -> Bukkit.getOfflinePlayer(x).getName())
-				.reduce((S, x) -> {
-					if (S == null) {
-						return("-------------\nMembers:\n" + x);
-					}
-					return( S + "\n" + x);
-				}) ;
-				
-				if (!names.isPresent()) {
-					new TeamNoPlayersException("Team " + team.getName() + " has no players present!");
-					return null;
-				}
-				
-				new InventoryButton(Material.OAK_SIGN, pos, null, "§c§l" + team.getName(), names.get(), this);
-				
-			}*/
 			
 			case 5: { // Player Head || shows all members of the player's team.
 				Optional<String> names = team.getMembers().stream()
@@ -117,10 +97,16 @@ public class TeamInventory extends InteractableInventory {
 							new TeamNoPlayersException("Team " + team.getName() + " has no players present!");
 							return null;
 						}
-				return new InventoryButton(Material.PLAYER_HEAD, pos, null, "§eMembers", names.get(), this);
+				return new Button(Material.PLAYER_HEAD, pos, null, "§eMembers", names.get());
 			}
 			
-			default: return new InventoryButton(pos, this);
+			case 6: {
+				
+				return new Button(Material.PAPER, pos, null, "Vote", null);
+				
+			}
+			
+			default: return new Button(pos);
 			}
 		}
 	}
