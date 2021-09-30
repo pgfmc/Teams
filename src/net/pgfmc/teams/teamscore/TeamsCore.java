@@ -17,6 +17,7 @@ import net.pgfmc.teams.data.entities.DeathEvent;
 import net.pgfmc.teams.data.entities.EntityClick;
 import net.pgfmc.teams.data.entities.InvOpenEvent;
 import net.pgfmc.teams.data.entities.TameEvent;
+import net.pgfmc.teams.inventories.InventoryEvents;
 import net.pgfmc.teams.playerLogistics.AttackEvent;
 import net.pgfmc.teams.playerLogistics.InviteCommand;
 import net.pgfmc.teams.playerLogistics.LeaveTeamCommand;

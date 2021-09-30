@@ -61,6 +61,10 @@ public class Team {
 		
 		instances.put(ID, this);
 		
+		for (UUID uuid : members) {
+			PlayerData.setData(Bukkit.getOfflinePlayer(uuid), "team", this);
+		}
+		
 	}
 	
 	// ------------------------------------------------------------------------------------ getters and setters
@@ -111,21 +115,21 @@ public class Team {
 	
 	// ------------------------------------------------------------------------------------ Renaming function
 	
-	public void renameBegin(PlayerData p) { // initializes naming mode for player p.getPlayer.
+	public void renameBegin(Player p) { // initializes naming mode for player p.getPlayer.
 		if (p.getPlayer().getPlayer() != null) {
-			Player player = p.getPlayer().getPlayer();
-			player.sendMessage("§dFor the next 4 minutes, you can change your ");
-			player.sendMessage("§dteam's name by typing into the chat box!");
-			p.setData("naming", true);
+			PlayerData pData = PlayerData.getPlayerData(p);
+			p.sendMessage("§dFor the next 4 minutes, you can change your ");
+			p.sendMessage("§dteam's name by typing into the chat box!");
+			pData.setData("naming", true);
 			
 			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TeamsCore.getPlugin(), new Runnable() {
 	            
 				@Override
 	            public void run() // 60 second long cooldown, in which the plugin will wait for 
 	            {
-					if (p.getData("naming") != null) {
-						p.setData("naming", null);
-		            	player.sendMessage("§cTime has run out to rename your team.");
+					if (pData.getData("naming") != null) {
+						pData.setData("naming", null);
+		            	p.sendMessage("§cTime has run out to rename your team.");
 					}
 	            }
 	        }, 2400);

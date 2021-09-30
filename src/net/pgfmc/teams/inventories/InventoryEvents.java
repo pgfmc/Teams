@@ -1,8 +1,4 @@
-package net.pgfmc.teams.teamscore;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+package net.pgfmc.teams.inventories;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.playerLogistics.TeamLeaveConfirmInventory;
+import net.pgfmc.teams.teamscore.Team;
 
 /*
 Written by CrimsonDart
@@ -45,8 +41,10 @@ public class InventoryEvents implements Listener {
 			if (inv.getHolder() != null && inv.getHolder() instanceof TeamInventory) {  // return; if the inventory isn't TeamBase
 			
 				e.setCancelled(true);
-				PlayerData pData = PlayerData.getPlayerData(p);
-			
+				
+				((TeamInventory) inv.getHolder()).press(e.getSlot(), p);
+				
+				/*
 				if (pData.getData("team") != null) { // If the player isn't in a team, the inventory is static (for now)
 					
 					if (e.getSlot() == 3) {
@@ -68,7 +66,7 @@ public class InventoryEvents implements Listener {
 					default: return;
 					}
 				}
-				
+				*/
 				
 			} else if (inv.getHolder() != null && inv.getHolder() instanceof TeamLeaveConfirmInventory) {
 				

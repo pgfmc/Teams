@@ -3,6 +3,8 @@ package net.pgfmc.teams.voting;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.bukkit.OfflinePlayer;
+
 import net.pgfmc.teams.teamscore.Team;
 
 /**
@@ -109,6 +111,13 @@ public class Vote<E> {
 		if (votes.containsKey(uuid)) {
 			votes.put(uuid, answer);
 			return true;
+		}
+		return false;
+	}
+	
+	public boolean setVote(OfflinePlayer player, Answer answer) {
+		if (player != null) {
+			return setVote(player.getUniqueId(), answer);
 		}
 		return false;
 	}

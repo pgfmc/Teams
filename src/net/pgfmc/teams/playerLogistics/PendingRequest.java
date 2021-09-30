@@ -75,7 +75,7 @@ public class PendingRequest {
 		JOI.setData("team", team);
 		INV.setData("request", null);
 		JOI.setData("request", null);
-		team.renameBegin(INV);
+		team.renameBegin((Player) INV.getPlayer());
 	}
 	
 	public OfflinePlayer getInvitor() {

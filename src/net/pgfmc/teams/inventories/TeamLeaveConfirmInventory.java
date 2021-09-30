@@ -1,4 +1,4 @@
-package net.pgfmc.teams.playerLogistics;
+package net.pgfmc.teams.inventories;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

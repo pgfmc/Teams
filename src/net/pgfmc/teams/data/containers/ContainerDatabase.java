@@ -145,9 +145,9 @@ public class ContainerDatabase {
 			OfflinePlayer player = ent.getPlayer();
 			
 			// if location is not found, a new one is created.
-			ConfigurationSection blocc = database.getConfigurationSection(ent.getEntity().getUniqueId().toString());
+			ConfigurationSection blocc = database.getConfigurationSection(entity.toString());
 			if (blocc == null) {
-				blocc = database.createSection(ent.getEntity().getUniqueId().toString());
+				blocc = database.createSection(entity.toString());
 			}
 			
 			blocc.set("player", player.getUniqueId().toString());
