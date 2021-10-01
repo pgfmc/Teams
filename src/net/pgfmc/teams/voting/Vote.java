@@ -1,11 +1,17 @@
 package net.pgfmc.teams.voting;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.pgfmc.teams.teamscore.Team;
+import net.pgfmc.teams.teamscore.TeamsCore;
 
 /**
  * Vote Class. Stores information pertaining to votes.
@@ -29,6 +35,11 @@ public class Vote<E> {
 	private E chungus;
 	transient boolean isOver = false;
 	private UUID uuid;
+	
+	private static HashMap<UUID, Vote<?>> instances = new HashMap<>();
+	
+	private static File file = new File(TeamsCore.getPlugin().getDataFolder() + File.separator + "voteDatabase.yml"); // Creates a File object
+	private static FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 	
 	/**
 	 * Vote Subject states.
@@ -76,7 +87,7 @@ public class Vote<E> {
 			isOver = true;
 		}
 	}
-	@Deprecated
+	
 	private Vote(Team team, Subject subject, E chungus, UUID uuid, HashMap<UUID, Answer> votes) {
 		
 		this.team = team;
@@ -141,4 +152,118 @@ public class Vote<E> {
 	public UUID getUniqueID() {
 		return uuid;
 	}
+	
+	public static void Save() {
+		
+		database = null;
+		
+		for (UUID uuid : instances.keySet()) {
+			
+			ConfigurationSection voteData = database.createSection(uuid.toString());
+			Vote<?> vote = instances.get(uuid);
+			
+			voteData.set("team", vote.getTeam().getUniqueId().toString());
+			voteData.set("subject", vote.getSubject().toString());
+			
+			switch(vote.getSubject()) {
+			case CHANGE_NAME:
+				voteData.set("chungus", (String) vote.getChungus());
+				break;
+			case KICK_PLAYER:
+				voteData.set("chungus", ((UUID) vote.getChungus()).toString());
+				break;
+			case MAKE_LEADER:
+				voteData.set("chungus", ((UUID) vote.getChungus()).toString());
+				break;
+			}
+			
+			ConfigurationSection players = voteData.createSection("players");
+			
+			for (UUID player : vote.getVotes().keySet()) {
+				players.set(player.toString(), vote.getVotes().get(player).toString());
+			}
+			
+			voteData.set("players", players);
+			database.set(uuid.toString(), voteData);
+			
+		}
+		
+		try {
+			database.save(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void Load() {
+		
+		if (database == null) {
+			return;
+		}
+		
+		for (String key : database.getKeys(false)) {
+			
+			UUID uuid = UUID.fromString(key);
+			
+			ConfigurationSection voteData = database.getConfigurationSection(key);
+			
+			Team team = Team.findID(UUID.fromString(voteData.getString("team")));
+			Subject subject = Subject.valueOf(voteData.getString("subject"));
+			
+			
+			
+			
+			
+			
+			voteData.getConfigurationSection("players").getKeys(false).stream()
+			.forEach(null);
+			
+			HashMap<UUID, Answer> votes = new HashMap<>();
+			
+			for (String playerUUID : voteData.getConfigurationSection("players").getKeys(false)) {
+				
+				votes.put(UUID.fromString(playerUUID), Answer.valueOf(voteData.getConfigurationSection("players").getString(playerUUID)));
+			}
+			
+			switch(subject) {
+			
+			case KICK_PLAYER:
+				new Vote<UUID>(team, subject, UUID.fromString(voteData.getString("chungus")), uuid, votes);
+				break;
+			case MAKE_LEADER:
+				new Vote<UUID>(team, subject, UUID.fromString(voteData.getString("chungus")), uuid, votes);
+				break;
+			case CHANGE_NAME:
+				new Vote<String>(team, subject, voteData.getString("chungus"), uuid, votes);
+				break;
+			default:
+				break;
+			}
+			
+			
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

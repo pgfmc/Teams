@@ -10,6 +10,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import net.pgfmc.pgfessentials.inventoryAPI.Button;
+import net.pgfmc.pgfessentials.inventoryAPI.InteractableInventory;
 import net.pgfmc.teams.teamscore.Team;
 
 /*

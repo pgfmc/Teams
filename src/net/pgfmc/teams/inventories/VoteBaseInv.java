@@ -3,6 +3,8 @@ package net.pgfmc.teams.inventories;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import net.pgfmc.pgfessentials.inventoryAPI.Button;
+import net.pgfmc.pgfessentials.inventoryAPI.InteractableInventory;
 import net.pgfmc.teams.teamscore.Team;
 import net.pgfmc.teams.voting.Vote;
 import net.pgfmc.teams.voting.Vote.Answer;

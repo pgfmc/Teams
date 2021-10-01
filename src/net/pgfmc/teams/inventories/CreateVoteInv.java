@@ -2,6 +2,8 @@ package net.pgfmc.teams.inventories;
 
 import org.bukkit.Material;
 
+import net.pgfmc.pgfessentials.inventoryAPI.Button;
+import net.pgfmc.pgfessentials.inventoryAPI.InteractableInventory;
 import net.pgfmc.teams.teamscore.Team;
 
 public class CreateVoteInv extends InteractableInventory {
