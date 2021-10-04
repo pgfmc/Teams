@@ -17,7 +17,7 @@ Invite Command (for inviting people to your team)
  */
 
 public class InviteCommand implements CommandExecutor {
-
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 

@@ -17,12 +17,12 @@ import net.pgfmc.teams.data.entities.DeathEvent;
 import net.pgfmc.teams.data.entities.EntityClick;
 import net.pgfmc.teams.data.entities.InvOpenEvent;
 import net.pgfmc.teams.data.entities.TameEvent;
-import net.pgfmc.teams.inventories.InventoryEvents;
 import net.pgfmc.teams.playerLogistics.AttackEvent;
 import net.pgfmc.teams.playerLogistics.InviteCommand;
 import net.pgfmc.teams.playerLogistics.LeaveTeamCommand;
 import net.pgfmc.teams.playerLogistics.LeaveTeamConfirmCommand;
 import net.pgfmc.teams.playerLogistics.TeamAccept;
+import net.pgfmc.teams.voting.VoteCommand;
 
 public class TeamsCore extends JavaPlugin {
 	
@@ -98,7 +98,6 @@ public class TeamsCore extends JavaPlugin {
 		
 		ContainerDatabase.loadContainers();
 		
-		getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
 		getServer().getPluginManager().registerEvents(new BlockInteractEvent(), this);
 		getServer().getPluginManager().registerEvents(new AttackEvent(), this);
 		getServer().getPluginManager().registerEvents(new BBEvent(), this);
@@ -111,6 +110,7 @@ public class TeamsCore extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new InvOpenEvent(), this);
 		
 		getCommand("team").setExecutor(new TeamCommand());
+		getCommand("team").setExecutor(new VoteCommand());
 		getCommand("Invite").setExecutor(new InviteCommand());
 		getCommand("teamAccept").setExecutor(new TeamAccept());
 		getCommand("leaveTeam").setExecutor(new LeaveTeamCommand());
