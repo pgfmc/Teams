@@ -9,16 +9,16 @@ import org.bukkit.entity.Player;
 import net.pgfmc.pgfessentials.inventoryAPI.PagedInventory;
 import net.pgfmc.teams.teamscore.Team;
 
-public class TeamKickSelectInventory extends PagedInventory<OfflinePlayer> {
-
-	public TeamKickSelectInventory(Team team, Player player) {
-		super(SizeData.SMALL, "Select who to Kick!", team.getMembers().stream().filter((x) -> {
+public class AppointLeaderInventory extends PagedInventory<OfflinePlayer> {
+	
+	public AppointLeaderInventory(Player player, Team team) {
+		super(SizeData.SMALL, "Select the next leader!", team.getMembers().stream().filter((x) -> {
 			if (x.getUniqueId().equals(player.getUniqueId()) ) {
 				return false;
 			}
 			return true;
 		}).collect(Collectors.toList()), (x, e, t) -> {
-			x.openInventory(new KickConfirmInventory(t, team).getInventory());
+			x.openInventory(new NewLeaderConfirmInventory(t, team).getInventory());
 		}, Material.PLAYER_HEAD);
 		
 		setBackButton(new TeamInventory(player));

@@ -69,6 +69,25 @@ public class Team {
 		for (UUID uuid : members) {
 			PlayerData.setData(Bukkit.getOfflinePlayer(uuid), "team", this);
 		}
+		
+		
+		Player p = (Player) getLeader();
+		PlayerData pData = PlayerData.getPlayerData(p);
+		p.sendMessage("§dFor the next 4 minutes, you can change your ");
+		p.sendMessage("§dteam's name by typing into the chat box!");
+		pData.setData("naming", true);
+		
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TeamsCore.getPlugin(), new Runnable() {
+            
+			@Override
+            public void run() // 60 second long cooldown, in which the plugin will wait for 
+            {
+				if (pData.getData("naming") != null) {
+					pData.setData("naming", null);
+	            	p.sendMessage("§cTime has run out to rename your team.");
+				}
+            }
+        }, 2400);
 	}
 	
 	// ------------------------------------------------------------------------------------ getters and setters
@@ -135,6 +154,7 @@ public class Team {
 			PlayerData pData = PlayerData.getPlayerData(p);
 			p.sendMessage("§dFor the next 4 minutes, you can change your ");
 			p.sendMessage("§dteam's name by typing into the chat box!");
+			p.sendMessage("§dType \"c\" to cancel.");
 			pData.setData("naming", true);
 			
 			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TeamsCore.getPlugin(), new Runnable() {

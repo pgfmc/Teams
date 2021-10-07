@@ -6,10 +6,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.inventoryAPI.InteractableInventory;
-import net.pgfmc.pgfessentials.inventoryAPI.OfflinePlayerSelect;
+import net.pgfmc.pgfessentials.inventoryAPI.PagedInventory;
 import net.pgfmc.teams.teamscore.Team;
 
 /*
@@ -84,20 +85,17 @@ public class TeamInventory extends InteractableInventory {
 			
 			createButton(Material.GOLDEN_HELMET, 1, "Transfer Ownership", (x, e) -> {
 				
-				x.openInventory(new OfflinePlayerSelect("Select your new Leader!", (l, E, t) -> {
-					team.setLeader(t);
-					
-					team.getMembers().stream().forEach((n) -> {
-						if (n instanceof Player) {
-							((Player) n).sendMessage(t.getName() + " is now the new leader of your team!");
-						}
-					});
-					l.closeInventory();
-					
-				}).getInventory());
+				x.openInventory(new AppointLeaderInventory(x, team).getInventory());
 			});
 			
 			createButton(Material.STONE_SWORD, 2, "Kick Player", (x, e) -> {
+				PagedInventory<OfflinePlayer> aslk = new TeamKickSelectInventory(team, p);
+				
+				if (aslk.getEntries().size() != 0) {
+					x.openInventory(aslk.getInventory());
+				}
+				
+				
 				x.openInventory( new TeamKickSelectInventory(team, p).getInventory() );
 			});
 			
