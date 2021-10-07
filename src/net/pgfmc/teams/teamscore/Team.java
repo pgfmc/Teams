@@ -4,6 +4,7 @@ package net.pgfmc.teams.teamscore;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -11,7 +12,6 @@ import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.containers.BlockContainer;
-import net.pgfmc.teams.voting.Vote;
 
 /*
 Object Class for Teams; a new object will be created upon the creation of a new team.
@@ -44,20 +44,23 @@ public class Team {
 	private List<UUID> members;
 	private static IdentityHashMap<UUID, Team> instances = new IdentityHashMap<UUID, Team>();
 	private UUID ID;
-	private Vote<?> vote;
+	private UUID leader;
+	//private Vote<?> vote;
 	
 	// ------------------------------------------------------------------------------------ constructors
 	
-	public Team(String name, List<UUID> members, UUID ID, UUID vote)
+	public Team(String name, List<UUID> members, UUID ID, UUID leader)
 	{
 		this.name = name;
 		this.members = members;
 		this.ID = ID;
 		instances.put(this.ID, this);
+		this.leader = leader;
 	}
 	
 	public Team(List<UUID> members) {
 		this.members = members;
+		leader = members.get(0);
 		
 		ID = UUID.randomUUID();
 		
@@ -66,22 +69,32 @@ public class Team {
 		for (UUID uuid : members) {
 			PlayerData.setData(Bukkit.getOfflinePlayer(uuid), "team", this);
 		}
-		
 	}
 	
 	// ------------------------------------------------------------------------------------ getters and setters
 
-	public List<UUID> getMembers() {
+	public List<OfflinePlayer> getMembers() {
+		return members.stream().map((x) -> Bukkit.getOfflinePlayer(x)).collect(Collectors.toList());
+	}
+	
+	public List<UUID> getMemberUUIDs() {
 		return members;
 	}
 	
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 	
 	public void setName(String string) {
 		name = string;
+	}
+	
+	public OfflinePlayer getLeader() {
+		return Bukkit.getOfflinePlayer(leader);
+	}
+	
+	public void setLeader(OfflinePlayer leader) {
+		this.leader = leader.getUniqueId();
 	}
 	
 	public boolean addMember(OfflinePlayer offlinePlayer)
@@ -114,15 +127,6 @@ public class Team {
 			return false;
 		}
 	}
-	
-	public void setVote(Vote<?> vote) {
-		this.vote = vote;
-	}
-	
-	public Vote<?> getVote() {
-		return vote;
-	}
-	
 	
 	// ------------------------------------------------------------------------------------ Renaming function
 	
@@ -163,7 +167,7 @@ public class Team {
 			
 			for (UUID uuid : instances.keySet()) {
 				
-				if (ID.toString().equals(uuid.toString())) {
+				if (ID.equals(uuid)) {
 					return instances.get(uuid);
 				}
 			}

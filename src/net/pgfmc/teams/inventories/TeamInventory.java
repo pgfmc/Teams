@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.inventoryAPI.InteractableInventory;
+import net.pgfmc.pgfessentials.inventoryAPI.OfflinePlayerSelect;
 import net.pgfmc.teams.teamscore.Team;
 
 /*
@@ -39,32 +39,32 @@ public class TeamInventory extends InteractableInventory {
 		
 		if (team == null) {
 			
-			createButton(Material.CLOCK, 3, (x) -> {
-						List<UUID> list2 = new ArrayList<>();
-						list2.add(x.getUniqueId());
-						Team team = new Team(list2);
-						x.closeInventory();
-						x.sendMessage("§dYou have created a new team!");
-						team.renameBegin(x);
-						return;
-					}, "§aCreate", "Create your own team!");
+			createButton(Material.CLOCK, 3, "§aCreate", "Create your own team!", (x, e) -> {
+				List<UUID> list2 = new ArrayList<>();
+				list2.add(x.getUniqueId());
+				Team team = new Team(list2);
+				x.closeInventory();
+				x.sendMessage("§dYou have created a new team!");
+				team.renameBegin(x);
+				return;
+			});
 			
-			createButton(Material.OAK_SIGN, 4, null, "§c§lNo team.", 
+			createButton(Material.OAK_SIGN, 4, "§c§lNo team.", 
 							
 							"You are not in a team.\n"
 							+ "Create your own or send a join request\n"
 							+ "to an existing team");
 			
-		} else {
+		} else if (team.getLeader() != p) {
 			
-			createButton(Material.ARROW, 3, (x) -> {
-						
-						x.openInventory(new TeamLeaveConfirmInventory(team).getInventory());
-						return;
-					}, "Leave", null);
+			createButton(Material.ARROW, 3, "Leave", (x, e) -> {
+				
+				x.openInventory(new TeamLeaveConfirmInventory(team).getInventory());
+				return;
+			});
 			
 			Optional<String> names = team.getMembers().stream()
-					.map((x) -> Bukkit.getOfflinePlayer(x).getName())
+					.map((x) -> x.getName())
 					.reduce((S, x) -> {
 						if (S == null) {
 							return("-------------\nMembers:\n" + x);
@@ -74,13 +74,54 @@ public class TeamInventory extends InteractableInventory {
 			
 			if (names.isPresent()) {
 				
-				createButton(Material.PLAYER_HEAD, 5, null, "§eMembers", names.get());
+				createButton(Material.PLAYER_HEAD, 6, "§eMembers", names.get());
 				
 			} else {
-				createButton(Material.PLAYER_HEAD, 5, null, "§eMembers", names.get());
+				createButton(Material.PLAYER_HEAD, 6, "§eMembers", "an error has occured!");
 			}
 			
-			createButton(Material.PAPER, 6, null, "Vote", null);
+		} else {
+			
+			createButton(Material.GOLDEN_HELMET, 1, "Transfer Ownership", (x, e) -> {
+				
+				x.openInventory(new OfflinePlayerSelect("Select your new Leader!", (l, E, t) -> {
+					team.setLeader(t);
+					
+					team.getMembers().stream().forEach((n) -> {
+						if (n instanceof Player) {
+							((Player) n).sendMessage(t.getName() + " is now the new leader of your team!");
+						}
+					});
+					l.closeInventory();
+					
+				}).getInventory());
+			});
+			
+			createButton(Material.STONE_SWORD, 2, "Kick Player", (x, e) -> {
+				x.openInventory( new TeamKickSelectInventory(team, p).getInventory() );
+			});
+			
+			createButton(Material.NAME_TAG, 3, "Rename Team", (x, e) -> {
+				team.renameBegin(p);
+				p.closeInventory();
+			});
+			
+			Optional<String> names = team.getMembers().stream()
+					.map((x) -> x.getName())
+					.reduce((S, x) -> {
+						if (S == null) {
+							return("-------------\nMembers:\n" + x);
+						}
+						return( S + "\n" + x);
+					});
+			
+			if (names.isPresent()) {
+				
+				createButton(Material.PLAYER_HEAD, 6, "§eMembers", names.get());
+				
+			} else {
+				createButton(Material.PLAYER_HEAD, 6, "§eMembers", "an error has occured!");
+			}
 		}
 	}
 }

@@ -52,16 +52,13 @@ public class TeamsDatabase implements PlayerDataListener {
 			teamSection.set("name", team.getName()); // saves team name
 			
 			List<String> strings = new ArrayList<>(); // saves Members
-			for (UUID uuid : team.getMembers()) {
+			for (UUID uuid : team.getMemberUUIDs()) {
 				strings.add(uuid.toString());
 			}
 			teamSection.set("Members", strings);
 			
-			if (team.getVote() == null) { // saves Vote
-				teamSection.set("Vote", null);
-			} else {
-				teamSection.set("Vote", team.getVote().getUniqueID().toString());
-			}
+			teamSection.set("leader", team.getLeader().getUniqueId().toString());
+			
 			
 			configSec.set(team.getUniqueId().toString(), teamSection);
 		}
@@ -98,15 +95,9 @@ public class TeamsDatabase implements PlayerDataListener {
 				members.add(UUID.fromString((String) string));
 			}
 			
+			UUID leader = UUID.fromString(teamSection.getString("leader"));
 			
-			UUID vote;
-			if (teamSection.isSet("Vote")) {
-				vote = UUID.fromString(teamSection.getString("Vote"));
-			} else {
-				vote = null;
-			}
-			
-			new Team(name, members, UUID.fromString(key), vote);
+			new Team(name, members, UUID.fromString(key), leader);
 		}
 	}
 
@@ -115,8 +106,6 @@ public class TeamsDatabase implements PlayerDataListener {
 		
 		ConfigurationSection playerDataList = database.getConfigurationSection("playerData");
 		
-		if (!playerInit) {return;}
-		
 		
 		if (playerDataList != null) {
 			if (playerData.getData("team") != null) {
@@ -124,7 +113,7 @@ public class TeamsDatabase implements PlayerDataListener {
 			} else {
 				playerDataList.set(playerData.getPlayer().getUniqueId().toString(), null);
 			}
-			
+			database.set("playerData", playerDataList);
 		} else {
 			
 			playerDataList = database.createSection("playerData");
@@ -142,7 +131,6 @@ public class TeamsDatabase implements PlayerDataListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		playerInit = false;
 	}
 
 	@Override
@@ -169,6 +157,5 @@ public class TeamsDatabase implements PlayerDataListener {
 			System.out.println("no team to load!");
 			
 		}
-		playerInit = true;
 	}
 }
