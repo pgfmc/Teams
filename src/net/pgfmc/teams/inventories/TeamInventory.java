@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.inventoryAPI.InteractableInventory;
 import net.pgfmc.pgfessentials.inventoryAPI.PagedInventory;
+import net.pgfmc.pgfessentials.inventoryAPI.PagedInventory.SizeData;
 import net.pgfmc.teams.teamscore.Team;
 
 /*
@@ -85,10 +87,56 @@ public class TeamInventory extends InteractableInventory {
 			
 			createButton(Material.GOLDEN_HELMET, 1, "Transfer Ownership", (x, e) -> {
 				
-				x.openInventory(new AppointLeaderInventory(x, team).getInventory());
+				List<OfflinePlayer> gamer = team.getMembers().stream().filter((n) -> {
+					if (n.getUniqueId().equals(p.getUniqueId()) ) {
+						return false;
+					}
+					return true;
+				}).collect(Collectors.toList());
+				
+				if (gamer.size() == 0) {
+					
+					// put code here!!!
+					
+				} else {
+					PagedInventory<OfflinePlayer> inf = new PagedInventory<OfflinePlayer>(SizeData.SMALL, "Select the next leader!", gamer, (p1, E, t) -> {
+						p1.openInventory(new NewLeaderConfirmInventory(t, team).getInventory());
+					}, Material.PLAYER_HEAD) {};
+					
+					inf.setBackButton(this);
+					
+					x.openInventory(inf.getInventory());
+					
+				}
 			});
 			
 			createButton(Material.STONE_SWORD, 2, "Kick Player", (x, e) -> {
+				
+				List<OfflinePlayer> gamer = team.getMembers().stream().filter((n) -> {
+					if (n.getUniqueId().equals(p.getUniqueId()) ) {
+						return false;
+					}
+					return true;
+				}).collect(Collectors.toList());
+				
+				if (gamer.size() == 0) {
+					
+					// put code here!!!
+					
+				} else {
+					PagedInventory<OfflinePlayer> inf = new PagedInventory<OfflinePlayer>(SizeData.SMALL, 
+							"Select who to Kick!", gamer, (p1, E, t) -> {
+								x.openInventory(new KickConfirmInventory(t, team).getInventory());
+							}, Material.PLAYER_HEAD) {};
+					
+					inf.setBackButton(this);
+					
+					x.openInventory(inf.getInventory());
+					
+				}
+				
+				
+				
 				PagedInventory<OfflinePlayer> aslk = new TeamKickSelectInventory(team, p);
 				
 				if (aslk.getEntries().size() != 0) {
