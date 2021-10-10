@@ -28,12 +28,13 @@ public class MessageEvent implements Listener {
 		if (PlayerData.getPlayerData(e.getPlayer()).getData("naming") != null) {
 			PlayerData playerData = PlayerData.getPlayerData(e.getPlayer());
 			
-			if (e.getMessage().charAt(0) != "c".charAt(0)) {
+			if (e.getMessage().charAt(0) == "c".charAt(0)) {
 				
 				e.getPlayer().sendMessage("Your team's name has not been changed!");
 				playerData.setData("naming", null);
 				
 				e.setCancelled(true);
+				return;
 			}
 			
 			((Team) playerData.getData("team")).setName(e.getMessage());
@@ -41,6 +42,7 @@ public class MessageEvent implements Listener {
 			playerData.setData("naming", null);
 			
 			e.setCancelled(true);
+			return;
 		} 
 	}
 }

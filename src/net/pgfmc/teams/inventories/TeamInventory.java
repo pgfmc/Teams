@@ -42,13 +42,11 @@ public class TeamInventory extends InteractableInventory {
 		
 		if (team == null) {
 			
-			createButton(Material.CLOCK, 3, "§r§aCreate", "§rdCreate your own team!", (x, e) -> {
+			createButton(Material.CLOCK, 3, "§r§aCreate Team", null, (x, e) -> {
 				List<UUID> list2 = new ArrayList<>();
 				list2.add(x.getUniqueId());
-				Team team = new Team(list2);
 				x.closeInventory();
 				x.sendMessage("§dYou have created a new team!");
-				team.renameBegin(x);
 				return;
 			});
 			
@@ -93,6 +91,10 @@ public class TeamInventory extends InteractableInventory {
 					}
 					return true;
 				}).collect(Collectors.toList());
+				
+				gamer.stream().forEach((g) -> System.out.println(g.getName()));
+				team.getMembers().stream().forEach((j) -> System.out.println(j.getName()));
+				
 				
 				if (gamer.size() == 0) {
 					

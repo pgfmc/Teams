@@ -128,7 +128,7 @@ public class PendingRequest {
 			if (ATK != null && DEF == null) { // if the invitor isnt in a team, but the joiner is
 				attacker.sendMessage("§9" + attacker.getName() + " §dhas joined your team!");
 				((PendingRequest) PlayerData.getData(attacker, "request")).getInvitor().getPlayer().sendMessage("§dYou have joined the team §a§l" + ATK.getName() + "§r§d!");
-				PR.acceptRequest(true);
+				PR.acceptRequest(false);
 				
 			} else if (ATK == null && DEF == null) { // if both players arent on a team
 				attacker.sendMessage("§dYou have joined §9" + Utility.makePossesive(target.getName()) + " §dnew team!");
@@ -139,7 +139,7 @@ public class PendingRequest {
 			} else if (ATK == null && DEF != null) { // if the attacker is in a team, but the target isnt
 				attacker.sendMessage("§dYou have joined the team §a§l" + DEF.getName() + "§r§d!");
 				((PendingRequest) PlayerData.getData(attacker, "request")).getInvitor().getPlayer().sendMessage("§9" + attacker.getName() + " §dhas joined your team!");
-				PR.acceptRequest(true);
+				PR.acceptRequest(false);
 			}
 		}
 	}
