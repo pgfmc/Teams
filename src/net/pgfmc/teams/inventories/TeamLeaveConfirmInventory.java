@@ -18,9 +18,9 @@ Inventory for leaving a team
 public class TeamLeaveConfirmInventory extends InteractableInventory {
 	
 	public TeamLeaveConfirmInventory(Team team) {
-		super(9, "Leave Team?");
+		super(9, "§0Leave Team?");
 		
-		createButton(Material.LIME_CONCRETE, 2, "Leave Team", (x, e) -> {
+		createButton(Material.LIME_CONCRETE, 2, "§r§cLeave Team", (x, e) -> {
 			
 			if (team.removePlayer(x)) {
 				x.sendMessage("§dYou have left §a§l" + team.getName() + "§r§d.");
@@ -33,8 +33,6 @@ public class TeamLeaveConfirmInventory extends InteractableInventory {
 			
 		});
 		
-		createButton(Material.OAK_SIGN, 4, "Are you sure you want to leave " + team.getName() + "?");
-		
-		createButton(Material.RED_CONCRETE, 6, "Don't Leave Team", (x, e) -> { x.closeInventory(); }); 
+		createButton(Material.RED_CONCRETE, 6, "§r§bDon't Leave Team", (x, e) -> { x.closeInventory(); }); 
 	}
 }

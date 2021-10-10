@@ -154,7 +154,7 @@ public class Team {
 			PlayerData pData = PlayerData.getPlayerData(p);
 			p.sendMessage("§dFor the next 4 minutes, you can change your ");
 			p.sendMessage("§dteam's name by typing into the chat box!");
-			p.sendMessage("§dType \"c\" to cancel.");
+			p.sendMessage("§dType \"c\" to §ccancel§d.");
 			pData.setData("naming", true);
 			
 			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TeamsCore.getPlugin(), new Runnable() {

@@ -42,7 +42,7 @@ public class TeamInventory extends InteractableInventory {
 		
 		if (team == null) {
 			
-			createButton(Material.CLOCK, 3, "§aCreate", "Create your own team!", (x, e) -> {
+			createButton(Material.CLOCK, 3, "§r§aCreate", "§rdCreate your own team!", (x, e) -> {
 				List<UUID> list2 = new ArrayList<>();
 				list2.add(x.getUniqueId());
 				Team team = new Team(list2);
@@ -52,15 +52,15 @@ public class TeamInventory extends InteractableInventory {
 				return;
 			});
 			
-			createButton(Material.OAK_SIGN, 4, "§c§lNo team.", 
+			createButton(Material.OAK_SIGN, 4, "§r§c§lNo team.", 
 							
-							"You are not in a team.\n"
-							+ "Create your own or send a join request\n"
+							"§dYou are not in a team.\n"
+							+ "§l§aCreate §r§dyour own or send a join request\n"
 							+ "to an existing team");
 			
 		} else if (team.getLeader() != p) {
 			
-			createButton(Material.ARROW, 3, "Leave", (x, e) -> {
+			createButton(Material.ARROW, 3, "§c§lLeave Team", (x, e) -> {
 				
 				x.openInventory(new TeamLeaveConfirmInventory(team).getInventory());
 				return;
@@ -70,22 +70,22 @@ public class TeamInventory extends InteractableInventory {
 					.map((x) -> x.getName())
 					.reduce((S, x) -> {
 						if (S == null) {
-							return("-------------\nMembers:\n" + x);
+							return("§d-------------\nMembers:\n§a§l" + x);
 						}
 						return( S + "\n" + x);
 					});
 			
 			if (names.isPresent()) {
 				
-				createButton(Material.PLAYER_HEAD, 6, "§eMembers", names.get());
+				createButton(Material.PLAYER_HEAD, 6, "§a§l" + team.getName(), names.get());
 				
 			} else {
-				createButton(Material.PLAYER_HEAD, 6, "§eMembers", "an error has occured!");
+				createButton(Material.PLAYER_HEAD, 6, "§a§l" + team.getName(), "§can error has occured!");
 			}
 			
 		} else {
 			
-			createButton(Material.GOLDEN_HELMET, 1, "Transfer Ownership", (x, e) -> {
+			createButton(Material.GOLDEN_HELMET, 1, "§bTransfer Ownership", (x, e) -> {
 				
 				List<OfflinePlayer> gamer = team.getMembers().stream().filter((n) -> {
 					if (n.getUniqueId().equals(p.getUniqueId()) ) {
@@ -99,7 +99,7 @@ public class TeamInventory extends InteractableInventory {
 					// put code here!!!
 					
 				} else {
-					PagedInventory<OfflinePlayer> inf = new PagedInventory<OfflinePlayer>(SizeData.SMALL, "Select the next leader!", gamer, (p1, E, t) -> {
+					PagedInventory<OfflinePlayer> inf = new PagedInventory<OfflinePlayer>(SizeData.SMALL, "§0Select the next leader!", gamer, (p1, E, t) -> {
 						p1.openInventory(new NewLeaderConfirmInventory(t, team).getInventory());
 					}, Material.PLAYER_HEAD) {};
 					
@@ -110,7 +110,7 @@ public class TeamInventory extends InteractableInventory {
 				}
 			});
 			
-			createButton(Material.STONE_SWORD, 2, "Kick Player", (x, e) -> {
+			createButton(Material.STONE_SWORD, 2, "§r§cKick Player", (x, e) -> {
 				
 				List<OfflinePlayer> gamer = team.getMembers().stream().filter((n) -> {
 					if (n.getUniqueId().equals(p.getUniqueId()) ) {
@@ -125,29 +125,17 @@ public class TeamInventory extends InteractableInventory {
 					
 				} else {
 					PagedInventory<OfflinePlayer> inf = new PagedInventory<OfflinePlayer>(SizeData.SMALL, 
-							"Select who to Kick!", gamer, (p1, E, t) -> {
+							"§0Select who to Kick!", gamer, (p1, E, t) -> {
 								x.openInventory(new KickConfirmInventory(t, team).getInventory());
 							}, Material.PLAYER_HEAD) {};
 					
 					inf.setBackButton(this);
 					
 					x.openInventory(inf.getInventory());
-					
 				}
-				
-				
-				
-				PagedInventory<OfflinePlayer> aslk = new TeamKickSelectInventory(team, p);
-				
-				if (aslk.getEntries().size() != 0) {
-					x.openInventory(aslk.getInventory());
-				}
-				
-				
-				x.openInventory( new TeamKickSelectInventory(team, p).getInventory() );
 			});
 			
-			createButton(Material.NAME_TAG, 3, "Rename Team", (x, e) -> {
+			createButton(Material.NAME_TAG, 3, "§r§bRename Team", (x, e) -> {
 				team.renameBegin(p);
 				p.closeInventory();
 			});
@@ -156,17 +144,17 @@ public class TeamInventory extends InteractableInventory {
 					.map((x) -> x.getName())
 					.reduce((S, x) -> {
 						if (S == null) {
-							return("-------------\nMembers:\n" + x);
+							return("§d-------------\nMembers:\n§a§l" + x);
 						}
 						return( S + "\n" + x);
 					});
 			
 			if (names.isPresent()) {
 				
-				createButton(Material.PLAYER_HEAD, 6, "§eMembers", names.get());
+				createButton(Material.PLAYER_HEAD, 6, "§a§l" + team.getName(), names.get());
 				
 			} else {
-				createButton(Material.PLAYER_HEAD, 6, "§eMembers", "an error has occured!");
+				createButton(Material.PLAYER_HEAD, 6, "§a§l" + team.getName(), "§can error has occured!");
 			}
 		}
 	}
