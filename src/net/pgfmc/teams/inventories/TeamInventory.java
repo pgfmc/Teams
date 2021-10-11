@@ -101,9 +101,15 @@ public class TeamInventory extends InteractableInventory {
 					// put code here!!!
 					
 				} else {
-					PagedInventory<OfflinePlayer> inf = new PagedInventory<OfflinePlayer>(SizeData.SMALL, "§0Select the next leader!", gamer, (p1, E, t) -> {
-						p1.openInventory(new NewLeaderConfirmInventory(t, team).getInventory());
-					}, Material.PLAYER_HEAD) {};
+					
+					//gamer, 
+					PagedInventory<OfflinePlayer> inf = new PagedInventory<OfflinePlayer>(SizeData.SMALL, "§0Select the next leader!", gamer ,(E) -> {
+						
+						return PagedInventory.createButton(Material.PLAYER_HEAD, E.getName(), "lksdajf", (t, v) -> {
+							t.openInventory(new NewLeaderConfirmInventory(E, team).getInventory());
+							});
+						
+					}) {};
 					
 					inf.setBackButton(this);
 					
@@ -126,10 +132,13 @@ public class TeamInventory extends InteractableInventory {
 					// put code here!!!
 					
 				} else {
+					//(p1, E, t) -> {x.openInventory(new KickConfirmInventory(t, team).getInventory());}
 					PagedInventory<OfflinePlayer> inf = new PagedInventory<OfflinePlayer>(SizeData.SMALL, 
-							"§0Select who to Kick!", gamer, (p1, E, t) -> {
-								x.openInventory(new KickConfirmInventory(t, team).getInventory());
-							}, Material.PLAYER_HEAD) {};
+							"§0Select who to Kick!", gamer, (E) -> {
+								return PagedInventory.createButton(Material.PLAYER_HEAD, E.getName(), null, (p1, v) -> {
+									x.openInventory(new KickConfirmInventory(E, team).getInventory());
+									});
+							}) {};
 					
 					inf.setBackButton(this);
 					
