@@ -31,7 +31,7 @@ public class BPE implements Listener {
 			
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 				
-				Beacons beacon = Beacons.getBeacon(e.getPlayer(), e.getBlock().getLocation());
+				Beacons beacon = Beacons.getBeacon(e.getPlayer(), e.getBlock());
 				
 				if (beacon != null) {
 					e.getPlayer().sendMessage("§cYou can't place blocks here!");

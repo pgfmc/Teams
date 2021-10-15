@@ -203,7 +203,7 @@ public class BlockInteractEvent implements Listener {
 						
 						
 						
-						Beacons beacon = Beacons.getBeacon(player, block.getLocation());
+						Beacons beacon = Beacons.getBeacon(player, block);
 						
 						if (beacon != null) {
 							e.getPlayer().sendMessage("§cYou can't place that here!");

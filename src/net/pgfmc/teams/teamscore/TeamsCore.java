@@ -44,6 +44,8 @@ public class TeamsCore extends JavaPlugin {
 				TeamsDatabase.loadTeams();
 				
 				((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new TeamsDatabase(), false);
+				
+				
 			}
 			
 		} catch (IOException e) {
@@ -58,7 +60,6 @@ public class TeamsCore extends JavaPlugin {
 			} else {
 				System.out.println("BlockContainers.yml already Exists!");
 				
-				TeamsDatabase.loadTeams();
 			}
 			
 		} catch (IOException e) {
@@ -73,7 +74,6 @@ public class TeamsCore extends JavaPlugin {
 			} else {
 				System.out.println("EntityContainers.yml already Exists!");
 				
-				TeamsDatabase.loadTeams();
 			}
 			
 		} catch (IOException e) {
@@ -119,6 +119,7 @@ public class TeamsCore extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
+		Team.settleTeams();
 		TeamsDatabase.saveTeams();
 		ContainerDatabase.saveContainers();
 		((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new TeamsDatabase(), true);

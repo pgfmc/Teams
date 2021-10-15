@@ -43,10 +43,14 @@ public class TeamInventory extends InteractableInventory {
 		if (team == null) {
 			
 			createButton(Material.CLOCK, 3, "§r§aCreate Team", null, (x, e) -> {
+				
+				x.sendMessage("§dYou have created a new team!");
+				
+				new Team(p.getUniqueId());
+					
 				List<UUID> list2 = new ArrayList<>();
 				list2.add(x.getUniqueId());
 				x.closeInventory();
-				x.sendMessage("§dYou have created a new team!");
 				return;
 			});
 			
@@ -85,12 +89,16 @@ public class TeamInventory extends InteractableInventory {
 			
 			createButton(Material.GOLDEN_HELMET, 1, "§bTransfer Ownership", (x, e) -> {
 				
+				System.out.println(team.getMembers());
+				
 				List<OfflinePlayer> gamer = team.getMembers().stream().filter((n) -> {
 					if (n.getUniqueId().equals(p.getUniqueId()) ) {
 						return false;
 					}
 					return true;
 				}).collect(Collectors.toList());
+				
+				System.out.println(gamer);
 				
 				gamer.stream().forEach((g) -> System.out.println(g.getName()));
 				team.getMembers().stream().forEach((j) -> System.out.println(j.getName()));
@@ -120,12 +128,16 @@ public class TeamInventory extends InteractableInventory {
 			
 			createButton(Material.STONE_SWORD, 2, "§r§cKick Player", (x, e) -> {
 				
+				System.out.println(team.getMembers());
+				
 				List<OfflinePlayer> gamer = team.getMembers().stream().filter((n) -> {
 					if (n.getUniqueId().equals(p.getUniqueId()) ) {
 						return false;
 					}
 					return true;
 				}).collect(Collectors.toList());
+				
+				System.out.println(gamer);
 				
 				if (gamer.size() == 0) {
 					
@@ -150,6 +162,8 @@ public class TeamInventory extends InteractableInventory {
 				team.renameBegin(p);
 				p.closeInventory();
 			});
+			
+			System.out.println(team.getMembers());
 			
 			Optional<String> names = team.getMembers().stream()
 					.map((x) -> x.getName())

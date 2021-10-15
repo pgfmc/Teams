@@ -88,6 +88,7 @@ public class AttackEvent implements Listener {
 				
 			} else if (e.getEntity() instanceof Player && isFlower(((Player) e.getDamager()).getInventory().getItemInMainHand().getType())) {
 				PendingRequest.requestHandler(player, (Player) e.getEntity());
+				e.setCancelled(true);
 			}
 		}
 	}

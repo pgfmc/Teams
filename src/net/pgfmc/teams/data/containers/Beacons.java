@@ -66,10 +66,40 @@ public class Beacons extends BlockContainer {
 		return null;
 	}
 	
-	public boolean inRange(Location loc) { // input a player, and find if its in range
+	public boolean inRange(Block lock) { // input a Block, and find if its in range of the beacon
+		
+		Location loc = lock.getLocation();
+		Location bloke = block.getLocation();
+		
+		if (block.getType() == Material.BEACON) {
+			
+			if (bloke.getBlockX() - 101 <= loc.getBlockX() && 
+					loc.getBlockX() <= bloke.getBlockX() + 101 && 
+					bloke.getBlockZ() - 101 <= loc.getBlockZ() && 
+					loc.getBlockZ() <= bloke.getBlockZ() + 101) {
+				return true;
+			}
+		}
 		
 		int mod = (((Beacon) block.getState()).getTier() * 10) + 10;
+		
+		if (mod != 10 &&
+				bloke.getBlockX() - mod <= loc.getBlockX() && 
+				loc.getBlockX() <= bloke.getBlockX() + mod && 
+				bloke.getBlockZ() - mod <= loc.getBlockZ() && 
+				loc.getBlockZ() <= bloke.getBlockZ() + mod && 
+				bloke.getBlockY() - mod <= loc.getBlockY()) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean inRange(Location lock) { // input a Location, and find if its in range of the beacon
+		
+		Location loc = lock;
 		Location bloke = block.getLocation();
+		
+		int mod = (((Beacon) block.getState()).getTier() * 10) + 10;
 		
 		if (mod != 10 &&
 				bloke.getBlockX() - mod <= loc.getBlockX() && 
@@ -89,13 +119,13 @@ public class Beacons extends BlockContainer {
 		return Math.sqrt( Math.pow(loc.getX() + bloke.getX(), 2) + Math.pow(loc.getY() + bloke.getY(), 2) + Math.pow(loc.getZ() + bloke.getZ(), 2));
 	}
 	
-	public static Beacons getBeacon(Player player, Location loc) { // returns the closest enemy beacon to the location input.
+	public static Beacons getBeacon(Player player, Block loc) { // returns the closest enemy beacon to the location input.
 		
 		Location loca;
 		if (loc == null) {
 			loca = player.getLocation();
 		} else {
-			loca = loc;
+			loca = loc.getLocation();
 		}
 		
 		Optional<Beacons> b = beacons.keySet().stream().map(x -> beacons.get(x)) // stream to funnel down the beacons into the closest enemy beacon.

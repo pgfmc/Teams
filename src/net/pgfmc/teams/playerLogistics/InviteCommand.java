@@ -27,7 +27,7 @@ public class InviteCommand implements CommandExecutor {
 			return true;
 		}
 		
-		if (Bukkit.getPlayer(args[0]) != null) {
+		if (args.length != 0) {
 			PendingRequest.requestHandler((Player) sender, (Player) Bukkit.getPlayer(args[0]));
 		}
 		

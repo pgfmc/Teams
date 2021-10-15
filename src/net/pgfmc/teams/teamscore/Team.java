@@ -2,6 +2,7 @@ package net.pgfmc.teams.teamscore;
 
 
 import java.util.IdentityHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -41,7 +42,7 @@ ability to disband team
 public class Team {
 	
 	private String name = "New Team";
-	private List<UUID> members;
+	private List<UUID> members = new LinkedList<>();
 	private static IdentityHashMap<UUID, Team> instances = new IdentityHashMap<UUID, Team>();
 	private UUID ID;
 	private UUID leader;
@@ -58,18 +59,17 @@ public class Team {
 		this.leader = leader;
 	}
 	
-	public Team(List<UUID> members) {
-		this.members = members;
-		leader = members.get(0);
+	public Team(UUID member) {
+		
+		this.members.add(member);
+		
+		leader = member;
 		
 		ID = UUID.randomUUID();
 		
 		instances.put(ID, this);
 		
-		for (UUID uuid : members) {
-			PlayerData.setData(Bukkit.getOfflinePlayer(uuid), "team", this);
-		}
-		
+		PlayerData.setData(Bukkit.getOfflinePlayer(member), "team", this);
 		
 		Player p = (Player) getLeader();
 		PlayerData pData = PlayerData.getPlayerData(p);
@@ -116,29 +116,52 @@ public class Team {
 		this.leader = leader.getUniqueId();
 	}
 	
-	public boolean addMember(OfflinePlayer offlinePlayer)
-	{
-		if (members.contains(offlinePlayer.getUniqueId()) || PlayerData.getData(offlinePlayer, "team") != null) { return false; } // You cannot add an existing member to the team
+	public void addMember(OfflinePlayer offlinePlayer) {
 		
+		if (members.contains(offlinePlayer.getUniqueId())) {
+			System.out.println("Player was already in team!");
+			return;
+		}
+		
+		System.out.println("Player added to team!");
 		members.add(offlinePlayer.getUniqueId());
 		PlayerData.setData(offlinePlayer, "team", this);
-		return true;
+		return;
 	}
 	
 	public UUID getUniqueId() {
 		return ID;
 	}
 	
+	
 	public boolean removePlayer(OfflinePlayer p) {
+		
+		System.out.println(p.getName());
 		
 		PlayerData pd = PlayerData.getPlayerData(p);
 		
 		if (pd.getData("naming") == null && pd.getData("request") == null) {
-			members.remove(p.getUniqueId());
-			if (members.size() < 0) {
+			
+			System.out.println(getMembers().toString());
+			
+			
+			// removes the player using a stream, checking OfflinePlayer p's UUID against all the Team's stored UUIDs.
+			members = members.stream().filter((x) -> {
+				if (x.equals(p.getUniqueId())) {
+					return false;
+				}
+				return true;
+			}).collect(Collectors.toList());
+			
+			System.out.println("Player Removed from team!");
+			
+			//members.remove(p.getUniqueId());
+			if (members.size() == 0) {
 				instances.remove(this.getUniqueId());
-				BlockContainer.updateTeams();
 			}
+			
+			BlockContainer.updateTeams();
+			
 			PlayerData.setData(p, "team", null);
 			return true;
 			
@@ -193,6 +216,25 @@ public class Team {
 			}
 		}
 		return null;
+	}
+	
+	public static void settleTeams() {
+		
+		IdentityHashMap<UUID, Team> teams = new IdentityHashMap<>();
+		
+		PlayerData.stream().map((x) -> (Team) x.getData("team"))
+		.distinct()
+		.filter((x) -> {
+			if (x == null) {
+				return false;
+			}
+			return true;
+		})
+		.forEach((x) -> {
+			teams.put(x.getUniqueId(), x);
+		});;
+		
+		instances = teams;
 	}
 	
 	public static IdentityHashMap<UUID, Team> getTeams() {
