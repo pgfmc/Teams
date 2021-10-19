@@ -11,16 +11,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
-import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.teams.data.containers.Ownable.Lock;
 import net.pgfmc.teams.data.containers.OwnableEntity;
+import net.pgfmc.teams.teamscore.Utility;
 
 public class InvOpenEvent implements Listener {
 	
 	@EventHandler
 	public void openEvent(InventoryOpenEvent e) {
 		
-		if (EssentialsMain.isSurvivalWorld(e.getPlayer().getWorld()) && e.getPlayer().getGameMode() == GameMode.SURVIVAL && e.getPlayer() instanceof CraftPlayer && e.getInventory().getHolder() instanceof Entity) {
+		if (Utility.isSurvival(e.getPlayer().getWorld()) && e.getPlayer().getGameMode() == GameMode.SURVIVAL && e.getPlayer() instanceof CraftPlayer && e.getInventory().getHolder() instanceof Entity) {
 			
 			System.out.println(((Entity) e.getInventory().getHolder()).getUniqueId());
 			

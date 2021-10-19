@@ -18,7 +18,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.containers.Claim;
 import net.pgfmc.teams.data.containers.Ownable.Lock;
@@ -26,6 +25,7 @@ import net.pgfmc.teams.data.containers.Ownable.Security;
 import net.pgfmc.teams.data.containers.OwnableBlock;
 import net.pgfmc.teams.data.containers.OwnableEntity;
 import net.pgfmc.teams.teamscore.TeamsCore;
+import net.pgfmc.teams.teamscore.Utility;
 
 /**
 Written by CrimsonDart
@@ -43,7 +43,7 @@ public class BlockInteractEvent implements Listener {
 		
 		// controls clicking containers and beacons;
 		
-		if (e.getPlayer() != null && EssentialsMain.isSurvivalWorld(e.getClickedBlock().getWorld())) {
+		if (e.getPlayer() != null && Utility.isSurvival(e.getClickedBlock().getWorld())) {
 			
 			if (e.getClickedBlock() != null && e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 				Block block = e.getClickedBlock();

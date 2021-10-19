@@ -5,12 +5,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.containers.Claim;
 import net.pgfmc.teams.data.containers.Ownable.Security;
 import net.pgfmc.teams.data.containers.OwnableBlock;
 import net.pgfmc.teams.teamscore.Team;
+import net.pgfmc.teams.teamscore.Utility;
 
 /*
 Written by CrimsonDart
@@ -27,7 +27,7 @@ public class BPE implements Listener {
 	@EventHandler
 	public void blockPlace(BlockPlaceEvent e) {
 		
-		if (EssentialsMain.isSurvivalWorld(e.getPlayer().getWorld())) { // if in survival world
+		if (Utility.isSurvival(e.getPlayer().getWorld())) { // if in survival world
 			
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 				

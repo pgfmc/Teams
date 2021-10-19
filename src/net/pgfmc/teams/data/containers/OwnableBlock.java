@@ -12,7 +12,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
 
-import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.teamscore.Team;
 import net.pgfmc.teams.teamscore.Utility;
@@ -93,7 +92,7 @@ public class OwnableBlock extends Ownable {
 		the setLocked function in this class also implements some of the below code.
 		 */
 		
-		if ((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST) && EssentialsMain.isSurvivalWorld(block.getWorld())) {
+		if ((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST) && Utility.isSurvival(block.getWorld())) {
 			
 			Set<Block> blocks = new HashSet<Block>();
 			World world = block.getLocation().getWorld();
@@ -155,7 +154,7 @@ public class OwnableBlock extends Ownable {
 	@Override
 	public void setLock(Lock lock) {
 		
-		if ((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST) && EssentialsMain.isSurvivalWorld(block.getWorld())) {
+		if ((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST) && Utility.isSurvival(block.getWorld())) {
 			
 			Set<Block> blocks = new HashSet<Block>();
 			World world = block.getLocation().getWorld();

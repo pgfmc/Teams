@@ -8,8 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.InventoryHolder;
 
-import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.teams.data.containers.OwnableEntity;
+import net.pgfmc.teams.teamscore.Utility;
 
 /*
 Written by CrimsonDart
@@ -71,7 +71,7 @@ public class AttackEvent implements Listener {
 	@EventHandler
 	public void playerAttackEvent(EntityDamageByEntityEvent e) { // hit another player with a flower to ask to be on the same team.
 		
-		if (e.getDamager() instanceof Player && EssentialsMain.isSurvivalWorld(e.getDamager().getWorld()) && ((Player) e.getDamager()).getGameMode() == GameMode.SURVIVAL) {
+		if (e.getDamager() instanceof Player && Utility.isSurvival(e.getDamager().getWorld()) && ((Player) e.getDamager()).getGameMode() == GameMode.SURVIVAL) {
 			
 			Player player = (Player) e.getDamager();
 			

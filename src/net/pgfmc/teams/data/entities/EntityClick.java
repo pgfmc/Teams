@@ -9,10 +9,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
-import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.teams.data.containers.Ownable.Lock;
 import net.pgfmc.teams.data.containers.Ownable.Security;
 import net.pgfmc.teams.data.containers.OwnableEntity;
+import net.pgfmc.teams.teamscore.Utility;
 
 public class EntityClick implements Listener {
 	
@@ -24,7 +24,7 @@ public class EntityClick implements Listener {
 		System.out.println(e.getRightClicked());
 		System.out.println(e.getPlayer().getInventory().getItemInMainHand());
 		
-		if (e.getPlayer() != null && e.getRightClicked() != null && EssentialsMain.isSurvivalWorld(e.getRightClicked().getWorld()) && e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
+		if (e.getPlayer() != null && e.getRightClicked() != null && Utility.isSurvival(e.getRightClicked().getWorld()) && e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 			
 			Player player = e.getPlayer();
 			

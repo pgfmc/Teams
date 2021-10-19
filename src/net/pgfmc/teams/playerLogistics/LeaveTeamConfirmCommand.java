@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.inventories.LeaderLeaveInventory;
+import net.pgfmc.teams.inventories.TeamInventory;
 import net.pgfmc.teams.teamscore.Team;
 
 /*
@@ -35,10 +36,10 @@ public class LeaveTeamConfirmCommand implements CommandExecutor {
 		PlayerData playerData = PlayerData.getPlayerData(p);
 		if (playerData.getData("team") != null) {
 			
-			Team team = (Team) playerData.getData("team");
+			Team team = playerData.getData("team");
 			
 			if (team.getLeader().getUniqueId().equals(p.getUniqueId())) {
-				p.openInventory(new LeaderLeaveInventory(team, p).getInventory());
+				p.openInventory(new LeaderLeaveInventory(team, p, TeamInventory.removePlayer(p, team.getMembers())).getInventory());
 			} else {
 				String name = team.getName();
 				

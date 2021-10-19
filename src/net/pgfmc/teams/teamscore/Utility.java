@@ -5,10 +5,11 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import net.pgfmc.pgfessentials.EssentialsMain;
+import net.pgfmc.pgfessentials.dim.Worlds;
 
 public class Utility {
 	
@@ -86,12 +87,42 @@ public class Utility {
 			}
 		}
 		
-		return new Location(EssentialsMain.intToWorld(Integer.valueOf(w)), Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(z));
+		
+		
+		
+		
+		return new Location(intToWorld(Integer.valueOf(w)), Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(z));
 	}
 	
 	public static String locToString(Location location) { // converts location to string.
 		
-		return "w" + String.valueOf(EssentialsMain.worldToInt(location.getWorld())) + "x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ());
+		return "w" + String.valueOf(worldToInt(location.getWorld())) + "x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ());
 		
+	}
+	
+	public static int worldToInt(World w) {
+		
+		if (w.equals(Worlds.SURVIVAL.world) ) {
+			return 0;
+		} else if (w.equals(Worlds.SURVIVAL_NETHER.world)) {
+			return 1;
+		}else if (w.equals(Worlds.SURVIVAL_END.world)) {
+			return 2;
+		}
+		
+		return 4;
+	}
+	
+	public static World intToWorld(int i) {
+		switch (i) {
+		case 0: return Worlds.SURVIVAL.world;
+		case 1: return Worlds.SURVIVAL_NETHER.world;
+		case 2: return Worlds.SURVIVAL_END.world;
+		default: return null;
+		}
+	}
+	
+	public static boolean isSurvival(World w) {
+		return (w.equals(Worlds.SURVIVAL.world) || w.equals(Worlds.SURVIVAL_NETHER.world) || w.equals(Worlds.SURVIVAL_END.world));
 	}
 }

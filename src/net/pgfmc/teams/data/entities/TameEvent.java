@@ -6,17 +6,17 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTameEvent;
 
-import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.containers.Claim;
 import net.pgfmc.teams.data.containers.Ownable.Security;
 import net.pgfmc.teams.data.containers.OwnableEntity;
+import net.pgfmc.teams.teamscore.Utility;
 
 public class TameEvent implements Listener {
 	
 	@EventHandler
 	public void tameEvent(EntityTameEvent e) {
-		if (e.getOwner() != null && e.getOwner() instanceof Player && EssentialsMain.isSurvivalWorld(e.getEntity().getWorld())) {
+		if (e.getOwner() != null && e.getOwner() instanceof Player && Utility.isSurvival(e.getEntity().getWorld())) {
 			
 			Player player = (Player) e.getOwner();
 			

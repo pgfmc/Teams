@@ -169,12 +169,16 @@ public class TeamInventory extends InteractableInventory {
 			
 			createButton(Material.ARROW, 11, "§bLeave Team", (x, e) -> {
 				
-				x.openInventory(new LeaderLeaveInventory(team, x).getInventory());
+				List<OfflinePlayer> list = removePlayer(x, team.getMembers());
+				
+				if (list.size() >= 1) {
+					
+				}
+				
+				x.openInventory(new LeaderLeaveInventory(team, x, list).getInventory());
 			});
 			
 			createButton(Material.STONE_SWORD, 20, "§r§cKick Player", (x, e) -> {
-				
-				System.out.println(team.getMembers());
 				
 				List<OfflinePlayer> gamer = team.getMembers().stream().filter((n) -> {
 					if (n.getUniqueId().equals(p.getUniqueId()) ) {
@@ -182,8 +186,6 @@ public class TeamInventory extends InteractableInventory {
 					}
 					return true;
 				}).collect(Collectors.toList());
-				
-				System.out.println(gamer);
 				
 				if (gamer.size() == 0) {
 					
@@ -245,5 +247,9 @@ public class TeamInventory extends InteractableInventory {
 				createButton(Material.PLAYER_HEAD, 6, "§a§l" + team.getName(), "§can error has occured!");
 			}
 		}
+	}
+	
+	public static List<OfflinePlayer> removePlayer(OfflinePlayer p, List<OfflinePlayer> l) {
+		return l.stream().filter((x) -> !(x.getUniqueId().toString().equals(p.getUniqueId().toString()))).collect(Collectors.toList());
 	}
 }
