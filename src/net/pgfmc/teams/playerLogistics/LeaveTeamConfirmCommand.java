@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.teams.inventories.LeaderLeaveInventory;
 import net.pgfmc.teams.teamscore.Team;
 
 /*
@@ -34,15 +35,21 @@ public class LeaveTeamConfirmCommand implements CommandExecutor {
 		PlayerData playerData = PlayerData.getPlayerData(p);
 		if (playerData.getData("team") != null) {
 			
-			String name = ((Team) playerData.getData("team")).getName();
+			Team team = (Team) playerData.getData("team");
 			
-			
-			if (((Team) playerData.getData("team")).removePlayer(p)) {
-				p.sendMessage("§dYou have left §a§l" + name + "§r§d.");
+			if (team.getLeader().getUniqueId().equals(p.getUniqueId())) {
+				p.openInventory(new LeaderLeaveInventory(team, p).getInventory());
 			} else {
-				p.sendMessage("§cYou can't leave §a§l" + name + "§r§c!");
-				p.sendMessage("§cCheck if you have any Pending Requests.");
+				String name = team.getName();
+				
+				if (((Team) playerData.getData("team")).removePlayer(p)) {
+					p.sendMessage("§dYou have left §a§l" + name + "§r§d.");
+				} else {
+					p.sendMessage("§cYou can't leave §a§l" + name + "§r§c!");
+					p.sendMessage("§cCheck if you have any Pending Requests.");
+				}
 			}
+			
 			return true;
 		} else {
 			p.sendMessage("§cYou aren't in a team!");

@@ -15,7 +15,7 @@ public class ContainerDataOutputCommand implements CommandExecutor {
 			sender.sendMessage("Data output to the console.");
 		}
 		
-		BlockContainer.outputData();
+		OwnableBlock.outputData();
 		
 		return true;
 	}

@@ -19,7 +19,7 @@ EntityContainer
 -----------------------------------
  */
 
-public abstract class Containers {
+public abstract class Ownable {
 	
 	OfflinePlayer placer;
 	
@@ -36,11 +36,10 @@ public abstract class Containers {
 	public enum Lock {
 		UNLOCKED,
 		TEAM_ONLY,
-		ALLIES_ONLY, //unused for now
 		LOCKED
 	}
 	
-	public Containers(OfflinePlayer player,  Lock lock) { // class constructor
+	public Ownable(OfflinePlayer player,  Lock lock) { // class constructor
 		
 		this.placer = player;
 		this.lock = lock;

@@ -33,16 +33,15 @@ Beacons.java
  */
 
 
-public class BlockContainer extends Containers {
+public class OwnableBlock extends Ownable {
 	
 	
-	public static LinkedHashMap<Block, BlockContainer> containers = new LinkedHashMap<>();
+	public static LinkedHashMap<Block, OwnableBlock> containers = new LinkedHashMap<>();
 	
 	Block block;
 	Team team;
 	
-	public BlockContainer(OfflinePlayer player, Lock lock, Block block, Team team) { // Constructor
-		
+	public OwnableBlock(OfflinePlayer player, Lock lock, Block block, Team team) { // Constructor
 		super(player, lock);
 		
 		this.team = team;
@@ -106,21 +105,20 @@ public class BlockContainer extends Containers {
 			
 			for (Block black : blocks) {
 				if (black != null && 
-						(black.getType() == Material.CHEST || black.getType() == Material.TRAPPED_CHEST) && 
 						black.getType() == block.getType() && 
 						((Directional) black.getBlockData()).getFacing() == ((Directional) block.getBlockData()).getFacing()) {
 					
-					BlockContainer cont = BlockContainer.getContainer(black);
+					OwnableBlock cont = OwnableBlock.getContainer(black);
 					
 					if (cont != null) {
 						
 						switch (cont.isAllowed(player)) {
 						
 						case OWNER:
-							new BlockContainer(player, lock, block, cont.getTeam());
+							new OwnableBlock(player, lock, block, cont.getTeam());
 							return true;
 						case TEAMMATE:
-							new BlockContainer(cont.getPlayer(), lock, block, team);
+							new OwnableBlock(cont.getPlayer(), lock, block, team);
 							return true;
 						default:
 							return false;
@@ -128,7 +126,7 @@ public class BlockContainer extends Containers {
 						
 						}
 					} else {
-						new BlockContainer(player, lock, black, team);
+						new OwnableBlock(player, lock, black, team);
 					}
 				}
 			}
@@ -136,11 +134,11 @@ public class BlockContainer extends Containers {
 		
 		
 		if (block.getType() == Material.BEACON) {
-			new Beacons(player, block, lock, team);
+			new Claim(player, block, lock, team);
 			return true;
 			
 		} else {
-			new BlockContainer(player, lock, block, team);
+			new OwnableBlock(player, lock, block, team);
 			return true;
 			
 		}
@@ -173,7 +171,7 @@ public class BlockContainer extends Containers {
 						black.getType() == block.getType() && 
 						((Directional) black.getBlockData()).getFacing() == ((Directional) block.getBlockData()).getFacing()) {
 					
-					BlockContainer cont = BlockContainer.getContainer(black);
+					OwnableBlock cont = OwnableBlock.getContainer(black);
 					
 					if (cont != null) {
 						
@@ -191,7 +189,7 @@ public class BlockContainer extends Containers {
 							
 						}
 					} else {
-						new BlockContainer(placer, lock, black, team);
+						new OwnableBlock(placer, lock, black, team);
 					}
 				}
 			}
@@ -209,21 +207,21 @@ public class BlockContainer extends Containers {
 		
 	}
 	
-	public static BlockContainer getContainer(Block block) { // gets a container from block
+	public static OwnableBlock getContainer(Block block) { // gets a container from block
 		return containers.get(block);
 	}
 	
 	public boolean isBeacon() { // returns wether or not a Containers is a Beacons.
-		if (this instanceof Beacons) {
+		if (this instanceof Claim) {
 			return true;
 		}
 		return false;
 		
 	}
 	
-	public Beacons toBeacon() { // converts container to a beacon
+	public Claim toBeacon() { // converts container to a beacon
 		if (this.isBeacon()) {
-			return (Beacons) this;
+			return (Claim) this;
 		}
 		return null;
 	}
@@ -252,7 +250,7 @@ public class BlockContainer extends Containers {
 	public static void updateTeams() {
 		
 		for (Block block : containers.keySet()) {
-			BlockContainer cont = containers.get(block);
+			OwnableBlock cont = containers.get(block);
 			
 			if (cont.getLock() == Lock.LOCKED) {
 				cont.setTeam(((Team) PlayerData.getData(cont.getPlayer(), "team")));
@@ -277,7 +275,7 @@ public class BlockContainer extends Containers {
 		Team stranger = Team.getTeam(player);
 		
 		if (team == null && lock == Lock.LOCKED && same) {
-			BlockContainer.updateTeams();
+			OwnableBlock.updateTeams();
 			System.out.println("out 0");
 			return Security.OWNER;
 		}

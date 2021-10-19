@@ -7,9 +7,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTameEvent;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
-import net.pgfmc.teams.data.containers.Beacons;
-import net.pgfmc.teams.data.containers.Containers.Lock;
-import net.pgfmc.teams.data.containers.EntityContainer;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.teams.data.containers.Claim;
+import net.pgfmc.teams.data.containers.Ownable.Security;
+import net.pgfmc.teams.data.containers.OwnableEntity;
 
 public class TameEvent implements Listener {
 	
@@ -21,15 +22,15 @@ public class TameEvent implements Listener {
 			
 			if (player.getGameMode() == GameMode.SURVIVAL) {
 				
-				Beacons beacon = Beacons.getBeacon(player, null);
+				Claim beacon = Claim.getEffectiveClaim(player.getLocation());
 				
-				if (beacon != null) {
+				if (beacon != null && beacon.isAllowed(player) == Security.DISALLOWED) {
 					player.sendMessage("§cYou can't Tame that animal here!");
 					player.sendMessage("§cYou're on someone else's land!");
 					e.setCancelled(true);
 					return;
 				} else {
-					new EntityContainer(player, Lock.TEAM_ONLY, e.getEntity().getUniqueId());
+					new OwnableEntity(player, PlayerData.getData(player, "lockMode"), e.getEntity().getUniqueId());
 				}
 			}
 		}

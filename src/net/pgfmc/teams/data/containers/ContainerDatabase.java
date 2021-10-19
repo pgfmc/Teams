@@ -13,7 +13,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.data.containers.Containers.Lock;
+import net.pgfmc.teams.data.containers.Ownable.Lock;
 import net.pgfmc.teams.teamscore.Team;
 import net.pgfmc.teams.teamscore.TeamsCore;
 import net.pgfmc.teams.teamscore.Utility;
@@ -61,11 +61,11 @@ public class ContainerDatabase {
 				
 				try {
 					Team team = Team.findID(UUID.fromString(configSec.getString("team")));
-					BlockContainer.createBlockContainer(player, lock, loc.getWorld().getBlockAt(loc), team);
+					OwnableBlock.createBlockContainer(player, lock, loc.getWorld().getBlockAt(loc), team);
 				} catch(Exception e) {
 					
 					Team team = (Team) PlayerData.getData(player, "team");
-					BlockContainer.createBlockContainer(player, lock, loc.getWorld().getBlockAt(loc), team);
+					OwnableBlock.createBlockContainer(player, lock, loc.getWorld().getBlockAt(loc), team);
 				}
 			}
 		}
@@ -86,7 +86,7 @@ public class ContainerDatabase {
 				
 				Lock lock = Lock.valueOf(configSec.getString("Lock"));
 				
-				new EntityContainer(player, lock, uuid);
+				new OwnableEntity(player, lock, uuid);
 			}
 		}
 	}
@@ -96,12 +96,12 @@ public class ContainerDatabase {
 		File file = new File(TeamsCore.getPlugin().getDataFolder() + File.separator + "BlockContainers.yml"); // Creates a File object
 		FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 		
-		BlockContainer.updateTeams();
+		OwnableBlock.updateTeams();
 		
-		for (Block block : BlockContainer.containers.keySet()) { // for all BlockContainers and beacons.
+		for (Block block : OwnableBlock.containers.keySet()) { // for all BlockContainers and beacons.
 			
 			Location location = block.getLocation();
-			BlockContainer cont = BlockContainer.getContainer(block);
+			OwnableBlock cont = OwnableBlock.getContainer(block);
 			OfflinePlayer player = cont.getPlayer();
 			
 			// if location is not found, a new one is created.
@@ -139,9 +139,9 @@ public class ContainerDatabase {
 		file = new File(TeamsCore.getPlugin().getDataFolder() + File.separator + "EntityContainers.yml"); // Creates a File object
 		database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 		
-		for (UUID entity : EntityContainer.getContainers().keySet()) { // for all BlockContainers and beacons.
+		for (UUID entity : OwnableEntity.getContainers().keySet()) { // for all BlockContainers and beacons.
 			
-			EntityContainer ent = EntityContainer.getContainer(entity);
+			OwnableEntity ent = OwnableEntity.getContainer(entity);
 			OfflinePlayer player = ent.getPlayer();
 			
 			// if location is not found, a new one is created.

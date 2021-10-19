@@ -12,12 +12,12 @@ commands:
       description: Opens the team inventory.
    Invite:
       usage: /Invite <Player>
-      aliases: [invite, i]
+      aliases: [i]
       permission: Teams.teamRequest
       description: invites or sends a request to Player <Player>.
    teamAccept:
       usage: teamAccept
-      aliases: [teamaccept, tma]
+      aliases: [tma]
       permission: Teams.teamAccept
       description: Accepts the invite / request sent in teamRequest.
 #   vote:
@@ -47,17 +47,17 @@ commands:
 #      description: Opens a vote to Rename your team to <new Team name>
    leaveTeam:
       usage: /leaveTeam
-      aliases: [leaveTeam, leaveteam, lt]
+      aliases: [lt]
       permission: Teams.leave
       description: sends the sender a confirmation message, asking if they are sure that they want to leave their team.
    leaveTeamConfirm:
       usage: /leaveTeamConfirm
-      aliases: [leaveTeamConfirm, leaveteamconfirm, ltc]
+      aliases: [ltc]
       permission: Teams.leaveConfirm
       description: makes the sender leave their own team.
    inspector:
       usage: /inspector while in Creative Mode.
-      aliases: [insp, INSP]
+      aliases: [insp]
       permission: Teams.inspecotor
       description: toggles inspector mode, which uncovers data about blocks.
    debug:

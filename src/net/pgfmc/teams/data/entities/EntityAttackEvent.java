@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.InventoryHolder;
 
-import net.pgfmc.teams.data.containers.EntityContainer;
+import net.pgfmc.teams.data.containers.OwnableEntity;
 
 public class EntityAttackEvent implements Listener {
 	
@@ -19,7 +19,7 @@ public class EntityAttackEvent implements Listener {
 		
 		if (e.getDamager() instanceof CraftPlayer && e.getEntity() instanceof InventoryHolder) {
 			
-			EntityContainer ent = EntityContainer.getContainer(e.getEntity());
+			OwnableEntity ent = OwnableEntity.getContainer(e.getEntity());
 			
 			if (ent != null) {
 				

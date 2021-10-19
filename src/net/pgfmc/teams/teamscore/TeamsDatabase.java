@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerDataListener;
+import net.pgfmc.teams.data.containers.Ownable.Lock;
 
 /*
 Written by CrimsonDart
@@ -157,5 +158,7 @@ public class TeamsDatabase implements PlayerDataListener {
 			System.out.println("no team to load!");
 			
 		}
+		
+		playerData.setData("lockMode", Lock.TEAM_ONLY);
 	}
 }

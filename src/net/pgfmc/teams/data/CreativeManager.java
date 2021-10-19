@@ -10,8 +10,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import net.pgfmc.teams.data.containers.BlockContainer;
-import net.pgfmc.teams.data.containers.Containers.Lock;
+import net.pgfmc.teams.data.containers.OwnableBlock;
+import net.pgfmc.teams.data.containers.Ownable.Lock;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
 /*
@@ -45,7 +45,7 @@ public class CreativeManager {
 				player.sendMessage("The block at " + block.getX() + ", " + block.getY() + ", " + block.getZ() + " was Placed at time " + 
 			database.getConfigurationSection(data).get("time") + " by " + Bukkit.getPlayer(UUID.fromString(database.getConfigurationSection(data).getString("Player"))).getName() + ".");
 				
-				Lock lock = BlockContainer.getContainer(block).getLock();
+				Lock lock = OwnableBlock.getContainer(block).getLock();
 				if (lock != null) {
 					
 					switch(lock) {

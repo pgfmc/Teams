@@ -12,8 +12,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
-import net.pgfmc.teams.data.containers.Containers.Lock;
-import net.pgfmc.teams.data.containers.EntityContainer;
+import net.pgfmc.teams.data.containers.Ownable.Lock;
+import net.pgfmc.teams.data.containers.OwnableEntity;
 
 public class InvOpenEvent implements Listener {
 	
@@ -24,7 +24,7 @@ public class InvOpenEvent implements Listener {
 			
 			System.out.println(((Entity) e.getInventory().getHolder()).getUniqueId());
 			
-			EntityContainer ent = EntityContainer.getContainer((Entity) e.getInventory().getHolder());
+			OwnableEntity ent = OwnableEntity.getContainer((Entity) e.getInventory().getHolder());
 			
 			if (ent != null) {
 				

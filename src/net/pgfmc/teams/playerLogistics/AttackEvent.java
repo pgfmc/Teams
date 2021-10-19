@@ -9,7 +9,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.InventoryHolder;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
-import net.pgfmc.teams.data.containers.EntityContainer;
+import net.pgfmc.teams.data.containers.OwnableEntity;
 
 /*
 Written by CrimsonDart
@@ -75,9 +75,9 @@ public class AttackEvent implements Listener {
 			
 			Player player = (Player) e.getDamager();
 			
-			if (e.getEntity() instanceof InventoryHolder && EntityContainer.getContainer(e.getEntity().getUniqueId()) != null)  {
+			if (e.getEntity() instanceof InventoryHolder && OwnableEntity.getContainer(e.getEntity().getUniqueId()) != null)  {
 				
-				switch(EntityContainer.getContainer(e.getEntity()).isAllowed(player)) {
+				switch(OwnableEntity.getContainer(e.getEntity()).isAllowed(player)) {
 				case OWNER: return;
 				case TEAMMATE: return;
 				default: {

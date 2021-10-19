@@ -33,13 +33,13 @@ Any Nametagged mob (maybe?)
 
  */
 
-public class EntityContainer extends Containers {
+public class OwnableEntity extends Ownable {
 	
-	public static LinkedHashMap<UUID, EntityContainer> entities = new LinkedHashMap<>();
+	public static LinkedHashMap<UUID, OwnableEntity> entities = new LinkedHashMap<>();
 	
 	UUID entity;
 	
-	public EntityContainer(OfflinePlayer player, Lock lock, UUID entity) {
+	public OwnableEntity(OfflinePlayer player, Lock lock, UUID entity) {
 		super(player, lock);
 		
 		System.out.println("New Entity Contaiener Created!");
@@ -61,14 +61,14 @@ public class EntityContainer extends Containers {
 		return Bukkit.getEntity(entity).getLocation();
 	}
 	
-	public static EntityContainer getContainer(Entity entity) {
+	public static OwnableEntity getContainer(Entity entity) {
 		if (entity != null) {
 			return getContainer(entity.getUniqueId());
 		}
 		return null;
 	}
 	
-	public static EntityContainer getContainer(UUID entity) {
+	public static OwnableEntity getContainer(UUID entity) {
 		if (entity != null) {
 			
 			for (UUID uuid : entities.keySet()) {
@@ -157,7 +157,7 @@ public class EntityContainer extends Containers {
 		return Bukkit.getEntity(entity);
 	}
 	
-	public static LinkedHashMap<UUID, EntityContainer> getContainers() {
+	public static LinkedHashMap<UUID, OwnableEntity> getContainers() {
 		return entities;
 	}
 }

@@ -20,11 +20,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.data.containers.Beacons;
-import net.pgfmc.teams.data.containers.BlockContainer;
-import net.pgfmc.teams.data.containers.Containers.Lock;
-import net.pgfmc.teams.data.containers.Containers.Security;
-import net.pgfmc.teams.data.containers.EntityContainer;
+import net.pgfmc.teams.data.containers.Claim;
+import net.pgfmc.teams.data.containers.Ownable.Lock;
+import net.pgfmc.teams.data.containers.Ownable.Security;
+import net.pgfmc.teams.data.containers.OwnableBlock;
+import net.pgfmc.teams.data.containers.OwnableEntity;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
 /**
@@ -43,17 +43,18 @@ public class BlockInteractEvent implements Listener {
 		
 		// controls clicking containers and beacons;
 		
-		if (e.getClickedBlock() != null && e.getPlayer() != null && EssentialsMain.isSurvivalWorld(e.getClickedBlock().getWorld()) && e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+		if (e.getPlayer() != null && EssentialsMain.isSurvivalWorld(e.getClickedBlock().getWorld())) {
 			
-			if (e.getClickedBlock() != null) {
+			if (e.getClickedBlock() != null && e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 				Block block = e.getClickedBlock();
 				Player player = e.getPlayer();
+				Lock lockMode = PlayerData.getData(player, "lockMode");
 				
 				if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 					
-					if ((block.getState() instanceof Container || block.getState() instanceof Beacon) && BlockContainer.getContainer(block) != null) {
+					if ((block.getState() instanceof Container || block.getState() instanceof Beacon) && OwnableBlock.getContainer(block) != null) {
 						
-						BlockContainer cont = BlockContainer.getContainer(block);
+						OwnableBlock cont = OwnableBlock.getContainer(block);
 						
 						System.out.println("is Container");
 						System.out.println(e.getClickedBlock().getType().toString());
@@ -63,10 +64,7 @@ public class BlockInteractEvent implements Listener {
 							System.out.println(cont.getTeam().getName());
 						}
 						
-						Security sec = cont.isAllowed(player);
-						System.out.println(sec.toString());
-						
-						switch(sec) {
+						switch(cont.isAllowed(player)) {
 						
 						case OWNER: {
 							if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
@@ -203,9 +201,9 @@ public class BlockInteractEvent implements Listener {
 						
 						
 						
-						Beacons beacon = Beacons.getBeacon(player, block);
+						Claim beacon = Claim.getEffectiveClaim(block.getLocation());
 						
-						if (beacon != null) {
+						if (beacon != null && beacon.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
 							e.getPlayer().sendMessage("§cYou can't place that here!");
 							e.getPlayer().sendMessage("§cThis Land belongs to Someone Else!");
 							e.setCancelled(true);
@@ -255,7 +253,7 @@ public class BlockInteractEvent implements Listener {
 									});
 									
 									if (entity.isPresent()) {
-										new EntityContainer(player, Lock.TEAM_ONLY, entity.get().getUniqueId());
+										new OwnableEntity(player, lockMode, entity.get().getUniqueId());
 										return;
 									}
 									
@@ -287,7 +285,7 @@ public class BlockInteractEvent implements Listener {
 								});
 								
 								if (entity.isPresent()) {
-									new EntityContainer(player, Lock.TEAM_ONLY, entity.get().getUniqueId());
+									new OwnableEntity(player, lockMode, entity.get().getUniqueId());
 									return;
 								}
 								
@@ -295,9 +293,45 @@ public class BlockInteractEvent implements Listener {
 				        }, 1);
 					}
 					
-				} else if (e.getPlayer().getGameMode() == GameMode.CREATIVE && PlayerData.getPlayerData(e.getPlayer()).getData("debug") != null) {
+				} else if (player.getGameMode() == GameMode.CREATIVE && PlayerData.getPlayerData(player).getData("debug") != null) {
 					e.setCancelled(true);
-					CreativeManager.outputBlockData(e.getClickedBlock(), e.getPlayer());
+					CreativeManager.outputBlockData(block, player);
+				}
+			} else if (e.getAction() == Action.RIGHT_CLICK_AIR && e.getItem().getType() == Material.TRIPWIRE_HOOK) {
+				
+				Player player = e.getPlayer();
+				PlayerData pd = PlayerData.getPlayerData(player);
+				
+				switch((Lock) pd.getData("lockMode")) {
+				case LOCKED:
+					
+					e.setCancelled(true);
+					
+					player.sendMessage("§6Default lock mode: TEAM ONLY");
+					player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+					pd.setData("lockMode", Lock.TEAM_ONLY);
+					return;
+					
+				case TEAM_ONLY:
+
+					e.setCancelled(true);
+					
+					player.sendMessage("§6Default lock mode: UNLOCKED");
+					player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+					pd.setData("lockMode", Lock.UNLOCKED);
+					return;
+					
+				case UNLOCKED:
+					
+					e.setCancelled(true);
+					
+					player.sendMessage("§6Default lock mode: LOCKED");
+					player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+					pd.setData("lockMode", Lock.LOCKED);
+					return;
+				default:
+					break;
+				
 				}
 			}
 		}

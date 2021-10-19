@@ -30,19 +30,31 @@ If the player has no team, it will allow them to create one.
 
 public class TeamInventory extends InteractableInventory {
 	
-	Team team;
-	
 	public TeamInventory(Player p) { // constructor
 	
-		super(9, "Team"); // Initiates the declared Inventory object
+		super(27, "Team"); // Initiates the declared Inventory object
 		
-		team = Team.getTeam(p);
+		Team team = Team.getTeam(p);
 		
 		// Build the inventory
 		
-		if (team == null) {
+		
+		
+		if (team == null) 
+			/*
+			 * NO TEAM INVENTORY
+			 * Buttons:
+			 * 	Create Team (Clock)
+			 * 	Data Item (Oak Sign)
+			 * 
+			 * 
+			 * 
+			 * 
+			 * 
+			 */
+		{ 
 			
-			createButton(Material.CLOCK, 3, "§r§aCreate Team", null, (x, e) -> {
+			createButton(Material.CLOCK, 12, "§r§aCreate Team", null, (x, e) -> {
 				
 				x.sendMessage("§dYou have created a new team!");
 				
@@ -54,15 +66,27 @@ public class TeamInventory extends InteractableInventory {
 				return;
 			});
 			
-			createButton(Material.OAK_SIGN, 4, "§r§c§lNo team.", 
+			createButton(Material.OAK_SIGN, 14, "§r§c§lNo team.", 
 							
 							"§dYou are not in a team.\n"
 							+ "§l§aCreate §r§dyour own or send a join request\n"
 							+ "to an existing team");
 			
-		} else if (team.getLeader() != p) {
-			
-			createButton(Material.ARROW, 3, "§c§lLeave Team", (x, e) -> {
+		} else if (team.getLeader() != p)/*
+		 * DEFAULT TEAM INVENTORY
+		 * Buttons:
+		 * 	Leave Team (Arrow) {
+		 * 		also sends player to a confirm inventory
+		 * 	}
+		 * 
+		 * 	Members (Player Head)
+		 * 	
+		 * 
+		 * 
+		 * 
+		 */{
+		
+			createButton(Material.ARROW, 12, "§c§lLeave Team", (x, e) -> {
 				
 				x.openInventory(new TeamLeaveConfirmInventory(team).getInventory());
 				return;
@@ -79,15 +103,32 @@ public class TeamInventory extends InteractableInventory {
 			
 			if (names.isPresent()) {
 				
-				createButton(Material.PLAYER_HEAD, 6, "§a§l" + team.getName(), names.get());
+				createButton(Material.PLAYER_HEAD, 14, "§a§l" + team.getName(), names.get());
 				
 			} else {
-				createButton(Material.PLAYER_HEAD, 6, "§a§l" + team.getName(), "§can error has occured!");
+				createButton(Material.PLAYER_HEAD, 14, "§a§l" + team.getName(), "§can error has occured!");
 			}
 			
-		} else {
+		} else /*
+		*
+		* LEADER TEAM INVENTORY
+		* Buttons:
+		* 
+		* Transfer Ownership (Golden Helmet)
+		* 
+		* Leave Team (Arrow)
+		* 
+		* Kick Player (Stone Sword)
+		* 
+		* Disband Team (Tipped Arrow)
+		* 
+		* Rename Team (Name Tag)
+		*
+		* Members (Player Head)
+		*
+		*/{
 			
-			createButton(Material.GOLDEN_HELMET, 1, "§bTransfer Ownership", (x, e) -> {
+			createButton(Material.GOLDEN_HELMET, 2, "§bTransfer Ownership", (x, e) -> {
 				
 				System.out.println(team.getMembers());
 				
@@ -126,7 +167,12 @@ public class TeamInventory extends InteractableInventory {
 				}
 			});
 			
-			createButton(Material.STONE_SWORD, 2, "§r§cKick Player", (x, e) -> {
+			createButton(Material.ARROW, 11, "§bLeave Team", (x, e) -> {
+				
+				x.openInventory(new LeaderLeaveInventory(team, x).getInventory());
+			});
+			
+			createButton(Material.STONE_SWORD, 20, "§r§cKick Player", (x, e) -> {
 				
 				System.out.println(team.getMembers());
 				
@@ -158,9 +204,26 @@ public class TeamInventory extends InteractableInventory {
 				}
 			});
 			
-			createButton(Material.NAME_TAG, 3, "§r§bRename Team", (x, e) -> {
+			createButton(Material.NAME_TAG, 12, "§r§bRename Team", (x, e) -> {
 				team.renameBegin(p);
 				p.closeInventory();
+			});
+			
+			createButton(Material.TIPPED_ARROW, 10, "§r§bDisband Team", (x, e) -> {
+				
+				InteractableInventory inf = new InteractableInventory(27, "§0Disband Team?") {};
+				
+				inf.createButton(Material.LIME_CONCRETE, 2, "§9§lDisband Team.", (x1, e1) -> {
+					p.closeInventory();
+					team.disbandTeam();
+				});
+				
+				inf.createButton(Material.RED_CONCRETE, 6, "§r§c§lDon't Disband Team.", (x1, e1) -> {
+					p.closeInventory();
+				});
+				
+				p.closeInventory();
+				p.openInventory(inf.getInventory());
 			});
 			
 			System.out.println(team.getMembers());

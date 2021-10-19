@@ -4,6 +4,7 @@ package net.pgfmc.teams.teamscore;
 import java.util.IdentityHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -12,7 +13,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.data.containers.BlockContainer;
+import net.pgfmc.teams.data.containers.OwnableBlock;
 
 /*
 Object Class for Teams; a new object will be created upon the creation of a new team.
@@ -160,13 +161,25 @@ public class Team {
 				instances.remove(this.getUniqueId());
 			}
 			
-			BlockContainer.updateTeams();
+			OwnableBlock.updateTeams();
 			
 			PlayerData.setData(p, "team", null);
 			return true;
 			
 		} else {
 			return false;
+		}
+	}
+	
+	public void disbandTeam() {
+		instances.remove(this.getUniqueId());
+		
+		for (OfflinePlayer p : getMembers()) {
+			PlayerData.setData(p, "team", null);
+			
+			if (p.getPlayer() != null) {
+				p.getPlayer().sendMessage("Your Team has been disbanded!");
+			}
 		}
 	}
 	
@@ -197,11 +210,8 @@ public class Team {
 	// ------------------------------------------------------------------------------------ instances manager
 	
 	public static Team getTeam(OfflinePlayer p) { // searches for a given Player p, and returns the team the player is in
-		if (p != null) {
-			return (Team) PlayerData.getData(p, "team");
-			
-		}
-		return null;
+		Objects.requireNonNull(p);
+		return PlayerData.getData(p, "team");
 	}
 	
 	public static Team findID(UUID ID) { // searches for the team with the given ID

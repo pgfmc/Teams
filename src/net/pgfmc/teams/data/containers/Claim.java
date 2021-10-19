@@ -18,6 +18,7 @@ Strangers from outside the team cannot break, place, or interact with anything w
  */
 
 import java.util.LinkedHashMap;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.bukkit.Location;
@@ -25,21 +26,19 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 
 import net.pgfmc.teams.teamscore.Team;
-import net.pgfmc.teams.teamscore.Utility;
 
-public class Beacons extends BlockContainer {
+public class Claim extends OwnableBlock {
 	
-	private static LinkedHashMap<Block, Beacons> beacons = new LinkedHashMap<>();
 	
-	public Beacons(OfflinePlayer player, Block block, Lock lock, Team team) throws InvalidBeaconException {
-		
-		/**
-		
-		 */
-		
+	
+	
+	
+	
+	private static LinkedHashMap<Block, Claim> beacons = new LinkedHashMap<>();
+	
+	public Claim(OfflinePlayer player, Block block, Lock lock, Team team) throws InvalidBeaconException {
 		super(player, lock, block, team);
 		
 		if (block.getType() == Material.BEACON) {
@@ -48,25 +47,25 @@ public class Beacons extends BlockContainer {
 			beacons.put(block, this);
 		} else {
 			
-			throw new InvalidBeaconException("Block is not a Beacon!");
+			throw new InvalidBeaconException("Block is not a valid Claim!");
 		}
 	}
 	
 	public void removeContainer() { // deletes a beacon
-		BlockContainer.remove(block);
+		OwnableBlock.remove(block);
 		beacons.remove(block);
 	}
 	
 	
-	public static Beacons getBeacons(Block block) { // gets a block's beacon data.
-		BlockContainer cont = getContainer(block);
+	public static Claim getClaims(Block block) { // gets a block's beacon data.
+		OwnableBlock cont = getContainer(block);
 		if (cont != null) {
 			return cont.toBeacon();
 		}
 		return null;
 	}
 	
-	public boolean inRange(Block lock) { // input a Block, and find if its in range of the beacon
+	public boolean inRange(Block lock) { // input a Block, and find if its in range of the claim
 		
 		Location loc = lock.getLocation();
 		Location bloke = block.getLocation();
@@ -94,9 +93,9 @@ public class Beacons extends BlockContainer {
 		return false;
 	}
 	
-	public boolean inRange(Location lock) { // input a Location, and find if its in range of the beacon
+	public boolean inRange(Location loc) { // input a Location, and find if its in range of the beacon
+		Objects.requireNonNull(loc);
 		
-		Location loc = lock;
 		Location bloke = block.getLocation();
 		
 		int mod = (((Beacon) block.getState()).getTier() * 10) + 10;
@@ -119,17 +118,17 @@ public class Beacons extends BlockContainer {
 		return Math.sqrt( Math.pow(loc.getX() + bloke.getX(), 2) + Math.pow(loc.getY() + bloke.getY(), 2) + Math.pow(loc.getZ() + bloke.getZ(), 2));
 	}
 	
-	public static Beacons getBeacon(Player player, Block loc) { // returns the closest enemy beacon to the location input.
+	
+	
+	/**
+	 * Returns the closest Effective claim to the input location.
+	 * @param loca 
+	 * @return The closest Claim that can effect the input location.
+	 */
+	public static Claim getEffectiveClaim(Location loca) { // returns the closest enemy beacon to the location input.
 		
-		Location loca;
-		if (loc == null) {
-			loca = player.getLocation();
-		} else {
-			loca = loc.getLocation();
-		}
-		
-		Optional<Beacons> b = beacons.keySet().stream().map(x -> beacons.get(x)) // stream to funnel down the beacons into the closest enemy beacon.
-		.filter(x -> x.getLocation().getWorld() == player.getWorld())
+		Optional<Claim> b = beacons.keySet().stream().map(x -> beacons.get(x)) // stream to funnel down the beacons into the closest enemy beacon.
+		.filter(x -> x.getLocation().getWorld() == loca.getWorld())
 		.filter(x -> x.inRange(loca))
 		.reduce((B, x) -> {
 			System.out.println("beacon at " + x.getLocation().toString() + " loaded.");
@@ -146,12 +145,9 @@ public class Beacons extends BlockContainer {
 			}
 		});
 		
-		if (b.isPresent() && b.get().isAllowed(player) == Security.DISALLOWED) {
-			System.out.println("Beacons.getBeacon " + Utility.locToString(b.get().getLocation()));
+		if (b.isPresent()) {
 			return b.get();
-			
-		} else {
-			return null;
 		}
+		return null;
 	}
 }

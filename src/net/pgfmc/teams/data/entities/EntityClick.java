@@ -10,9 +10,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
-import net.pgfmc.teams.data.containers.Containers.Lock;
-import net.pgfmc.teams.data.containers.Containers.Security;
-import net.pgfmc.teams.data.containers.EntityContainer;
+import net.pgfmc.teams.data.containers.Ownable.Lock;
+import net.pgfmc.teams.data.containers.Ownable.Security;
+import net.pgfmc.teams.data.containers.OwnableEntity;
 
 public class EntityClick implements Listener {
 	
@@ -41,7 +41,7 @@ public class EntityClick implements Listener {
 				
 				)) {
 				
-				EntityContainer cont = EntityContainer.getContainer(e.getRightClicked());
+				OwnableEntity cont = OwnableEntity.getContainer(e.getRightClicked());
 				
 				if (cont == null) { return; }
 				

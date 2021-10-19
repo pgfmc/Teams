@@ -7,9 +7,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.data.containers.Beacons;
-import net.pgfmc.teams.data.containers.BlockContainer;
-import net.pgfmc.teams.data.containers.Containers.Security;
+import net.pgfmc.teams.data.containers.Claim;
+import net.pgfmc.teams.data.containers.OwnableBlock;
+import net.pgfmc.teams.data.containers.Ownable.Security;
 
 /**
 @author CrimsonDart
@@ -59,22 +59,21 @@ public class BBEvent implements Listener {
 			
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 				
-				Beacons beacon = Beacons.getBeacon(e.getPlayer(), e.getBlock());
+				Claim beacon = Claim.getEffectiveClaim(e.getBlock().getLocation());
 				
-				if (beacon != null) {
+				if (beacon != null && beacon.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
 					e.getPlayer().sendMessage("§cYou can't break blocks here!");
 					e.getPlayer().sendMessage("§cIt belongs to another Team!");
 					e.setCancelled(true);
 					return;
 				}
 				
-				
-				BlockContainer cont = BlockContainer.getContainer(e.getBlock());
+				OwnableBlock cont = OwnableBlock.getContainer(e.getBlock());
 				
 				if (cont != null) { // removes the container if it is broken.
 					
 					if (cont.isAllowed(e.getPlayer()) == Security.OWNER || cont.isAllowed(e.getPlayer()) == Security.TEAMMATE)  {
-						BlockContainer.remove(e.getBlock());
+						OwnableBlock.remove(e.getBlock());
 					} else {
 						e.getPlayer().sendMessage("§cYou can't break that block!");
 						e.getPlayer().sendMessage("§cIt belongs to another Team!");
@@ -96,8 +95,8 @@ public class BBEvent implements Listener {
 				} else {
 					SurvivalManager.updateBlock(e.getBlock(), null, false);
 					
-					if (BlockContainer.getContainer(e.getBlock()) != null) { // removes the container if it is broken.
-						BlockContainer.remove(e.getBlock());
+					if (OwnableBlock.getContainer(e.getBlock()) != null) { // removes the container if it is broken.
+						OwnableBlock.remove(e.getBlock());
 						
 					}
 				}
