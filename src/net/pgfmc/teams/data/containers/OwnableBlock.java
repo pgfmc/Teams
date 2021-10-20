@@ -131,16 +131,8 @@ public class OwnableBlock extends Ownable {
 			}
 		}
 		
-		
-		if (block.getType() == Material.BEACON) {
-			new Claim(player, block, lock, team);
-			return true;
-			
-		} else {
-			new OwnableBlock(player, lock, block, team);
-			return true;
-			
-		}
+		new OwnableBlock(player, lock, block, team);
+		return true;
 	}
 	
 	public Team getTeam() {

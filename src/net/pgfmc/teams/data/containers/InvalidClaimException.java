@@ -10,12 +10,12 @@ Unused error apparently? ill keep it anyways.
 -----------------------------------
  */
 
-public class InvalidBeaconException extends RuntimeException {
+public class InvalidClaimException extends RuntimeException {
 
 
 	private static final long serialVersionUID = -1213284959287871912L;
 
-	public InvalidBeaconException(String errorMessage) {
+	public InvalidClaimException(String errorMessage) {
 		super(errorMessage);
 	}
 }

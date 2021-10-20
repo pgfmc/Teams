@@ -36,6 +36,17 @@ public class MessageEvent implements Listener {
 				e.setCancelled(true);
 				return;
 			}
+			 
+			if (e.getMessage().length() > 20) {
+				
+				e.getPlayer().sendMessage("§d\"§a§l" + e.getMessage() + "§r§d\" is more than 20 Characters long!");
+				e.getPlayer().sendMessage("§r§dPlease try again.");
+				((Team) playerData.getData("team")).setName(((Team) playerData.getData("team")).getName());
+				playerData.setData("naming", null);
+				e.setCancelled(true);
+				return;
+				
+			}
 			
 			((Team) playerData.getData("team")).setName(e.getMessage());
 			e.getPlayer().sendMessage("§d\"§a§l" + e.getMessage() + "§r§d\" is now the name of your team!");

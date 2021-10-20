@@ -20,6 +20,8 @@ Strangers from outside the team cannot break, place, or interact with anything w
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,29 +33,23 @@ import net.pgfmc.teams.teamscore.Team;
 
 public class Claim extends OwnableBlock {
 	
+	private static LinkedHashMap<Block, Claim> claims = new LinkedHashMap<>();
 	
-	
-	
-	
-	
-	private static LinkedHashMap<Block, Claim> beacons = new LinkedHashMap<>();
-	
-	public Claim(OfflinePlayer player, Block block, Lock lock, Team team) throws InvalidBeaconException {
+	public Claim(OfflinePlayer player, Block block, Lock lock, Team team) throws InvalidClaimException {
 		super(player, lock, block, team);
 		
-		if (block.getType() == Material.BEACON) {
+		if (block.getType() == Material.BEACON || block.getType() == Material.GOLD_BLOCK) {
+			claims.put(block, this);
 			
-			
-			beacons.put(block, this);
 		} else {
+			throw new InvalidClaimException("Block is not a valid Claim!");
 			
-			throw new InvalidBeaconException("Block is not a valid Claim!");
 		}
 	}
 	
 	public void removeContainer() { // deletes a beacon
 		OwnableBlock.remove(block);
-		beacons.remove(block);
+		claims.remove(block);
 	}
 	
 	
@@ -65,50 +61,29 @@ public class Claim extends OwnableBlock {
 		return null;
 	}
 	
-	public boolean inRange(Block lock) { // input a Block, and find if its in range of the claim
-		
-		Location loc = lock.getLocation();
-		Location bloke = block.getLocation();
-		
-		if (block.getType() == Material.BEACON) {
-			
-			if (bloke.getBlockX() - 101 <= loc.getBlockX() && 
-					loc.getBlockX() <= bloke.getBlockX() + 101 && 
-					bloke.getBlockZ() - 101 <= loc.getBlockZ() && 
-					loc.getBlockZ() <= bloke.getBlockZ() + 101) {
-				return true;
-			}
-		}
-		
-		int mod = (((Beacon) block.getState()).getTier() * 10) + 10;
-		
-		if (mod != 10 &&
-				bloke.getBlockX() - mod <= loc.getBlockX() && 
-				loc.getBlockX() <= bloke.getBlockX() + mod && 
-				bloke.getBlockZ() - mod <= loc.getBlockZ() && 
-				loc.getBlockZ() <= bloke.getBlockZ() + mod && 
-				bloke.getBlockY() - mod <= loc.getBlockY()) {
-			return true;
-		}
-		return false;
-	}
+	
 	
 	public boolean inRange(Location loc) { // input a Location, and find if its in range of the beacon
 		Objects.requireNonNull(loc);
 		
 		Location bloke = block.getLocation();
 		
-		int mod = (((Beacon) block.getState()).getTier() * 10) + 10;
-		
-		if (mod != 10 &&
-				bloke.getBlockX() - mod <= loc.getBlockX() && 
-				loc.getBlockX() <= bloke.getBlockX() + mod && 
-				bloke.getBlockZ() - mod <= loc.getBlockZ() && 
-				loc.getBlockZ() <= bloke.getBlockZ() + mod && 
-				bloke.getBlockY() - mod <= loc.getBlockY()) {
-			return true;
+		if (block.getType() == Material.GOLD_BLOCK) {
+			return (bloke.getBlockX() - 7 <= loc.getBlockX() &&
+					bloke.getBlockX() + 7 >= loc.getBlockX() &&
+					bloke.getBlockZ() -7 <= loc.getBlockZ() &&
+					bloke.getBlockZ() + 7 >= loc.getBlockZ() &&
+					bloke.getBlockY() - 7 <= loc.getBlockY() &&
+					bloke.getBlockY() + 7 >= loc.getBlockY());
+		} else {
+			int mod = (((Beacon) block.getState()).getTier() * 10) + 10;
+			return (mod != 10 &&
+					bloke.getBlockX() - mod <= loc.getBlockX() && 
+					loc.getBlockX() <= bloke.getBlockX() + mod && 
+					bloke.getBlockZ() - mod <= loc.getBlockZ() && 
+					loc.getBlockZ() <= bloke.getBlockZ() + mod && 
+					bloke.getBlockY() - mod <= loc.getBlockY());
 		}
-		return false;
 	}
 	
 	public double getDistance(Location loc) { // returns the distance from this to the location input.
@@ -118,8 +93,6 @@ public class Claim extends OwnableBlock {
 		return Math.sqrt( Math.pow(loc.getX() + bloke.getX(), 2) + Math.pow(loc.getY() + bloke.getY(), 2) + Math.pow(loc.getZ() + bloke.getZ(), 2));
 	}
 	
-	
-	
 	/**
 	 * Returns the closest Effective claim to the input location.
 	 * @param loca 
@@ -127,7 +100,7 @@ public class Claim extends OwnableBlock {
 	 */
 	public static Claim getEffectiveClaim(Location loca) { // returns the closest enemy beacon to the location input.
 		
-		Optional<Claim> b = beacons.keySet().stream().map(x -> beacons.get(x)) // stream to funnel down the beacons into the closest enemy beacon.
+		Optional<Claim> b = claims.keySet().stream().map(x -> claims.get(x)) // stream to funnel down the beacons into the closest enemy beacon.
 		.filter(x -> x.getLocation().getWorld() == loca.getWorld())
 		.filter(x -> x.inRange(loca))
 		.reduce((B, x) -> {
@@ -149,5 +122,46 @@ public class Claim extends OwnableBlock {
 			return b.get();
 		}
 		return null;
+	}
+	
+	/**
+	 * returns a set of all Enemy claims in the range that could conflict with claim placements. ONLY TO BE USED WHEN PLACING CLAIM BLOCKS.
+	 * @param l2 The location of the block being placed.
+	 * @param player The player placing the block.
+	 * @return A set of all nearby enemy claims that can overlap with the claim proposed to be placed.
+	 */
+	public static Set<Claim> isEnemyClaimsInRange(Location l2, OfflinePlayer player) {
+		return 
+		claims
+		.keySet()
+		.stream()
+		.map((x) -> claims.get(x))
+		.filter((x -> x.getLocation().getWorld() == l2.getWorld()))
+		.filter(x -> {
+			switch(x.isAllowed(player)) {
+			case DISALLOWED:
+				return true;
+			case EXCEPTION:
+				return true;
+			case OWNER:
+				return false;
+			case TEAMMATE:
+				return false;
+			case UNLOCKED:
+				return true;
+			}
+			return true;
+		})
+		.filter(x -> {
+			
+			Location l1 = x.getLocation();
+			
+			
+			return (l1.getBlockX() + 101 <= l2.getBlockX() &&
+					l1.getBlockX() -101 >= l2.getBlockX() &&
+					l1.getBlockZ() + 101 <= l2.getBlockZ() &&
+					l1.getBlockZ() + 101 >= l2.getBlockZ());
+		})
+		.collect(Collectors.toSet());
 	}
 }

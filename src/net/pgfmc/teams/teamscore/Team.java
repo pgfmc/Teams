@@ -74,8 +74,8 @@ public class Team {
 		
 		Player p = (Player) getLeader();
 		PlayerData pData = PlayerData.getPlayerData(p);
-		p.sendMessage("§dFor the next 4 minutes, you can change your ");
-		p.sendMessage("§dteam's name by typing into the chat box!");
+		p.sendMessage("§dSet your team's name by typing into chat!");
+		p.sendMessage("§dThe name has to be §c§lless than 20 letters §r§dlong.");
 		pData.setData("naming", true);
 		
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TeamsCore.getPlugin(), new Runnable() {
@@ -86,6 +86,7 @@ public class Team {
 				if (pData.getData("naming") != null) {
 					pData.setData("naming", null);
 	            	p.sendMessage("§cTime has run out to rename your team.");
+	            	p.sendMessage("§cRename your team again in /team.");
 				}
             }
         }, 2400);
@@ -188,8 +189,8 @@ public class Team {
 	public void renameBegin(Player p) { // initializes naming mode for player p.getPlayer.
 		if (p.getPlayer().getPlayer() != null) {
 			PlayerData pData = PlayerData.getPlayerData(p);
-			p.sendMessage("§dFor the next 4 minutes, you can change your ");
-			p.sendMessage("§dteam's name by typing into the chat box!");
+			p.sendMessage("§dChange your team's name by typing into chat!");
+			p.sendMessage("§dThe name has to be §c§lless than 20 letters §r§dlong.");
 			p.sendMessage("§dType \"c\" to §ccancel§d.");
 			pData.setData("naming", true);
 			
@@ -201,6 +202,7 @@ public class Team {
 					if (pData.getData("naming") != null) {
 						pData.setData("naming", null);
 		            	p.sendMessage("§cTime has run out to rename your team.");
+		            	p.sendMessage("§cRename your team again in /team.");
 					}
 	            }
 	        }, 2400);

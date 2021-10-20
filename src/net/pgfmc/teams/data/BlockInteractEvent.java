@@ -43,11 +43,13 @@ public class BlockInteractEvent implements Listener {
 		
 		// controls clicking containers and beacons;
 		
-		if (e.getPlayer() != null && Utility.isSurvival(e.getClickedBlock().getWorld())) {
+		if (e.getPlayer() != null && Utility.isSurvival(e.getPlayer().getWorld())) {
+			
+			Player player = e.getPlayer();
 			
 			if (e.getClickedBlock() != null && e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 				Block block = e.getClickedBlock();
-				Player player = e.getPlayer();
+				
 				Lock lockMode = PlayerData.getData(player, "lockMode");
 				
 				if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
@@ -299,7 +301,7 @@ public class BlockInteractEvent implements Listener {
 				}
 			} else if (e.getAction() == Action.RIGHT_CLICK_AIR && e.getItem().getType() == Material.TRIPWIRE_HOOK) {
 				
-				Player player = e.getPlayer();
+				
 				PlayerData pd = PlayerData.getPlayerData(player);
 				
 				switch((Lock) pd.getData("lockMode")) {

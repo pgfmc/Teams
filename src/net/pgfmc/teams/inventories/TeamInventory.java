@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionType;
 
 import net.pgfmc.pgfessentials.inventoryAPI.InteractableInventory;
 import net.pgfmc.pgfessentials.inventoryAPI.PagedInventory;
@@ -30,15 +33,14 @@ If the player has no team, it will allow them to create one.
 
 public class TeamInventory extends InteractableInventory {
 	
+	
 	public TeamInventory(Player p) { // constructor
 	
-		super(27, "Team"); // Initiates the declared Inventory object
+		super(27, (Team.getTeam(p) == null) ? "Team" : "§a§l" + Team.getTeam(p).getName()); // Initiates the declared Inventory object
 		
 		Team team = Team.getTeam(p);
 		
 		// Build the inventory
-		
-		
 		
 		if (team == null) 
 			/*
@@ -52,7 +54,7 @@ public class TeamInventory extends InteractableInventory {
 			 * 
 			 * 
 			 */
-		{ 
+		{
 			
 			createButton(Material.CLOCK, 12, "§r§aCreate Team", null, (x, e) -> {
 				
@@ -69,8 +71,7 @@ public class TeamInventory extends InteractableInventory {
 			createButton(Material.OAK_SIGN, 14, "§r§c§lNo team.", 
 							
 							"§dYou are not in a team.\n"
-							+ "§l§aCreate §r§dyour own or send a join request\n"
-							+ "to an existing team");
+							+ "§l§aCreate §r§dyour own by clicking the clock \n§r§dto the right.");
 			
 		} else if (team.getLeader() != p)/*
 		 * DEFAULT TEAM INVENTORY
@@ -103,10 +104,10 @@ public class TeamInventory extends InteractableInventory {
 			
 			if (names.isPresent()) {
 				
-				createButton(Material.PLAYER_HEAD, 14, "§a§l" + team.getName(), names.get());
+				createButton(Material.PLAYER_HEAD, 15, "§a§l" + team.getName(), names.get());
 				
 			} else {
-				createButton(Material.PLAYER_HEAD, 14, "§a§l" + team.getName(), "§can error has occured!");
+				createButton(Material.PLAYER_HEAD, 15, "§a§l" + team.getName(), "§can error has occured!");
 			}
 			
 		} else /*
@@ -127,32 +128,37 @@ public class TeamInventory extends InteractableInventory {
 		* Members (Player Head)
 		*
 		*/{
-			
+			/*
+			 * GOLDEN HELMET
+			 * slot 2
+			 * Transfers Ownership
+			 * 
+			 * gets a list of all members of the player's team - the player;
+			 * 
+			 * if size == 0, it sends a message to the player saying there is no one to transfer ownership to.
+			 * 
+			 * if size == 1, it just opens straight to the confirm inventory to that player.
+			 * 
+			 * if the size is anything else, it opens to the player select screen;
+			 * 
+			 */
 			createButton(Material.GOLDEN_HELMET, 2, "§bTransfer Ownership", (x, e) -> {
 				
-				System.out.println(team.getMembers());
+				List<OfflinePlayer> list = removePlayer(x, team.getMembers());
 				
-				List<OfflinePlayer> gamer = team.getMembers().stream().filter((n) -> {
-					if (n.getUniqueId().equals(p.getUniqueId()) ) {
-						return false;
-					}
-					return true;
-				}).collect(Collectors.toList());
-				
-				System.out.println(gamer);
-				
-				gamer.stream().forEach((g) -> System.out.println(g.getName()));
-				team.getMembers().stream().forEach((j) -> System.out.println(j.getName()));
-				
-				
-				if (gamer.size() == 0) {
+				if (list.size() == 0) {
 					
-					// put code here!!!
+					x.sendMessage("§dThere is no one else in your team!");
 					
-				} else {
+				} else if (list.size() == 1) {
 					
-					//gamer, 
-					PagedInventory<OfflinePlayer> inf = new PagedInventory<OfflinePlayer>(SizeData.SMALL, "§0Select the next leader!", gamer ,(E) -> {
+					x.openInventory(new NewLeaderConfirmInventory(list.get(0), team).getInventory());
+					
+				}
+				
+				else {
+					
+					PagedInventory<OfflinePlayer> inf = new PagedInventory<OfflinePlayer>(SizeData.SMALL, "§0Select the next leader!", list ,(E) -> {
 						
 						return PagedInventory.createButton(Material.PLAYER_HEAD, E.getName(), "lksdajf", (t, v) -> {
 							t.openInventory(new NewLeaderConfirmInventory(E, team).getInventory());
@@ -171,30 +177,29 @@ public class TeamInventory extends InteractableInventory {
 				
 				List<OfflinePlayer> list = removePlayer(x, team.getMembers());
 				
-				if (list.size() >= 1) {
+				if (list.size() == 0) {
 					
+					team.removePlayer(p);
+					x.closeInventory();
+					x.sendMessage("§dYou have left your team!");
+				} else {
+					x.openInventory(new LeaderLeaveInventory(team, x, list).getInventory());
 				}
-				
-				x.openInventory(new LeaderLeaveInventory(team, x, list).getInventory());
 			});
 			
 			createButton(Material.STONE_SWORD, 20, "§r§cKick Player", (x, e) -> {
 				
-				List<OfflinePlayer> gamer = team.getMembers().stream().filter((n) -> {
-					if (n.getUniqueId().equals(p.getUniqueId()) ) {
-						return false;
-					}
-					return true;
-				}).collect(Collectors.toList());
+				List<OfflinePlayer> list = removePlayer(x, team.getMembers());
 				
-				if (gamer.size() == 0) {
+				if (list.size() == 0) {
 					
-					// put code here!!!
+					x.sendMessage("§cThere is nobody to Kick!");
+					x.closeInventory();
 					
 				} else {
 					//(p1, E, t) -> {x.openInventory(new KickConfirmInventory(t, team).getInventory());}
 					PagedInventory<OfflinePlayer> inf = new PagedInventory<OfflinePlayer>(SizeData.SMALL, 
-							"§0Select who to Kick!", gamer, (E) -> {
+							"§0Select who to Kick!", list, (E) -> {
 								return PagedInventory.createButton(Material.PLAYER_HEAD, E.getName(), null, (p1, v) -> {
 									x.openInventory(new KickConfirmInventory(E, team).getInventory());
 									});
@@ -211,16 +216,21 @@ public class TeamInventory extends InteractableInventory {
 				p.closeInventory();
 			});
 			
-			createButton(Material.TIPPED_ARROW, 10, "§r§bDisband Team", (x, e) -> {
+			Button button = createButton(Material.TIPPED_ARROW, 10, "§r§bDisband Team", (x, e) -> {
+				
+				
+				// >>>>
+				
+				
 				
 				InteractableInventory inf = new InteractableInventory(27, "§0Disband Team?") {};
 				
-				inf.createButton(Material.LIME_CONCRETE, 2, "§9§lDisband Team.", (x1, e1) -> {
+				inf.createButton(Material.LIME_CONCRETE, 11, "§9§lDisband Team.", (x1, e1) -> {
 					p.closeInventory();
 					team.disbandTeam();
 				});
 				
-				inf.createButton(Material.RED_CONCRETE, 6, "§r§c§lDon't Disband Team.", (x1, e1) -> {
+				inf.createButton(Material.RED_CONCRETE, 15, "§r§c§lDon't Disband Team.", (x1, e1) -> {
 					p.closeInventory();
 				});
 				
@@ -228,7 +238,12 @@ public class TeamInventory extends InteractableInventory {
 				p.openInventory(inf.getInventory());
 			});
 			
-			System.out.println(team.getMembers());
+			// sets the Tipped Arrow in the above button to an INSTANT DAMAGE arrow
+			PotionMeta im = (PotionMeta) button.getItem().getItemMeta();
+			im.setBasePotionData(new PotionData(PotionType.INSTANT_DAMAGE));
+			button.getItem().setItemMeta(im);
+			
+			inv.setItem(10, button.getItem());
 			
 			Optional<String> names = team.getMembers().stream()
 					.map((x) -> x.getName())
@@ -241,10 +256,10 @@ public class TeamInventory extends InteractableInventory {
 			
 			if (names.isPresent()) {
 				
-				createButton(Material.PLAYER_HEAD, 6, "§a§l" + team.getName(), names.get());
+				createButton(Material.PLAYER_HEAD, 15, "§a§l" + team.getName(), names.get());
 				
 			} else {
-				createButton(Material.PLAYER_HEAD, 6, "§a§l" + team.getName(), "§can error has occured!");
+				createButton(Material.PLAYER_HEAD, 15, "§a§l" + team.getName(), "§cAn error has occured!");
 			}
 		}
 	}
@@ -252,4 +267,8 @@ public class TeamInventory extends InteractableInventory {
 	public static List<OfflinePlayer> removePlayer(OfflinePlayer p, List<OfflinePlayer> l) {
 		return l.stream().filter((x) -> !(x.getUniqueId().toString().equals(p.getUniqueId().toString()))).collect(Collectors.toList());
 	}
+	
+	
+	
+	
 }
