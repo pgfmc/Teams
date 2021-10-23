@@ -36,7 +36,7 @@ public class TeamInventory extends InteractableInventory {
 	
 	public TeamInventory(Player p) { // constructor
 	
-		super(27, (Team.getTeam(p) == null) ? "Team" : "§a§l" + Team.getTeam(p).getName()); // Initiates the declared Inventory object
+		super(27, (Team.getTeam(p) == null) ? "Team" : "§8§l" + Team.getTeam(p).getName()); // Initiates the declared Inventory object
 		
 		Team team = Team.getTeam(p);
 		
@@ -71,7 +71,7 @@ public class TeamInventory extends InteractableInventory {
 			createButton(Material.OAK_SIGN, 14, "§r§c§lNo team.", 
 							
 							"§dYou are not in a team.\n"
-							+ "§l§aCreate §r§dyour own by clicking the clock \n§r§dto the right.");
+							+ "§l§aCreate §r§dyour own by clicking the clock \n§r§dto the left.");
 			
 		} else if (team.getLeader() != p)/*
 		 * DEFAULT TEAM INVENTORY

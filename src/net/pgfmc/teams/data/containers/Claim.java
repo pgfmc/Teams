@@ -54,19 +54,14 @@ public class Claim extends OwnableBlock {
 	
 	
 	public static Claim getClaims(Block block) { // gets a block's beacon data.
-		OwnableBlock cont = getContainer(block);
-		if (cont != null) {
-			return cont.toBeacon();
-		}
-		return null;
+		return claims.get(block);
 	}
-	
-	
 	
 	public boolean inRange(Location loc) { // input a Location, and find if its in range of the beacon
 		Objects.requireNonNull(loc);
 		
 		Location bloke = block.getLocation();
+		block = bloke.getBlock();
 		
 		if (block.getType() == Material.GOLD_BLOCK) {
 			return (bloke.getBlockX() - 7 <= loc.getBlockX() &&
@@ -131,6 +126,7 @@ public class Claim extends OwnableBlock {
 	 * @return A set of all nearby enemy claims that can overlap with the claim proposed to be placed.
 	 */
 	public static Set<Claim> isEnemyClaimsInRange(Location l2, OfflinePlayer player) {
+		
 		return 
 		claims
 		.keySet()
@@ -138,6 +134,7 @@ public class Claim extends OwnableBlock {
 		.map((x) -> claims.get(x))
 		.filter((x -> x.getLocation().getWorld() == l2.getWorld()))
 		.filter(x -> {
+			System.out.println("Filtering " + x.getLocation().toString());
 			switch(x.isAllowed(player)) {
 			case DISALLOWED:
 				return true;

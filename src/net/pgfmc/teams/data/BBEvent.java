@@ -59,20 +59,13 @@ public class BBEvent implements Listener {
 			
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 				
-				Claim beacon = Claim.getEffectiveClaim(e.getBlock().getLocation());
-				
-				if (beacon != null && beacon.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
-					e.getPlayer().sendMessage("§cYou can't break blocks here!");
-					e.getPlayer().sendMessage("§cIt belongs to another Team!");
-					e.setCancelled(true);
-					return;
-				}
-				
 				OwnableBlock cont = OwnableBlock.getContainer(e.getBlock());
+				Claim claim = Claim.getEffectiveClaim(e.getBlock().getLocation());
 				
-				if (cont != null) { // removes the container if it is broken.
+				// removes the ownable if able to
+				if (cont != null) {
 					
-					if (cont.isAllowed(e.getPlayer()) == Security.OWNER || cont.isAllowed(e.getPlayer()) == Security.TEAMMATE)  {
+					if (cont.isAllowed(e.getPlayer()) == Security.OWNER || (cont.isAllowed(e.getPlayer()) == Security.TEAMMATE ))  {
 						OwnableBlock.remove(e.getBlock());
 					} else {
 						e.getPlayer().sendMessage("§cYou can't break that block!");
@@ -80,6 +73,13 @@ public class BBEvent implements Listener {
 						e.setCancelled(true);
 						return;
 					}
+				}
+				
+				if (claim != null && claim.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
+					e.getPlayer().sendMessage("§cYou can't break blocks here!");
+					e.getPlayer().sendMessage("§cIt belongs to another Team!");
+					e.setCancelled(true);
+					return;
 				}
 				
 				SurvivalManager.updateBlock(e.getBlock(), e.getPlayer(), false);
