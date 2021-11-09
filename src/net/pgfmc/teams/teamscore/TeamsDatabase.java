@@ -10,6 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import net.pgfmc.pgfessentials.Mixins;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerDataListener;
 import net.pgfmc.teams.data.containers.Ownable.Lock;
@@ -26,11 +27,8 @@ Handles saving and loading teams.
 
 public class TeamsDatabase implements PlayerDataListener {
 	
-	
-	static File file = new File(TeamsCore.getPlugin().getDataFolder() + File.separator + "database.yml"); // Creates a File object
-	static FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
-	
-	static boolean playerInit = false;
+	private static File file = new File(TeamsCore.databasePath); // Creates a File object
+	private static FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 	
 	public static void saveTeams() { // ----------------- saves all teams to "teams"
 		
@@ -66,10 +64,10 @@ public class TeamsDatabase implements PlayerDataListener {
 		database.set("teams", configSec);
 		
 		try {
-			database.save(file);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Mixins.saveDatabase(database, TeamsCore.databasePath);
+		} catch (IOException e1) {
+			System.out.println("PlayerData save failed!");
+			e1.printStackTrace();
 		}
 	}
 	
@@ -110,9 +108,9 @@ public class TeamsDatabase implements PlayerDataListener {
 		
 		if (playerDataList != null) {
 			if (playerData.getData("team") != null) {
-				playerDataList.set(playerData.getPlayer().getUniqueId().toString(), ((Team) playerData.getData("team")).getUniqueId().toString());
+				playerDataList.set(playerData.getUniqueId().toString(), ((Team) playerData.getData("team")).getUniqueId().toString());
 			} else {
-				playerDataList.set(playerData.getPlayer().getUniqueId().toString(), null);
+				playerDataList.set(playerData.getUniqueId().toString(), null);
 			}
 			database.set("playerData", playerDataList);
 		} else {
@@ -120,9 +118,9 @@ public class TeamsDatabase implements PlayerDataListener {
 			playerDataList = database.createSection("playerData");
 			
 			if (playerData.getData("team") != null) {
-				playerDataList.set(playerData.getPlayer().getUniqueId().toString(), ((Team) playerData.getData("team")).getUniqueId().toString());
+				playerDataList.set(playerData.getUniqueId().toString(), ((Team) playerData.getData("team")).getUniqueId().toString());
 			} else {
-				playerDataList.set(playerData.getPlayer().getUniqueId().toString(), null);
+				playerDataList.set(playerData.getUniqueId().toString(), null);
 			}
 			database.set("playerData", playerDataList);
 		}
@@ -145,7 +143,7 @@ public class TeamsDatabase implements PlayerDataListener {
 			return;
 		}
 		
-		String uuid = (String) playerDataList.get(playerData.getPlayer().getUniqueId().toString());
+		String uuid = (String) playerDataList.get(playerData.getUniqueId().toString());
 		
 		if (uuid != null) {
 			

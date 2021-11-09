@@ -55,10 +55,10 @@ public class PendingRequest {
 		JOI.setData("team", team);
 		
 		if (isInvitor) {
-			team.addMember(JOI.getPlayer());
+			team.addMember(JOI.getOfflinePlayer());
 			
 		} else {
-			team.addMember(INV.getPlayer());
+			team.addMember(INV.getOfflinePlayer());
 			
 		}
 		
@@ -68,8 +68,8 @@ public class PendingRequest {
 	
 	public void createTeamRequestAccept() { // creates a new team for when 
 		
-		Team team = new Team(INV.getPlayer().getUniqueId());
-		team.addMember(JOI.getPlayer());
+		Team team = new Team(INV.getOfflinePlayer().getUniqueId());
+		team.addMember(JOI.getOfflinePlayer());
 		
 		INV.setData("team", team);
 		JOI.setData("team", team);
@@ -78,7 +78,7 @@ public class PendingRequest {
 	}
 	
 	public OfflinePlayer getInvitor() {
-		return INV.getPlayer();
+		return INV.getOfflinePlayer();
 	}
 	
 	public static void requestHandler(Player attacker, Player target) {

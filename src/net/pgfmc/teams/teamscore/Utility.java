@@ -11,9 +11,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import net.pgfmc.pgfessentials.dim.Worlds;
 
-public class Utility {
+public interface Utility {
 	
-	public static ItemStack createItem(String name, Material mat, List<String> lore)
+	static ItemStack createItem(String name, Material mat, List<String> lore)
 	{
 		ItemStack item = new ItemStack(mat, 1);
 		ItemMeta meta = item.getItemMeta();
@@ -23,7 +23,7 @@ public class Utility {
 		return item;
 	}
 	
-	public static String makePossesive(String name) {
+	static String makePossesive(String name) {
 		if (name.endsWith("s")) {
 			return (name + "'");
 		} else {
@@ -31,7 +31,7 @@ public class Utility {
 		}
 	}
 	
-	public static ItemStack createItem(String name, Material mat) // function for creating an item with a custom name
+	static ItemStack createItem(String name, Material mat) // function for creating an item with a custom name
 	{
 		ItemStack item = new ItemStack(mat, 1);
 		ItemMeta meta = item.getItemMeta();
@@ -41,7 +41,7 @@ public class Utility {
 		return item;
 	}
 	
-	public static Location StringtoLoc(String string) { // converts a specific string to a location object
+	static Location StringtoLoc(String string) { // converts a specific string to a location object
 		
 		char[] chars = string.toCharArray();
 		
@@ -87,20 +87,16 @@ public class Utility {
 			}
 		}
 		
-		
-		
-		
-		
 		return new Location(intToWorld(Integer.valueOf(w)), Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(z));
 	}
 	
-	public static String locToString(Location location) { // converts location to string.
+	static String locToString(Location location) { // converts location to string.
 		
 		return "w" + String.valueOf(worldToInt(location.getWorld())) + "x" + String.valueOf(location.getBlockX()) + "y" + String.valueOf(location.getBlockY()) + "z" + String.valueOf(location.getBlockZ());
 		
 	}
 	
-	public static int worldToInt(World w) {
+	static int worldToInt(World w) {
 		
 		if (w.equals(Worlds.SURVIVAL.world) ) {
 			return 0;
@@ -113,7 +109,7 @@ public class Utility {
 		return 4;
 	}
 	
-	public static World intToWorld(int i) {
+	static World intToWorld(int i) {
 		switch (i) {
 		case 0: return Worlds.SURVIVAL.world;
 		case 1: return Worlds.SURVIVAL_NETHER.world;
@@ -122,7 +118,7 @@ public class Utility {
 		}
 	}
 	
-	public static boolean isSurvival(World w) {
+	static boolean isSurvival(World w) {
 		return (w.equals(Worlds.SURVIVAL.world) || w.equals(Worlds.SURVIVAL_NETHER.world) || w.equals(Worlds.SURVIVAL_END.world));
 	}
 }

@@ -1,12 +1,12 @@
 package net.pgfmc.teams.teamscore;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.pgfmc.pgfessentials.EssentialsMain;
+import net.pgfmc.pgfessentials.Mixins;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.BBEvent;
 import net.pgfmc.teams.data.BPE;
 import net.pgfmc.teams.data.BlockInteractEvent;
@@ -25,78 +25,39 @@ import net.pgfmc.teams.playerLogistics.TeamAccept;
 
 public class TeamsCore extends JavaPlugin {
 	
+	// all relevant file paths.
+	public static final String databasePath = "plugins\\Teams\\database.yml";
+	public static final String BlockContainersPath = "plugins\\Teams\\BlockContainers.yml";
+	public static final String EntityContainersPath = "plugins\\Teams\\EntityContainers.yml";
+	public static final String EasyAccessDataPath = "plugins\\Teams\\EABlockData";
+	public static final String DeepBlockDataPath = "plugins\\Teams\\DeepBlockData";
+	
 	private static TeamsCore plugin;
+	private transient static boolean loaded = true;
 	
 	@Override
 	public void onEnable() {
 		
+		if (Bukkit.getServer().getPluginManager().getPlugin("PGF-Essentials") == null) {
+			System.out.println("PGF-Essentials isnt loaded; Disabling Teams!");
+			loaded = false;
+			Bukkit.getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+		
 		plugin = this;
 		
-		plugin.getDataFolder().mkdirs();
+		// loads files.
+		Mixins.getFile(databasePath);
+		Mixins.getFile(BlockContainersPath);
+		Mixins.getFile(EntityContainersPath);
+		new File(EasyAccessDataPath).mkdirs();
+		new File(DeepBlockDataPath).mkdirs();
 		
-		File file = new File(plugin.getDataFolder() + "\\database.yml"); // Creates a File object
-		try {
-			if (file.createNewFile()) {
-				System.out.println("database.yml created!");
-			} else {
-				System.out.println("database.yml already Exists!");
-				
-				TeamsDatabase.loadTeams();
-				
-				((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new TeamsDatabase(), false);
-				
-				
-			}
-			
-		} catch (IOException e) {
-			System.out.println("database.yml Couldn't be created!");
-			e.printStackTrace();
-		}
-		
-		file = new File(plugin.getDataFolder() + "\\BlockContainers.yml"); // Creates a File object
-		try {
-			if (file.createNewFile()) {
-				System.out.println("BlockContainers.yml created!");
-			} else {
-				System.out.println("BlockContainers.yml already Exists!");
-				
-			}
-			
-		} catch (IOException e) {
-			System.out.println("BlockContainers.yml Couldn't be created!");
-			e.printStackTrace();
-		}
-		
-		file = new File(plugin.getDataFolder() + "\\EntityContainers.yml"); // Creates a File object
-		try {
-			if (file.createNewFile()) {
-				System.out.println("EntityContainers.yml created!");
-			} else {
-				System.out.println("EntityContainers.yml already Exists!");
-				
-			}
-			
-		} catch (IOException e) {
-			System.out.println("BlockContainers.yml Couldn't be created!");
-			e.printStackTrace();
-		}
-		
-		file = new File(plugin.getDataFolder() + "\\EABlockData");
-		if (file.mkdirs()) {
-			System.out.println("EABlockData folder created!");
-		} else {
-			System.out.println("EABlockData already Exists!");
-		}
-		
-		file = new File(plugin.getDataFolder() + "\\DeepBlockData");
-		if (file.mkdirs()) {
-			System.out.println("DeepBlockData folder created!");
-		} else {
-			System.out.println("DeepBlockData already Exists!");
-		}
-		
+		// loads container data from files.
 		ContainerDatabase.loadContainers();
 		
+		// initializes all Event Listeners and Command Executors.
 		getServer().getPluginManager().registerEvents(new BlockInteractEvent(), this);
 		getServer().getPluginManager().registerEvents(new AttackEvent(), this);
 		getServer().getPluginManager().registerEvents(new BBEvent(), this);
@@ -119,10 +80,12 @@ public class TeamsCore extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
-		Team.settleTeams();
-		TeamsDatabase.saveTeams();
-		ContainerDatabase.saveContainers();
-		((EssentialsMain) Bukkit.getPluginManager().getPlugin("PGF-Essentials")).ActivateListener(new TeamsDatabase(), true);
+		if (loaded) {
+			Team.settleTeams();
+			TeamsDatabase.saveTeams();
+			ContainerDatabase.saveContainers();
+			PlayerData.ActivateListener(new TeamsDatabase(), true);
+		}
 	}
 	
 	public static JavaPlugin getPlugin() {
