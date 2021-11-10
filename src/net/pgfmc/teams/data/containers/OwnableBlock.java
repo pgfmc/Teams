@@ -199,7 +199,10 @@ public class OwnableBlock extends Ownable {
 	}
 	
 	public static OwnableBlock getContainer(Block block) { // gets a container from block
-		return containers.get(block);
+		if (isOwnable(block.getType())) {
+			return containers.get(block);
+		}
+		return null;
 	}
 	
 	public boolean isBeacon() { // returns wether or not a Containers is a Beacons.
@@ -322,5 +325,9 @@ public class OwnableBlock extends Ownable {
 		default:
 			return Security.EXCEPTION;
 		}
+	}
+	
+	public static boolean isOwnable(Material type) {
+		return (type == Material.BEACON || type == Material.GOLD_BLOCK || type == Material.BARREL || type == Material.BLAST_FURNACE || type == Material.BREWING_STAND || type == Material.CHEST || type == Material.DISPENSER || type == Material.DROPPER || type == Material.FURNACE || type == Material.HOPPER || type == Material.SHULKER_BOX || type == Material.SMOKER || type == Material.TRAPPED_CHEST);
 	}
 }

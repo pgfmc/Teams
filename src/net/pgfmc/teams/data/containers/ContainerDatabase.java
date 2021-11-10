@@ -2,6 +2,7 @@ package net.pgfmc.teams.data.containers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -98,10 +99,12 @@ public class ContainerDatabase {
 		
 		OwnableBlock.updateTeams();
 		
-		for (Block block : OwnableBlock.containers.keySet()) { // for all BlockContainers and beacons.
+		for (Entry<Block, OwnableBlock> blocke : OwnableBlock.containers.entrySet()) { // for all BlockContainers and beacons.
+			
+			Block block = blocke.getKey();
+			OwnableBlock cont = blocke.getValue();
 			
 			Location location = block.getLocation();
-			OwnableBlock cont = OwnableBlock.getContainer(block);
 			OfflinePlayer player = cont.getPlayer();
 			
 			// if location is not found, a new one is created.

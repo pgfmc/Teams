@@ -76,6 +76,9 @@ public class TeamsCore extends JavaPlugin {
 		getCommand("leaveTeamConfirm").setExecutor(new LeaveTeamConfirmCommand());
 		getCommand("inspector").setExecutor(new InspectCommand());
 		getCommand("containerDump").setExecutor(new ContainerDataOutputCommand());
+		
+		PlayerData.ActivateListener(new TeamsDatabase(), false);
+		
 	}
 	
 	@Override

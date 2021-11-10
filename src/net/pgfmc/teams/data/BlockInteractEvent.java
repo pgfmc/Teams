@@ -7,10 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Container;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -43,28 +41,24 @@ public class BlockInteractEvent implements Listener {
 		
 		// controls clicking containers and beacons;
 		
+		// Player is in survival world
 		if (e.getPlayer() != null && Utility.isSurvival(e.getPlayer().getWorld())) {
 			
 			Player player = e.getPlayer();
 			
-			if (e.getClickedBlock() != null && e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			// Right click not air
+			if (e.getClickedBlock() != null && e.getAction() == Action.RIGHT_CLICK_BLOCK) { 
 				Block block = e.getClickedBlock();
 				
 				Lock lockMode = PlayerData.getData(player, "lockMode");
 				
+				// Player is in survival mode
 				if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 					
-					if ((block.getState() instanceof Container || block.getState() instanceof Beacon) && OwnableBlock.getContainer(block) != null) {
+					
+					if (OwnableBlock.getContainer(block) != null) {
 						
 						OwnableBlock cont = OwnableBlock.getContainer(block);
-						
-						System.out.println("is Container");
-						System.out.println(e.getClickedBlock().getType().toString());
-						System.out.println(cont.getLock().toString());
-						
-						if (cont.getTeam() != null) {
-							System.out.println(cont.getTeam().getName());
-						}
 						
 						switch(cont.isAllowed(player)) {
 						
