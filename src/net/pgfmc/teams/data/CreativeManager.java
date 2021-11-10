@@ -52,7 +52,7 @@ public class CreativeManager {
 					case LOCKED:
 						player.sendMessage("This container is Locked!");
 						break;
-					case TEAM_ONLY:
+					case FRIENDS_ONLY:
 						player.sendMessage("This container is Team Locked!");
 						break;
 					case UNLOCKED:

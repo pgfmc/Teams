@@ -2,15 +2,16 @@ package net.pgfmc.teams.data.entities;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.containers.Ownable.Lock;
 import net.pgfmc.teams.data.containers.OwnableEntity;
 import net.pgfmc.teams.teamscore.Utility;
@@ -28,7 +29,7 @@ public class InvOpenEvent implements Listener {
 			
 			if (ent != null) {
 				
-				Player player = (Player) e.getPlayer();
+				PlayerData player = PlayerData.getPlayerData((OfflinePlayer) e.getPlayer());
 				Entity entity = ent.getEntity();
 				
 				
@@ -48,7 +49,7 @@ public class InvOpenEvent implements Listener {
 					switch(ent.isAllowed(player)) {
 					
 					case OWNER: {
-						if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+						if (player.getPlayer().getInventory().getItemInMainHand() != null && player.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 							
 							// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
 							
@@ -58,16 +59,16 @@ public class InvOpenEvent implements Listener {
 								e.setCancelled(true);
 								
 								player.sendMessage("§6Only Teammates have access now!");
-								player.playSound(player.getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								ent.setLock(Lock.TEAM_ONLY);
+								player.playSound(player.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+								ent.setLock(Lock.FRIENDS_ONLY);
 								return;
 								
-							case TEAM_ONLY:
+							case FRIENDS_ONLY:
 
 								e.setCancelled(true);
 								
 								player.sendMessage("§6Unlocked!");
-								player.playSound(player.getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+								player.playSound(player.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 								ent.setLock(Lock.UNLOCKED);
 								return;
 								
@@ -76,7 +77,7 @@ public class InvOpenEvent implements Listener {
 								e.setCancelled(true);
 								
 								player.sendMessage("§6Fully Locked!");
-								player.playSound(player.getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+								player.playSound(player.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 								ent.setLock(Lock.LOCKED);
 								return;
 								
@@ -89,8 +90,8 @@ public class InvOpenEvent implements Listener {
 							return;
 						}
 					}
-					case TEAMMATE: {
-						if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+					case FRIEND: {
+						if (player.getPlayer().getInventory().getItemInMainHand() != null && player.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 							
 							
 							// LOCKED -X TEAM_ONLY -> UNLOCKED -> TEAM_ONLY -> start over...
@@ -101,15 +102,15 @@ public class InvOpenEvent implements Listener {
 								e.setCancelled(true);
 								
 								player.sendMessage("§c" + ent.getPlayer().getName() + " has this container fully locked!");
-								player.playSound(player.getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+								player.playSound(player.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 								return;
 								
-							case TEAM_ONLY:
+							case FRIENDS_ONLY:
 
 								e.setCancelled(true);
 								
 								player.sendMessage("§6Unlocked!");
-								player.playSound(player.getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+								player.playSound(player.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 								ent.setLock(Lock.UNLOCKED);
 								return;
 								
@@ -118,8 +119,8 @@ public class InvOpenEvent implements Listener {
 								e.setCancelled(true);
 								
 								player.sendMessage("§6Only Teammates have access now!");
-								player.playSound(player.getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								ent.setLock(Lock.TEAM_ONLY);
+								player.playSound(player.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+								ent.setLock(Lock.FRIENDS_ONLY);
 								return;
 								
 							default:

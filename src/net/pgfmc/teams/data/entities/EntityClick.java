@@ -4,11 +4,11 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.containers.Ownable.Lock;
 import net.pgfmc.teams.data.containers.Ownable.Security;
 import net.pgfmc.teams.data.containers.OwnableEntity;
@@ -26,7 +26,7 @@ public class EntityClick implements Listener {
 		
 		if (e.getPlayer() != null && e.getRightClicked() != null && Utility.isSurvival(e.getRightClicked().getWorld()) && e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 			
-			Player player = e.getPlayer();
+			PlayerData player = PlayerData.getPlayerData(e.getPlayer());
 			
 			if ((e.getRightClicked().getType() == EntityType.MINECART_CHEST || 
 					e.getRightClicked().getType() == EntityType.MINECART_HOPPER ||
@@ -50,7 +50,7 @@ public class EntityClick implements Listener {
 				switch(sec) {
 				
 				case OWNER: {
-					if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+					if (player.getPlayer().getInventory().getItemInMainHand() != null && player.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 						
 						// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
 						
@@ -61,10 +61,10 @@ public class EntityClick implements Listener {
 							
 							player.sendMessage("§6Only Teammates have access now!");
 							player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-							cont.setLock(Lock.TEAM_ONLY);
+							cont.setLock(Lock.FRIENDS_ONLY);
 							return;
 							
-						case TEAM_ONLY:
+						case FRIENDS_ONLY:
 
 							e.setCancelled(true);
 							
@@ -91,8 +91,8 @@ public class EntityClick implements Listener {
 						return;
 					}
 				}
-				case TEAMMATE: {
-					if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+				case FRIEND: {
+					if (player.getPlayer().getInventory().getItemInMainHand() != null && player.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 						
 						
 						// LOCKED -X TEAM_ONLY -> UNLOCKED -> TEAM_ONLY -> start over...
@@ -106,7 +106,7 @@ public class EntityClick implements Listener {
 							player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 							return;
 							
-						case TEAM_ONLY:
+						case FRIENDS_ONLY:
 
 							e.setCancelled(true);
 							
@@ -121,7 +121,7 @@ public class EntityClick implements Listener {
 							
 							player.sendMessage("§6Only Teammates have access now!");
 							player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-							cont.setLock(Lock.TEAM_ONLY);
+							cont.setLock(Lock.FRIENDS_ONLY);
 							return;
 							
 						default:

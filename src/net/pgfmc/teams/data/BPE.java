@@ -4,7 +4,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -29,46 +28,43 @@ public class BPE implements Listener {
 	
 	@EventHandler
 	public void blockPlace(BlockPlaceEvent e) {
-		Player player = e.getPlayer();
+		PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
 		
-		if (Utility.isSurvival(player.getWorld())) { // if in survival world
+		if (Utility.isSurvival(pd.getPlayer().getWorld())) { // if in survival world
 			Block block = e.getBlock();
 			
-			if (player.getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
+			if (pd.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 				
 				// claims manager :)
 				if (block.getType() == Material.BEACON || block.getType() == Material.GOLD_BLOCK) {
-					if (Claim.isEnemyClaimsInRange(block.getLocation(), player).size() > 0) {
+					if (Claim.isEnemyClaimsInRange(block.getLocation(), pd).size() > 0) {
 						e.setCancelled(true);
-						player.sendMessage("§cYou can't claim this land!");
-						player.sendMessage("§cIts Border overlaps with another team's border!");
+						pd.sendMessage("§cYou can't claim this land!");
+						pd.sendMessage("§cIts Border overlaps with another team's border!");
 						return;
 					} else {
-						new Claim(player, block, PlayerData.getData(player, "lockMode"), PlayerData.getData(player, "team"));
-						SurvivalManager.updateBlock(block, player, true);
+						new Claim(pd, block, pd.getData("lockMode"));
+						SurvivalManager.updateBlock(block, pd, true);
 						return;
 					}
 				}
 				
 				Claim claim = Claim.getEffectiveClaim(block.getLocation());
 				
-				if (claim != null && claim.isAllowed(player) == Security.DISALLOWED) {
-					player.sendMessage("§cYou can't place blocks here!");
-					player.sendMessage("§cThis Land belongs to Someone Else!");
+				if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
+					pd.sendMessage("§cYou can't place blocks here!");
+					pd.sendMessage("§cThis Land belongs to Someone Else!");
 					e.setCancelled(true);
 					return;
 				}
 					
-				SurvivalManager.updateBlock(block, player, true);
+				SurvivalManager.updateBlock(block, pd, true);
 				
 				// registers block as a container if it is a valid container.
 				if (block.getState() instanceof Container) {
-					OwnableBlock.createBlockContainer(player, PlayerData.getData(player, "lockMode"), block, PlayerData.getData(player, "team"));
+					OwnableBlock.createBlockContainer(pd, pd.getData("lockMode"), block);
 				}
 				
-			} else if (PlayerData.getPlayerData(player).getData("debug") != null && player.getGameMode() == GameMode.CREATIVE) { // ----------------------------------------------------------- if debug mode is on
-				e.setCancelled(true);
-				CreativeManager.outputBlockData(e.getBlockAgainst(), player);
 			}
 		}
 	}

@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.InventoryHolder;
 
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.containers.OwnableEntity;
 import net.pgfmc.teams.teamscore.Utility;
 
@@ -77,9 +78,9 @@ public class AttackEvent implements Listener {
 			
 			if (e.getEntity() instanceof InventoryHolder && OwnableEntity.getContainer(e.getEntity().getUniqueId()) != null)  {
 				
-				switch(OwnableEntity.getContainer(e.getEntity()).isAllowed(player)) {
+				switch(OwnableEntity.getContainer(e.getEntity()).isAllowed(PlayerData.getPlayerData(player))) {
 				case OWNER: return;
-				case TEAMMATE: return;
+				case FRIEND: return;
 				default: {
 					e.setCancelled(true);
 					return;
@@ -87,7 +88,7 @@ public class AttackEvent implements Listener {
 				}
 				
 			} else if (e.getEntity() instanceof Player && isFlower(((Player) e.getDamager()).getInventory().getItemInMainHand().getType())) {
-				PendingRequest.requestHandler(player, (Player) e.getEntity());
+				//PendingRequest.requestHandler(player, (Player) e.getEntity());
 				e.setCancelled(true);
 			}
 		}

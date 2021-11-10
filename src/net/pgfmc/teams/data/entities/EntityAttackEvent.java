@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.InventoryHolder;
 
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.containers.OwnableEntity;
 
 public class EntityAttackEvent implements Listener {
@@ -23,7 +24,7 @@ public class EntityAttackEvent implements Listener {
 			
 			if (ent != null) {
 				
-				Player player = (Player) e.getDamager();
+				PlayerData pd = PlayerData.getPlayerData((Player) e.getDamager());
 				Entity entity = e.getEntity();
 				
 				if ((entity.getType() == EntityType.MINECART_CHEST || 
@@ -39,10 +40,10 @@ public class EntityAttackEvent implements Listener {
 					
 					)) {
 					
-					switch(ent.isAllowed(player)) {
+					switch(ent.isAllowed(pd)) {
 					
 					case OWNER: {return;}
-					case TEAMMATE: {return;}
+					case FRIEND: {return;}
 					case UNLOCKED: {
 						e.setCancelled(true);
 						return;

@@ -1,7 +1,10 @@
 package net.pgfmc.teams.data.containers;
 
+import java.util.List;
+
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
+
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 
 /*
 Written by CrimsonDart
@@ -21,13 +24,13 @@ EntityContainer
 
 public abstract class Ownable {
 	
-	OfflinePlayer placer;
+	PlayerData placer;
 	
 	Lock lock;
 	
 	public enum Security {
 		OWNER,
-		TEAMMATE,
+		FRIEND,
 		UNLOCKED,
 		DISALLOWED,
 		EXCEPTION
@@ -35,11 +38,11 @@ public abstract class Ownable {
 	
 	public enum Lock {
 		UNLOCKED,
-		TEAM_ONLY,
+		FRIENDS_ONLY,
 		LOCKED
 	}
 	
-	public Ownable(OfflinePlayer player,  Lock lock) { // class constructor
+	public Ownable(PlayerData player,  Lock lock) { // class constructor
 		
 		this.placer = player;
 		this.lock = lock;
@@ -52,7 +55,7 @@ public abstract class Ownable {
 	
 	// --------------------------------------------------- getters and setters
 	
-	public OfflinePlayer getPlayer() {
+	public PlayerData getPlayer() {
 		return placer;
 	}
 	
@@ -66,5 +69,50 @@ public abstract class Ownable {
 		lock = sug;
 	}
 	
-	public abstract Security isAllowed(OfflinePlayer player);
+	public Security isAllowed(PlayerData player) {
+		
+		List<PlayerData> friendsList = placer.getData("friends");
+		
+		switch(lock) {
+		case LOCKED: // ------------------------ only the owner can access.
+			
+			if (placer.equals(player)) {
+				System.out.println("out 1");
+				
+				return Security.OWNER;
+			}
+			System.out.println("out 2");
+			return Security.DISALLOWED;
+			
+		case FRIENDS_ONLY: // --------------------- only Friends can access.
+			
+			if (placer.equals(player)) {
+				System.out.println("out 3");
+				
+				return Security.OWNER;
+			} else if (friendsList.contains(player)) {
+				
+				System.out.println("out 4");
+				return Security.FRIEND;
+			}
+			System.out.println("out 5");
+			return Security.DISALLOWED;
+			
+		case UNLOCKED: // --------------------- anybody can access.
+			if (placer.equals(player)) {
+				System.out.println("out 6");
+				return Security.OWNER;
+				
+			} else if (friendsList.contains(player)) {
+				System.out.println("out 7");
+				return Security.FRIEND;
+				
+			}
+			System.out.println("out 8");
+			return Security.UNLOCKED;
+			
+		default:
+			return Security.EXCEPTION;
+		}
+	};
 }

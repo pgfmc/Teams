@@ -25,18 +25,17 @@ import java.util.stream.Collectors;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
 
-import net.pgfmc.teams.teamscore.Team;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 
 public class Claim extends OwnableBlock {
 	
 	private static LinkedHashMap<Block, Claim> claims = new LinkedHashMap<>();
 	
-	public Claim(OfflinePlayer player, Block block, Lock lock, Team team) throws InvalidClaimException {
-		super(player, lock, block, team);
+	public Claim(PlayerData player, Block block, Lock lock) throws InvalidClaimException {
+		super(player, lock, block);
 		
 		if (block.getType() == Material.BEACON || block.getType() == Material.GOLD_BLOCK) {
 			claims.put(block, this);
@@ -125,7 +124,7 @@ public class Claim extends OwnableBlock {
 	 * @param player The player placing the block.
 	 * @return A set of all nearby enemy claims that can overlap with the claim proposed to be placed.
 	 */
-	public static Set<Claim> isEnemyClaimsInRange(Location l2, OfflinePlayer player) {
+	public static Set<Claim> isEnemyClaimsInRange(Location l2, PlayerData player) {
 		
 		return 
 		claims
@@ -142,7 +141,7 @@ public class Claim extends OwnableBlock {
 				return true;
 			case OWNER:
 				return false;
-			case TEAMMATE:
+			case FRIEND:
 				return false;
 			case UNLOCKED:
 				return true;

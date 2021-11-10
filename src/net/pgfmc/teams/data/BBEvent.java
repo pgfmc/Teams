@@ -53,11 +53,11 @@ public class BBEvent implements Listener {
 	@EventHandler
 	public void blockBreak(BlockBreakEvent e) {
 		
-		//Debug.out("Block Broken!", new Object[] {e.getPlayer(), e.getPlayer().getWorld(), PlayerData.getPlayerData(e.getPlayer()).getData("debug")});
-		
 		if (Utility.isSurvival(e.getPlayer().getWorld())) { // if in survival world
 			
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
+				
+				PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
 				
 				OwnableBlock cont = OwnableBlock.getContainer(e.getBlock());
 				Claim claim = Claim.getEffectiveClaim(e.getBlock().getLocation());
@@ -65,24 +65,24 @@ public class BBEvent implements Listener {
 				// removes the ownable if able to
 				if (cont != null) {
 					
-					if (cont.isAllowed(e.getPlayer()) == Security.OWNER || (cont.isAllowed(e.getPlayer()) == Security.TEAMMATE ))  {
+					if (cont.isAllowed(pd) == Security.OWNER || (cont.isAllowed(pd) == Security.FRIEND ))  {
 						OwnableBlock.remove(e.getBlock());
 					} else {
-						e.getPlayer().sendMessage("§cYou can't break that block!");
-						e.getPlayer().sendMessage("§cIt belongs to another Team!");
+						pd.sendMessage("§cYou can't break that block!");
+						pd.sendMessage("§cIt belongs to another Team!");
 						e.setCancelled(true);
 						return;
 					}
 				}
 				
-				if (claim != null && claim.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
-					e.getPlayer().sendMessage("§cYou can't break blocks here!");
-					e.getPlayer().sendMessage("§cIt belongs to another Team!");
+				if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
+					pd.sendMessage("§cYou can't break blocks here!");
+					pd.sendMessage("§cIt belongs to another Team!");
 					e.setCancelled(true);
 					return;
 				}
 				
-				SurvivalManager.updateBlock(e.getBlock(), e.getPlayer(), false);
+				SurvivalManager.updateBlock(e.getBlock(), pd, false);
 				
 			} else if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
 				

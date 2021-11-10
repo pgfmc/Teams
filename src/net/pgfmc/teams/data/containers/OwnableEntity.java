@@ -5,11 +5,9 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
-import net.pgfmc.teams.teamscore.Team;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 
 /**
 
@@ -39,7 +37,7 @@ public class OwnableEntity extends Ownable {
 	
 	UUID entity;
 	
-	public OwnableEntity(OfflinePlayer player, Lock lock, UUID entity) {
+	public OwnableEntity(PlayerData player, Lock lock, UUID entity) {
 		super(player, lock);
 		
 		System.out.println("New Entity Contaiener Created!");
@@ -80,77 +78,6 @@ public class OwnableEntity extends Ownable {
 			return null;
 		}
 		return null;
-	}
-
-	@Override
-	public Security isAllowed(OfflinePlayer player) {
-		
-		boolean same;
-		if (player instanceof Player) {
-			same = (placer.getPlayer() != null && player == placer.getPlayer());
-		} else {
-			same = (placer == player);
-		}
-		
-		Team team = Team.getTeam(placer);
-		Team stranger = Team.getTeam(player);
-		
-		if (team == null && lock == Lock.LOCKED && same) {
-			System.out.println("out 0");
-			return Security.OWNER;
-		}
-		
-		switch(lock) {
-		case LOCKED: // ------------------------ nobody but the player can access. Also, the container's team is tied to the player. | WIP
-			
-			System.out.println(placer);
-			System.out.println(player);
-			System.out.println(placer.getPlayer());
-			
-			if (same) {
-				System.out.println("out 1");
-				
-				return Security.OWNER;
-			}
-			System.out.println("out 2");
-			return Security.DISALLOWED;
-			
-		case TEAM_ONLY: // --------------------- only Teammates can access.
-			
-			if (team != null && team == stranger) {
-				
-				if (same) {
-					System.out.println("out 3");
-					return Security.OWNER;
-				}
-				System.out.println("out 4");
-				return Security.TEAMMATE; 
-			} else 
-			if (team == null && same) {
-				System.out.println("out 5");
-				return Security.OWNER;
-			}
-			System.out.println("out 6");
-			return Security.DISALLOWED;
-		case UNLOCKED: // --------------------- anybody can access.
-			if (team != null && team == stranger) {
-				
-				if (same) {
-					System.out.println("out 7");
-					return Security.OWNER;
-				}
-				System.out.println("out 8");
-				return Security.TEAMMATE; 
-			} else 
-			if (team == null && same) {
-				System.out.println("out 9");
-				return Security.OWNER;
-			}
-			System.out.println("out 10");
-			return Security.UNLOCKED;
-		default:
-			return Security.EXCEPTION;
-		}
 	}
 	
 	public Entity getEntity() {

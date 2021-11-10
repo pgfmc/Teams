@@ -6,14 +6,11 @@ import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Directional;
-import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.teamscore.Team;
 import net.pgfmc.teams.teamscore.Utility;
 
 /*
@@ -38,18 +35,16 @@ public class OwnableBlock extends Ownable {
 	public static LinkedHashMap<Block, OwnableBlock> containers = new LinkedHashMap<>();
 	
 	Block block;
-	Team team;
 	
-	public OwnableBlock(OfflinePlayer player, Lock lock, Block block, Team team) { // Constructor
+	public OwnableBlock(PlayerData player, Lock lock, Block block) { // Constructor
 		super(player, lock);
 		
-		this.team = team;
 		this.block = block;
 		
 		containers.put(block, this);
 	}
 	
-	public static boolean createBlockContainer(OfflinePlayer player, Lock lock, Block block, Team team) { // a router between Beacons and BlockContainer
+	public static boolean createBlockContainer(PlayerData player, Lock lock, Block block) { // a router between Beacons and BlockContainer
 		
 		/**
 		
@@ -114,10 +109,10 @@ public class OwnableBlock extends Ownable {
 						switch (cont.isAllowed(player)) {
 						
 						case OWNER:
-							new OwnableBlock(player, lock, block, cont.getTeam());
+							new OwnableBlock(player, lock, block);
 							return true;
-						case TEAMMATE:
-							new OwnableBlock(cont.getPlayer(), lock, block, team);
+						case FRIEND:
+							new OwnableBlock(cont.getPlayer(), lock, block);
 							return true;
 						default:
 							return false;
@@ -125,22 +120,14 @@ public class OwnableBlock extends Ownable {
 						
 						}
 					} else {
-						new OwnableBlock(player, lock, black, team);
+						new OwnableBlock(player, lock, black);
 					}
 				}
 			}
 		}
 		
-		new OwnableBlock(player, lock, block, team);
+		new OwnableBlock(player, lock, block);
 		return true;
-	}
-	
-	public Team getTeam() {
-		return team;
-	}
-	
-	public void setTeam(Team team) {
-		this.team = team;
 	}
 	
 	@Override
@@ -171,7 +158,7 @@ public class OwnableBlock extends Ownable {
 						case OWNER:
 							
 							this.lock = lock;
-						case TEAMMATE:
+						case FRIEND:
 							this.lock = lock;
 							
 						default:
@@ -180,7 +167,7 @@ public class OwnableBlock extends Ownable {
 							
 						}
 					} else {
-						new OwnableBlock(placer, lock, black, team);
+						new OwnableBlock(placer, lock, black);
 					}
 				}
 			}
@@ -226,104 +213,10 @@ public class OwnableBlock extends Ownable {
 		
 		for (Block block : containers.keySet()) {
 			
-			if (containers.get(block).getTeam() != null) {
-				System.out.println("	" + Utility.locToString(block.getLocation()) + 
-						":\n      type: " + block.getType().toString() + 
-						" \n      player: " + containers.get(block).placer.getName() + 
-						" \n      team:" + containers.get(block).team.getName() + 
-						" \n      locked? :" + containers.get(block).lock);
-			} else {
-				System.out.println("	" + Utility.locToString(block.getLocation()) + 
-						":\n      type: " + block.getType().toString() + 
-						" \n      player: " + containers.get(block).placer.getName() + 
-						" \n      locked? :" + containers.get(block).lock);
-			}
-		}
-	}
-	
-	public static void updateTeams() {
-		
-		for (Block block : containers.keySet()) {
-			OwnableBlock cont = containers.get(block);
-			
-			if (cont.getLock() == Lock.LOCKED) {
-				cont.setTeam(((Team) PlayerData.getData(cont.getPlayer(), "team")));
-				continue;
-			} else if (!Team.getTeams().containsValue(cont.getTeam())) {
-				
-				cont.setTeam(((Team) PlayerData.getData(cont.getPlayer(), "team")));
-			}
-		}
-	}
-	
-	@Override
-	public Security isAllowed(OfflinePlayer player) {
-		
-		boolean same;
-		if (player instanceof Player) {
-			same = (placer.getPlayer() != null && player == placer.getPlayer());
-		} else {
-			same = (placer == player);
-		}
-		
-		Team stranger = Team.getTeam(player);
-		
-		if (team == null && lock == Lock.LOCKED && same) {
-			OwnableBlock.updateTeams();
-			System.out.println("out 0");
-			return Security.OWNER;
-		}
-		
-		switch(lock) {
-		case LOCKED: // ------------------------ nobody but the player can access. Also, the container's team is tied to the player. | WIP
-			
-			System.out.println(placer);
-			System.out.println(player);
-			System.out.println(placer.getPlayer());
-			
-			if (same) {
-				System.out.println("out 1");
-				
-				return Security.OWNER;
-			}
-			System.out.println("out 2");
-			return Security.DISALLOWED;
-			
-		case TEAM_ONLY: // --------------------- only Teammates can access.
-			
-			if (team != null && team == stranger) {
-				
-				if (same) {
-					System.out.println("out 3");
-					return Security.OWNER;
-				}
-				System.out.println("out 4");
-				return Security.TEAMMATE; 
-			} else 
-			if (team == null && same) {
-				System.out.println("out 5");
-				return Security.OWNER;
-			}
-			System.out.println("out 6");
-			return Security.DISALLOWED;
-		case UNLOCKED: // --------------------- anybody can access.
-			if (team != null && team == stranger) {
-				
-				if (same) {
-					System.out.println("out 7");
-					return Security.OWNER;
-				}
-				System.out.println("out 8");
-				return Security.TEAMMATE; 
-			} else 
-			if (team == null && same) {
-				System.out.println("out 9");
-				return Security.OWNER;
-			}
-			System.out.println("out 10");
-			return Security.UNLOCKED;
-		default:
-			return Security.EXCEPTION;
+			System.out.println("	" + Utility.locToString(block.getLocation()) + 
+					":\n      type: " + block.getType().toString() + 
+					" \n      player: " + containers.get(block).placer.getName() + 
+					" \n      locked? :" + containers.get(block).lock);
 		}
 	}
 	

@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.time.LocalTime;
 
 import org.bukkit.Chunk;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
 /*
@@ -25,7 +25,7 @@ Handles saving who placed and broke blocks that were broken in the survival worl
 
 public class SurvivalManager {
 	
-	public static void updateBlock(Block block, OfflinePlayer player, boolean isPlaced) {
+	public static void updateBlock(Block block, PlayerData player, boolean isPlaced) {
 		
 		// loads file
 		// if file for the corresponding Chunk is not found, a new one is created.

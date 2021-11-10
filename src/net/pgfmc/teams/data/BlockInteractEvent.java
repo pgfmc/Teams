@@ -10,7 +10,6 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -44,13 +43,13 @@ public class BlockInteractEvent implements Listener {
 		// Player is in survival world
 		if (e.getPlayer() != null && Utility.isSurvival(e.getPlayer().getWorld())) {
 			
-			Player player = e.getPlayer();
+			PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
 			
 			// Right click not air
 			if (e.getClickedBlock() != null && e.getAction() == Action.RIGHT_CLICK_BLOCK) { 
 				Block block = e.getClickedBlock();
 				
-				Lock lockMode = PlayerData.getData(player, "lockMode");
+				Lock lockMode = pd.getData("lockMode");
 				
 				// Player is in survival mode
 				if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
@@ -60,10 +59,10 @@ public class BlockInteractEvent implements Listener {
 						
 						OwnableBlock cont = OwnableBlock.getContainer(block);
 						
-						switch(cont.isAllowed(player)) {
+						switch(cont.isAllowed(pd)) {
 						
 						case OWNER: {
-							if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+							if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 								
 								// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
 								
@@ -72,17 +71,17 @@ public class BlockInteractEvent implements Listener {
 									
 									e.setCancelled(true);
 									
-									player.sendMessage("§6Only Teammates have access now!");
-									player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-									cont.setLock(Lock.TEAM_ONLY);
+									pd.sendMessage("§6Only Teammates have access now!");
+									pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+									cont.setLock(Lock.FRIENDS_ONLY);
 									return;
 									
-								case TEAM_ONLY:
+								case FRIENDS_ONLY:
 
 									e.setCancelled(true);
 									
-									player.sendMessage("§6Unlocked!");
-									player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+									pd.sendMessage("§6Unlocked!");
+									pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 									cont.setLock(Lock.UNLOCKED);
 									return;
 									
@@ -90,8 +89,8 @@ public class BlockInteractEvent implements Listener {
 									
 									e.setCancelled(true);
 									
-									player.sendMessage("§6Fully Locked!");
-									player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+									pd.sendMessage("§6Fully Locked!");
+									pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 									cont.setLock(Lock.LOCKED);
 									return;
 									
@@ -104,8 +103,8 @@ public class BlockInteractEvent implements Listener {
 								return;
 							}
 						}
-						case TEAMMATE: {
-							if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+						case FRIEND: {
+							if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 								
 								// LOCKED -X TEAM_ONLY -> UNLOCKED -> TEAM_ONLY -> start over...
 								
@@ -114,16 +113,16 @@ public class BlockInteractEvent implements Listener {
 									
 									e.setCancelled(true);
 									
-									player.sendMessage("§c" + cont.getPlayer().getName() + " has this container fully locked!");
-									player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+									pd.sendMessage("§c" + cont.getPlayer().getName() + " has this container fully locked!");
+									pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 									return;
 									
-								case TEAM_ONLY:
+								case FRIENDS_ONLY:
 
 									e.setCancelled(true);
 									
-									player.sendMessage("§6Unlocked!");
-									player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+									pd.sendMessage("§6Unlocked!");
+									pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 									cont.setLock(Lock.UNLOCKED);
 									return;
 									
@@ -131,9 +130,9 @@ public class BlockInteractEvent implements Listener {
 									
 									e.setCancelled(true);
 									
-									player.sendMessage("§6Only Teammates have access now!");
-									player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-									cont.setLock(Lock.TEAM_ONLY);
+									pd.sendMessage("§6Only Teammates have access now!");
+									pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+									cont.setLock(Lock.FRIENDS_ONLY);
 									return;
 									
 								default:
@@ -144,10 +143,10 @@ public class BlockInteractEvent implements Listener {
 							return;
 						}
 						case UNLOCKED: {
-							if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+							if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 								
 								e.setCancelled(true);
-								player.sendMessage("§6You can't lock this container!");
+								pd.sendMessage("§6You can't lock this container!");
 							}
 							return;
 						}
@@ -159,17 +158,17 @@ public class BlockInteractEvent implements Listener {
 							
 							switch(mat) {
 							
-								case BARREL: player.sendMessage("§cThis barrel is locked!"); return;
-								case BLAST_FURNACE: player.sendMessage("§cThis blast furnace is locked!"); return;
-								case BREWING_STAND: player.sendMessage("§cThis brewing stand is locked!"); return;
-								case CHEST: player.sendMessage("§cThis chest is locked!"); return;
-								case DISPENSER: player.sendMessage("§cThis dispenser is locked!"); return;
-								case DROPPER: player.sendMessage("§cThis dropper is locked!"); return;
-								case FURNACE: player.sendMessage("§cThis furnace is locked!"); return;
-								case HOPPER: player.sendMessage("§cThis hopper is locked!"); return;
-								case SHULKER_BOX: player.sendMessage("§cThis shulker box is locked!"); return;
-								case SMOKER: player.sendMessage("§cThis smoker is locked!"); return;
-								case BEACON: player.sendMessage("§cThis beacon is locked!"); return;
+								case BARREL: pd.sendMessage("§cThis barrel is locked!"); return;
+								case BLAST_FURNACE: pd.sendMessage("§cThis blast furnace is locked!"); return;
+								case BREWING_STAND: pd.sendMessage("§cThis brewing stand is locked!"); return;
+								case CHEST: pd.sendMessage("§cThis chest is locked!"); return;
+								case DISPENSER: pd.sendMessage("§cThis dispenser is locked!"); return;
+								case DROPPER: pd.sendMessage("§cThis dropper is locked!"); return;
+								case FURNACE: pd.sendMessage("§cThis furnace is locked!"); return;
+								case HOPPER: pd.sendMessage("§cThis hopper is locked!"); return;
+								case SHULKER_BOX: pd.sendMessage("§cThis shulker box is locked!"); return;
+								case SMOKER: pd.sendMessage("§cThis smoker is locked!"); return;
+								case BEACON: pd.sendMessage("§cThis beacon is locked!"); return;
 								default:
 									return;
 							}
@@ -199,9 +198,9 @@ public class BlockInteractEvent implements Listener {
 						
 						Claim beacon = Claim.getEffectiveClaim(block.getLocation());
 						
-						if (beacon != null && beacon.isAllowed(e.getPlayer()) == Security.DISALLOWED) {
-							e.getPlayer().sendMessage("§cYou can't place that here!");
-							e.getPlayer().sendMessage("§cThis Land belongs to Someone Else!");
+						if (beacon != null && beacon.isAllowed(pd) == Security.DISALLOWED) {
+							pd.sendMessage("§cYou can't place that here!");
+							pd.sendMessage("§cThis Land belongs to Someone Else!");
 							e.setCancelled(true);
 							return;
 						}
@@ -249,7 +248,7 @@ public class BlockInteractEvent implements Listener {
 									});
 									
 									if (entity.isPresent()) {
-										new OwnableEntity(player, lockMode, entity.get().getUniqueId());
+										new OwnableEntity(pd, lockMode, entity.get().getUniqueId());
 										return;
 									}
 									
@@ -281,7 +280,7 @@ public class BlockInteractEvent implements Listener {
 								});
 								
 								if (entity.isPresent()) {
-									new OwnableEntity(player, lockMode, entity.get().getUniqueId());
+									new OwnableEntity(pd, lockMode, entity.get().getUniqueId());
 									return;
 								}
 								
@@ -289,31 +288,25 @@ public class BlockInteractEvent implements Listener {
 				        }, 1);
 					}
 					
-				} else if (player.getGameMode() == GameMode.CREATIVE && PlayerData.getPlayerData(player).getData("debug") != null) {
-					e.setCancelled(true);
-					CreativeManager.outputBlockData(block, player);
 				}
 			} else if (e.getAction() == Action.RIGHT_CLICK_AIR && e.getItem().getType() == Material.TRIPWIRE_HOOK) {
-				
-				
-				PlayerData pd = PlayerData.getPlayerData(player);
 				
 				switch((Lock) pd.getData("lockMode")) {
 				case LOCKED:
 					
 					e.setCancelled(true);
 					
-					player.sendMessage("§6Default lock mode: TEAM ONLY");
-					player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-					pd.setData("lockMode", Lock.TEAM_ONLY);
+					pd.sendMessage("§6Default lock mode: TEAM ONLY");
+					pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+					pd.setData("lockMode", Lock.FRIENDS_ONLY);
 					return;
 					
-				case TEAM_ONLY:
+				case FRIENDS_ONLY:
 
 					e.setCancelled(true);
 					
-					player.sendMessage("§6Default lock mode: UNLOCKED");
-					player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+					pd.sendMessage("§6Default lock mode: UNLOCKED");
+					pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 					pd.setData("lockMode", Lock.UNLOCKED);
 					return;
 					
@@ -321,8 +314,8 @@ public class BlockInteractEvent implements Listener {
 					
 					e.setCancelled(true);
 					
-					player.sendMessage("§6Default lock mode: LOCKED");
-					player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+					pd.sendMessage("§6Default lock mode: LOCKED");
+					pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 					pd.setData("lockMode", Lock.LOCKED);
 					return;
 				default:

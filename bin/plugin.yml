@@ -6,30 +6,6 @@ main: net.pgfmc.teams.teamscore.TeamsCore
 description: implemets the Teams system
 depend: [Multiverse-Core, PGF-Essentials]
 commands:
-   team:
-      usage: /team
-      permission: Teams.team
-      description: Opens the team inventory.
-   Invite:
-      usage: /Invite <Player>
-      aliases: [i]
-      permission: Teams.teamRequest
-      description: invites or sends a request to Player <Player>.
-   teamAccept:
-      usage: teamAccept
-      aliases: [tma]
-      permission: Teams.teamAccept
-      description: Accepts the invite / request sent in teamRequest.
-   leaveTeam:
-      usage: /leaveTeam
-      aliases: [lt]
-      permission: Teams.leave
-      description: sends the sender a confirmation message, asking if they are sure that they want to leave their team.
-   leaveTeamConfirm:
-      usage: /leaveTeamConfirm
-      aliases: [ltc]
-      permission: Teams.leaveConfirm
-      description: makes the sender leave their own team.
    inspector:
       usage: /inspector while in Creative Mode.
       aliases: [insp]
@@ -43,6 +19,16 @@ commands:
       usage: /containerDump
       permission: Teams.dump
       description: dumps all container data into the console, for debug purposes.
+   friendRequest:
+      aliases: [fr]
+      usage: /<command> <player>
+      permission: Teams.friend
+      description: sends a friend request to <player>.
+   friendAccept:
+      aliases: [fa]
+      usage: /<command>
+      permission: Teams.friend
+      description: accepts a friend request.
 #
 # -------------------------------||------------------------------
 #
