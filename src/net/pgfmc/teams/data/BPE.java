@@ -43,13 +43,13 @@ public class BPE implements Listener {
 						pd.sendMessage("§cIts Border overlaps with another team's border!");
 						return;
 					} else {
-						new Claim(pd, block, pd.getData("lockMode"));
+						new OwnableBlock(pd, block, null, true);
 						SurvivalManager.updateBlock(block, pd, true);
 						return;
 					}
 				}
 				
-				Claim claim = Claim.getEffectiveClaim(block.getLocation());
+				OwnableBlock claim = Claim.getEffectiveClaim(block.getLocation());
 				
 				if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
 					pd.sendMessage("§cYou can't place blocks here!");
@@ -62,7 +62,7 @@ public class BPE implements Listener {
 				
 				// registers block as a container if it is a valid container.
 				if (block.getState() instanceof Container) {
-					OwnableBlock.createBlockContainer(pd, pd.getData("lockMode"), block);
+					OwnableBlock.createBlockContainer(pd, block);
 				}
 				
 			}

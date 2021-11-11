@@ -60,7 +60,7 @@ public class BBEvent implements Listener {
 				PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
 				
 				OwnableBlock cont = OwnableBlock.getContainer(e.getBlock());
-				Claim claim = Claim.getEffectiveClaim(e.getBlock().getLocation());
+				OwnableBlock claim = Claim.getEffectiveClaim(e.getBlock().getLocation());
 				
 				// removes the ownable if able to
 				if (cont != null) {

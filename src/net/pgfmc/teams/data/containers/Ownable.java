@@ -42,7 +42,7 @@ public abstract class Ownable {
 		LOCKED
 	}
 	
-	public Ownable(PlayerData player,  Lock lock) { // class constructor
+	public Ownable(PlayerData player, Lock lock) { // class constructor
 		
 		this.placer = player;
 		this.lock = lock;

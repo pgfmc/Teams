@@ -10,10 +10,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 import net.pgfmc.pgfessentials.Mixins;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerDataListener;
+import net.pgfmc.teams.data.containers.Ownable.Lock;
 import net.pgfmc.teams.teamscore.TeamsCore;
 
 public class FriendDatabase implements PlayerDataListener {
 	
+	
+	/*
 	private class Friend {
 		
 		PlayerData f1;
@@ -40,7 +43,7 @@ public class FriendDatabase implements PlayerDataListener {
 		
 		for (Friend f : list) {
 			
-			if ((f.f1 == fx && f.f2 == fy) || (f.f2 == fx && f.f1 == fy)) {
+			if (((f.f1 == fx && f.f2 == fy) || (f.f2 == fx && f.f1 == fy)) && !f.isConfirm()) {
 				return f;
 			}
 		}
@@ -79,7 +82,7 @@ public class FriendDatabase implements PlayerDataListener {
 			}
 		}
 	}
-	
+	*/
 	
 	
 	
@@ -91,7 +94,7 @@ public class FriendDatabase implements PlayerDataListener {
 	@Override
 	public void OfflinePlayerDataDeInitialization(PlayerData pd) {
 		
-		fixFriends();
+		//fixFriends();
 		
 		FileConfiguration database = Mixins.getDatabase(TeamsCore.databasePath);
 		
@@ -125,6 +128,8 @@ public class FriendDatabase implements PlayerDataListener {
 		} else {
 			pd.setData("friends", new LinkedList<PlayerData>());
 		}
+		
+		pd.setData("lockMode", Lock.FRIENDS_ONLY);
 		
 		
 		

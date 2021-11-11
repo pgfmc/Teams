@@ -196,7 +196,7 @@ public class BlockInteractEvent implements Listener {
 						
 						
 						
-						Claim beacon = Claim.getEffectiveClaim(block.getLocation());
+						OwnableBlock beacon = Claim.getEffectiveClaim(block.getLocation());
 						
 						if (beacon != null && beacon.isAllowed(pd) == Security.DISALLOWED) {
 							pd.sendMessage("§cYou can't place that here!");

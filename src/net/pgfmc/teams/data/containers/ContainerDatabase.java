@@ -57,7 +57,15 @@ public class ContainerDatabase {
 					lock = Lock.valueOf(configSec.getString("Lock"));
 				}
 				
-				OwnableBlock.createBlockContainer(pd, lock, loc.getWorld().getBlockAt(loc));
+				boolean claim;
+				
+				if (configSec.get("Claim") == null) {
+					claim = false;
+				} else {
+					claim = configSec.getBoolean("Claim");
+				}
+				
+				new OwnableBlock(pd, loc.getWorld().getBlockAt(loc), lock, claim);
 				
 			}
 		}
@@ -105,6 +113,7 @@ public class ContainerDatabase {
 			blocc.set("isLocked", null);
 			blocc.set("player", player.getUniqueId().toString());
 			blocc.set("Lock", cont.getLock().toString());
+			blocc.set("Claim", cont.isClaim());
 			
 			database.set(Utility.locToString(location), blocc);
 			
