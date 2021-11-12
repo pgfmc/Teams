@@ -60,6 +60,7 @@ public class TeamsCore extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TameEvent(), this);
 		getServer().getPluginManager().registerEvents(new DeathEvent(), this);
 		getServer().getPluginManager().registerEvents(new InvOpenEvent(), this);
+		getServer().getPluginManager().registerEvents(new ItemProtect(), this);
 		
 		getCommand("containerDump").setExecutor(new ContainerDataOutputCommand());
 		getCommand("friendRequest").setExecutor(new FriendRequestCommand());
