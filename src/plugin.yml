@@ -6,11 +6,6 @@ main: net.pgfmc.teams.teamscore.TeamsCore
 description: implemets the Teams system
 depend: [Multiverse-Core, PGF-Essentials]
 commands:
-   inspector:
-      usage: /inspector while in Creative Mode.
-      aliases: [insp]
-      permission: Teams.inspecotor
-      description: toggles inspector mode, which uncovers data about blocks.
    debug:
       usage: /debug
       permission: Teams.debug

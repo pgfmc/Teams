@@ -81,25 +81,6 @@ public class BBEvent implements Listener {
 					e.setCancelled(true);
 					return;
 				}
-				
-				SurvivalManager.updateBlock(e.getBlock(), pd, false);
-				
-			} else if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-				
-				if (PlayerData.getPlayerData(e.getPlayer()).getData("debug") != null) {// ----------------------------------------------------------- if debug mode is on
-					// CreativeManager. ---------- | function to output all past data of the block clicked | ------------
-					e.setCancelled(true);
-					e.getPlayer().sendMessage("| -- insert block data here -- |");
-					return;
-					
-				} else {
-					SurvivalManager.updateBlock(e.getBlock(), null, false);
-					
-					if (OwnableBlock.getContainer(e.getBlock()) != null) { // removes the container if it is broken.
-						OwnableBlock.remove(e.getBlock());
-						
-					}
-				}
 			}
 		}
 	}

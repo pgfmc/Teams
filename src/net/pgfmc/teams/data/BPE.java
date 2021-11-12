@@ -44,7 +44,6 @@ public class BPE implements Listener {
 						return;
 					} else {
 						new OwnableBlock(pd, block, null, true);
-						SurvivalManager.updateBlock(block, pd, true);
 						return;
 					}
 				}
@@ -57,8 +56,6 @@ public class BPE implements Listener {
 					e.setCancelled(true);
 					return;
 				}
-					
-				SurvivalManager.updateBlock(block, pd, true);
 				
 				// registers block as a container if it is a valid container.
 				if (block.getState() instanceof Container) {
