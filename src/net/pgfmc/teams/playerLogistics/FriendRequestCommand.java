@@ -14,10 +14,13 @@ public class FriendRequestCommand implements CommandExecutor {
 		if (!(sender instanceof Player))
 		{
 			sender.sendMessage("Data output to the console.");
+			return false;
 		} else if (Bukkit.getPlayer(args[0]) == null) {
 			sender.sendMessage("Enter in a valid player!");
+			return true;
 		} else if (((Player) sender).getUniqueId().equals(Bukkit.getPlayer(args[0]).getUniqueId())) {
 			sender.sendMessage("You can't friend yourself!");
+			return true;
 		}
 		
 		FriendRequest.DEFAULT.createRequest((Player) sender, Bukkit.getPlayer(args[0]));
