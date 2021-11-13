@@ -18,6 +18,7 @@ import net.pgfmc.teams.playerLogistics.AttackEvent;
 import net.pgfmc.teams.playerLogistics.FriendAcceptCommand;
 import net.pgfmc.teams.playerLogistics.FriendDatabase;
 import net.pgfmc.teams.playerLogistics.FriendRequestCommand;
+import net.pgfmc.teams.playerLogistics.UnfriendCommand;
 
 public class TeamsCore extends JavaPlugin {
 	
@@ -65,6 +66,7 @@ public class TeamsCore extends JavaPlugin {
 		getCommand("containerDump").setExecutor(new ContainerDataOutputCommand());
 		getCommand("friendRequest").setExecutor(new FriendRequestCommand());
 		getCommand("friendAccept").setExecutor(new FriendAcceptCommand());
+		getCommand("unfriend").setExecutor(new UnfriendCommand());
 	}
 	
 	@Override

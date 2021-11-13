@@ -84,13 +84,6 @@ public class FriendDatabase implements PlayerDataListener {
 	}
 	*/
 	
-	
-	
-	
-	
-	
-	
-
 	@Override
 	public void OfflinePlayerDataDeInitialization(PlayerData pd) {
 		

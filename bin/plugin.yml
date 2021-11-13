@@ -24,6 +24,11 @@ commands:
       usage: /<command>
       permission: Teams.friend
       description: accepts a friend request.
+   unfriend:
+      aliases: [uf]
+      usage: /<command> <player>
+      permission: Teams.friend
+      description: unfriends <player>
 #
 # -------------------------------||------------------------------
 #

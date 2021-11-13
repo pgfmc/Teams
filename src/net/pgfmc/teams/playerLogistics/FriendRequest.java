@@ -3,7 +3,7 @@ package net.pgfmc.teams.playerLogistics;
 import java.util.List;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.pgfessentials.tpa.Requester;
+import net.pgfmc.pgfessentials.request.Requester;
 
 public class FriendRequest extends Requester {
 	
