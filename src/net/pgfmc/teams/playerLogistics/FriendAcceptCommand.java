@@ -15,7 +15,7 @@ public class FriendAcceptCommand implements CommandExecutor {
 			sender.sendMessage("Data output to the console.");
 		}
 		
-		FriendRequest.DEFAULT.accept((Player) sender);
+		Friends.DEFAULT.accept((Player) sender);
 		
 		return true;
 	}

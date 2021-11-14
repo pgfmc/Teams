@@ -23,7 +23,7 @@ public class FriendRequestCommand implements CommandExecutor {
 			return true;
 		}
 		
-		FriendRequest.DEFAULT.createRequest((Player) sender, Bukkit.getPlayer(args[0]));
+		Friends.DEFAULT.createRequest((Player) sender, Bukkit.getPlayer(args[0]));
 		
 		return true;
 	}
