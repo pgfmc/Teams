@@ -1,4 +1,4 @@
-package net.pgfmc.teams.playerLogistics;
+package net.pgfmc.teams.friends;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

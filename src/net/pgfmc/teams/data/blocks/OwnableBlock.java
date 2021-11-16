@@ -1,4 +1,4 @@
-package net.pgfmc.teams.data.containers;
+package net.pgfmc.teams.data.blocks;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -13,6 +13,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.Directional;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.teams.data.Ownable;
 import net.pgfmc.teams.teamscore.Utility;
 
 /*
@@ -166,7 +167,7 @@ public class OwnableBlock extends Ownable {
 	}
 	
 	@Override
-	Location getLocation() {
+	public Location getLocation() {
 		return block.getLocation();
 		
 	}

@@ -1,4 +1,4 @@
-package net.pgfmc.teams.data.containers;
+package net.pgfmc.teams.data.blocks;
 
 import java.util.LinkedHashMap;
 import java.util.UUID;
@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.teams.data.Ownable;
 
 /**
 

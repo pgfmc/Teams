@@ -9,9 +9,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.data.containers.Ownable.Lock;
-import net.pgfmc.teams.data.containers.Ownable.Security;
-import net.pgfmc.teams.data.containers.OwnableEntity;
+import net.pgfmc.teams.data.Ownable.Lock;
+import net.pgfmc.teams.data.Ownable.Security;
+import net.pgfmc.teams.data.blocks.OwnableEntity;
 import net.pgfmc.teams.teamscore.Utility;
 
 public class EntityClick implements Listener {

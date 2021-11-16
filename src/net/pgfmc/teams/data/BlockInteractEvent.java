@@ -16,12 +16,12 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.data.containers.Claim;
-import net.pgfmc.teams.data.containers.Ownable.Lock;
-import net.pgfmc.teams.data.containers.Ownable.Security;
-import net.pgfmc.teams.data.containers.OwnableBlock;
-import net.pgfmc.teams.data.containers.OwnableEntity;
-import net.pgfmc.teams.teamscore.TeamsCore;
+import net.pgfmc.teams.data.Ownable.Lock;
+import net.pgfmc.teams.data.Ownable.Security;
+import net.pgfmc.teams.data.blocks.Claim;
+import net.pgfmc.teams.data.blocks.OwnableBlock;
+import net.pgfmc.teams.data.blocks.OwnableEntity;
+import net.pgfmc.teams.teamscore.Main;
 import net.pgfmc.teams.teamscore.Utility;
 
 /**
@@ -207,7 +207,7 @@ public class BlockInteractEvent implements Listener {
 						
 						// We have to create a new Entity Container!!! (idk how lol)
 						
-						Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(TeamsCore.getPlugin(), new Runnable() {
+						Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
 				            
 							@Override
 				            public void run() // 60 second long cooldown, in which the plugin will wait for 

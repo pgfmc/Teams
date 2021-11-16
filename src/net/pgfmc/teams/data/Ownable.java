@@ -1,10 +1,11 @@
-package net.pgfmc.teams.data.containers;
+package net.pgfmc.teams.data;
 
 import java.util.List;
 
 import org.bukkit.Location;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.teams.friends.Friends;
 
 /*
 Written by CrimsonDart
@@ -24,9 +25,9 @@ EntityContainer
 
 public abstract class Ownable {
 	
-	PlayerData placer;
+	protected PlayerData placer;
 	
-	Lock lock;
+	protected Lock lock;
 	
 	public enum Security {
 		OWNER,
@@ -59,7 +60,7 @@ public abstract class Ownable {
 		return placer;
 	}
 	
-	abstract Location getLocation();
+	public abstract Location getLocation();
 	
 	public Lock getLock() {
 		return lock;
@@ -71,7 +72,7 @@ public abstract class Ownable {
 	
 	public Security isAllowed(PlayerData player) {
 		
-		List<PlayerData> friendsList = placer.getData("friends");
+		List<PlayerData> friendsList = Friends.getFriendsList(player.getUniqueId());
 		
 		switch(lock) {
 		case LOCKED: // ------------------------ only the owner can access.

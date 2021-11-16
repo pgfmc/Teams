@@ -1,4 +1,4 @@
-package net.pgfmc.teams.data.containers;
+package net.pgfmc.teams.data.blocks;
 
 /*
 Written by CrimsonDart

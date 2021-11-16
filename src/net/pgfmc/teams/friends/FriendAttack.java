@@ -1,15 +1,13 @@
-package net.pgfmc.teams.playerLogistics;
+package net.pgfmc.teams.friends;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.InventoryHolder;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.data.containers.OwnableEntity;
+import net.pgfmc.teams.data.blocks.OwnableEntity;
 import net.pgfmc.teams.teamscore.Utility;
 
 /*
@@ -22,19 +20,19 @@ Attack Event.
 -----------------------------------
  */
 
-public class AttackEvent implements Listener {
+public interface FriendAttack {
 	
 	/**
 	 * Pass in any Material; then it will return if it's a flower or not.
 	 * @param material Passed in Material.
 	 * @return Wether or not the Material is a flower. (includes 2 block high flowers)
 	 */
-	private boolean isFlower(Material material) {
+	private static boolean isFlower(Material material) {
 		
 		// checks if the input is a flower
 		// is only used in playerAttackEvent, it has its own function to make the code more readable
 		
-		if (material == Material.BLUE_ORCHID 
+		return (material == Material.BLUE_ORCHID 
 				|| material == Material.ROSE_BUSH 
 				|| material == Material.DANDELION 
 				|| material == Material.ORANGE_TULIP 
@@ -50,10 +48,17 @@ public class AttackEvent implements Listener {
 				|| material == Material.LILY_OF_THE_VALLEY 
 				|| material == Material.WITHER_ROSE 
 				|| material == Material.PEONY 
-				|| material == Material.LILAC) {
-			return true;
-		}
-		return false;
+				|| material == Material.LILAC);
+	}
+	
+	private static boolean isHoldingSword(Player player) {
+		Material mainHand = player.getInventory().getItemInMainHand().getType(); // used to make code more compact
+		return(mainHand == Material.IRON_SWORD 
+				|| mainHand == Material.DIAMOND_SWORD 
+				|| mainHand == Material.GOLDEN_SWORD 
+				|| mainHand == Material.STONE_SWORD 
+				|| mainHand == Material.NETHERITE_SWORD 
+				|| mainHand == Material.WOODEN_SWORD);
 	}
 	
 	
@@ -69,8 +74,7 @@ public class AttackEvent implements Listener {
 	 * 
 	 * @param e EntityDamageByEntityEvent
 	 */
-	@EventHandler
-	public void playerAttackEvent(EntityDamageByEntityEvent e) { // hit another player with a flower to ask to be on the same team.
+	public static void playerAttackEvent(EntityDamageByEntityEvent e) { // hit another player with a flower to ask to be on the same team.
 		
 		if (e.getDamager() instanceof Player && Utility.isSurvival(e.getDamager().getWorld()) && ((Player) e.getDamager()).getGameMode() == GameMode.SURVIVAL) {
 			
@@ -88,8 +92,14 @@ public class AttackEvent implements Listener {
 				}
 				
 			} else if (e.getEntity() instanceof Player && isFlower(((Player) e.getDamager()).getInventory().getItemInMainHand().getType())) {
-				//PendingRequest.requestHandler(player, (Player) e.getEntity());
-				e.setCancelled(true);
+				
+				if (isFlower(player.getInventory().getItemInMainHand().getType())) {
+					Friends.DEFAULT.createRequest(player, (Player) e.getEntity());
+					e.setCancelled(true);
+					
+				} else if (isHoldingSword(player)) {
+					
+				}
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-package net.pgfmc.teams.playerLogistics;
+package net.pgfmc.teams.friends;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class UnfriendCommand implements CommandExecutor {
 	{
 		
 		PlayerData p1 = PlayerData.getPlayerData((OfflinePlayer) sender);
-		PlayerData p2 = PlayerData.getPlayerData(args[0]);
+		PlayerData p2;
 		
 		if (!(sender instanceof Player))
 		{
@@ -28,13 +28,16 @@ public class UnfriendCommand implements CommandExecutor {
 			
 			sender.sendMessage("§oThis isnt a player.");
 			return true;
-		} else if (p2 == null) {
+		} else if (args[0] == null) {
 			sender.sendMessage("§oEnter a valid player.");
 			return true;
-		} else if (!((List<PlayerData>) p1.getData("friends")).contains(p2)) {
+		
+		} else if (!((List<PlayerData>) p1.getData("friends")).contains(PlayerData.getPlayerData(args[0]))) {
 			sender.sendMessage("§o" + args[0] + " is not in your friends list!");
 			return true;
 		}
+		
+		p2 = PlayerData.getPlayerData(args[0]);
 		
 		List<PlayerData> list = p1.getData("friends");
 		list.remove(p2);
