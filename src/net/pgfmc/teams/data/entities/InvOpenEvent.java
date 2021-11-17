@@ -94,7 +94,6 @@ public class InvOpenEvent implements Listener {
 								return;
 							
 							}
-							
 						}
 						return;
 					}

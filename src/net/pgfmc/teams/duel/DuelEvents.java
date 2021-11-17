@@ -34,8 +34,7 @@ public class DuelEvents implements Listener {
 					if (e.getFinalDamage() >= gamer.getHealth()) { // if they would die on the next hit
 						
 						if (!(boolean) PlayerData.getData(gamer, "duelHit") && (
-								e.getCause() == DamageCause.VOID 
-								|| e.getCause() == DamageCause.FALL
+								e.getCause() == DamageCause.FALL
 								|| e.getCause() == DamageCause.LAVA
 								|| e.getCause() == DamageCause.HOT_FLOOR
 								|| e.getCause() == DamageCause.SUICIDE)) { // if the player wasnt hit by a player, the damage would kill them normally.
