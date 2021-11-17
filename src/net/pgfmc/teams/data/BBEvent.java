@@ -68,19 +68,24 @@ public class BBEvent implements Listener {
 					if (cont.isAllowed(pd) == Security.OWNER || (cont.isAllowed(pd) == Security.FRIEND ))  {
 						OwnableBlock.remove(e.getBlock());
 					} else {
-						pd.sendMessage("§cYou can't break that block!");
-						pd.sendMessage("§cIt belongs to another Team!");
+						pd.sendMessage("§cThis block belongs to someone else.");
 						e.setCancelled(true);
 						return;
 					}
 				}
 				
 				if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
-					pd.sendMessage("§cYou can't break blocks here!");
-					pd.sendMessage("§cIt belongs to another Team!");
+					pd.sendMessage("§cThis land is claimed.");
 					e.setCancelled(true);
 					return;
 				}
+			} else if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
+				OwnableBlock cont = OwnableBlock.getContainer(e.getBlock());
+				if (cont != null) {
+					OwnableBlock.remove(e.getBlock());
+				}
+			} else {
+				e.setCancelled(true);
 			}
 		}
 	}

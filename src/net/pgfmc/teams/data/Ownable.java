@@ -6,6 +6,7 @@ import org.bukkit.Location;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.friends.Friends;
+import net.pgfmc.teams.friends.Friends.Relation;
 
 /*
 Written by CrimsonDart
@@ -31,6 +32,7 @@ public abstract class Ownable {
 	
 	public enum Security {
 		OWNER,
+		FAVORITE,
 		FRIEND,
 		UNLOCKED,
 		DISALLOWED,
@@ -40,6 +42,7 @@ public abstract class Ownable {
 	public enum Lock {
 		UNLOCKED,
 		FRIENDS_ONLY,
+		FAVORITES_ONLY,
 		LOCKED
 	}
 	
@@ -85,26 +88,46 @@ public abstract class Ownable {
 			System.out.println("out 2");
 			return Security.DISALLOWED;
 			
+		case FAVORITES_ONLY:
+			
+			if (placer.equals(player)) {
+				System.out.println("out 3");
+				
+				return Security.OWNER;
+				
+			} else if (Friends.getRelation(placer.getUniqueId(), player.getUniqueId()) == Relation.FAVORITE) {
+				return Security.FAVORITE;
+				
+			}
+			System.out.println("out 5");
+			return Security.DISALLOWED;
+			
 		case FRIENDS_ONLY: // --------------------- only Friends can access.
 			
 			if (placer.equals(player)) {
 				System.out.println("out 3");
 				
 				return Security.OWNER;
+				
+			} else if (Friends.getRelation(placer.getUniqueId(), player.getUniqueId()) == Relation.FAVORITE) {
+				return Security.FAVORITE;
+				
 			} else if (friendsList.contains(player)) {
 				
-				System.out.println("out 4");
 				return Security.FRIEND;
 			}
 			System.out.println("out 5");
 			return Security.DISALLOWED;
-			
+		
 		case UNLOCKED: // --------------------- anybody can access.
 			if (placer.equals(player)) {
 				System.out.println("out 6");
 				return Security.OWNER;
 				
-			} else if (friendsList.contains(player)) {
+			} else if (Friends.getRelation(placer.getUniqueId(), player.getUniqueId()) == Relation.FAVORITE) {
+				return Security.FAVORITE;
+				
+			}else if (friendsList.contains(player)) {
 				System.out.println("out 7");
 				return Security.FRIEND;
 				

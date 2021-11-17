@@ -71,10 +71,19 @@ public class BlockInteractEvent implements Listener {
 									
 									e.setCancelled(true);
 									
-									pd.sendMessage("§6Only Teammates have access now!");
+									pd.sendMessage("§6Favorites only!");
+									pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+									cont.setLock(Lock.FAVORITES_ONLY);
+									return;
+									
+								case FAVORITES_ONLY:
+									e.setCancelled(true);
+									
+									pd.sendMessage("§6Friends only!");
 									pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 									cont.setLock(Lock.FRIENDS_ONLY);
 									return;
+									
 									
 								case FRIENDS_ONLY:
 
@@ -99,22 +108,30 @@ public class BlockInteractEvent implements Listener {
 								
 								}
 								
-							} else {
-								return;
 							}
+							return;
 						}
-						case FRIEND: {
+						
+						case FAVORITE: {
 							if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 								
-								// LOCKED -X TEAM_ONLY -> UNLOCKED -> TEAM_ONLY -> start over...
+								// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
 								
 								switch(cont.getLock()) {
 								case LOCKED:
 									
 									e.setCancelled(true);
 									
-									pd.sendMessage("§c" + cont.getPlayer().getName() + " has this container fully locked!");
+									pd.sendMessage("§cAccess Denied.");
+									pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
+									return;
+									
+								case FAVORITES_ONLY:
+									e.setCancelled(true);
+									
+									pd.sendMessage("§6Friends only!");
 									pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+									cont.setLock(Lock.FRIENDS_ONLY);
 									return;
 									
 								case FRIENDS_ONLY:
@@ -130,25 +147,37 @@ public class BlockInteractEvent implements Listener {
 									
 									e.setCancelled(true);
 									
-									pd.sendMessage("§6Only Teammates have access now!");
+									pd.sendMessage("§6Favorites Only!");
 									pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-									cont.setLock(Lock.FRIENDS_ONLY);
+									cont.setLock(Lock.FAVORITES_ONLY);
 									return;
 									
 								default:
 									return;
-								
 								}
 							}
 							return;
+						}
+						
+						case FRIEND: {
+							if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+								
+								e.setCancelled(true);
+								
+								pd.sendMessage("§cAccess Denied.");
+								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
+								return;
+							}
 						}
 						case UNLOCKED: {
 							if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 								
 								e.setCancelled(true);
-								pd.sendMessage("§6You can't lock this container!");
+								
+								pd.sendMessage("§cAccess Denied.");
+								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
+								return;
 							}
-							return;
 						}
 						
 						case DISALLOWED: {
@@ -177,7 +206,7 @@ public class BlockInteractEvent implements Listener {
 						}
 					}
 					
-					
+					// crazy time down here!
 					
 					if (e.getAction() == Action.RIGHT_CLICK_BLOCK &&
 						e.hasBlock() && 
@@ -199,8 +228,7 @@ public class BlockInteractEvent implements Listener {
 						OwnableBlock beacon = Claim.getEffectiveClaim(block.getLocation());
 						
 						if (beacon != null && beacon.isAllowed(pd) == Security.DISALLOWED) {
-							pd.sendMessage("§cYou can't place that here!");
-							pd.sendMessage("§cThis Land belongs to Someone Else!");
+							pd.sendMessage("§cThis land is claimed.");
 							e.setCancelled(true);
 							return;
 						}
@@ -296,16 +324,24 @@ public class BlockInteractEvent implements Listener {
 					
 					e.setCancelled(true);
 					
-					pd.sendMessage("§6Default lock mode: TEAM ONLY");
+					pd.sendMessage("§6Default lock set: FAVORITES ONLY");
+					pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+					pd.setData("lockMode", Lock.FAVORITES_ONLY);
+					return;
+					
+				case FAVORITES_ONLY:
+					e.setCancelled(true);
+					
+					pd.sendMessage("§6Default lock set: FRIENDS ONLY");
 					pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 					pd.setData("lockMode", Lock.FRIENDS_ONLY);
-					return;
+					return;	
 					
 				case FRIENDS_ONLY:
 
 					e.setCancelled(true);
 					
-					pd.sendMessage("§6Default lock mode: UNLOCKED");
+					pd.sendMessage("§6Default lock set: UNLOCKED");
 					pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 					pd.setData("lockMode", Lock.UNLOCKED);
 					return;
@@ -314,13 +350,12 @@ public class BlockInteractEvent implements Listener {
 					
 					e.setCancelled(true);
 					
-					pd.sendMessage("§6Default lock mode: LOCKED");
+					pd.sendMessage("§6Default lock set: LOCKED");
 					pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 					pd.setData("lockMode", Lock.LOCKED);
 					return;
 				default:
-					break;
-				
+					return;
 				}
 			}
 		}

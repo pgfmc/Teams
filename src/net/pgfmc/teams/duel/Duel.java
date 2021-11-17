@@ -59,6 +59,14 @@ public class Duel {
 
 		PR.sendMessage(CH.getName() + " §6has accepted your Challenge to §cDuel!");
 		CH.sendMessage("§6You have accepted the Challenge!");
+		Duel d = this;
+		
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
+			@Override
+			public void run() {
+				d.setState(DuelState.INBATTLE);
+			}
+		}, 60);
 	}
 	
 	public DuelState getState() { // returns the state of the duel
@@ -83,6 +91,7 @@ public class Duel {
 	 */
 	public void join(PlayerData pd) {
 		
+		pd.setData("duelHit", false);
 		pd.setData("duel", this);
 		Players.put(pd, PlayerState.JOINING);
 		
@@ -127,8 +136,17 @@ public class Duel {
 		
 		// restores their health if they are still in the game.
 		if (ded.getPlayer() != null) {
-			ded.getPlayer().setHealth(20.0);
+			Player gamer = ded.getPlayer();
 			
+			gamer.setHealth(20.0);
+			
+			if (!wasKilled) {
+				if (gamer.getBedSpawnLocation() != null) {
+					gamer.teleport(gamer.getBedSpawnLocation());
+				} else {
+					gamer.teleport(gamer.getWorld().getSpawnLocation());
+				}
+			}
 		}
 		
 		Players.put(ded, PlayerState.KILLED);
@@ -152,9 +170,6 @@ public class Duel {
 			} else if (wasKilled) {
 				pd.sendMessage(ded.getName() + " was killed.");
 				pd.playSound(Sound.ENTITY_PLAYER_BIG_FALL);
-			} else {
-				pd.sendMessage(ded.getName() + " has left the duel.");
-				pd.playSound(Sound.ENTITY_WOLF_WHINE);
 			}
 		}
 		
@@ -170,15 +185,16 @@ public class Duel {
 					PlayerData Winner = HELLOGAMERS.get(0);
 					
 					for (PlayerData pd : Players.keySet()) {
+						if (pd.getUniqueId().toString().equals(Winner.getUniqueId().toString())) {
+							continue;
+						}
 						pd.playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
-						pd.sendMessage(Winner.getName() + " has won the duel!");
+						pd.sendMessage("§6" + Winner.getName() + " has won the duel!");
 					}
 					
 					Winner.playSound(Sound.ENTITY_PLAYER_LEVELUP);
-					
 					Winner.getPlayer().setHealth(20.0);
 					
-					Bukkit.broadcastMessage(Winner.getName() + " §6 has won the §cDuel!!");
 					setState(DuelState.END);
 	            	
 	    			for (PlayerData planar : Players.keySet()) {
@@ -193,6 +209,12 @@ public class Duel {
 			planar.setData("duel", null);
 		}
 		instances.remove(this);
+	}
+	
+	public void sendMessage(String message) {
+		for (PlayerData pd : Players.keySet()) {
+			pd.sendMessage(message);
+		}
 	}
 	
 	public void duelKick(PlayerData simp) { // ends the duel, and restores health

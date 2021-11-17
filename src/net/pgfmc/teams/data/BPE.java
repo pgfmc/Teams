@@ -40,7 +40,7 @@ public class BPE implements Listener {
 					if (Claim.isEnemyClaimsInRange(block.getLocation(), pd).size() > 0) {
 						e.setCancelled(true);
 						pd.sendMessage("§cYou can't claim this land!");
-						pd.sendMessage("§cIts Border overlaps with another team's border!");
+						pd.sendMessage("§cIts Border overlaps with another claim's border!");
 						return;
 					} else {
 						new OwnableBlock(pd, block, null, true);
@@ -51,8 +51,7 @@ public class BPE implements Listener {
 				OwnableBlock claim = Claim.getEffectiveClaim(block.getLocation());
 				
 				if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
-					pd.sendMessage("§cYou can't place blocks here!");
-					pd.sendMessage("§cThis Land belongs to Someone Else!");
+					pd.sendMessage("§cThis land is claimed, you can't place blocks here.");
 					e.setCancelled(true);
 					return;
 				}

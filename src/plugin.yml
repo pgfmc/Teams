@@ -2,7 +2,7 @@ name: Teams
 version: 1.2.3.b
 api-version: 1.16
 author: [bk, CrimsonDart]
-main: net.pgfmc.teams.teamscore.TeamsCore
+main: net.pgfmc.teams.teamscore.Main
 description: implemets the Teams system
 depend: [Multiverse-Core, PGF-Essentials]
 commands:

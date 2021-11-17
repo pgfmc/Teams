@@ -26,7 +26,7 @@ public class EntityClick implements Listener {
 		
 		if (e.getPlayer() != null && e.getRightClicked() != null && Utility.isSurvival(e.getRightClicked().getWorld()) && e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 			
-			PlayerData player = PlayerData.getPlayerData(e.getPlayer());
+			PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
 			
 			if ((e.getRightClicked().getType() == EntityType.MINECART_CHEST || 
 					e.getRightClicked().getType() == EntityType.MINECART_HOPPER ||
@@ -45,12 +45,12 @@ public class EntityClick implements Listener {
 				
 				if (cont == null) { return; }
 				
-				Security sec = cont.isAllowed(player);
+				Security sec = cont.isAllowed(pd);
 				
 				switch(sec) {
 				
 				case OWNER: {
-					if (player.getPlayer().getInventory().getItemInMainHand() != null && player.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+					if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 						
 						// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
 						
@@ -59,8 +59,16 @@ public class EntityClick implements Listener {
 							
 							e.setCancelled(true);
 							
-							player.sendMessage("§6Only Teammates have access now!");
-							player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+							pd.sendMessage("§6Only Teammates have access now!");
+							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+							cont.setLock(Lock.FAVORITES_ONLY);
+							return;
+							
+						case FAVORITES_ONLY:
+							e.setCancelled(true);
+							
+							pd.sendMessage("§6Set Friends Only.");
+							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 							cont.setLock(Lock.FRIENDS_ONLY);
 							return;
 							
@@ -68,8 +76,8 @@ public class EntityClick implements Listener {
 
 							e.setCancelled(true);
 							
-							player.sendMessage("§6Unlocked!");
-							player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+							pd.sendMessage("§6Set Unlocked.");
+							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 							cont.setLock(Lock.UNLOCKED);
 							return;
 							
@@ -77,8 +85,8 @@ public class EntityClick implements Listener {
 							
 							e.setCancelled(true);
 							
-							player.sendMessage("§6Fully Locked!");
-							player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+							pd.sendMessage("§6Set Locked.");
+							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 							cont.setLock(Lock.LOCKED);
 							return;
 							
@@ -91,27 +99,34 @@ public class EntityClick implements Listener {
 						return;
 					}
 				}
-				case FRIEND: {
-					if (player.getPlayer().getInventory().getItemInMainHand() != null && player.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+				case FAVORITE: {
+					if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 						
-						
-						// LOCKED -X TEAM_ONLY -> UNLOCKED -> TEAM_ONLY -> start over...
+						// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
 						
 						switch(cont.getLock()) {
 						case LOCKED:
 							
 							e.setCancelled(true);
 							
-							player.sendMessage("§c" + cont.getPlayer().getName() + " has this container fully locked!");
-							player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+							pd.sendMessage("§cAccess Denied.");
+							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
+							return;
+							
+						case FAVORITES_ONLY:
+							e.setCancelled(true);
+							
+							pd.sendMessage("§6Friends only!");
+							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+							cont.setLock(Lock.FRIENDS_ONLY);
 							return;
 							
 						case FRIENDS_ONLY:
 
 							e.setCancelled(true);
 							
-							player.sendMessage("§6Unlocked!");
-							player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+							pd.sendMessage("§6Unlocked!");
+							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 							cont.setLock(Lock.UNLOCKED);
 							return;
 							
@@ -119,21 +134,40 @@ public class EntityClick implements Listener {
 							
 							e.setCancelled(true);
 							
-							player.sendMessage("§6Only Teammates have access now!");
-							player.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-							cont.setLock(Lock.FRIENDS_ONLY);
+							pd.sendMessage("§6Favorites Only!");
+							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+							cont.setLock(Lock.FAVORITES_ONLY);
 							return;
 							
 						default:
 							return;
-						
 						}
 						
 					} else {
 						return;
 					}
 				}
-				case UNLOCKED: return;
+					
+				
+				case FRIEND: 
+					if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+					
+					e.setCancelled(true);
+					
+					pd.sendMessage("§cAccess Denied.");
+					pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
+					return;
+				}
+				
+				case UNLOCKED: 
+					if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+						
+						e.setCancelled(true);
+						
+						pd.sendMessage("§cAccess Denied.");
+						pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
+						return;
+					}
 				
 				case DISALLOWED: {
 					e.setCancelled(true);
@@ -142,14 +176,14 @@ public class EntityClick implements Listener {
 					
 					switch(mat) {
 					
-						case MINECART_CHEST: player.sendMessage("§cThis Minecart Chest is locked!"); return;
-						case MINECART_HOPPER: player.sendMessage("§cThis Minecart Hopper is locked!"); return;
-						case ITEM_FRAME: player.sendMessage("§cThis Item Frame is locked!"); return;
-						case GLOW_ITEM_FRAME: player.sendMessage("§cThis Item Frame is locked!"); return;
-						case ARMOR_STAND: player.sendMessage("§cThis Armor Stand is locked!"); return;
-						case HORSE: player.sendMessage("§cThis Horse is locked!"); return;
-						case DONKEY: player.sendMessage("§cThis Donkey is locked!"); return;
-						case MULE: player.sendMessage("§cThis Mule is locked!"); return;
+						case MINECART_CHEST: pd.sendMessage("§cThis Minecart Chest is locked!"); return;
+						case MINECART_HOPPER: pd.sendMessage("§cThis Minecart Hopper is locked!"); return;
+						case ITEM_FRAME: pd.sendMessage("§cThis Item Frame is locked!"); return;
+						case GLOW_ITEM_FRAME: pd.sendMessage("§cThis Item Frame is locked!"); return;
+						case ARMOR_STAND: pd.sendMessage("§cThis Armor Stand is locked!"); return;
+						case HORSE: pd.sendMessage("§cThis Horse is locked!"); return;
+						case DONKEY: pd.sendMessage("§cThis Donkey is locked!"); return;
+						case MULE: pd.sendMessage("§cThis Mule is locked!"); return;
 						
 						default: return;
 					}

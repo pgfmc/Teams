@@ -44,6 +44,7 @@ public class EntityAttackEvent implements Listener {
 					
 					case OWNER: {return;}
 					case FRIEND: {return;}
+					case FAVORITE: return;
 					case UNLOCKED: {
 						e.setCancelled(true);
 						return;

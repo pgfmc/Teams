@@ -20,6 +20,7 @@ import org.bukkit.util.Vector;
 import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.dim.DimManager;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.teams.friends.Friends;
 import oshi.util.tuples.Pair;
  /**
   * Prevents other players from picking up someone else's items on death.
@@ -88,7 +89,6 @@ public class ItemProtect implements Listener {
 		p.sendMessage("§cYour dropped items are protected for 120 seconds.");
 	}
 	
-	@SuppressWarnings("unchecked")
 	@EventHandler
 	public void onPickup(EntityPickupItemEvent e) {
 		
@@ -103,7 +103,7 @@ public class ItemProtect implements Listener {
 				PlayerData pd = PlayerData.getPlayerData((OfflinePlayer) e.getEntity());
 				if (data.getA() == pd) {
 					data.getB().accept(null);
-				} else if (((List<PlayerData>) pd.getData("friends")).contains(data.getA())) {
+				} else if (Friends.getFriendsList(pd.getUniqueId()).contains(data.getA())) {
 					data.getB().accept(null);
 				} else {
 					e.setCancelled(true);

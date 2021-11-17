@@ -16,6 +16,7 @@ import net.pgfmc.teams.data.entities.DeathEvent;
 import net.pgfmc.teams.data.entities.EntityClick;
 import net.pgfmc.teams.data.entities.InvOpenEvent;
 import net.pgfmc.teams.data.entities.TameEvent;
+import net.pgfmc.teams.duel.DuelEvents;
 import net.pgfmc.teams.friends.FriendAcceptCommand;
 import net.pgfmc.teams.friends.FriendRequestCommand;
 import net.pgfmc.teams.friends.Friends;
@@ -73,8 +74,9 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TameEvent(), this);
 		getServer().getPluginManager().registerEvents(new DeathEvent(), this);
 		getServer().getPluginManager().registerEvents(new InvOpenEvent(), this);
-		getServer().getPluginManager().registerEvents(new ItemProtect(), this);
-		getServer().getPluginManager().registerEvents(new AttackEvent(), this);
+		getServer().getPluginManager().registerEvents(new ItemProtect(), this);	
+		getServer().getPluginManager().registerEvents(new DuelEvents(), this);
+		getServer().getPluginManager().registerEvents(Friends.DEFAULT, this);	
 		
 		getCommand("containerDump").setExecutor(new ContainerDataOutputCommand());
 		getCommand("friendRequest").setExecutor(new FriendRequestCommand());

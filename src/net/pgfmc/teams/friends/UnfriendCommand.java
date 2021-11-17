@@ -12,7 +12,6 @@ import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 
 public class UnfriendCommand implements CommandExecutor {
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
@@ -32,7 +31,7 @@ public class UnfriendCommand implements CommandExecutor {
 			sender.sendMessage("§oEnter a valid player.");
 			return true;
 		
-		} else if (!((List<PlayerData>) p1.getData("friends")).contains(PlayerData.getPlayerData(args[0]))) {
+		} else if (!Friends.getFriendsList(p1.getUniqueId()).contains(PlayerData.getPlayerData(args[0]))) {
 			sender.sendMessage("§o" + args[0] + " is not in your friends list!");
 			return true;
 		}

@@ -9,6 +9,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.InventoryHolder;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.pgfessentials.request.Request;
 import net.pgfmc.teams.data.blocks.OwnableEntity;
 import net.pgfmc.teams.duel.Duel;
 import net.pgfmc.teams.duel.Duel.DuelState;
@@ -52,8 +53,10 @@ public class AttackEvent implements Listener {
 						return;
 					}
 					
-					Duel ATK = PlayerData.getData(attacker, "duel");
-					Duel DEF = PlayerData.getData(target, "duel");
+					PlayerData apd = PlayerData.getPlayerData(attacker);
+					PlayerData tpd = PlayerData.getPlayerData(target);
+					Duel ATK = apd.getData("duel");
+					Duel DEF = tpd.getData("duel");
 					
 					boolean equal = (ATK == DEF);
 					boolean ATKnull = (ATK == null);
@@ -61,10 +64,31 @@ public class AttackEvent implements Listener {
 					if (equal) {
 						
 						if (ATKnull && isHoldingSword(attacker)) { // if both are null : create Request
-							DuelRequester.DEFAULT.createRequest(attacker, target);
-							return;
 							
-						} else if (ATK.getState() == DuelState.INBATTLE) { // if same Duel : allow attack
+							Request r = DuelRequester.DEFAULT.findRequest(target, attacker);
+							
+							if (r == null) {
+								DuelRequester.DEFAULT.createRequest(attacker, target);
+								return;
+								
+							} else {
+								DuelRequester.DEFAULT.accept(r);
+								return;
+								
+							}
+							
+						} else if (!ATKnull && ATK.getState() == DuelState.INBATTLE 
+								&& ATK.getPlayers().get(apd) == PlayerState.DUELING
+								&& ATK.getPlayers().get(tpd) == PlayerState.DUELING) { // if same Duel : allow attack
+							
+							if (e.getFinalDamage() >= target.getHealth()) {
+								ATK.playerDie(tpd, apd, true);
+								return;
+							}
+							
+							tpd.setData("duelHit", true);
+							
+							
 							e.setCancelled(false);
 							return;
 							
@@ -73,10 +97,7 @@ public class AttackEvent implements Listener {
 						DEF.join(PlayerData.getPlayerData(attacker));
 						return;
 						
-					} else {
-						DuelRequester.DEFAULT.accept(target, attacker);
-						return;
-					}
+					} 
 				}
 				
 			} else if (e.getEntity() instanceof InventoryHolder && OwnableEntity.getContainer(e.getEntity().getUniqueId()) != null)  {

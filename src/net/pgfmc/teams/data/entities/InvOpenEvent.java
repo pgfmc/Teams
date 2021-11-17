@@ -25,12 +25,12 @@ public class InvOpenEvent implements Listener {
 			
 			System.out.println(((Entity) e.getInventory().getHolder()).getUniqueId());
 			
-			OwnableEntity ent = OwnableEntity.getContainer((Entity) e.getInventory().getHolder());
+			OwnableEntity cont = OwnableEntity.getContainer((Entity) e.getInventory().getHolder());
 			
-			if (ent != null) {
+			if (cont != null) {
 				
-				PlayerData player = PlayerData.getPlayerData((OfflinePlayer) e.getPlayer());
-				Entity entity = ent.getEntity();
+				PlayerData pd = PlayerData.getPlayerData((OfflinePlayer) e.getPlayer());
+				Entity entity = cont.getEntity();
 				
 				
 				if ((entity.getType() == EntityType.MINECART_CHEST || 
@@ -46,39 +46,48 @@ public class InvOpenEvent implements Listener {
 					
 					)) {
 					
-					switch(ent.isAllowed(player)) {
+					switch(cont.isAllowed(pd)) {
 					
 					case OWNER: {
-						if (player.getPlayer().getInventory().getItemInMainHand() != null && player.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+						if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 							
 							// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
 							
-							switch(ent.getLock()) {
+							switch(cont.getLock()) {
 							case LOCKED:
 								
 								e.setCancelled(true);
 								
-								player.sendMessage("§6Only Teammates have access now!");
-								player.playSound(player.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								ent.setLock(Lock.FRIENDS_ONLY);
+								pd.sendMessage("§6Favorites only!");
+								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+								cont.setLock(Lock.FAVORITES_ONLY);
 								return;
+								
+							case FAVORITES_ONLY:
+								e.setCancelled(true);
+								
+								pd.sendMessage("§6Friends only!");
+								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+								cont.setLock(Lock.FRIENDS_ONLY);
+								return;
+								
 								
 							case FRIENDS_ONLY:
 
 								e.setCancelled(true);
 								
-								player.sendMessage("§6Unlocked!");
-								player.playSound(player.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								ent.setLock(Lock.UNLOCKED);
+								pd.sendMessage("§6Unlocked!");
+								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+								cont.setLock(Lock.UNLOCKED);
 								return;
 								
 							case UNLOCKED:
 								
 								e.setCancelled(true);
 								
-								player.sendMessage("§6Fully Locked!");
-								player.playSound(player.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								ent.setLock(Lock.LOCKED);
+								pd.sendMessage("§6Fully Locked!");
+								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+								cont.setLock(Lock.LOCKED);
 								return;
 								
 							default:
@@ -86,53 +95,77 @@ public class InvOpenEvent implements Listener {
 							
 							}
 							
-						} else {
-							return;
 						}
+						return;
 					}
+					
+					case FAVORITE: {
+						if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+							
+							// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
+							
+							switch(cont.getLock()) {
+							case LOCKED:
+								
+								e.setCancelled(true);
+								
+								pd.sendMessage("§cAccess Denied.");
+								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
+								return;
+								
+							case FAVORITES_ONLY:
+								e.setCancelled(true);
+								
+								pd.sendMessage("§6Friends only!");
+								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+								cont.setLock(Lock.FRIENDS_ONLY);
+								return;
+								
+							case FRIENDS_ONLY:
+
+								e.setCancelled(true);
+								
+								pd.sendMessage("§6Unlocked!");
+								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+								cont.setLock(Lock.UNLOCKED);
+								return;
+								
+							case UNLOCKED:
+								
+								e.setCancelled(true);
+								
+								pd.sendMessage("§6Favorites Only!");
+								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+								cont.setLock(Lock.FAVORITES_ONLY);
+								return;
+								
+							default:
+								return;
+							}
+						}
+						return;
+					}
+					
 					case FRIEND: {
-						if (player.getPlayer().getInventory().getItemInMainHand() != null && player.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+						if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
 							
+							e.setCancelled(true);
 							
-							// LOCKED -X TEAM_ONLY -> UNLOCKED -> TEAM_ONLY -> start over...
-							
-							switch(ent.getLock()) {
-							case LOCKED:
-								
-								e.setCancelled(true);
-								
-								player.sendMessage("§c" + ent.getPlayer().getName() + " has this container fully locked!");
-								player.playSound(player.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								return;
-								
-							case FRIENDS_ONLY:
-
-								e.setCancelled(true);
-								
-								player.sendMessage("§6Unlocked!");
-								player.playSound(player.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								ent.setLock(Lock.UNLOCKED);
-								return;
-								
-							case UNLOCKED:
-								
-								e.setCancelled(true);
-								
-								player.sendMessage("§6Only Teammates have access now!");
-								player.playSound(player.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								ent.setLock(Lock.FRIENDS_ONLY);
-								return;
-								
-							default:
-								return;
-							
-							}
-							
-						} else {
+							pd.sendMessage("§cAccess Denied.");
+							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
 							return;
 						}
 					}
-					case UNLOCKED: return;
+					case UNLOCKED: {
+						if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+							
+							e.setCancelled(true);
+							
+							pd.sendMessage("§cAccess Denied.");
+							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
+							return;
+						}
+					}
 					
 					case DISALLOWED: {
 						e.setCancelled(true);
@@ -141,14 +174,14 @@ public class InvOpenEvent implements Listener {
 						
 						switch(mat) {
 						
-							case MINECART_CHEST: player.sendMessage("§cThis Minecart Chest is locked!"); return;
-							case MINECART_HOPPER: player.sendMessage("§cThis Minecart Hopper is locked!"); return;
-							case ITEM_FRAME: player.sendMessage("§cThis Item Frame is locked!"); return;
-							case GLOW_ITEM_FRAME: player.sendMessage("§cThis Item Frame is locked!"); return;
-							case ARMOR_STAND: player.sendMessage("§cThis Armor Stand is locked!"); return;
-							case HORSE: player.sendMessage("§cThis Horse is locked!"); return;
-							case DONKEY: player.sendMessage("§cThis Donkey is locked!"); return;
-							case MULE: player.sendMessage("§cThis Mule is locked!"); return;
+							case MINECART_CHEST: pd.sendMessage("§cThis Minecart Chest is locked!"); return;
+							case MINECART_HOPPER: pd.sendMessage("§cThis Minecart Hopper is locked!"); return;
+							case ITEM_FRAME: pd.sendMessage("§cThis Item Frame is locked!"); return;
+							case GLOW_ITEM_FRAME: pd.sendMessage("§cThis Item Frame is locked!"); return;
+							case ARMOR_STAND: pd.sendMessage("§cThis Armor Stand is locked!"); return;
+							case HORSE: pd.sendMessage("§cThis Horse is locked!"); return;
+							case DONKEY: pd.sendMessage("§cThis Donkey is locked!"); return;
+							case MULE: pd.sendMessage("§cThis Mule is locked!"); return;
 							
 							default: /*	String name = mat.name();
 

@@ -68,6 +68,8 @@ public class Claim {
 				return false;
 			case UNLOCKED:
 				return true;
+			case FAVORITE:
+				return false;
 			}
 			return true;
 		})

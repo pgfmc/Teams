@@ -1,5 +1,6 @@
 package net.pgfmc.teams.friends;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -76,6 +77,8 @@ public class Friends extends Requester implements Listener {
 	private static Table<String, String, Relation> friends = HashBasedTable.create();
 	
 	
+	
+	
 	private Friends() {
 		super("Friend", 120, (x, y) -> {
 			
@@ -129,7 +132,7 @@ public class Friends extends Requester implements Listener {
 					})
 					.collect(Collectors.toList());
 		}
-		return null;
+		return new ArrayList<>();
 	}
 	
 	/**
