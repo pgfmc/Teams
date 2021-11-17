@@ -2,6 +2,7 @@ package net.pgfmc.teams.friends;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,16 +28,17 @@ public class UnfriendCommand implements CommandExecutor {
 			
 			sender.sendMessage("§oThis isnt a player.");
 			return true;
-		} else if (args[0] == null) {
+		} else if (args[0].length() == 0) { // bk w here
+			return false;
+		} else if (Bukkit.getPlayer(args[0]) == null) {
 			sender.sendMessage("§oEnter a valid player.");
 			return true;
-		
-		} else if (!Friends.getFriendsList(p1.getUniqueId()).contains(PlayerData.getPlayerData(args[0]))) {
+		} if (!Friends.getFriendsList(p1.getUniqueId()).contains(PlayerData.getPlayerData(Bukkit.getPlayer(args[0])))) { // and he
 			sender.sendMessage("§o" + args[0] + " is not in your friends list!");
 			return true;
 		}
 		
-		p2 = PlayerData.getPlayerData(args[0]);
+		p2 = PlayerData.getPlayerData(Bukkit.getPlayer(args[0])); // & ere
 		
 		List<PlayerData> list = p1.getData("friends");
 		list.remove(p2);
