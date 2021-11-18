@@ -18,10 +18,8 @@ public class UnfriendCommand implements CommandExecutor {
 	{
 		
 		PlayerData p1 = PlayerData.getPlayerData((OfflinePlayer) sender);
-		PlayerData p2;
 		
-		if (!(sender instanceof Player))
-		{
+		if (!(sender instanceof Player)) {
 			sender.sendMessage("§oThis isnt a player.");
 			return false;
 		} else if (p1 == null) {
@@ -33,12 +31,12 @@ public class UnfriendCommand implements CommandExecutor {
 		} else if (Bukkit.getPlayer(args[0]) == null) {
 			sender.sendMessage("§oEnter a valid player.");
 			return true;
-		} if (!Friends.getFriendsList(p1.getUniqueId()).contains(PlayerData.getPlayerData(Bukkit.getPlayer(args[0])))) { // and he
+		} if (!Friends.getFriendsList(p1.getUniqueId()).contains(PlayerData.getPlayerData(args[0]))) { // and he
 			sender.sendMessage("§o" + args[0] + " is not in your friends list!");
 			return true;
 		}
 		
-		p2 = PlayerData.getPlayerData(Bukkit.getPlayer(args[0])); // & ere
+		PlayerData p2 = PlayerData.getPlayerData(args[0]); // & ere
 		
 		List<PlayerData> list = p1.getData("friends");
 		list.remove(p2);
