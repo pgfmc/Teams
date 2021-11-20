@@ -6,8 +6,8 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/ProgramData/.eclipse extras/plugins/spigot-1.17.1.jar"/>
-	<classpathentry kind="lib" path="C:/ProgramData/.eclipse extras/plugins/PGF-Essentials.jar" sourcepath="/PGF-Essentials"/>
-	<classpathentry kind="lib" path="C:/ProgramData/.eclipse extras/plugins/Multiverse-Core-4.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/ProgramData/.eclipse extras/libraries/spigot-1.17.1.jar"/>
+	<classpathentry kind="lib" path="C:/ProgramData/.eclipse extras/libraries/PGF-Essentials.jar" sourcepath="/PGF-Essentials"/>
+	<classpathentry kind="lib" path="C:/ProgramData/.eclipse extras/libraries/Multiverse-Core-4.3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
