@@ -1,6 +1,7 @@
 package net.pgfmc.teams.data;
 
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -70,6 +71,7 @@ public class BBEvent implements Listener {
 					} else {
 						pd.sendMessage("§cThis block belongs to someone else.");
 						e.setCancelled(true);
+						pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 						return;
 					}
 				}
@@ -77,6 +79,7 @@ public class BBEvent implements Listener {
 				if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
 					pd.sendMessage("§cThis land is claimed.");
 					e.setCancelled(true);
+					pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 					return;
 				}
 			} else if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {

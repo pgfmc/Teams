@@ -109,7 +109,7 @@ public class InvOpenEvent implements Listener {
 								e.setCancelled(true);
 								
 								pd.sendMessage("§cAccess Denied.");
-								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
+								pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 								return;
 								
 							case FAVORITES_ONLY:
@@ -151,7 +151,7 @@ public class InvOpenEvent implements Listener {
 							e.setCancelled(true);
 							
 							pd.sendMessage("§cAccess Denied.");
-							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
+							pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 							return;
 						}
 					}
@@ -161,13 +161,14 @@ public class InvOpenEvent implements Listener {
 							e.setCancelled(true);
 							
 							pd.sendMessage("§cAccess Denied.");
-							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
+							pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 							return;
 						}
 					}
 					
 					case DISALLOWED: {
 						e.setCancelled(true);
+						pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 						
 						EntityType mat = entity.getType();
 						

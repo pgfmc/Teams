@@ -1,12 +1,16 @@
 package net.pgfmc.teams.friends;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
@@ -17,6 +21,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
+import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.Mixins;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.pgfessentials.request.Requester;
@@ -83,6 +88,8 @@ public class Friends extends Requester implements Listener {
 		super("Friend", 120, (x, y) -> {
 			
 			setRelation(x.getUniqueId(), Relation.FRIEND, y.getUniqueId(), Relation.FRIEND);
+			x.playSound(Sound.BLOCK_AMETHYST_BLOCK_HIT);
+			x.playSound(Sound.BLOCK_AMETHYST_BLOCK_HIT);
 			
 			return true;
 		});
@@ -218,7 +225,30 @@ public class Friends extends Requester implements Listener {
 			setRelation(UUID.fromString(POV), x.getB(), UUID.fromString(x.getA()), FPOV); // FOIL be like
 			return;
 		});
+		
+		PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
+		
+		List<Sound> sounds = new LinkedList<>();
+		int i = 1;
+		
+		EnumSet.allOf(Sound.class).forEach(x -> {
+			sounds.add(x);
+		});
+		
+		for (Sound s : sounds) {
+			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EssentialsMain.plugin, new Runnable() {
+				
+				@Override
+				public void run()
+				{
+					pd.playSound(s);
+					pd.sendMessage("playing sound :" + s.toString());
+					
+				}
+				
+			}, 30 * i);
+			i++;
+		}
+		
 	}
-	
-	
 }

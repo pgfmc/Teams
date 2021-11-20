@@ -2,6 +2,7 @@ package net.pgfmc.teams.data;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
 import org.bukkit.event.EventHandler;
@@ -41,6 +42,7 @@ public class BPE implements Listener {
 						e.setCancelled(true);
 						pd.sendMessage("§cYou can't claim this land!");
 						pd.sendMessage("§cIts Border overlaps with another claim's border!");
+						pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 						return;
 					} else {
 						new OwnableBlock(pd, block, null, true);
@@ -53,6 +55,7 @@ public class BPE implements Listener {
 				if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
 					pd.sendMessage("§cThis land is claimed, you can't place blocks here.");
 					e.setCancelled(true);
+					pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 					return;
 				}
 				

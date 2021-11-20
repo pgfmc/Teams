@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -44,6 +45,7 @@ public class UnfriendCommand implements CommandExecutor {
 		list = p2.getData("friends");
 		list.remove(p1);
 		p1.sendMessage("§6You have Unfriended " + args[0] + ".");
+		p1.playSound(Sound.BLOCK_CALCITE_HIT);
 		
 		return true;
 	}
