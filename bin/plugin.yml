@@ -6,10 +6,6 @@ main: net.pgfmc.teams.teamscore.Main
 description: implemets the Teams system
 depend: [Multiverse-Core, PGF-Essentials]
 commands:
-   debug:
-      usage: /debug
-      permission: Teams.debug
-      description: toggles debug mode, which floods the console with text lol
    containerDump:
       usage: /containerDump
       permission: Teams.dump
@@ -29,6 +25,11 @@ commands:
       usage: /<command> <player>
       permission: Teams.friend
       description: unfriends <player>
+   friendlist:
+      aliases: [flist]
+      usage: /<command>
+      permission: Teams.friend
+      description: shows friends list.
 #
 # -------------------------------||------------------------------
 #
