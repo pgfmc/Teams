@@ -22,7 +22,7 @@ commands:
       description: accepts a friend request.
    unfriend:
       aliases: [uf]
-      usage: /<command> <player>
+      usage: /<command> <friend>
       permission: Teams.friend
       description: unfriends <player>
    friendlist:
@@ -30,6 +30,16 @@ commands:
       usage: /<command>
       permission: Teams.friend
       description: shows friends list.
+   favorite:
+      aliases: [fav]
+      usage: /<command> <friend>
+      permission: Teams.friend
+      description: favorites a friend.
+   unfavorite: 
+      aliases: [unfav]
+      usage: /<command> <favorite>
+      permission: Teams.friend
+      description: unfavorites a friend.
 #
 # -------------------------------||------------------------------
 #

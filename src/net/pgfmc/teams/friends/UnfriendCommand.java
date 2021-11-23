@@ -1,7 +1,5 @@
 package net.pgfmc.teams.friends;
 
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
@@ -11,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.teams.friends.Friends.Relation;
 
 public class UnfriendCommand implements CommandExecutor {
 	
@@ -37,13 +36,7 @@ public class UnfriendCommand implements CommandExecutor {
 			return true;
 		}
 		
-		PlayerData p2 = PlayerData.getPlayerData(target); // & ere
-		
-		List<PlayerData> list = p1.getData("friends");
-		list.remove(p2);
-		
-		list = p2.getData("friends");
-		list.remove(p1);
+		Friends.setRelation(p1.getUniqueId(), Relation.NONE, target.getUniqueId(), Relation.NONE);
 		p1.sendMessage("§6You have Unfriended " + args[0] + ".");
 		p1.playSound(Sound.BLOCK_CALCITE_HIT);
 		

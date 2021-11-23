@@ -1,6 +1,6 @@
 package net.pgfmc.teams.duel;
 
-import net.pgfmc.pgfessentials.request.Requester;
+import net.pgfmc.pgfessentials.requestAPI.Requester;
 
 public class DuelRequester extends Requester {
 	

@@ -5,7 +5,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.pgfmc.pgfessentials.Mixins;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerDataListener;
 import net.pgfmc.teams.data.BBEvent;
 import net.pgfmc.teams.data.BPE;
 import net.pgfmc.teams.data.BlockInteractEvent;
@@ -17,9 +16,12 @@ import net.pgfmc.teams.data.entities.EntityClick;
 import net.pgfmc.teams.data.entities.InvOpenEvent;
 import net.pgfmc.teams.data.entities.TameEvent;
 import net.pgfmc.teams.duel.DuelEvents;
+import net.pgfmc.teams.friends.FavoriteCommand;
 import net.pgfmc.teams.friends.FriendAcceptCommand;
 import net.pgfmc.teams.friends.FriendRequestCommand;
 import net.pgfmc.teams.friends.Friends;
+import net.pgfmc.teams.friends.FriendsListCommand;
+import net.pgfmc.teams.friends.UnfavoriteCommand;
 import net.pgfmc.teams.friends.UnfriendCommand;
 
 public class Main extends JavaPlugin {
@@ -49,21 +51,12 @@ public class Main extends JavaPlugin {
 		Mixins.getFile(BlockContainersPath);
 		Mixins.getFile(EntityContainersPath);
 		
-		PlayerData.ActivateListener(new PlayerDataListener() {
-
-			@Override
-			public void OfflinePlayerDataInitialization(PlayerData pd) {
-				pd.setData("lockMode", Lock.FRIENDS_ONLY);
-				
-			}
-
-			@Override
-			public void OfflinePlayerDataDeInitialization(PlayerData pd) {}
-			
-		}, false);
+		PlayerData.set(x -> x.setData("lockMode", Lock.FRIENDS_ONLY));
 		
 		// loads container data from files.
 		ContainerDatabase.loadContainers();
+		
+		Friends.load();
 		
 		// initializes all Event Listeners and Command Executors.
 		getServer().getPluginManager().registerEvents(new BlockInteractEvent(), this);
@@ -82,6 +75,9 @@ public class Main extends JavaPlugin {
 		getCommand("friendRequest").setExecutor(new FriendRequestCommand());
 		getCommand("friendAccept").setExecutor(new FriendAcceptCommand());
 		getCommand("unfriend").setExecutor(new UnfriendCommand());
+		getCommand("friendlist").setExecutor(new FriendsListCommand());
+		getCommand("favorite").setExecutor(new FavoriteCommand());
+		getCommand("unfavorite").setExecutor(new UnfavoriteCommand());
 	}
 	
 	@Override

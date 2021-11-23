@@ -1,32 +1,26 @@
 package net.pgfmc.teams.friends;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
-import net.pgfmc.pgfessentials.EssentialsMain;
 import net.pgfmc.pgfessentials.Mixins;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.pgfessentials.request.Requester;
+import net.pgfmc.pgfessentials.requestAPI.Requester;
 import net.pgfmc.teams.teamscore.Main;
-import oshi.util.tuples.Pair;
 
 public class Friends extends Requester implements Listener {
 	
@@ -133,9 +127,12 @@ public class Friends extends Requester implements Listener {
 	
 	public static List<PlayerData> getFriendsList(UUID pd) {
 		if (friends.containsColumn(pd.toString())) {
-			return friends.columnKeySet().stream()
+			return friends.column(pd.toString()).entrySet().stream()
+					.filter(x -> {
+						return (x.getValue() == Relation.FRIEND || x.getValue() == Relation.FAVORITE) ;	
+					})
 					.map(x -> {
-						return PlayerData.getPlayerData(UUID.fromString(x));
+						return PlayerData.getPlayerData(UUID.fromString(x.getKey()));
 					})
 					.collect(Collectors.toList());
 		}
@@ -186,69 +183,29 @@ public class Friends extends Requester implements Listener {
 	}
 	
 	/**
-	 * holy crap this is insane
-	 * probably a good idea to run this async, because it looks pretty processor heavy
-	 * @param e
+	 * loads all friends
 	 */
-	@EventHandler
-	public void onJoin(PlayerJoinEvent e) {
+	public static void load() {
 		FileConfiguration database = Mixins.getDatabase(Main.databasePath);
-		String POV = e.getPlayer().getUniqueId().toString();
 		
 		ConfigurationSection friends = verifyConf(database, "friends");
 		
-		verifyConf(friends, POV).getKeys(false).stream()
-		.map(x -> {
-			return new Pair<String, Relation>(x, Relation.valueOf(verifyConf(friends, POV).getString(x)));
-		})
-		.filter(x -> {
-			if (x.getA() == null || x.getB() == null || x.getB() == Relation.NONE || x.getB() == Relation.SELF) {
-				return false;
-			}
-			return true;
-		})
-		.forEach(x -> {
+		for (PlayerData pd : PlayerData.getPlayerDataList()) {
 			
-			ConfigurationSection friend = friends.getConfigurationSection(x.getA());
-			
-			Relation FPOV;
-			if (friend != null) {
-				FPOV = Relation.valueOf(friend.getString(POV));
-			} else {
-				if (x.getB() == Relation.FRIEND || x.getB() == Relation.FAVORITE) {
-					FPOV = Relation.FRIEND;
-				} else {
-					FPOV = Relation.NONE;
-				}
+			ConfigurationSection config = friends.getConfigurationSection(pd.getUniqueId().toString());
+			if (config == null) {
+				continue;
 			}
 			
-			setRelation(UUID.fromString(POV), x.getB(), UUID.fromString(x.getA()), FPOV); // FOIL be like
-			return;
-		});
-		
-		PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
-		
-		List<Sound> sounds = new LinkedList<>();
-		int i = 1;
-		
-		EnumSet.allOf(Sound.class).forEach(x -> {
-			sounds.add(x);
-		});
-		
-		for (Sound s : sounds) {
-			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EssentialsMain.plugin, new Runnable() {
-				
-				@Override
-				public void run()
-				{
-					pd.playSound(s);
-					pd.sendMessage("playing sound :" + s.toString());
-					
-				}
-				
-			}, 30 * i);
-			i++;
+			config.getKeys(false).stream()
+			.forEach(x-> {
+				setRelation(pd.getUniqueId(), UUID.fromString(x), Relation.valueOf(config.getString(x)));
+			});
 		}
-		
 	}
+	
+	
+	
+	
+	
 }
