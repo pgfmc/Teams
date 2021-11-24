@@ -78,6 +78,8 @@ public class Main extends JavaPlugin {
 		getCommand("friendlist").setExecutor(new FriendsListCommand());
 		getCommand("favorite").setExecutor(new FavoriteCommand());
 		getCommand("unfavorite").setExecutor(new UnfavoriteCommand());
+		
+		getCommand("unfriend").setTabCompleter(new UnfriendCommand());
 	}
 	
 	@Override
