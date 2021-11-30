@@ -13,16 +13,16 @@ public class FriendRequestCommand implements CommandExecutor {
 		
 		if (!(sender instanceof Player)) {
 			
-			sender.sendMessage("Data output to the console.");
+			sender.sendMessage("uhh no lkol");
 			return false;
 		} else if (Bukkit.getPlayer(args[0]) == null) {
-			sender.sendMessage("Enter in a valid player!");
+			sender.sendMessage("§cEnter in a valid player.");
 			return true;
 		} else if (((Player) sender).getUniqueId().equals(Bukkit.getPlayer(args[0]).getUniqueId())) {
-			sender.sendMessage("You can't friend yourself!");
+			sender.sendMessage("§cYou can't friend yourself!");
 			return true;
 		} else if (Friends.getRelation(((Player) sender).getUniqueId(), Bukkit.getPlayer(args[0]).getUniqueId()).isFriend()) {
-			sender.sendMessage("They are already your friend!");
+			sender.sendMessage("§6They are already your friend!");
 			return true;
 		}
 		

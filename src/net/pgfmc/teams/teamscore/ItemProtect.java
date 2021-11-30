@@ -86,7 +86,7 @@ public class ItemProtect implements Listener {
 		}, 2400); // two minutes
 		
 		e.getDrops().clear();
-		p.sendMessage("§cYour dropped items are protected for 120 seconds.");
+		p.sendMessage("§dYour dropped items are protected for 2 minutes.");
 	}
 	
 	@EventHandler

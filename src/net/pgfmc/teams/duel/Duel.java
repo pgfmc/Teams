@@ -57,8 +57,8 @@ public class Duel {
 		join(PR);
 		join(CH);
 
-		PR.sendMessage(CH.getName() + " §6has accepted your Challenge to §cDuel!");
-		CH.sendMessage("§6You have accepted the Challenge!");
+		PR.sendMessage("§n" + CH.getRankedName() + " §r§6has accepted your Challenge to §cDuel!");
+		CH.sendMessage("§aYou have accepted the Challenge!");
 		Duel d = this;
 		
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
@@ -165,10 +165,10 @@ public class Duel {
 		for (PlayerData pd : HELLOGAMERS) {
 			
 			if (killer != null) {
-				pd.sendMessage(ded.getName() + " was killed by " + killer.getName() + ".");
+				pd.sendMessage("§n" + ded.getRankedName() + "§r§6 was killed by §n" + killer.getRankedName() + "§r§6.");
 				pd.playSound(Sound.ENTITY_PLAYER_BIG_FALL);
 			} else if (wasKilled) {
-				pd.sendMessage(ded.getName() + " was killed.");
+				pd.sendMessage("§n" + ded.getName() + "§r§6 was killed.");
 				pd.playSound(Sound.ENTITY_PLAYER_BIG_FALL);
 			}
 		}
@@ -189,7 +189,7 @@ public class Duel {
 							continue;
 						}
 						pd.playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
-						pd.sendMessage("§6" + Winner.getName() + " has won the duel!");
+						pd.sendMessage("§n" + Winner.getRankedName() + " §r§ahas won the duel!");
 					}
 					
 					Winner.playSound(Sound.ENTITY_PLAYER_LEVELUP);

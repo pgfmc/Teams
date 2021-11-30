@@ -9,7 +9,6 @@ import net.pgfmc.teams.data.BBEvent;
 import net.pgfmc.teams.data.BPE;
 import net.pgfmc.teams.data.BlockInteractEvent;
 import net.pgfmc.teams.data.Ownable.Lock;
-import net.pgfmc.teams.data.blocks.ContainerDataOutputCommand;
 import net.pgfmc.teams.data.blocks.ContainerDatabase;
 import net.pgfmc.teams.data.entities.DeathEvent;
 import net.pgfmc.teams.data.entities.EntityClick;
@@ -71,15 +70,12 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new DuelEvents(), this);
 		getServer().getPluginManager().registerEvents(Friends.DEFAULT, this);	
 		
-		getCommand("containerDump").setExecutor(new ContainerDataOutputCommand());
 		getCommand("friendRequest").setExecutor(new FriendRequestCommand());
 		getCommand("friendAccept").setExecutor(new FriendAcceptCommand());
 		getCommand("unfriend").setExecutor(new UnfriendCommand());
 		getCommand("friendlist").setExecutor(new FriendsListCommand());
 		getCommand("favorite").setExecutor(new FavoriteCommand());
 		getCommand("unfavorite").setExecutor(new UnfavoriteCommand());
-		
-		getCommand("unfriend").setTabCompleter(new UnfriendCommand());
 	}
 	
 	@Override

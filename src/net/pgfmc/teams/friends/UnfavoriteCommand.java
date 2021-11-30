@@ -28,7 +28,7 @@ public class UnfavoriteCommand implements CommandExecutor {
 		}
 		
 		Friends.setRelation(((Player) sender).getUniqueId(), friend.getUniqueId(), Relation.FRIEND);
-		sender.sendMessage(args[0] + " is Unfavorited!");
+		sender.sendMessage("§n" + friend.getRankedName() + "§r§c is Unfavorited!");
 		
 		return true;
 	}

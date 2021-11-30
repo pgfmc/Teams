@@ -23,7 +23,6 @@ public class Claim {
 		.filter(x -> x.getLocation().getWorld() == loca.getWorld())
 		.filter(x -> x.inRange(loca))
 		.reduce((B, x) -> {
-			System.out.println("beacon at " + x.getLocation().toString() + " loaded.");
 			double brah = x.getDistance(loca);
 			if (B == null) {
 				
@@ -56,7 +55,6 @@ public class Claim {
 		.map((x) -> x.getValue())
 		.filter((x -> x.getLocation().getWorld() == l2.getWorld()))
 		.filter(x -> {
-			System.out.println("Filtering " + x.getLocation().toString());
 			switch(x.isAllowed(player)) {
 			case DISALLOWED:
 				return true;

@@ -81,17 +81,14 @@ public abstract class Ownable {
 		case LOCKED: // ------------------------ only the owner can access.
 			
 			if (placer.equals(player)) {
-				System.out.println("out 1");
 				
 				return Security.OWNER;
 			}
-			System.out.println("out 2");
 			return Security.DISALLOWED;
 			
 		case FAVORITES_ONLY:
 			
 			if (placer.equals(player)) {
-				System.out.println("out 3");
 				
 				return Security.OWNER;
 				
@@ -99,13 +96,11 @@ public abstract class Ownable {
 				return Security.FAVORITE;
 				
 			}
-			System.out.println("out 5");
 			return Security.DISALLOWED;
 			
 		case FRIENDS_ONLY: // --------------------- only Friends can access.
 			
 			if (placer.equals(player)) {
-				System.out.println("out 3");
 				
 				return Security.OWNER;
 				
@@ -116,23 +111,19 @@ public abstract class Ownable {
 				
 				return Security.FRIEND;
 			}
-			System.out.println("out 5");
 			return Security.DISALLOWED;
 		
 		case UNLOCKED: // --------------------- anybody can access.
 			if (placer.equals(player)) {
-				System.out.println("out 6");
 				return Security.OWNER;
 				
 			} else if (Friends.getRelation(placer.getUniqueId(), player.getUniqueId()) == Relation.FAVORITE) {
 				return Security.FAVORITE;
 				
 			}else if (friendsList.contains(player)) {
-				System.out.println("out 7");
 				return Security.FRIEND;
 				
 			}
-			System.out.println("out 8");
 			return Security.UNLOCKED;
 			
 		default:

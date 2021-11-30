@@ -37,7 +37,6 @@ public class AttackEvent implements Listener {
 			
 			if (e.getEntity() instanceof Player) { // gets all players in the situation
 				
-				e.setDamage(0);
 				System.out.println("target is player");
 				
 				Player target = (Player) e.getEntity();
@@ -49,7 +48,7 @@ public class AttackEvent implements Listener {
 					
 					if (isFlower(attacker.getInventory().getItemInMainHand().getType())) {
 						Friends.DEFAULT.createRequest(attacker, target);
-						e.setDamage(0);
+						e.setCancelled(true);
 						return;
 					}
 					
@@ -69,10 +68,12 @@ public class AttackEvent implements Listener {
 							
 							if (r == null) {
 								DuelRequester.DEFAULT.createRequest(attacker, target);
+								e.setDamage(0);
 								return;
 								
 							} else {
 								DuelRequester.DEFAULT.accept(r);
+								e.setDamage(0);
 								return;
 								
 							}
@@ -82,6 +83,7 @@ public class AttackEvent implements Listener {
 								&& ATK.getPlayers().get(tpd) == PlayerState.DUELING) { // if same Duel : allow attack
 							
 							if (e.getFinalDamage() >= target.getHealth()) {
+								e.setDamage(0);
 								ATK.playerDie(tpd, apd, true);
 								return;
 							}
@@ -92,6 +94,7 @@ public class AttackEvent implements Listener {
 							
 						}
 					} else if (ATKnull && DEF.getPlayers().get(PlayerData.getPlayerData(target)) == PlayerState.DUELING) { 
+						e.setDamage(0);
 						DEF.join(PlayerData.getPlayerData(attacker));
 						return;
 						

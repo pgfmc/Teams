@@ -41,8 +41,6 @@ public class OwnableEntity extends Ownable {
 	public OwnableEntity(PlayerData player, Lock lock, UUID entity) {
 		super(player, lock);
 		
-		System.out.println("New Entity Contaiener Created!");
-		
 		this.entity = entity;
 		entities.put(entity, this);
 	}

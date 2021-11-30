@@ -183,19 +183,6 @@ public class OwnableBlock extends Ownable {
 		return claim;
 	}
 	
-	public static void outputData() { // outputs stored container data.
-		
-		System.out.println("Container Data:");
-		
-		for (Block block : containers.keySet()) {
-			
-			System.out.println("	" + Utility.locToString(block.getLocation()) + 
-					":\n      type: " + block.getType().toString() + 
-					" \n      player: " + containers.get(block).placer.getName() + 
-					" \n      locked? :" + containers.get(block).lock);
-		}
-	}
-	
 	public static boolean isOwnable(Material type) {
 		return (type == Material.BEACON || type == Material.GOLD_BLOCK || type == Material.BARREL || type == Material.BLAST_FURNACE || type == Material.BREWING_STAND || type == Material.CHEST || type == Material.DISPENSER || type == Material.DROPPER || type == Material.FURNACE || type == Material.HOPPER || type == Material.SHULKER_BOX || type == Material.SMOKER || type == Material.TRAPPED_CHEST);
 	}

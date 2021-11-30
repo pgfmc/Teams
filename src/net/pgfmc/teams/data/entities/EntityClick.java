@@ -19,11 +19,6 @@ public class EntityClick implements Listener {
 	@EventHandler
 	public void EntityInteract(PlayerInteractAtEntityEvent e) {
 		
-		System.out.println("PlayerInteractAtEntityEvent has been ran!");
-		System.out.println(e.getPlayer());
-		System.out.println(e.getRightClicked());
-		System.out.println(e.getPlayer().getInventory().getItemInMainHand());
-		
 		if (e.getPlayer() != null && e.getRightClicked() != null && Utility.isSurvival(e.getRightClicked().getWorld()) && e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 			
 			PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
@@ -59,7 +54,7 @@ public class EntityClick implements Listener {
 							
 							e.setCancelled(true);
 							
-							pd.sendMessage("§6Only Teammates have access now!");
+							pd.sendMessage("§6Favorites Only!");
 							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 							cont.setLock(Lock.FAVORITES_ONLY);
 							return;
@@ -67,7 +62,7 @@ public class EntityClick implements Listener {
 						case FAVORITES_ONLY:
 							e.setCancelled(true);
 							
-							pd.sendMessage("§6Set Friends Only.");
+							pd.sendMessage("§6Friends Only.");
 							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 							cont.setLock(Lock.FRIENDS_ONLY);
 							return;
@@ -76,7 +71,7 @@ public class EntityClick implements Listener {
 
 							e.setCancelled(true);
 							
-							pd.sendMessage("§6Set Unlocked.");
+							pd.sendMessage("§6Unlocked!");
 							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 							cont.setLock(Lock.UNLOCKED);
 							return;

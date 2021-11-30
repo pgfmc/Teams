@@ -73,7 +73,7 @@ public class DuelEvents implements Listener {
 			
 			e.setCancelled(true);
 			BlakeIsBest.playerDie(simp, null, false);
-			BlakeIsBest.sendMessage("§6" + simp.getName() + " forfeits the duel!");
+			BlakeIsBest.sendMessage("§n" + simp.getRankedName() + " §r§cforfeits the duel!");
 		}
 	}
 	
@@ -87,8 +87,8 @@ public class DuelEvents implements Listener {
 			
 			if (e.getPlayer().getLocation().getWorld() != BlakeIsBest.getWorld()) {
 				BlakeIsBest.playerDie(simp, null, false);
-				simp.sendMessage("§6You have left the §cDuel §6 becuause you entered a different world!");
-				BlakeIsBest.sendMessage("§6" + simp.getName() + " has left the world.");
+				simp.sendMessage("§cYou have left the §lDuel §r§c becuause you entered a different world!");
+				BlakeIsBest.sendMessage("§n" + simp.getRankedName() + "§r§c has forfeit.");
 			}
 		}
 	}
@@ -102,8 +102,8 @@ public class DuelEvents implements Listener {
 			
 			if (e.getNewGameMode() != GameMode.SURVIVAL && e.getPlayer().getGameMode() != GameMode.SURVIVAL) {
 				BlakeIsBest.playerDie(simp, null, false);
-				simp.sendMessage("§6You have left the §cDuel §6 becuause you changed your gamemode!");
-				BlakeIsBest.sendMessage("§6" + simp.getName() + " has been disqualified.");
+				simp.sendMessage("§cYou have left the §lDuel §r§c becuause you changed your gamemode!");
+				BlakeIsBest.sendMessage("§n" + simp.getRankedName() + " §r§chas been disqualified.");
 			}
 		}
 	}

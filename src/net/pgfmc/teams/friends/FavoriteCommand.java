@@ -28,7 +28,7 @@ public class FavoriteCommand implements CommandExecutor {
 		}
 		
 		Friends.setRelation(((Player) sender).getUniqueId(), friend.getUniqueId(), Relation.FAVORITE);
-		sender.sendMessage(args[0] + " is now a favorite!");
+		sender.sendMessage("§n" + friend.getRankedName() + "§r§a is now a favorite!");
 		
 		return true;
 	}

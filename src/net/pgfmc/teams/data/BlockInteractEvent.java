@@ -325,7 +325,7 @@ public class BlockInteractEvent implements Listener {
 					
 					e.setCancelled(true);
 					
-					pd.sendMessage("§6Default lock set: FAVORITES ONLY");
+					pd.sendMessage("§6Default lock: FAVORITES ONLY");
 					pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 					pd.setData("lockMode", Lock.FAVORITES_ONLY);
 					return;
@@ -333,7 +333,7 @@ public class BlockInteractEvent implements Listener {
 				case FAVORITES_ONLY:
 					e.setCancelled(true);
 					
-					pd.sendMessage("§6Default lock set: FRIENDS ONLY");
+					pd.sendMessage("§6Default lock: FRIENDS ONLY");
 					pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 					pd.setData("lockMode", Lock.FRIENDS_ONLY);
 					return;	
@@ -342,7 +342,7 @@ public class BlockInteractEvent implements Listener {
 
 					e.setCancelled(true);
 					
-					pd.sendMessage("§6Default lock set: UNLOCKED");
+					pd.sendMessage("§6Default lock: UNLOCKED");
 					pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 					pd.setData("lockMode", Lock.UNLOCKED);
 					return;
@@ -351,7 +351,7 @@ public class BlockInteractEvent implements Listener {
 					
 					e.setCancelled(true);
 					
-					pd.sendMessage("§6Default lock set: LOCKED");
+					pd.sendMessage("§6Default lock: LOCKED");
 					pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 					pd.setData("lockMode", Lock.LOCKED);
 					return;

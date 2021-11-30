@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.inventory.FriendsInventory;
 
 public class FriendsListCommand implements CommandExecutor {
 	
@@ -17,7 +16,9 @@ public class FriendsListCommand implements CommandExecutor {
 			return true;
 		}
 		
-		((Player) sender).openInventory(new FriendsInventory.FriendsList(PlayerData.getPlayerData((Player) sender)).getInventory());
+		for (PlayerData pd : Friends.getFriendsList(((Player) sender).getUniqueId())) {
+			sender.sendMessage("§n" + pd.getRankedName());
+		}
 		
 		return true;
 	}

@@ -6,10 +6,6 @@ main: net.pgfmc.teams.teamscore.Main
 description: implemets the Teams system
 depend: [Multiverse-Core, PGF-Essentials]
 commands:
-   containerDump:
-      usage: /containerDump
-      permission: teams.dump
-      description: dumps all container data into the console, for debug purposes.
    friendRequest:
       aliases: [fr]
       usage: /<command> <player>
