@@ -1,5 +1,5 @@
 name: Teams
-version: 1.2.3.b
+version: 1.3.0
 api-version: 1.16
 author: [bk, CrimsonDart]
 main: net.pgfmc.teams.teamscore.Main
