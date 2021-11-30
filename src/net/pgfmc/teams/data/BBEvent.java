@@ -69,7 +69,7 @@ public class BBEvent implements Listener {
 					if (cont.isAllowed(pd) == Security.OWNER || (cont.isAllowed(pd) == Security.FRIEND ))  {
 						OwnableBlock.remove(e.getBlock());
 					} else {
-						pd.sendMessage("§cThis block belongs to someone else.");
+						pd.sendMessage("§cYou don't own this.");
 						e.setCancelled(true);
 						pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 						return;

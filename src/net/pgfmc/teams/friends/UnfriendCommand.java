@@ -20,12 +20,12 @@ public class UnfriendCommand implements CommandExecutor{
 		OfflinePlayer target = null;
 		
 		if (!(sender instanceof Player)) {
-			sender.sendMessage("§oThis isnt a player.");
+			sender.sendMessage("§cOnly players can execute this command.");
 			return false;
 		}
 		
 		if (p1 == null) {
-			sender.sendMessage("§oThis isnt a player.");
+			sender.sendMessage("Something bad happened in UnfriendCommand.java");
 			return true;
 		}
 		
@@ -40,17 +40,17 @@ public class UnfriendCommand implements CommandExecutor{
 			}
 		}
 		if (target == null) {
-			sender.sendMessage("Enter a valid player!");
+			sender.sendMessage("§cCould not find player §6§n" + args[0] + "§r§c.");
 			return true;
 		}
 		
 		if (!Friends.getFriendsList(p1.getUniqueId()).contains(PlayerData.getPlayerData(target))) { // and he
-			sender.sendMessage("§n" + PlayerData.getPlayerData(target).getRankedName() + "§r§c is not in your friends list!");
+			sender.sendMessage("§n" + PlayerData.getPlayerData(target).getRankedName() + "§r§c is not in your friends list.");
 			return true;
 		}
 		
 		Friends.setRelation(p1.getUniqueId(), Relation.NONE, target.getUniqueId(), Relation.NONE);
-		p1.sendMessage("§cYou have Unfriended §n" + PlayerData.getPlayerData(target).getRankedName() + "§r§c.");
+		p1.sendMessage("§cYou have unfriended §n" + PlayerData.getPlayerData(target).getRankedName() + "§r§c.");
 		p1.playSound(Sound.BLOCK_CALCITE_HIT);
 		
 		return true;

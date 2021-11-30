@@ -54,7 +54,7 @@ public class EntityClick implements Listener {
 							
 							e.setCancelled(true);
 							
-							pd.sendMessage("§6Favorites Only!");
+							pd.sendMessage("§6Favorites only!");
 							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 							cont.setLock(Lock.FAVORITES_ONLY);
 							return;
@@ -62,7 +62,7 @@ public class EntityClick implements Listener {
 						case FAVORITES_ONLY:
 							e.setCancelled(true);
 							
-							pd.sendMessage("§6Friends Only.");
+							pd.sendMessage("§6Friends only!");
 							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 							cont.setLock(Lock.FRIENDS_ONLY);
 							return;
@@ -80,7 +80,7 @@ public class EntityClick implements Listener {
 							
 							e.setCancelled(true);
 							
-							pd.sendMessage("§6Set Locked.");
+							pd.sendMessage("§6Set locked.");
 							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 							cont.setLock(Lock.LOCKED);
 							return;
@@ -104,7 +104,7 @@ public class EntityClick implements Listener {
 							
 							e.setCancelled(true);
 							
-							pd.sendMessage("§cAccess Denied.");
+							pd.sendMessage("§cAccess denied.");
 							pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 							return;
 							
@@ -129,7 +129,7 @@ public class EntityClick implements Listener {
 							
 							e.setCancelled(true);
 							
-							pd.sendMessage("§6Favorites Only!");
+							pd.sendMessage("§6Favorites only!");
 							pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 							cont.setLock(Lock.FAVORITES_ONLY);
 							return;

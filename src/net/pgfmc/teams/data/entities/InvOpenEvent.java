@@ -85,7 +85,7 @@ public class InvOpenEvent implements Listener {
 								
 								e.setCancelled(true);
 								
-								pd.sendMessage("§6Fully Locked!");
+								pd.sendMessage("§6Fully locked!");
 								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 								cont.setLock(Lock.LOCKED);
 								return;
@@ -108,7 +108,7 @@ public class InvOpenEvent implements Listener {
 								
 								e.setCancelled(true);
 								
-								pd.sendMessage("§cAccess Denied.");
+								pd.sendMessage("§cAccess denied.");
 								pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 								return;
 								
@@ -133,7 +133,7 @@ public class InvOpenEvent implements Listener {
 								
 								e.setCancelled(true);
 								
-								pd.sendMessage("§6Favorites Only!");
+								pd.sendMessage("§6Favorites only!");
 								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 								cont.setLock(Lock.FAVORITES_ONLY);
 								return;
@@ -150,7 +150,7 @@ public class InvOpenEvent implements Listener {
 							
 							e.setCancelled(true);
 							
-							pd.sendMessage("§cAccess Denied.");
+							pd.sendMessage("§cAccess denied.");
 							pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 							return;
 						}
@@ -160,7 +160,7 @@ public class InvOpenEvent implements Listener {
 							
 							e.setCancelled(true);
 							
-							pd.sendMessage("§cAccess Denied.");
+							pd.sendMessage("§cAccess denied.");
 							pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 							return;
 						}

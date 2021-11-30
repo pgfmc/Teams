@@ -164,7 +164,7 @@ public class BlockInteractEvent implements Listener {
 								
 								e.setCancelled(true);
 								
-								pd.sendMessage("§cAccess Denied.");
+								pd.sendMessage("§cAccess denied.");
 								pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 								return;
 							}
@@ -174,7 +174,7 @@ public class BlockInteractEvent implements Listener {
 								
 								e.setCancelled(true);
 								
-								pd.sendMessage("§cAccess Denied.");
+								pd.sendMessage("§cAccess denied.");
 								pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 								return;
 							}

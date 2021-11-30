@@ -40,13 +40,12 @@ public class BPE implements Listener {
 				if (block.getType() == Material.BEACON || block.getType() == Material.GOLD_BLOCK) {
 					if (Claim.isEnemyClaimsInRange(block.getLocation(), pd).size() > 0) {
 						e.setCancelled(true);
-						pd.sendMessage("§cYou can't claim this land!");
-						pd.sendMessage("§cIts Border overlaps with another claim's border!");
+						pd.sendMessage("§cCannot claim land that overlaps another.");
 						pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 						return;
 					} else {
 						new OwnableBlock(pd, block, null, true);
-						pd.sendMessage("§aSurrounding land Claimed!");
+						pd.sendMessage("§aSurrounding land claimed!");
 						pd.playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
 						return;
 					}
@@ -55,7 +54,7 @@ public class BPE implements Listener {
 				OwnableBlock claim = Claim.getEffectiveClaim(block.getLocation());
 				
 				if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
-					pd.sendMessage("§cThis land is claimed, you can't place blocks here.");
+					pd.sendMessage("§cCannot place blocks in claimed land.");
 					e.setCancelled(true);
 					pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 					return;

@@ -6,6 +6,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+
 public class FriendRequestCommand implements CommandExecutor {
 	
 	@Override
@@ -13,16 +15,16 @@ public class FriendRequestCommand implements CommandExecutor {
 		
 		if (!(sender instanceof Player)) {
 			
-			sender.sendMessage("uhh no lkol");
+			sender.sendMessage("§cOnly players can execute this command.");
 			return false;
 		} else if (Bukkit.getPlayer(args[0]) == null) {
-			sender.sendMessage("§cEnter in a valid player.");
+			sender.sendMessage("§cCould not find player §6§n" + args[0] + "§r§c.");
 			return true;
 		} else if (((Player) sender).getUniqueId().equals(Bukkit.getPlayer(args[0]).getUniqueId())) {
 			sender.sendMessage("§cYou can't friend yourself!");
 			return true;
 		} else if (Friends.getRelation(((Player) sender).getUniqueId(), Bukkit.getPlayer(args[0]).getUniqueId()).isFriend()) {
-			sender.sendMessage("§6They are already your friend!");
+			sender.sendMessage("§6Already friends with §n" + PlayerData.getPlayerData(Bukkit.getPlayer(args[0])).getRankedName() + "§r§6.");
 			return true;
 		}
 		
