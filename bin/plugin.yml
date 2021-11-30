@@ -8,37 +8,37 @@ depend: [Multiverse-Core, PGF-Essentials]
 commands:
    containerDump:
       usage: /containerDump
-      permission: Teams.dump
+      permission: teams.dump
       description: dumps all container data into the console, for debug purposes.
    friendRequest:
       aliases: [fr]
       usage: /<command> <player>
-      permission: Teams.friend
+      permission: teams.friend.request
       description: sends a friend request to <player>.
    friendAccept:
       aliases: [fa]
       usage: /<command>
-      permission: Teams.friend
+      permission: teams.friend.accept
       description: accepts a friend request.
    unfriend:
       aliases: [uf]
       usage: /<command> <friend>
-      permission: Teams.friend
+      permission: teams.friend.unfriend
       description: unfriends <player>
    friendlist:
       aliases: [flist]
       usage: /<command>
-      permission: Teams.friend
+      permission: teams.friend.list
       description: shows friends list.
    favorite:
       aliases: [fav]
       usage: /<command> <friend>
-      permission: Teams.friend
+      permission: teams.friend.fav
       description: favorites a friend.
    unfavorite: 
       aliases: [unfav]
       usage: /<command> <favorite>
-      permission: Teams.friend
+      permission: teams.friend.unfav
       description: unfavorites a friend.
 #
 # -------------------------------||------------------------------

@@ -37,7 +37,7 @@ public class AttackEvent implements Listener {
 			
 			if (e.getEntity() instanceof Player) { // gets all players in the situation
 				
-				e.setCancelled(true);
+				e.setDamage(0);
 				System.out.println("target is player");
 				
 				Player target = (Player) e.getEntity();
@@ -49,7 +49,7 @@ public class AttackEvent implements Listener {
 					
 					if (isFlower(attacker.getInventory().getItemInMainHand().getType())) {
 						Friends.DEFAULT.createRequest(attacker, target);
-						e.setCancelled(true);
+						e.setDamage(0);
 						return;
 					}
 					
@@ -88,8 +88,6 @@ public class AttackEvent implements Listener {
 							
 							tpd.setData("duelHit", true);
 							
-							
-							e.setCancelled(false);
 							return;
 							
 						}

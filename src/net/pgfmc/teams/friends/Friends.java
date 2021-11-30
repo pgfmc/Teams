@@ -10,9 +10,7 @@ import java.util.stream.Collectors;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
@@ -89,11 +87,6 @@ public class Friends extends Requester implements Listener {
 		});
 	}
 	
-	@EventHandler
-	public void onLeave(PlayerQuitEvent e) {
-		
-	}
-	
 	/**
 	 * Stores data for friends functionality
 	 * @param p1 Player 1; 
@@ -107,10 +100,13 @@ public class Friends extends Requester implements Listener {
 		
 		friends.put(p1.toString(), p2.toString(), r12);
 		friends.put(p2.toString(), p1.toString(), r21);
+		
+		save();
 	}
 	
 	public static void setRelation(UUID POV, UUID friend, Relation relate) {
 		friends.put(POV.toString(), friend.toString(), relate);
+		save();
 	}
 	
 	public static Relation getRelation(UUID POV, UUID friend) {

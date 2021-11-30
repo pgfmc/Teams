@@ -209,15 +209,15 @@ public class OwnableBlock extends Ownable {
 		block = bloke.getBlock();
 		
 		if (block.getType() == Material.GOLD_BLOCK) {
-			return (bloke.getBlockX() - 7 <= loc.getBlockX() &&
-					bloke.getBlockX() + 7 >= loc.getBlockX() &&
-					bloke.getBlockZ() -7 <= loc.getBlockZ() &&
-					bloke.getBlockZ() + 7 >= loc.getBlockZ() &&
-					bloke.getBlockY() - 7 <= loc.getBlockY() &&
-					bloke.getBlockY() + 7 >= loc.getBlockY());
+			return (bloke.getBlockX() - 8 <= loc.getBlockX() &&
+					bloke.getBlockX() + 8 >= loc.getBlockX() &&
+					bloke.getBlockZ() -8 <= loc.getBlockZ() &&
+					bloke.getBlockZ() + 8 >= loc.getBlockZ() &&
+					bloke.getBlockY() - 8 <= loc.getBlockY() &&
+					bloke.getBlockY() + 8 >= loc.getBlockY());
 		} else {
-			int mod = (((Beacon) block.getState()).getTier() * 10) + 10;
-			return (mod != 10 &&
+			int mod = (((Beacon) block.getState()).getTier() * 11) + 11;
+			return (mod != 11 &&
 					bloke.getBlockX() - mod <= loc.getBlockX() && 
 					loc.getBlockX() <= bloke.getBlockX() + mod && 
 					bloke.getBlockZ() - mod <= loc.getBlockZ() && 

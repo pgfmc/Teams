@@ -46,6 +46,8 @@ public class BPE implements Listener {
 						return;
 					} else {
 						new OwnableBlock(pd, block, null, true);
+						pd.sendMessage("§aSurrounding land Claimed!");
+						pd.playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
 						return;
 					}
 				}

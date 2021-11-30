@@ -1,6 +1,7 @@
 package net.pgfmc.teams.data.entities;
 
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,6 +34,7 @@ public class TameEvent implements Listener {
 					return;
 				} else {
 					new OwnableEntity(pd, PlayerData.getData(player, "lockMode"), e.getEntity().getUniqueId());
+					pd.playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
 				}
 			}
 		}
