@@ -4,9 +4,9 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -21,7 +21,7 @@ public class InvOpenEvent implements Listener {
 	@EventHandler
 	public void openEvent(InventoryOpenEvent e) {
 		
-		if (Utility.isSurvival(e.getPlayer().getWorld()) && e.getPlayer().getGameMode() == GameMode.SURVIVAL && e.getPlayer() instanceof CraftPlayer && e.getInventory().getHolder() instanceof Entity) {
+		if (Utility.isSurvival(e.getPlayer().getWorld()) && e.getPlayer().getGameMode() == GameMode.SURVIVAL && e.getPlayer() instanceof Player && e.getInventory().getHolder() instanceof Entity) {
 			
 			System.out.println(((Entity) e.getInventory().getHolder()).getUniqueId());
 			
