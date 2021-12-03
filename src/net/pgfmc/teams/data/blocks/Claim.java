@@ -19,7 +19,7 @@ public class Claim {
 	 */
 	public static OwnableBlock getEffectiveClaim(Location loca) { // returns the closest enemy beacon to the location input.
 		
-		Optional<OwnableBlock> b = OwnableBlock.claims.keySet().stream().map(x -> OwnableBlock.claims.get(x)) // stream to funnel down the beacons into the closest enemy beacon.
+		Optional<OwnableBlock> b = OwnableBlock.getClaims().stream() // stream to funnel down the beacons into the closest enemy beacon.
 		.filter(x -> x.getLocation().getWorld() == loca.getWorld())
 		.filter(x -> x.inRange(loca))
 		.reduce((B, x) -> {
@@ -51,8 +51,7 @@ public class Claim {
 	public static Set<OwnableBlock> isEnemyClaimsInRange(Location l2, PlayerData player) {
 		
 		return 
-		OwnableBlock.claims.entrySet().stream()
-		.map((x) -> x.getValue())
+		OwnableBlock.getClaims().stream()
 		.filter((x -> x.getLocation().getWorld() == l2.getWorld()))
 		.filter(x -> {
 			switch(x.isAllowed(player)) {

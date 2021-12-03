@@ -54,6 +54,16 @@ public class BlockInteractEvent implements Listener {
 				// Player is in survival mode
 				if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 					
+					if (e.getMaterial() != null && e.getMaterial().toString().contains("BUCKET")) {
+						
+						OwnableBlock beacon = Claim.getEffectiveClaim(block.getLocation());
+						
+						if (beacon != null && beacon.isAllowed(pd) == Security.DISALLOWED) {
+							pd.sendMessage("§cThis land is claimed.");
+							e.setCancelled(true);
+							return;
+						}
+					}
 					
 					if (OwnableBlock.getContainer(block) != null) {
 						
@@ -62,7 +72,7 @@ public class BlockInteractEvent implements Listener {
 						switch(cont.isAllowed(pd)) {
 						
 						case OWNER: {
-							if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+							if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.LEVER) {
 								
 								// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
 								
@@ -113,7 +123,7 @@ public class BlockInteractEvent implements Listener {
 						}
 						
 						case FAVORITE: {
-							if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+							if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.LEVER) {
 								
 								// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
 								
@@ -160,7 +170,7 @@ public class BlockInteractEvent implements Listener {
 						}
 						
 						case FRIEND: {
-							if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+							if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.LEVER) {
 								
 								e.setCancelled(true);
 								
@@ -170,7 +180,7 @@ public class BlockInteractEvent implements Listener {
 							}
 						}
 						case UNLOCKED: {
-							if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+							if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.LEVER) {
 								
 								e.setCancelled(true);
 								
@@ -318,7 +328,7 @@ public class BlockInteractEvent implements Listener {
 					}
 					
 				}
-			} else if (e.getAction() == Action.RIGHT_CLICK_AIR && e.getItem().getType() == Material.TRIPWIRE_HOOK) {
+			} else if (e.getAction() == Action.RIGHT_CLICK_AIR && e.getItem().getType() == Material.LEVER) {
 				
 				switch((Lock) pd.getData("lockMode")) {
 				case LOCKED:

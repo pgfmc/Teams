@@ -40,7 +40,7 @@ public class ContainerDatabase {
 				
 				ConfigurationSection configSec = database.getConfigurationSection(key);
 				
-				Location loc = Utility.StringtoLoc(key);
+				
 				
 				PlayerData pd = PlayerData.getPlayerData(UUID.fromString(configSec.getString("player")));
 				
@@ -57,16 +57,11 @@ public class ContainerDatabase {
 					lock = Lock.valueOf(configSec.getString("Lock"));
 				}
 				
-				boolean claim;
 				
-				if (configSec.get("Claim") == null) {
-					claim = false;
-				} else {
-					claim = configSec.getBoolean("Claim");
+				Block block = Utility.getBlock(key);
+				if (OwnableBlock.isOwnable(block.getType())) {
+					new OwnableBlock(pd, block, lock);
 				}
-				
-				new OwnableBlock(pd, loc.getWorld().getBlockAt(loc), lock, claim);
-				
 			}
 		}
 		
@@ -96,12 +91,11 @@ public class ContainerDatabase {
 		File file = new File(Main.getPlugin().getDataFolder() + File.separator + "BlockContainers.yml"); // Creates a File object
 		FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 		
-		for (Entry<Block, OwnableBlock> blocke : OwnableBlock.containers.entrySet()) { // for all BlockContainers and beacons.
+		for (Entry<Location, OwnableBlock> blocke : OwnableBlock.containers.entrySet()) { // for all BlockContainers and beacons.
 			
-			Block block = blocke.getKey();
 			OwnableBlock cont = blocke.getValue();
 			
-			Location location = block.getLocation();
+			Location location = blocke.getKey();
 			PlayerData player = cont.getPlayer();
 			
 			// if location is not found, a new one is created.
@@ -113,7 +107,6 @@ public class ContainerDatabase {
 			blocc.set("isLocked", null);
 			blocc.set("player", player.getUniqueId().toString());
 			blocc.set("Lock", cont.getLock().toString());
-			blocc.set("Claim", cont.isClaim());
 			
 			database.set(Utility.locToString(location), blocc);
 			

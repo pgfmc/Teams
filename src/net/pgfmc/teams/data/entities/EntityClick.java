@@ -45,7 +45,7 @@ public class EntityClick implements Listener {
 				switch(sec) {
 				
 				case OWNER: {
-					if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+					if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.LEVER) {
 						
 						// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
 						
@@ -95,7 +95,7 @@ public class EntityClick implements Listener {
 					}
 				}
 				case FAVORITE: {
-					if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+					if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.LEVER) {
 						
 						// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
 						
@@ -145,7 +145,7 @@ public class EntityClick implements Listener {
 					
 				
 				case FRIEND: 
-					if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+					if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.LEVER) {
 					
 					e.setCancelled(true);
 					
@@ -155,7 +155,7 @@ public class EntityClick implements Listener {
 				}
 				
 				case UNLOCKED: 
-					if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK) {
+					if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.LEVER) {
 						
 						e.setCancelled(true);
 						

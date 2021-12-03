@@ -1,6 +1,7 @@
 package net.pgfmc.teams.data;
 
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,7 +11,6 @@ import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.Ownable.Security;
 import net.pgfmc.teams.data.blocks.Claim;
 import net.pgfmc.teams.data.blocks.OwnableBlock;
-import net.pgfmc.teams.teamscore.Utility;
 
 /**
 @author CrimsonDart
@@ -54,41 +54,52 @@ public class BBEvent implements Listener {
 	@EventHandler
 	public void blockBreak(BlockBreakEvent e) {
 		
-		if (Utility.isSurvival(e.getPlayer().getWorld())) { // if in survival world
+		if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 			
-			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
+			PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
+			
+			OwnableBlock cont = OwnableBlock.getContainer(e.getBlock());
+			OwnableBlock claim = Claim.getEffectiveClaim(e.getBlock().getLocation());
+			
+			// removes the ownable if able to
+			if (cont != null) {
 				
-				PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
+				Security s = cont.isAllowed(pd);
+				Security c = claim.isAllowed(pd);
 				
-				OwnableBlock cont = OwnableBlock.getContainer(e.getBlock());
-				OwnableBlock claim = Claim.getEffectiveClaim(e.getBlock().getLocation());
-				
-				// removes the ownable if able to
-				if (cont != null) {
-					
-					if (cont.isAllowed(pd) == Security.OWNER || (cont.isAllowed(pd) == Security.FRIEND ))  {
-						OwnableBlock.remove(e.getBlock());
-					} else {
-						pd.sendMessage("§cYou don't own this.");
-						e.setCancelled(true);
-						pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
-						return;
+				if (s == Security.OWNER || s == Security.FRIEND || s == Security.FAVORITE)  {
+					OwnableBlock.remove(e.getBlock());
+					if (e.getBlock().getType() == Material.LODESTONE || e.getBlock().getType() == Material.GOLD_BLOCK) {
+						pd.sendMessage("§6Claim Removed!");
 					}
-				}
-				
-				if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
-					pd.sendMessage("§cThis land is claimed.");
+					pd.playSound(Sound.BLOCK_NOTE_BLOCK_CHIME);
+					
+				} else if (c == Security.OWNER) {
+					OwnableBlock.remove(e.getBlock());
+					if (e.getBlock().getType() == Material.LODESTONE || e.getBlock().getType() == Material.GOLD_BLOCK) {
+						pd.sendMessage("§6Claim Removed!");
+					}
+					
+				} else {
+					pd.sendMessage("§cYou don't own this.");
 					e.setCancelled(true);
 					pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 					return;
 				}
-			} else if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-				OwnableBlock cont = OwnableBlock.getContainer(e.getBlock());
-				if (cont != null) {
-					OwnableBlock.remove(e.getBlock());
-				}
-			} else {
+			}
+			
+			
+			
+			if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
+				pd.sendMessage("§cThis land is claimed.");
 				e.setCancelled(true);
+				pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
+				return;
+			}
+		} else {
+			OwnableBlock cont = OwnableBlock.getContainer(e.getBlock());
+			if (cont != null) {
+				OwnableBlock.remove(e.getBlock());
 			}
 		}
 	}

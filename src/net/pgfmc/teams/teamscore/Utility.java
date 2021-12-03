@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -41,7 +42,7 @@ public interface Utility {
 		return item;
 	}
 	
-	static Location StringtoLoc(String string) { // converts a specific string to a location object
+	static Location stringToLoc(String string) { // converts a specific string to a location object
 		
 		char[] chars = string.toCharArray();
 		
@@ -96,6 +97,10 @@ public interface Utility {
 		
 	}
 	
+	static Block getBlock(String id) {
+		return stringToLoc(id).getBlock();
+	}
+	
 	static int worldToInt(World w) {
 		
 		if (w.equals(Worlds.SURVIVAL.world) ) {
@@ -121,4 +126,19 @@ public interface Utility {
 	static boolean isSurvival(World w) {
 		return (w.equals(Worlds.SURVIVAL.world) || w.equals(Worlds.SURVIVAL_NETHER.world) || w.equals(Worlds.SURVIVAL_END.world));
 	}
+	
+	/*
+	 * returns coordinates of 8x8 sections of chunks.
+	 * the chunk section containing the origin is 0,0
+	 *  
+	 * 
+	 * 
+	 */
+	//static String getChunkSection(Location l) {
+		
+	//}
+	
+	
+	
+	
 }

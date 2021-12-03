@@ -4,7 +4,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.block.Container;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -36,21 +35,6 @@ public class BPE implements Listener {
 			
 			if (pd.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 				
-				// claims manager :)
-				if (block.getType() == Material.BEACON || block.getType() == Material.GOLD_BLOCK) {
-					if (Claim.isEnemyClaimsInRange(block.getLocation(), pd).size() > 0) {
-						e.setCancelled(true);
-						pd.sendMessage("§cCannot claim land that overlaps another.");
-						pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
-						return;
-					} else {
-						new OwnableBlock(pd, block, null, true);
-						pd.sendMessage("§aSurrounding land claimed!");
-						pd.playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
-						return;
-					}
-				}
-				
 				OwnableBlock claim = Claim.getEffectiveClaim(block.getLocation());
 				
 				if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
@@ -60,11 +44,29 @@ public class BPE implements Listener {
 					return;
 				}
 				
-				// registers block as a container if it is a valid container.
-				if (block.getState() instanceof Container) {
-					OwnableBlock.createBlockContainer(pd, block);
+				// claims manager :)
+				if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) {
+					if (Claim.isEnemyClaimsInRange(block.getLocation(), pd).size() > 0) {
+						e.setCancelled(true);
+						pd.sendMessage("§cCannot claim land that overlaps another.");
+						
+						pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
+						return;
+					} else {
+						new OwnableBlock(pd, block, null);
+						pd.sendMessage("§aSurrounding land claimed!");
+						if (block.getType() == Material.GOLD_BLOCK) {
+							pd.sendMessage("§cGold blocks wont work as Claims soon! Begin to use lodestones instead.");
+						}
+						pd.playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
+						return;
+					}
 				}
 				
+				// registers block as a container if it is a valid container.
+				if (OwnableBlock.isOwnable(block.getType())) {
+					OwnableBlock.createBlockContainer(pd, block);
+				}
 			}
 		}
 	}

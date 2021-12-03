@@ -43,14 +43,9 @@ public class AttackEvent implements Listener {
 				
 				// if in a battle already -- V
 				
-				if (target.getGameMode() == GameMode.SURVIVAL && attacker.getGameMode() == GameMode.SURVIVAL &&
-						Utility.isSurvival(target.getWorld())) { // makes sure both players are in survival
+				if (target.getGameMode() == GameMode.SURVIVAL && attacker.getGameMode() == GameMode.SURVIVAL) { // makes sure both players are in survival
 					
-					if (isFlower(attacker.getInventory().getItemInMainHand().getType())) {
-						Friends.DEFAULT.createRequest(attacker, target);
-						e.setCancelled(true);
-						return;
-					}
+					
 					
 					PlayerData apd = PlayerData.getPlayerData(attacker);
 					PlayerData tpd = PlayerData.getPlayerData(target);
@@ -68,21 +63,21 @@ public class AttackEvent implements Listener {
 							
 							if (r == null) {
 								DuelRequester.DEFAULT.createRequest(attacker, target);
-								e.setDamage(0);
+								e.setCancelled(true);
 								return;
 								
 							} else {
 								DuelRequester.DEFAULT.accept(r);
-								e.setDamage(0);
+								e.setCancelled(true);
 								return;
 								
 							}
-							
 						} else if (!ATKnull && ATK.getState() == DuelState.INBATTLE 
 								&& ATK.getPlayers().get(apd) == PlayerState.DUELING
 								&& ATK.getPlayers().get(tpd) == PlayerState.DUELING) { // if same Duel : allow attack
 							
 							if (e.getFinalDamage() >= target.getHealth()) {
+								
 								e.setDamage(0);
 								ATK.playerDie(tpd, apd, true);
 								return;
@@ -94,11 +89,22 @@ public class AttackEvent implements Listener {
 							
 						}
 					} else if (ATKnull && DEF.getPlayers().get(PlayerData.getPlayerData(target)) == PlayerState.DUELING) { 
-						e.setDamage(0);
+						e.setCancelled(true);
 						DEF.join(PlayerData.getPlayerData(attacker));
 						return;
 						
-					} 
+					} else if (isFlower(attacker.getInventory().getItemInMainHand().getType())) { // checks if the player is holding a flower
+						
+						Request r = Friends.DEFAULT.findRequest(tpd.getPlayer(), apd.getPlayer());
+						
+						if (r != null) {
+							Friends.DEFAULT.accept(r);
+						} else {
+							Friends.DEFAULT.createRequest(attacker, target);
+						}
+						e.setCancelled(true);
+						return;
+					}
 				}
 				
 			} else if (e.getEntity() instanceof InventoryHolder && OwnableEntity.getContainer(e.getEntity().getUniqueId()) != null)  {
