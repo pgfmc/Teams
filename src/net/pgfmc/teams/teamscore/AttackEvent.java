@@ -92,7 +92,6 @@ public class AttackEvent implements Listener {
 						e.setCancelled(true);
 						DEF.join(PlayerData.getPlayerData(attacker));
 						return;
-<<<<<<< Updated upstream
 						
 					} else if (isFlower(attacker.getInventory().getItemInMainHand().getType())) { // checks if the player is holding a flower
 						
@@ -106,9 +105,7 @@ public class AttackEvent implements Listener {
 						e.setCancelled(true);
 						return;
 					}
-=======
-					} 
->>>>>>> Stashed changes
+
 				}
 				e.setDamage(0);
 				
