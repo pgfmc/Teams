@@ -3,6 +3,7 @@ package net.pgfmc.teams.data.blocks;
 import java.util.Optional;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.Ownable.Security;
@@ -97,6 +98,31 @@ public class Claim {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Gets the radius of a OwnableBlock claim not including the center block
+	 * 
+	 * @param claim
+	 * @return Radius of claim, -1 if not a claim
+	 */
+	public static int getRadius(OwnableBlock claim)
+	{
+		if (!claim.isClaim())
+		{
+			return -1;
+		}
+		
+		if (claim.block.getType().equals(Material.GOLD_BLOCK))
+		{
+			return 7;
+		} else if (claim.block.getType().equals(Material.LODESTONE))
+		{
+			return 35;
+		} else
+		{
+			return -1;
+		}
 	}
 	
 	
