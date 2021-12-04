@@ -192,7 +192,7 @@ public class OwnableBlock extends Ownable {
 					block.getWorld() == x.getKey().getWorld()) {
 				return x;
 			}
-			return null;
+			return a;
 		});
 		
 		return (g.isPresent()) ? g.get().getValue() : null;
