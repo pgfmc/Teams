@@ -3,6 +3,7 @@ package net.pgfmc.teams.teamscore;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -116,29 +117,10 @@ public interface Utility {
 	
 	static World intToWorld(int i) {
 		switch (i) {
-		case 0: return Worlds.SURVIVAL.world;
-		case 1: return Worlds.SURVIVAL_NETHER.world;
-		case 2: return Worlds.SURVIVAL_END.world;
+		case 0: return Bukkit.getWorld("survival");
+		case 1: return Bukkit.getWorld("survival_nether");
+		case 2: return Bukkit.getWorld("survival_the_end");
 		default: return null;
 		}
 	}
-	
-	static boolean isSurvival(World w) {
-		return (w.equals(Worlds.SURVIVAL.world) || w.equals(Worlds.SURVIVAL_NETHER.world) || w.equals(Worlds.SURVIVAL_END.world));
-	}
-	
-	/*
-	 * returns coordinates of 8x8 sections of chunks.
-	 * the chunk section containing the origin is 0,0
-	 *  
-	 * 
-	 * 
-	 */
-	//static String getChunkSection(Location l) {
-		
-	//}
-	
-	
-	
-	
 }

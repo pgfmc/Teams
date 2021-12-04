@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.pgfmc.pgfessentials.Mixins;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.BBEvent;
+import net.pgfmc.teams.data.BExEvent;
 import net.pgfmc.teams.data.BPE;
 import net.pgfmc.teams.data.BlockInteractEvent;
 import net.pgfmc.teams.data.Ownable.Lock;
@@ -68,7 +69,8 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new InvOpenEvent(), this);
 		getServer().getPluginManager().registerEvents(new ItemProtect(), this);	
 		getServer().getPluginManager().registerEvents(new DuelEvents(), this);
-		getServer().getPluginManager().registerEvents(Friends.DEFAULT, this);	
+		getServer().getPluginManager().registerEvents(Friends.DEFAULT, this);
+		getServer().getPluginManager().registerEvents(new BExEvent(), this);
 		
 		getCommand("friendRequest").setExecutor(new FriendRequestCommand());
 		getCommand("friendAccept").setExecutor(new FriendAcceptCommand());

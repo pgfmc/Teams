@@ -59,26 +59,28 @@ public class BBEvent implements Listener {
 			PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
 			
 			OwnableBlock cont = OwnableBlock.getContainer(e.getBlock());
-			OwnableBlock claim = Claim.getEffectiveClaim(e.getBlock().getLocation());
+			OwnableBlock claim = Claim.getClosestClaim(e.getBlock().getLocation());
 			
 			// removes the ownable if able to
 			if (cont != null) {
 				
 				Security s = cont.isAllowed(pd);
-				Security c = claim.isAllowed(pd);
+				
+				if (claim != null && claim.isAllowed(pd) == Security.OWNER) {
+					OwnableBlock.remove(e.getBlock());
+					if (e.getBlock().getType() == Material.LODESTONE || e.getBlock().getType() == Material.GOLD_BLOCK) {
+						pd.sendMessage("§6Claim Removed!");
+					}
+					return;
+					
+				}
 				
 				if (s == Security.OWNER || s == Security.FRIEND || s == Security.FAVORITE)  {
 					OwnableBlock.remove(e.getBlock());
 					if (e.getBlock().getType() == Material.LODESTONE || e.getBlock().getType() == Material.GOLD_BLOCK) {
 						pd.sendMessage("§6Claim Removed!");
 					}
-					pd.playSound(Sound.BLOCK_NOTE_BLOCK_CHIME);
-					
-				} else if (c == Security.OWNER) {
-					OwnableBlock.remove(e.getBlock());
-					if (e.getBlock().getType() == Material.LODESTONE || e.getBlock().getType() == Material.GOLD_BLOCK) {
-						pd.sendMessage("§6Claim Removed!");
-					}
+					//pd.playSound(Sound.BLOCK_NOTE_BLOCK_CHIME);
 					
 				} else {
 					pd.sendMessage("§cYou don't own this.");
@@ -87,8 +89,6 @@ public class BBEvent implements Listener {
 					return;
 				}
 			}
-			
-			
 			
 			if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
 				pd.sendMessage("§cThis land is claimed.");

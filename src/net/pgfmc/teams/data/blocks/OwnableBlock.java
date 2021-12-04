@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -18,7 +17,6 @@ import org.bukkit.block.data.Directional;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.Ownable;
-import net.pgfmc.teams.teamscore.Utility;
 
 /*
 
@@ -142,7 +140,7 @@ public class OwnableBlock extends Ownable {
 	}
 	
 	private static Block getOtherSide(Block block) {
-		if ((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST) && Utility.isSurvival(block.getWorld())) {
+		if ((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST)) {
 			
 			Set<Block> blocks = new HashSet<Block>();
 			World world = block.getLocation().getWorld();
@@ -167,14 +165,17 @@ public class OwnableBlock extends Ownable {
 	}
 	
 	public static void remove(Block block) {
-		containers.entrySet().stream().forEach(x -> {
-			if (block.getX() == x.getKey().getBlockX() && 
-					block.getY() == x.getKey().getBlockY() && 
-					block.getZ() == x.getKey().getBlockZ() && 
-					block.getWorld() == x.getKey().getWorld()) {
-				containers.remove(x.getKey());
+		
+		Location l = null;
+		
+		for (Entry<Location, OwnableBlock> entry : containers.entrySet()) {
+			if (entry.getKey().equals(block.getLocation())) {
+				l = entry.getKey();
+				break;
 			}
-		});
+		}
+		
+		containers.remove(l);
 	}
 	
 	@Override
@@ -185,17 +186,16 @@ public class OwnableBlock extends Ownable {
 	
 	public static OwnableBlock getContainer(Block block) { // gets a container from block
 		
-		Optional<Entry<Location, OwnableBlock>> g = containers.entrySet().stream().reduce((a, x)-> {
-			if (block.getX() == x.getKey().getBlockX() && 
-					block.getY() == x.getKey().getBlockY() && 
-					block.getZ() == x.getKey().getBlockZ() && 
-					block.getWorld() == x.getKey().getWorld()) {
-				return x;
+		for (Entry<Location, OwnableBlock> entry : containers.entrySet()) {
+			if (block.getX() == entry.getKey().getBlockX() && 
+					block.getY() == entry.getKey().getBlockY() && 
+					block.getZ() == entry.getKey().getBlockZ() && 
+					block.getWorld() == entry.getKey().getWorld()) {
+				return entry.getValue();
 			}
-			return a;
-		});
+		}
 		
-		return (g.isPresent()) ? g.get().getValue() : null;
+		return null;
 	}
 	
 	public boolean isClaim() { // returns wether or not a Containers is a Beacons.
@@ -237,8 +237,21 @@ public class OwnableBlock extends Ownable {
 					bloke.getBlockX() + 35 >= loc.getBlockX() &&
 					bloke.getBlockZ() - 35 <= loc.getBlockZ() &&
 					bloke.getBlockZ() + 35 >= loc.getBlockZ() &&
-					bloke.getBlockY() - 53 <= loc.getBlockY() &&
-					bloke.getBlockY() + 53 >= loc.getBlockY());
+					bloke.getBlockY() - 53 <= loc.getBlockY());
+		}
+		return false;
+	}
+	
+	public boolean inRange(Location loc, boolean claim) {
+		if (!claim) {
+			return inRange(loc);
+		} else if (block.getType() == Material.GOLD_BLOCK || block.getType() == Material.LODESTONE){
+			Location bloke = block.getLocation();
+			
+			return (bloke.getBlockX() - 70 <= loc.getBlockX() &&
+					bloke.getBlockX() + 70 >= loc.getBlockX() &&
+					bloke.getBlockZ() - 70 <= loc.getBlockZ() &&
+					bloke.getBlockZ() + 70 >= loc.getBlockZ());
 		}
 		return false;
 	}

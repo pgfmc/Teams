@@ -1,12 +1,11 @@
 package net.pgfmc.teams.data.blocks;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.bukkit.Location;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.teams.data.Ownable.Security;
 
 public class Claim {
 	
@@ -17,7 +16,7 @@ public class Claim {
 	 * @param loca 
 	 * @return The closest Claim that can effect the input location.
 	 */
-	public static OwnableBlock getEffectiveClaim(Location loca) { // returns the closest enemy beacon to the location input.
+	public static OwnableBlock getClosestClaim(Location loca) { // returns the closest enemy beacon to the location input.
 		
 		Optional<OwnableBlock> b = OwnableBlock.getClaims().stream() // stream to funnel down the beacons into the closest enemy beacon.
 		.filter(x -> x.getLocation().getWorld() == loca.getWorld())
@@ -47,13 +46,20 @@ public class Claim {
 	 * @param l2 The location of the block being placed.
 	 * @param player The player placing the block.
 	 * @return A set of all nearby enemy claims that can overlap with the claim proposed to be placed.
-	 */
+	 *
 	public static Set<OwnableBlock> isEnemyClaimsInRange(Location l2, PlayerData player) {
 		
 		return 
 		OwnableBlock.getClaims().stream()
 		.filter((x -> x.getLocation().getWorld() == l2.getWorld()))
 		.filter(x -> {
+			
+			Security s = x.isAllowed(player);
+			
+			if (s == Security.OWNER) {
+				return false;
+			}
+			
 			switch(x.isAllowed(player)) {
 			case DISALLOWED:
 				return true;
@@ -81,5 +87,18 @@ public class Claim {
 					l1.getBlockZ() + 101 >= l2.getBlockZ());
 		})
 		.collect(Collectors.toSet());
+	}*/
+	
+	public static boolean isEnemyinRange(Location l2, PlayerData pd) {
+		
+		for (OwnableBlock ob : OwnableBlock.getClaims()) {
+			if (ob.inRange(l2, true) && ob.isAllowed(pd) != Security.OWNER) {
+				return true;
+			}
+		}
+		return false;
 	}
+	
+	
+	
 }

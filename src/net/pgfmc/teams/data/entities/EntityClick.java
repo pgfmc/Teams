@@ -12,14 +12,13 @@ import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.Ownable.Lock;
 import net.pgfmc.teams.data.Ownable.Security;
 import net.pgfmc.teams.data.blocks.OwnableEntity;
-import net.pgfmc.teams.teamscore.Utility;
 
 public class EntityClick implements Listener {
 	
 	@EventHandler
 	public void EntityInteract(PlayerInteractAtEntityEvent e) {
 		
-		if (e.getPlayer() != null && e.getRightClicked() != null && Utility.isSurvival(e.getRightClicked().getWorld()) && e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
+		if (e.getPlayer() != null && e.getRightClicked() != null  && e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 			
 			PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
 			
