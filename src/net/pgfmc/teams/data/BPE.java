@@ -32,11 +32,6 @@ public class BPE implements Listener {
 		
 		if (pd.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 			
-			
-			
-			
-			
-			
 			OwnableBlock claim = Claim.getClosestClaim(block.getLocation());
 			
 			if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {

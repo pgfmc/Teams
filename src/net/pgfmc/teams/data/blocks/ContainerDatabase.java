@@ -86,41 +86,52 @@ public class ContainerDatabase {
 		}
 	}
 	
+	public static void saveContainer(OwnableBlock ob) {
+		
+		File file = new File(Main.getPlugin().getDataFolder() + File.separator + "BlockContainers.yml"); // Creates a File object
+		FileConfiguration database = YamlConfiguration.loadConfiguration(file);
+		
+		Location location = ob.block.getLocation();
+		PlayerData player = ob.getPlayer();
+		
+		// if location is not found, a new one is created.
+		ConfigurationSection blocc = database.getConfigurationSection(Utility.locToString(location));
+		if (blocc == null) {
+			blocc = database.createSection(Utility.locToString(location));
+		}
+		
+		blocc.set("isLocked", null);
+		blocc.set("player", player.getUniqueId().toString());
+		blocc.set("Lock", ob.getLock().toString());
+		
+		database.set(Utility.locToString(location), blocc);
+		
+		// saves data.
+		try {
+			database.save(file);
+			System.out.println("Container location saved!");
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			
+		}
+	}
+	
 	public static void saveContainers() {
 		
 		File file = new File(Main.getPlugin().getDataFolder() + File.separator + "BlockContainers.yml"); // Creates a File object
 		FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 		
-		for (Entry<Location, OwnableBlock> blocke : OwnableBlock.containers.entrySet()) { // for all BlockContainers and beacons.
+		for (Entry<Block, OwnableBlock> blocke : OwnableBlock.containers.entrySet()) { // for all BlockContainers and beacons.
 			
-			OwnableBlock cont = blocke.getValue();
-			
-			Location location = blocke.getKey();
-			PlayerData player = cont.getPlayer();
-			
-			// if location is not found, a new one is created.
-			ConfigurationSection blocc = database.getConfigurationSection(Utility.locToString(location));
-			if (blocc == null) {
-				blocc = database.createSection(Utility.locToString(location));
-			}
-			
-			blocc.set("isLocked", null);
-			blocc.set("player", player.getUniqueId().toString());
-			blocc.set("Lock", cont.getLock().toString());
-			
-			database.set(Utility.locToString(location), blocc);
-			
-			// saves data.
-			try {
-				database.save(file);
-				System.out.println("Container location saved!");
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-				
-			}
-			
-		} // ------------------------------------ end loop
+			saveContainer(blocke.getValue());
+		}
+		
+		for (Entry<Block, OwnableBlock> blocke : OwnableBlock.claims.entrySet()) {
+			saveContainer(blocke.getValue());
+		}
+		
+		// ------------------------------------ end loop
 		
 		// Entity Containers
 		

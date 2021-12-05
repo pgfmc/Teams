@@ -1,6 +1,5 @@
 package net.pgfmc.teams.data.entities;
 
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -18,7 +17,7 @@ public class EntityAttackEvent implements Listener {
 	@EventHandler
 	public void damageEvent(EntityDamageByEntityEvent e) {
 		
-		if (e.getDamager() instanceof CraftPlayer && e.getEntity() instanceof InventoryHolder) {
+		if (e.getDamager() instanceof Player && e.getEntity() instanceof InventoryHolder) {
 			
 			OwnableEntity ent = OwnableEntity.getContainer(e.getEntity());
 			

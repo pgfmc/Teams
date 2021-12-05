@@ -1,12 +1,11 @@
 package net.pgfmc.teams.data.blocks;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,7 +34,8 @@ Beacons.java
 
 public class OwnableBlock extends Ownable {
 	
-	public static LinkedHashMap<Location, OwnableBlock> containers = new LinkedHashMap<>();
+	public static LinkedHashMap<Block, OwnableBlock> containers = new LinkedHashMap<>();
+	public static HashMap<Block, OwnableBlock> claims = new HashMap<>();
 	
 	Block block;
 	
@@ -47,7 +47,11 @@ public class OwnableBlock extends Ownable {
 		
 		this.block = block;
 		
-		containers.put(block.getLocation(), this);
+		if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) {
+			claims.put(block, this);
+		} else {
+			containers.put(block, this);
+		}
 	}
 	
 	public static boolean createBlockContainer(PlayerData player, Block block) { // a router between Beacons and BlockContainer
@@ -118,14 +122,8 @@ public class OwnableBlock extends Ownable {
 		return true;
 	}
 	
-	public static List<OwnableBlock> getClaims() {
-		return containers.entrySet().stream().filter(x-> {
-			return (x.getValue().block.getType() == Material.GOLD_BLOCK || x.getValue().block.getType() == Material.LODESTONE);
-		})
-		.map(x-> {
-			return x.getValue();
-		})
-		.collect(Collectors.toList());
+	public static Map<Block, OwnableBlock> getClaims() {
+		return claims;
 	}
 	
 	@Override
@@ -155,7 +153,7 @@ public class OwnableBlock extends Ownable {
 						(black.getType() == Material.CHEST || black.getType() == Material.TRAPPED_CHEST) && 
 						black.getType() == block.getType() && 
 						((Directional) black.getBlockData()).getFacing() == ((Directional) block.getBlockData()).getFacing() &&
-						((Chest) block.getBlockData()).getInventory() == ((Chest) black.getBlockData()).getInventory()) {
+						((Chest) block.getState()).getInventory().getHolder() == ((Chest) black.getState()).getInventory().getHolder()) {
 					
 					return black;
 				}
@@ -166,16 +164,11 @@ public class OwnableBlock extends Ownable {
 	
 	public static void remove(Block block) {
 		
-		Location l = null;
-		
-		for (Entry<Location, OwnableBlock> entry : containers.entrySet()) {
-			if (entry.getKey().equals(block.getLocation())) {
-				l = entry.getKey();
-				break;
-			}
+		if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) {
+			claims.remove(block);
+		}else {
+			containers.remove(block);
 		}
-		
-		containers.remove(l);
 	}
 	
 	@Override
@@ -186,16 +179,11 @@ public class OwnableBlock extends Ownable {
 	
 	public static OwnableBlock getContainer(Block block) { // gets a container from block
 		
-		for (Entry<Location, OwnableBlock> entry : containers.entrySet()) {
-			if (block.getX() == entry.getKey().getBlockX() && 
-					block.getY() == entry.getKey().getBlockY() && 
-					block.getZ() == entry.getKey().getBlockZ() && 
-					block.getWorld() == entry.getKey().getWorld()) {
-				return entry.getValue();
-			}
+		if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) {
+			return claims.get(block);
+		} else {
+			return containers.get(block);
 		}
-		
-		return null;
 	}
 	
 	public boolean isClaim() { // returns wether or not a Containers is a Beacons.

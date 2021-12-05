@@ -1,9 +1,11 @@
 package net.pgfmc.teams.data.blocks;
 
+import java.util.Map.Entry;
 import java.util.Optional;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.Ownable.Security;
@@ -19,7 +21,10 @@ public class Claim {
 	 */
 	public static OwnableBlock getClosestClaim(Location loca) { // returns the closest enemy beacon to the location input.
 		
-		Optional<OwnableBlock> b = OwnableBlock.getClaims().stream() // stream to funnel down the beacons into the closest enemy beacon.
+		Optional<OwnableBlock> b = OwnableBlock.getClaims().entrySet().stream() // stream to funnel down the beacons into the closest enemy beacon.
+		.map(x -> {
+			return  x.getValue();
+		})
 		.filter(x -> x.getLocation().getWorld() == loca.getWorld())
 		.filter(x -> x.inRange(loca))
 		.reduce((B, x) -> {
@@ -37,8 +42,10 @@ public class Claim {
 		});
 		
 		if (b.isPresent()) {
+			System.out.println(b.get().getLocation().toString());
 			return b.get();
 		}
+		System.out.println("null");
 		return null;
 	}
 	
@@ -92,12 +99,15 @@ public class Claim {
 	
 	public static boolean isEnemyinRange(Location l2, PlayerData pd) {
 		
-		for (OwnableBlock ob : OwnableBlock.getClaims()) {
-			if (ob.inRange(l2, true) && ob.isAllowed(pd) != Security.OWNER) {
-				return true;
-			}
-		}
-		return false;
+		Optional<Entry<Block, OwnableBlock>> A = OwnableBlock.getClaims().entrySet().stream()
+				.filter(x -> {
+					return x.getValue().inRange(l2, true && x.getValue().isAllowed(pd) != Security.OWNER);
+				})
+				.reduce((a, x)-> {
+			return x;
+		});
+		
+		return A.isPresent();
 	}
 	
 	/**

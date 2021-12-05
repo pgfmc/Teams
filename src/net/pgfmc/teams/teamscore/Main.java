@@ -53,10 +53,8 @@ public class Main extends JavaPlugin {
 		
 		PlayerData.setInit(x -> x.setData("lockMode", Lock.FRIENDS_ONLY));
 		
-		// loads container data from files.
-		ContainerDatabase.loadContainers();
-		
-		Friends.load();
+		PlayerData.setPostLoad((x) -> ContainerDatabase.loadContainers());
+		PlayerData.setPostLoad((x) -> Friends.load());
 		
 		// initializes all Event Listeners and Command Executors.
 		getServer().getPluginManager().registerEvents(new BlockInteractEvent(), this);

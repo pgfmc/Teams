@@ -12,7 +12,6 @@ public class BExEvent implements Listener {
 	
 	@EventHandler
 	public void explodeEvent(BlockExplodeEvent e) {
-		e.setYield(1f);
 		for (Block block : e.blockList()) {
 			if (OwnableBlock.getContainer(block) != null) {
 				e.setCancelled(true);
@@ -23,7 +22,6 @@ public class BExEvent implements Listener {
 	
 	@EventHandler
 	public void EexplodeEvent(EntityExplodeEvent e) {
-		e.setYield(1f);
 		for (Block block : e.blockList()) {
 			if (OwnableBlock.getContainer(block) != null) {
 				e.setCancelled(true);
