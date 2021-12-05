@@ -51,7 +51,7 @@ public class Main extends JavaPlugin {
 		Mixins.getFile(BlockContainersPath);
 		Mixins.getFile(EntityContainersPath);
 		
-		PlayerData.set(x -> x.setData("lockMode", Lock.FRIENDS_ONLY));
+		PlayerData.setInit(x -> x.setData("lockMode", Lock.FRIENDS_ONLY));
 		
 		// loads container data from files.
 		ContainerDatabase.loadContainers();

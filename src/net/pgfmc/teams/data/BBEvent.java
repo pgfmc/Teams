@@ -76,9 +76,10 @@ public class BBEvent implements Listener {
 				}
 				
 				if (s == Security.OWNER || s == Security.FRIEND || s == Security.FAVORITE)  {
-					OwnableBlock.remove(e.getBlock());
 					if (e.getBlock().getType() == Material.LODESTONE || e.getBlock().getType() == Material.GOLD_BLOCK) {
-						pd.sendMessage("§6Claim Removed!");
+						pd.sendMessage("§cYou don't own this.");
+					} else {
+						OwnableBlock.remove(e.getBlock());
 					}
 					//pd.playSound(Sound.BLOCK_NOTE_BLOCK_CHIME);
 					

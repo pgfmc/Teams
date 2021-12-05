@@ -322,7 +322,6 @@ public class BlockInteractEvent implements Listener {
 			            }
 			        }, 1);
 				}
-				
 			}
 		} else if (e.getAction() == Action.RIGHT_CLICK_AIR && e.getItem().getType() == Material.LEVER) {
 			

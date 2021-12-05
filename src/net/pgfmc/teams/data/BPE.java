@@ -50,10 +50,15 @@ public class BPE implements Listener {
 			if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) {
 				if (Claim.isEnemyinRange(block.getLocation(), pd)) {
 					e.setCancelled(true);
-					pd.sendMessage("§cCannot claim land that overlaps another.");
+					pd.sendMessage("§cCannot claim land that would overlap another claim.");
 					
 					pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 					return;
+				} else if (claim != null && claim.getPlayer() == pd) {
+					e.setCancelled(true);
+					pd.sendMessage("§cCannot place a claim inside another claim.");
+					pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
+					
 				} else {
 					new OwnableBlock(pd, block, null);
 					pd.sendMessage("§aSurrounding land claimed!");

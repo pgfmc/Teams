@@ -107,7 +107,7 @@ public abstract class Ownable {
 			} else if (Friends.getRelation(placer.getUniqueId(), player.getUniqueId()) == Relation.FAVORITE) {
 				return Security.FAVORITE;
 				
-			} else if (friendsList.contains(player)) {
+			} else if (Friends.getRelation(placer.getUniqueId(), player.getUniqueId()) == Relation.FRIEND) {
 				
 				return Security.FRIEND;
 			}
