@@ -1,9 +1,6 @@
 package net.pgfmc.teams.data.blocks;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,12 +31,10 @@ Beacons.java
 
 public class OwnableBlock extends Ownable {
 	
-	public static LinkedHashMap<Block, OwnableBlock> containers = new LinkedHashMap<>();
-	public static HashMap<Block, OwnableBlock> claims = new HashMap<>();
+	public static Set<OwnableBlock> containers = new HashSet<>();
+	public static Set<OwnableBlock> claims = new HashSet<>();
 	
 	Block block;
-	
-	
 	
 	public OwnableBlock(PlayerData player, Block block, Lock lock) {
 		
@@ -48,81 +43,44 @@ public class OwnableBlock extends Ownable {
 		this.block = block;
 		
 		if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) {
-			claims.put(block, this);
+			claims.add(this);
 		} else {
-			containers.put(block, this);
+			containers.add(this);
 		}
 	}
 	
 	public static boolean createBlockContainer(PlayerData player, Block block) { // a router between Beacons and BlockContainer
 		
-		/**
-		
-		hold out for me, this is kinda complex (maybe)
-		tldr; it just returns wether or not a chest can be placed in a certain spot; below are the criteria in english.
-		
-		first tests the following on the input block (variable "chest":
-			if the block is a chest or trapped chest
-			if the block is in a survival world
-		
-		next,  it tests all horizontally adjacent blocks for the same criteria, plus:
-			if the block isn't air
-			matches the type of the placed block
-			if they are facing the same direction
-			
-		for the block that passes this phase (only one possible, unless a glitch happens)
-		there are different things that are done depending on the output of cont.isAllowed(player)...
-		
-		--|| ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ||--
-		
-		switch (black.isAllowed(player)) {
-		
-		if the placer of both chests are the same, a new container is created, but uses the team from the first chest.
-		
-		if a teammate places the second chest, the new container inherits the player from the first chest;
-			so it would be like the placer of the first chest placed the second one.
-			
-		in all other cases, the event that placed the chest is cancelled.
-		}
-		
-		if the first chest doesn't have a corresponding container, a new one will be created for it,
-			forwarding all of the aspects of the second chest to the first.
-		
-		--|| ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ||--
-		
-		if none of the code above is run, then this function simply differentiates between beacons and normal containers,
-		and creates the respective object for each.
-		
-		
-		the setLocked function in this class also implements some of the below code.
-		 */
-		
-		Block blake = getOtherSide(block);
-		if (blake != null) {
-			OwnableBlock cont = OwnableBlock.getContainer(blake);
-			
-			if (cont != null) {
+		if (isOwnable(block.getType())) {
+			Block blake = getOtherSide(block); // code for double chests 
+			if (blake != null) {
+				OwnableBlock cont = OwnableBlock.getOwnable(blake);
 				
-				switch (cont.isAllowed(player)) {
-				
-				case OWNER:
-					new OwnableBlock(player, block, null);
-					return true;
-				case FRIEND:
-					new OwnableBlock(cont.getPlayer(), block, null);
-					return true;
-				default:
-					return false;
+				if (cont != null) {
 					
+					switch (cont.isAllowed(player)) {
+					
+					case OWNER:
+						new OwnableBlock(player, block, cont.getLock());
+						return true;
+					case FRIEND:
+						new OwnableBlock(cont.getPlayer(), block, cont.getLock());
+						return true;
+					default:
+						return false;
+						
+					}
 				}
 			}
+			
+			new OwnableBlock(player, block, null);
+			return true;
 		}
 		
-		new OwnableBlock(player, block, null);
-		return true;
+		return false;
 	}
 	
-	public static Map<Block, OwnableBlock> getClaims() {
+	public static Set<OwnableBlock> getClaims() {
 		return claims;
 	}
 	
@@ -131,7 +89,7 @@ public class OwnableBlock extends Ownable {
 		
 		Block blake = getOtherSide(this.block);
 		if (blake != null) {
-			getContainer(blake).lock = lock;
+			getOwnable(blake).lock = lock;
 		}
 		
 		super.setLock(lock);
@@ -162,12 +120,13 @@ public class OwnableBlock extends Ownable {
 		return null;
 	}
 	
-	public static void remove(Block block) {
+	public static void remove(OwnableBlock ob) {
 		
-		if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) {
-			claims.remove(block);
-		}else {
-			containers.remove(block);
+		if (ob.isClaim()) {
+			System.out.println(claims.remove(ob) ? "Claim removed!" : "Claim removal failed!");
+		} else {
+			System.out.println(containers.remove(ob) ? "Container removed!" : "Container removal failed!");
+			
 		}
 	}
 	
@@ -177,13 +136,23 @@ public class OwnableBlock extends Ownable {
 		
 	}
 	
-	public static OwnableBlock getContainer(Block block) { // gets a container from block
+	public static OwnableBlock getOwnable(Block block) { // gets a container from block
 		
-		if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) {
-			return claims.get(block);
-		} else {
-			return containers.get(block);
+		Set<OwnableBlock> list = (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK)
+				? claims : containers;
+		
+		for (OwnableBlock ob : list) {
+			Location l1 = ob.getLocation();
+			Location l2 = block.getLocation();
+			
+			if (l1.getWorld().equals(l2.getWorld()) &&
+					l1.getBlockX() == l2.getBlockX() && 
+					l1.getBlockY() == l1.getBlockY() && 
+					l1.getBlockZ() == l1.getBlockZ()) {
+				return ob;
+			}
 		}
+		return null;
 	}
 	
 	public boolean isClaim() { // returns wether or not a Containers is a Beacons.

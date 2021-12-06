@@ -186,7 +186,7 @@ public class Friends extends Requester implements Listener {
 		
 		ConfigurationSection friends = verifyConf(database, "friends");
 		
-		for (PlayerData pd : PlayerData.getPlayerDataList()) {
+		for (PlayerData pd : PlayerData.getPlayerDataSet()) {
 			
 			ConfigurationSection config = friends.getConfigurationSection(pd.getUniqueId().toString());
 			if (config == null) {

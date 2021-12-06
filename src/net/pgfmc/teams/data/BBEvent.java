@@ -1,7 +1,6 @@
 package net.pgfmc.teams.data;
 
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -58,38 +57,61 @@ public class BBEvent implements Listener {
 			
 			PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
 			
-			OwnableBlock cont = OwnableBlock.getContainer(e.getBlock());
-			OwnableBlock claim = Claim.getClosestClaim(e.getBlock().getLocation());
+			OwnableBlock cont = OwnableBlock.getOwnable(e.getBlock());
+			
 			
 			// removes the ownable if able to
 			if (cont != null) {
 				
 				Security s = cont.isAllowed(pd);
 				
-				if (claim != null && claim.isAllowed(pd) == Security.OWNER) {
-					OwnableBlock.remove(e.getBlock());
-					if (e.getBlock().getType() == Material.LODESTONE || e.getBlock().getType() == Material.GOLD_BLOCK) {
+				
+				switch(s) {
+				case DISALLOWED:
+					e.setCancelled(true);
+					pd.sendMessage("§cYou don't own this.");
+					return;
+					
+				case EXCEPTION:
+					System.out.println("");
+					return;
+				case FAVORITE:
+					
+					if (cont.isClaim()) {
+						e.setCancelled(true);
+						pd.sendMessage("§cYou don't own this.");
+						return;
+					} else {
+						OwnableBlock.remove(cont);
+						return;
+					}
+					
+				case FRIEND:
+					if (cont.isClaim()) {
+						e.setCancelled(true);
+						pd.sendMessage("§cYou don't own this.");
+						return;
+					} else {
+						OwnableBlock.remove(cont);
+						return;
+					}
+					
+				case OWNER:
+					OwnableBlock.remove(cont);
+					if (cont.isClaim()) {
 						pd.sendMessage("§6Claim Removed!");
 					}
 					return;
 					
-				}
-				
-				if (s == Security.OWNER || s == Security.FRIEND || s == Security.FAVORITE)  {
-					if (e.getBlock().getType() == Material.LODESTONE || e.getBlock().getType() == Material.GOLD_BLOCK) {
-						pd.sendMessage("§cYou don't own this.");
-					} else {
-						OwnableBlock.remove(e.getBlock());
-					}
-					//pd.playSound(Sound.BLOCK_NOTE_BLOCK_CHIME);
+				case UNLOCKED:
 					
-				} else {
-					pd.sendMessage("§cYou don't own this.");
 					e.setCancelled(true);
-					pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
+					pd.sendMessage("§cYou don't own this.");
 					return;
 				}
 			}
+			
+			OwnableBlock claim = Claim.getClosestClaim(e.getBlock().getLocation());
 			
 			if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
 				pd.sendMessage("§cThis land is claimed.");
@@ -98,9 +120,9 @@ public class BBEvent implements Listener {
 				return;
 			}
 		} else {
-			OwnableBlock cont = OwnableBlock.getContainer(e.getBlock());
+			OwnableBlock cont = OwnableBlock.getOwnable(e.getBlock());
 			if (cont != null) {
-				OwnableBlock.remove(e.getBlock());
+				OwnableBlock.remove(cont);
 			}
 		}
 	}

@@ -2,7 +2,6 @@ package net.pgfmc.teams.data.blocks;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Location;
@@ -122,13 +121,13 @@ public class ContainerDatabase {
 		File file = new File(Main.getPlugin().getDataFolder() + File.separator + "BlockContainers.yml"); // Creates a File object
 		FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 		
-		for (Entry<Block, OwnableBlock> blocke : OwnableBlock.containers.entrySet()) { // for all BlockContainers and beacons.
+		for (OwnableBlock blocke : OwnableBlock.containers) { // for all BlockContainers and beacons.
 			
-			saveContainer(blocke.getValue());
+			saveContainer(blocke);
 		}
 		
-		for (Entry<Block, OwnableBlock> blocke : OwnableBlock.claims.entrySet()) {
-			saveContainer(blocke.getValue());
+		for (OwnableBlock blocke : OwnableBlock.claims) {
+			saveContainer(blocke);
 		}
 		
 		// ------------------------------------ end loop

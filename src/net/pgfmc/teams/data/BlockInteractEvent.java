@@ -2,6 +2,7 @@ package net.pgfmc.teams.data;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -61,9 +62,9 @@ public class BlockInteractEvent implements Listener {
 					}
 				}
 				
-				if (OwnableBlock.getContainer(block) != null) {
+				if (OwnableBlock.getOwnable(block) != null) {
 					
-					OwnableBlock cont = OwnableBlock.getContainer(block);
+					OwnableBlock cont = OwnableBlock.getOwnable(block);
 					
 					switch(cont.isAllowed(pd)) {
 					
@@ -269,7 +270,9 @@ public class BlockInteractEvent implements Listener {
 									}
 								}
 								
-								Optional<Entity> entity = entities.stream()
+								Stream<Entity> entityStream = entities.stream();
+								
+								Optional<Entity> entity = entityStream
 								.filter(x -> { // gets the youngest entity at the rail's position
 									return (x.getLocation().getBlock().equals(bloke) || x.getLocation().getBlock().equals(bb));})
 								.reduce((t, x) -> { // reduces the filtered selection of minecart Chests / Hoppers to the one that lived the least.
@@ -281,6 +284,7 @@ public class BlockInteractEvent implements Listener {
 										return t;
 									}
 								});
+								entityStream.close();
 								
 								if (entity.isPresent()) {
 									new OwnableEntity(pd, lockMode, entity.get().getUniqueId());
@@ -302,7 +306,10 @@ public class BlockInteractEvent implements Listener {
 								}
 							}
 							
-							Optional<Entity> entity = entities.stream().filter(x -> { // gets the youngest entity at the rail's position
+							Stream<Entity> entityStream = entities.stream();
+							
+							
+							Optional<Entity> entity = entityStream.filter(x -> { // gets the youngest entity at the rail's position
 								return x.getLocation().getBlock().equals(bb);
 							}).reduce((t, x) -> { // reduces the filtered selection of minecart Chests / Hoppers to the one that lived the least.
 								if (t == null && x.getTicksLived() == 1) {
@@ -313,6 +320,7 @@ public class BlockInteractEvent implements Listener {
 									return t;
 								}
 							});
+							entityStream.close();
 							
 							if (entity.isPresent()) {
 								new OwnableEntity(pd, lockMode, entity.get().getUniqueId());
