@@ -2,6 +2,7 @@ package net.pgfmc.teams.data.blocks;
 
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,8 +21,8 @@ public class Claim {
 	 * @return The closest Claim that can effect the input location.
 	 */
 	public static OwnableBlock getClosestClaim(Location loca) { // returns the closest enemy beacon to the location input.
-		
-		Optional<OwnableBlock> b = OwnableBlock.getClaims().entrySet().stream() // stream to funnel down the beacons into the closest enemy beacon.
+		Stream<Entry<Block, OwnableBlock>> ownableStream = OwnableBlock.getClaims().entrySet().stream();
+		Optional<OwnableBlock> b = ownableStream // stream to funnel down the beacons into the closest enemy beacon.
 		.map(x -> {
 			return  x.getValue();
 		})
@@ -40,6 +41,7 @@ public class Claim {
 				return B;
 			}
 		});
+		ownableStream.close();
 		
 		if (b.isPresent()) {
 			System.out.println(b.get().getLocation().toString());
