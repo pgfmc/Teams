@@ -30,39 +30,33 @@ public class BPE implements Listener {
 		PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
 		Block block = e.getBlock();
 		
-		if (pd.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
+		if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 			
-			OwnableBlock claim = Claim.getClosestClaim(block.getLocation());
-			
-			if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
-				pd.sendMessage("§cCannot place blocks in claimed land.");
-				e.setCancelled(true);
-				pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
-				return;
-			}
-			
-			// claims manager :)
-			if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) {
-				if (Claim.isEnemyinRange(block.getLocation(), pd)) {
+			if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) { // for placing claims
+				if (Claim.isEnemyinRange(block.getLocation())) {
 					e.setCancelled(true);
 					pd.sendMessage("§cCannot claim land that would overlap another claim.");
 					
 					pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
-					return;
-				} else if (claim != null && claim.getPlayer() == pd) {
-					e.setCancelled(true);
-					pd.sendMessage("§cCannot place a claim inside another claim.");
-					pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
-					
 				} else {
-					new OwnableBlock(pd, block, null);
+					OwnableBlock.createBlockContainer(pd, block);
 					pd.sendMessage("§aSurrounding land claimed!");
 					if (block.getType() == Material.GOLD_BLOCK) {
 						pd.sendMessage("§cGold blocks wont work as Claims soon! Begin to use lodestones instead.");
 					}
 					pd.playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
-					return;
 				}
+				return;
+			}
+			
+			OwnableBlock claim = Claim.getClosestClaim(block.getLocation());
+			
+			if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
+				
+				pd.sendMessage("§cCannot place blocks in claimed land.");
+				e.setCancelled(true);
+				pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
+				return;
 			}
 			
 			// registers block as a container if it is a valid container.
@@ -71,5 +65,4 @@ public class BPE implements Listener {
 			}
 		}	
 	}
-	
 }

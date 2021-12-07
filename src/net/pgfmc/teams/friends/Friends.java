@@ -1,19 +1,13 @@
 package net.pgfmc.teams.friends;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
-
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 
 import net.pgfmc.pgfessentials.Mixins;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
@@ -71,15 +65,11 @@ public class Friends extends Requester implements Listener {
 	 * 
 	 * 
 	 */
-	private static Table<String, String, Relation> friends = HashBasedTable.create();
-	
-	
-	
 	
 	private Friends() {
 		super("Friend", 120, (x, y) -> {
 			
-			setRelation(x.getUniqueId(), Relation.FRIEND, y.getUniqueId(), Relation.FRIEND);
+			setRelation(x, Relation.FRIEND, y, Relation.FRIEND);
 			x.playSound(Sound.BLOCK_AMETHYST_BLOCK_HIT);
 			x.playSound(Sound.BLOCK_AMETHYST_BLOCK_HIT);
 			
@@ -94,45 +84,38 @@ public class Friends extends Requester implements Listener {
 	 * @param p2 Player 2;
 	 * @param r21 the relationship between p1 and p2 from p2's point of view
 	 */
-	public static void setRelation(UUID p1, Relation r12, UUID p2, Relation r21) {
+	public static void setRelation(PlayerData p1, Relation r12, PlayerData p2, Relation r21) {
 		
 		if (p1 == p2) { return; } // if <player> and <friend> are equal
 		
-		friends.put(p1.toString(), p2.toString(), r12);
-		friends.put(p2.toString(), p1.toString(), r21);
+		getFriendsMap(p1).put(p2, r12);
+		getFriendsMap(p2).put(p1, r21);
 		
 		save();
 	}
 	
-	public static void setRelation(UUID POV, UUID friend, Relation relate) {
-		friends.put(POV.toString(), friend.toString(), relate);
+	public static void setRelation(PlayerData POV, PlayerData friend, Relation relate) {
+		
+		getFriendsMap(POV).put(friend, relate);
 		save();
 	}
 	
-	public static Relation getRelation(UUID POV, UUID friend) {
+	public static Relation getRelation(PlayerData POV, PlayerData friend) {
 		if (POV.toString().equals(friend.toString())) {
 			return Relation.SELF;
 		}
+		HashMap<PlayerData, Relation> list = POV.getData("friends");
 		
-		Relation r = friends.get(POV.toString(), friend.toString());
+		Relation r = list.get(friend);
 		if (r == null) {
 			r = Relation.NONE;
 		}
 		return r;
 	}
 	
-	public static List<PlayerData> getFriendsList(UUID pd) {
-		if (friends.containsColumn(pd.toString())) {
-			return friends.column(pd.toString()).entrySet().stream()
-					.filter(x -> {
-						return (x.getValue() == Relation.FRIEND || x.getValue() == Relation.FAVORITE) ;	
-					})
-					.map(x -> {
-						return PlayerData.getPlayerData(UUID.fromString(x.getKey()));
-					})
-					.collect(Collectors.toList());
-		}
-		return new ArrayList<>();
+	public static HashMap<PlayerData, Relation> getFriendsMap(PlayerData pd) {
+		
+		return pd.getData("friends");
 	}
 	
 	/**
@@ -144,25 +127,22 @@ public class Friends extends Requester implements Listener {
 	 * 
 	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	public static void save() {
 		FileConfiguration database = Mixins.getDatabase(Main.databasePath);
 		
-		for ( Entry<String, Map<String, Relation>> entry : friends.columnMap().entrySet()) {
+		for (PlayerData pd: PlayerData.getPlayerDataSet()) {
 			
-			ConfigurationSection conf = verifyConf(verifyConf(database, "friends"), entry.getKey());
+			ConfigurationSection conf = verifyConf(verifyConf(database, "friends"), pd.getUniqueId().toString());
 			
-			for (Entry<String, Relation> val : entry.getValue().entrySet()) {
-				
-				if (val.getKey() == entry.getKey()) {
-					continue;
-				}
+			for (Entry<PlayerData, Relation> val : ((HashMap<PlayerData, Relation>) pd.getData("friends")).entrySet()) {
 				
 				if (val.getValue() == Relation.NONE || val.getValue() == Relation.SELF) {
-					conf.set(val.getKey(), null);
+					conf.set(val.getKey().getUniqueId().toString(), null);
 					continue;
 				}
 				
-				conf.set(val.getKey(), val.getValue().toString());
+				conf.set(val.getKey().getUniqueId().toString(), val.getValue().toString());
 			}
 		}
 		Mixins.saveDatabase(database, Main.databasePath);
@@ -181,27 +161,24 @@ public class Friends extends Requester implements Listener {
 	/**
 	 * loads all friends
 	 */
-	public static void load() {
-		FileConfiguration database = Mixins.getDatabase(Main.databasePath);
+	public static void load(PlayerData pd) {
 		
+		pd.setData("friends", new HashMap<PlayerData, Relation>());
+		
+		FileConfiguration database = Mixins.getDatabase(Main.databasePath);
 		ConfigurationSection friends = verifyConf(database, "friends");
 		
-		for (PlayerData pd : PlayerData.getPlayerDataSet()) {
-			
-			ConfigurationSection config = friends.getConfigurationSection(pd.getUniqueId().toString());
-			if (config == null) {
-				continue;
-			}
-			
-			config.getKeys(false).stream()
-			.forEach(x-> {
-				setRelation(pd.getUniqueId(), UUID.fromString(x), Relation.valueOf(config.getString(x)));
-			});
+		ConfigurationSection config = friends.getConfigurationSection(pd.getUniqueId().toString());
+		if (config == null) {
+			return;
 		}
+		
+		config.getKeys(false).stream()
+		.forEach(x-> {
+			setRelation(pd, PlayerData.getPlayerData(UUID.fromString(x)), Relation.valueOf(config.getString(x)));
+		});
+			
+			
+		
 	}
-	
-	
-	
-	
-	
 }

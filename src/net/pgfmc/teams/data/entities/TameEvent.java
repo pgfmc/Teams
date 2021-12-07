@@ -17,7 +17,7 @@ public class TameEvent implements Listener {
 	
 	@EventHandler
 	public void tameEvent(EntityTameEvent e) {
-		if (e.getOwner() != null && e.getOwner() instanceof Player) {
+		if (e.getOwner() != null && e.getOwner() instanceof Player && e.getEntity() != null) {
 			
 			Player player = (Player) e.getOwner();
 			

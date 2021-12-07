@@ -1,7 +1,6 @@
 package net.pgfmc.teams.data.blocks;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -10,6 +9,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.data.Directional;
+import org.bukkit.util.Vector;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.Ownable;
@@ -138,6 +138,10 @@ public class OwnableBlock extends Ownable {
 	
 	public static OwnableBlock getOwnable(Block block) { // gets a container from block
 		
+		if (!isOwnable(block.getType())) {
+			return null;
+		}
+		
 		Set<OwnableBlock> list = (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK)
 				? claims : containers;
 		
@@ -178,23 +182,23 @@ public class OwnableBlock extends Ownable {
 	// all claims functions
 	
 	public boolean inRange(Location loc) { // input a Location, and find if its in range of the beacon
-		Objects.requireNonNull(loc);
+		if (loc == null) { return false; }
 		
-		Location bloke = block.getLocation();
+		Location bloke = getLocation();
 		
 		if (block.getType() == Material.GOLD_BLOCK) {
-			return (bloke.getBlockX() - 7 <= loc.getBlockX() &&
-					bloke.getBlockX() + 7 >= loc.getBlockX() &&
-					bloke.getBlockZ() -7 <= loc.getBlockZ() &&
-					bloke.getBlockZ() + 7 >= loc.getBlockZ() &&
-					bloke.getBlockY() - 7 <= loc.getBlockY() &&
-					bloke.getBlockY() + 7 >= loc.getBlockY());
+			return (bloke.getX() - 7 <= loc.getX() &&
+					bloke.getX() + 7 >= loc.getX() &&
+					bloke.getZ() -7 <= loc.getZ() &&
+					bloke.getZ() + 7 >= loc.getZ() &&
+					bloke.getY() - 7 <= loc.getY() &&
+					bloke.getY() + 7 >= loc.getY());
 		} else if (block.getType() == Material.LODESTONE) {
-			return (bloke.getBlockX() - 35 <= loc.getBlockX() &&
-					bloke.getBlockX() + 35 >= loc.getBlockX() &&
-					bloke.getBlockZ() - 35 <= loc.getBlockZ() &&
-					bloke.getBlockZ() + 35 >= loc.getBlockZ() &&
-					bloke.getBlockY() - 53 <= loc.getBlockY());
+			return (bloke.getX() - 35 <= loc.getX() &&
+					bloke.getX() + 35 >= loc.getX() &&
+					bloke.getZ() - 35 <= loc.getZ() &&
+					bloke.getZ() + 35 >= loc.getZ() &&
+					bloke.getY() - 53 <= loc.getY());
 		}
 		return false;
 	}
@@ -213,10 +217,10 @@ public class OwnableBlock extends Ownable {
 		return false;
 	}
 	
-	public double getDistance(Location loc) { // returns the distance from this to the location input.
+	public double getDistance(Vector loc) { // returns the distance from this to the location input.
 		
 		Location bloke = block.getLocation();
 		
-		return Math.sqrt( Math.pow(loc.getX() + bloke.getX(), 2) + Math.pow(loc.getY() + bloke.getY(), 2) + Math.pow(loc.getZ() + bloke.getZ(), 2));
+		return Math.pow(loc.getX() + bloke.getX(), 2) + Math.pow(loc.getZ() + bloke.getZ(), 2);
 	}
 }

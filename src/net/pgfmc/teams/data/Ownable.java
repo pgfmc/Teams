@@ -1,7 +1,5 @@
 package net.pgfmc.teams.data;
 
-import java.util.List;
-
 import org.bukkit.Location;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
@@ -50,6 +48,7 @@ public abstract class Ownable {
 		
 		this.placer = player;
 		this.lock = lock;
+		System.out.println("Ownable created!");
 		
 	}
 	
@@ -75,7 +74,8 @@ public abstract class Ownable {
 	
 	public Security isAllowed(PlayerData player) {
 		
-		List<PlayerData> friendsList = Friends.getFriendsList(player.getUniqueId());
+		
+		Relation r = Friends.getRelation(placer, player);
 		
 		switch(lock) {
 		case LOCKED: // ------------------------ only the owner can access.
@@ -92,7 +92,7 @@ public abstract class Ownable {
 				
 				return Security.OWNER;
 				
-			} else if (Friends.getRelation(placer.getUniqueId(), player.getUniqueId()) == Relation.FAVORITE) {
+			} else if (r == Relation.FAVORITE) {
 				return Security.FAVORITE;
 				
 			}
@@ -104,10 +104,10 @@ public abstract class Ownable {
 				
 				return Security.OWNER;
 				
-			} else if (Friends.getRelation(placer.getUniqueId(), player.getUniqueId()) == Relation.FAVORITE) {
+			} else if (r == Relation.FAVORITE) {
 				return Security.FAVORITE;
 				
-			} else if (Friends.getRelation(placer.getUniqueId(), player.getUniqueId()) == Relation.FRIEND) {
+			} else if (r == Relation.FRIEND) {
 				
 				return Security.FRIEND;
 			}
@@ -117,10 +117,10 @@ public abstract class Ownable {
 			if (placer.equals(player)) {
 				return Security.OWNER;
 				
-			} else if (Friends.getRelation(placer.getUniqueId(), player.getUniqueId()) == Relation.FAVORITE) {
+			} else if (r == Relation.FAVORITE) {
 				return Security.FAVORITE;
 				
-			}else if (friendsList.contains(player)) {
+			}else if (r == Relation.FRIEND) {
 				return Security.FRIEND;
 				
 			}

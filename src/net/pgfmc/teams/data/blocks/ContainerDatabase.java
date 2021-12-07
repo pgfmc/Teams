@@ -85,10 +85,12 @@ public class ContainerDatabase {
 		}
 	}
 	
-	public static void saveContainer(OwnableBlock ob) {
+	public static void saveContainer(OwnableBlock ob, FileConfiguration database) {
 		
-		File file = new File(Main.getPlugin().getDataFolder() + File.separator + "BlockContainers.yml"); // Creates a File object
-		FileConfiguration database = YamlConfiguration.loadConfiguration(file);
+		if (!OwnableBlock.isOwnable(ob.block.getType())) { 
+			return;
+		}
+		
 		
 		Location location = ob.block.getLocation();
 		PlayerData player = ob.getPlayer();
@@ -106,6 +108,23 @@ public class ContainerDatabase {
 		database.set(Utility.locToString(location), blocc);
 		
 		// saves data.
+		
+	}
+	
+	public static void saveContainers() {
+		
+		File file = new File(Main.getPlugin().getDataFolder() + File.separator + "BlockContainers.yml"); // Creates a File object
+		FileConfiguration database = new YamlConfiguration();
+		
+		for (OwnableBlock blocke : OwnableBlock.containers) { // for all BlockContainers and beacons.
+			
+			saveContainer(blocke, database);
+		}
+		
+		for (OwnableBlock blocke : OwnableBlock.claims) {
+			saveContainer(blocke, database);
+		}
+		
 		try {
 			database.save(file);
 			System.out.println("Container location saved!");
@@ -113,21 +132,6 @@ public class ContainerDatabase {
 		} catch (IOException e) {
 			e.printStackTrace();
 			
-		}
-	}
-	
-	public static void saveContainers() {
-		
-		File file = new File(Main.getPlugin().getDataFolder() + File.separator + "BlockContainers.yml"); // Creates a File object
-		FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
-		
-		for (OwnableBlock blocke : OwnableBlock.containers) { // for all BlockContainers and beacons.
-			
-			saveContainer(blocke);
-		}
-		
-		for (OwnableBlock blocke : OwnableBlock.claims) {
-			saveContainer(blocke);
 		}
 		
 		// ------------------------------------ end loop

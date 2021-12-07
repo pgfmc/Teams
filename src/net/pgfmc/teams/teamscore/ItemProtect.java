@@ -116,7 +116,7 @@ public class ItemProtect implements Listener {
 				PlayerData pd = PlayerData.getPlayerData((OfflinePlayer) e.getEntity());
 				if (data.getA() == pd) {
 					data.getB().accept(null);
-				} else if (Friends.getFriendsList(pd.getUniqueId()).contains(data.getA())) {
+				} else if (Friends.getFriendsMap(pd).containsKey(data.getA())) {
 					data.getB().accept(null);
 				} else {
 					e.setCancelled(true);

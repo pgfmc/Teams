@@ -1,5 +1,6 @@
 package net.pgfmc.teams.friends;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,7 +28,7 @@ public class UnfavoriteCommand implements CommandExecutor {
 			return true;
 		}
 		
-		Friends.setRelation(((Player) sender).getUniqueId(), friend.getUniqueId(), Relation.FRIEND);
+		Friends.setRelation(PlayerData.getPlayerData((OfflinePlayer) sender), friend, Relation.FRIEND);
 		sender.sendMessage("§cUnfavorited §n" + friend.getRankedName() + "§r§c.");
 		
 		return true;

@@ -23,7 +23,7 @@ public class FriendRequestCommand implements CommandExecutor {
 		} else if (((Player) sender).getUniqueId().equals(Bukkit.getPlayer(args[0]).getUniqueId())) {
 			sender.sendMessage("§cYou can't friend yourself!");
 			return true;
-		} else if (Friends.getRelation(((Player) sender).getUniqueId(), Bukkit.getPlayer(args[0]).getUniqueId()).isFriend()) {
+		} else if (Friends.getRelation(PlayerData.getPlayerData((Player) sender), PlayerData.getPlayerData(args[0])).isFriend()) {
 			sender.sendMessage("§6Already friends with §n" + PlayerData.getPlayerData(Bukkit.getPlayer(args[0])).getRankedName() + "§r§6.");
 			return true;
 		}

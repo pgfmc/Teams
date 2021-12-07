@@ -113,6 +113,7 @@ public class AttackEvent implements Listener {
 				
 				switch(OwnableEntity.getContainer(e.getEntity()).isAllowed(PlayerData.getPlayerData(attacker))) {
 				case OWNER: return;
+				case FAVORITE: return;
 				case FRIEND: return;
 				default: {
 					e.setCancelled(true);

@@ -1,13 +1,7 @@
 package net.pgfmc.teams.data.blocks;
 
-import java.util.Optional;
-import java.util.stream.Stream;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
-
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.data.Ownable.Security;
 
 public class Claim {
 	
@@ -20,38 +14,62 @@ public class Claim {
 	 */
 	public static OwnableBlock getClosestClaim(Location loca) { // returns the closest enemy beacon to the location input.
 		
-		Stream<OwnableBlock> ownableStream = OwnableBlock.getClaims().stream();
-		Optional<OwnableBlock> b = ownableStream // stream to funnel down the beacons into the closest enemy beacon.
-		.filter(x -> x.getLocation().getWorld() == loca.getWorld())
-		.filter(x -> x.inRange(loca))
+		for (OwnableBlock ob : OwnableBlock.getClaims()) {
+			if (ob.getLocation().getWorld() == loca.getWorld() && 
+					ob.inRange(loca)) {
+				return ob;
+			}
+		}
+		return null;
+		
+		
+		/*
+		Optional<OwnableBlock> b = OwnableBlock.getClaims().stream()
+		.filter(x -> {
+			System.out.println("Filtering for worlds...");
+			return x.getLocation().getWorld() == loca.getWorld();
+		}) // stream to funnel down the beacons into the closest enemy beacon.
+		.filter(x -> {
+			System.out.println("Filtering for range...");
+			return x.inRange(v);
+		})
+		.findFirst();
+		
+		
 		.reduce((a, c) -> {
-			double brah = a.getDistance(loca);
-			double brbh = c.getDistance(loca);
+			if (a == null) {
+				if (c == null) {
+					return null;
+				}
+				return c;
+			} else if (c == null) {
+				return a;
+			}
+			
+			double brah = a.getDistance(v);
+			double brbh = c.getDistance(v);
+			
+			System.out.println("Reducing!");
 			
 			return (brah > brbh) ? a : c;
 		});
-		ownableStream.close();
+		
 		
 		if (b.isPresent()) {
-			System.out.println(b.get().getLocation().toString());
+			//System.out.println(b.get().getLocation().toString());
+			return b.get();
 		}
-		return null;
+		return null;*/
 	}
 	
-	public static boolean isEnemyinRange(Location l2, PlayerData pd) {
+	public static boolean isEnemyinRange(Location l2) {
 		
-		Stream<OwnableBlock> claimStream = OwnableBlock.getClaims().stream();
-		
-		Optional<OwnableBlock> A = claimStream
-				.filter(x -> {
-					return x.inRange(l2, true && x.isAllowed(pd) != Security.OWNER);
-				})
-				.reduce((a, x)-> {
-			return x;
-		});
-		claimStream.close();
-		
-		return A.isPresent();
+		for (OwnableBlock ob : OwnableBlock.getClaims()) {
+			if (ob.inRange(l2, true)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**

@@ -55,16 +55,14 @@ public class BBEvent implements Listener {
 		
 		if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 			
-			PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
-			
 			OwnableBlock cont = OwnableBlock.getOwnable(e.getBlock());
-			
 			
 			// removes the ownable if able to
 			if (cont != null) {
 				
-				Security s = cont.isAllowed(pd);
+				PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
 				
+				Security s = cont.isAllowed(pd);
 				
 				switch(s) {
 				case DISALLOWED:
@@ -113,12 +111,18 @@ public class BBEvent implements Listener {
 			
 			OwnableBlock claim = Claim.getClosestClaim(e.getBlock().getLocation());
 			
-			if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
-				pd.sendMessage("§cThis land is claimed.");
-				e.setCancelled(true);
-				pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
-				return;
+			if (claim != null) {
+				PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
+				
+				if (claim.isAllowed(pd) == Security.DISALLOWED) {
+					pd.sendMessage("§cThis land is claimed.");
+					e.setCancelled(true);
+					pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
+					return;
+				}
 			}
+			
+			
 		} else {
 			OwnableBlock cont = OwnableBlock.getOwnable(e.getBlock());
 			if (cont != null) {
