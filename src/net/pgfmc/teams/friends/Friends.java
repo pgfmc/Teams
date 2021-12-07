@@ -96,8 +96,10 @@ public class Friends extends Requester implements Listener {
 	
 	public static void setRelation(PlayerData POV, PlayerData friend, Relation relate) {
 		
-		getFriendsMap(POV).put(friend, relate);
-		save();
+		if (POV != null && friend != null && relate != null) {
+			getFriendsMap(POV).put(friend, relate);
+			save();
+		}
 	}
 	
 	public static Relation getRelation(PlayerData POV, PlayerData friend) {
@@ -161,24 +163,26 @@ public class Friends extends Requester implements Listener {
 	/**
 	 * loads all friends
 	 */
-	public static void load(PlayerData pd) {
+	public static void load() {
 		
-		pd.setData("friends", new HashMap<PlayerData, Relation>());
+		for (PlayerData pd : PlayerData.getPlayerDataSet()) {
+			pd.setData("friends", new HashMap<PlayerData, Relation>());
+		}
+		
 		
 		FileConfiguration database = Mixins.getDatabase(Main.databasePath);
 		ConfigurationSection friends = verifyConf(database, "friends");
 		
-		ConfigurationSection config = friends.getConfigurationSection(pd.getUniqueId().toString());
-		if (config == null) {
-			return;
+		for (PlayerData pd : PlayerData.getPlayerDataSet()) {
+			ConfigurationSection config = friends.getConfigurationSection(pd.getUniqueId().toString());
+			if (config == null) {
+				return;
+			}
+			
+			config.getKeys(false).stream()
+			.forEach(x-> {
+				setRelation(pd, PlayerData.getPlayerData(UUID.fromString(x)), Relation.valueOf(config.getString(x)));
+			});
 		}
-		
-		config.getKeys(false).stream()
-		.forEach(x-> {
-			setRelation(pd, PlayerData.getPlayerData(UUID.fromString(x)), Relation.valueOf(config.getString(x)));
-		});
-			
-			
-		
 	}
 }

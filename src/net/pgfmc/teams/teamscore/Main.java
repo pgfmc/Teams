@@ -52,8 +52,8 @@ public class Main extends JavaPlugin {
 		Mixins.getFile(EntityContainersPath);
 		
 		PlayerData.setInit(x -> x.setData("lockMode", Lock.FRIENDS_ONLY));
-		PlayerData.setInit((x) -> Friends.load(x));
 		
+		PlayerData.setPostLoad((x) -> Friends.load());
 		PlayerData.setPostLoad((x) -> ContainerDatabase.loadContainers());
 		
 		// initializes all Event Listeners and Command Executors.
