@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -93,6 +94,126 @@ public class OwnableBlock extends Ownable {
 		}
 		
 		super.setLock(lock);
+	}
+	
+	/**
+	 * Attempts to cycle the lock on this ownable.
+	 * @param pd The player cycling the lock
+	 * @return cancellation state.
+	 */
+	public void cycleLock(PlayerData pd) {
+		switch(isAllowed(pd)) {
+		
+		case OWNER: {
+			
+				
+			// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
+			switch(getLock()) {
+			case LOCKED:
+				
+				pd.sendMessage("§6Favorites only!");
+				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+				setLock(Lock.FAVORITES_ONLY);
+				return;
+				
+			case FAVORITES_ONLY:
+				
+				pd.sendMessage("§6Friends only!");
+				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+				setLock(Lock.FRIENDS_ONLY);
+				return;
+				
+				
+			case FRIENDS_ONLY:
+
+				
+				
+				pd.sendMessage("§6Unlocked!");
+				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+				setLock(Lock.UNLOCKED);
+				return;
+				
+			case UNLOCKED:
+				
+				pd.sendMessage("§6Fully Locked!");
+				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+				setLock(Lock.LOCKED);
+				return;
+			
+			}
+		}
+		
+		case FAVORITE: {
+			
+			switch(getLock()) {
+			case LOCKED:
+				
+				pd.sendMessage("§cAccess Denied.");
+				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
+				return;
+				
+			case FAVORITES_ONLY:
+				
+				pd.sendMessage("§6Friends only!");
+				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+				setLock(Lock.FRIENDS_ONLY);
+				return;
+				
+			case FRIENDS_ONLY:
+				
+				pd.sendMessage("§6Unlocked!");
+				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+				setLock(Lock.UNLOCKED);
+				return;
+				
+			case UNLOCKED:
+				
+				
+				pd.sendMessage("§6Favorites Only!");
+				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
+				setLock(Lock.FAVORITES_ONLY);
+				return;
+				
+			default:
+				return;
+			}
+		}
+		
+		case FRIEND: {
+			
+			pd.sendMessage("§cAccess denied.");
+			pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
+			return;
+		}
+		case UNLOCKED: {
+			
+			pd.sendMessage("§cAccess denied.");
+			pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
+			return;
+		}
+		
+		case DISALLOWED: {
+			pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
+			
+			switch(block.getType()) {
+			
+				case BARREL: pd.sendMessage("§cThis barrel is locked!"); return;
+				case BLAST_FURNACE: pd.sendMessage("§cThis blast furnace is locked!"); return;
+				case BREWING_STAND: pd.sendMessage("§cThis brewing stand is locked!"); return;
+				case CHEST: pd.sendMessage("§cThis chest is locked!"); return;
+				case DISPENSER: pd.sendMessage("§cThis dispenser is locked!"); return;
+				case DROPPER: pd.sendMessage("§cThis dropper is locked!"); return;
+				case FURNACE: pd.sendMessage("§cThis furnace is locked!"); return;
+				case HOPPER: pd.sendMessage("§cThis hopper is locked!"); return;
+				case SHULKER_BOX: pd.sendMessage("§cThis shulker box is locked!"); return;
+				case SMOKER: pd.sendMessage("§cThis smoker is locked!"); return;
+				case BEACON: pd.sendMessage("§cThis beacon is locked!"); return;
+				default:
+					return;
+			}
+		}
+		case EXCEPTION: System.out.println("cont.isAllowed() returned Security.EXCEPTION!"); return;
+		}
 	}
 	
 	private static Block getOtherSide(Block block) {

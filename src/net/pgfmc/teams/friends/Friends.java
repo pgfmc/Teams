@@ -165,11 +165,6 @@ public class Friends extends Requester implements Listener {
 	 */
 	public static void load() {
 		
-		for (PlayerData pd : PlayerData.getPlayerDataSet()) {
-			pd.setData("friends", new HashMap<PlayerData, Relation>());
-		}
-		
-		
 		FileConfiguration database = Mixins.getDatabase(Main.databasePath);
 		ConfigurationSection friends = verifyConf(database, "friends");
 		

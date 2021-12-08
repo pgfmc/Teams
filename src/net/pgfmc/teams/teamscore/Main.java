@@ -1,5 +1,7 @@
 package net.pgfmc.teams.teamscore;
 
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,6 +22,7 @@ import net.pgfmc.teams.friends.FavoriteCommand;
 import net.pgfmc.teams.friends.FriendAcceptCommand;
 import net.pgfmc.teams.friends.FriendRequestCommand;
 import net.pgfmc.teams.friends.Friends;
+import net.pgfmc.teams.friends.Friends.Relation;
 import net.pgfmc.teams.friends.FriendsListCommand;
 import net.pgfmc.teams.friends.UnfavoriteCommand;
 import net.pgfmc.teams.friends.UnfriendCommand;
@@ -52,6 +55,7 @@ public class Main extends JavaPlugin {
 		Mixins.getFile(EntityContainersPath);
 		
 		PlayerData.setInit(x -> x.setData("lockMode", Lock.FRIENDS_ONLY));
+		PlayerData.setInit(x -> x.setData("friends", new HashMap<PlayerData, Relation>()));
 		
 		PlayerData.setPostLoad((x) -> Friends.load());
 		PlayerData.setPostLoad((x) -> ContainerDatabase.loadContainers());

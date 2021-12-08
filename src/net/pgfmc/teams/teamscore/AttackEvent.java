@@ -45,8 +45,6 @@ public class AttackEvent implements Listener {
 				
 				if (target.getGameMode() == GameMode.SURVIVAL && attacker.getGameMode() == GameMode.SURVIVAL) { // makes sure both players are in survival
 					
-					
-					
 					PlayerData apd = PlayerData.getPlayerData(attacker);
 					PlayerData tpd = PlayerData.getPlayerData(target);
 					Duel ATK = apd.getData("duel");

@@ -51,7 +51,7 @@ public class BlockInteractEvent implements Listener {
 			// Player is in survival mode
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 				
-				if (e.getMaterial() != null && e.getMaterial().toString().contains("BUCKET")) {
+				if (e.getMaterial() != null && e.getMaterial().toString().contains("BUCKET")) { // Disables Bucket placing in claims
 					
 					OwnableBlock beacon = Claim.getClosestClaim(block.getLocation());
 					
@@ -62,139 +62,22 @@ public class BlockInteractEvent implements Listener {
 					}
 				}
 				
-				if (OwnableBlock.getOwnable(block) != null) {
+				OwnableBlock cont = OwnableBlock.getOwnable(block);
+				
+				if (cont != null) { // if block is a container
 					
-					OwnableBlock cont = OwnableBlock.getOwnable(block);
-					
-					switch(cont.isAllowed(pd)) {
-					
-					case OWNER: {
-						if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.LEVER) {
-							
-							// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
-							
-							switch(cont.getLock()) {
-							case LOCKED:
-								
-								e.setCancelled(true);
-								
-								pd.sendMessage("§6Favorites only!");
-								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								cont.setLock(Lock.FAVORITES_ONLY);
-								return;
-								
-							case FAVORITES_ONLY:
-								e.setCancelled(true);
-								
-								pd.sendMessage("§6Friends only!");
-								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								cont.setLock(Lock.FRIENDS_ONLY);
-								return;
-								
-								
-							case FRIENDS_ONLY:
-
-								e.setCancelled(true);
-								
-								pd.sendMessage("§6Unlocked!");
-								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								cont.setLock(Lock.UNLOCKED);
-								return;
-								
-							case UNLOCKED:
-								
-								e.setCancelled(true);
-								
-								pd.sendMessage("§6Fully Locked!");
-								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								cont.setLock(Lock.LOCKED);
-								return;
-								
-							default:
-								return;
-							
-							}
-							
-						}
-						return;
-					}
-					
-					case FAVORITE: {
-						if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.LEVER) {
-							
-							// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
-							
-							switch(cont.getLock()) {
-							case LOCKED:
-								
-								e.setCancelled(true);
-								
-								pd.sendMessage("§cAccess Denied.");
-								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
-								return;
-								
-							case FAVORITES_ONLY:
-								e.setCancelled(true);
-								
-								pd.sendMessage("§6Friends only!");
-								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								cont.setLock(Lock.FRIENDS_ONLY);
-								return;
-								
-							case FRIENDS_ONLY:
-
-								e.setCancelled(true);
-								
-								pd.sendMessage("§6Unlocked!");
-								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								cont.setLock(Lock.UNLOCKED);
-								return;
-								
-							case UNLOCKED:
-								
-								e.setCancelled(true);
-								
-								pd.sendMessage("§6Favorites Only!");
-								pd.playSound(e.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
-								cont.setLock(Lock.FAVORITES_ONLY);
-								return;
-								
-							default:
-								return;
-							}
-						}
-						return;
-					}
-					
-					case FRIEND: {
-						if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.LEVER) {
-							
-							e.setCancelled(true);
-							
-							pd.sendMessage("§cAccess denied.");
-							pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
-							return;
-						}
-					}
-					case UNLOCKED: {
-						if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.LEVER) {
-							
-							e.setCancelled(true);
-							
-							pd.sendMessage("§cAccess denied.");
-							pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
-							return;
-						}
-					}
-					
-					case DISALLOWED: {
+					if (e.getMaterial() == Material.LEVER) { // locking feature
+						cont.cycleLock(pd);
 						e.setCancelled(true);
-						pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
+						return;
+					} else {
 						
-						Material mat = e.getClickedBlock().getType();
-						
-						switch(mat) {
-						
+						switch(cont.isAllowed(pd)) {
+						case DISALLOWED:
+							e.setCancelled(true);
+							
+							switch(block.getType()) {
+							
 							case BARREL: pd.sendMessage("§cThis barrel is locked!"); return;
 							case BLAST_FURNACE: pd.sendMessage("§cThis blast furnace is locked!"); return;
 							case BREWING_STAND: pd.sendMessage("§cThis brewing stand is locked!"); return;
@@ -208,9 +91,30 @@ public class BlockInteractEvent implements Listener {
 							case BEACON: pd.sendMessage("§cThis beacon is locked!"); return;
 							default:
 								return;
+							}
+						case EXCEPTION:
+							e.setCancelled(true);
+							
+							switch(block.getType()) {
+							
+							case BARREL: pd.sendMessage("§cThis barrel is locked!"); return;
+							case BLAST_FURNACE: pd.sendMessage("§cThis blast furnace is locked!"); return;
+							case BREWING_STAND: pd.sendMessage("§cThis brewing stand is locked!"); return;
+							case CHEST: pd.sendMessage("§cThis chest is locked!"); return;
+							case DISPENSER: pd.sendMessage("§cThis dispenser is locked!"); return;
+							case DROPPER: pd.sendMessage("§cThis dropper is locked!"); return;
+							case FURNACE: pd.sendMessage("§cThis furnace is locked!"); return;
+							case HOPPER: pd.sendMessage("§cThis hopper is locked!"); return;
+							case SHULKER_BOX: pd.sendMessage("§cThis shulker box is locked!"); return;
+							case SMOKER: pd.sendMessage("§cThis smoker is locked!"); return;
+							case BEACON: pd.sendMessage("§cThis beacon is locked!"); return;
+							default:
+								return;
+							}
+						default:
+							return;
+						
 						}
-					}
-					case EXCEPTION: System.out.println("cont.isAllowed() returned Security.EXCEPTION!"); return;
 					}
 				}
 				
@@ -230,8 +134,6 @@ public class BlockInteractEvent implements Listener {
 						|| e.getItem().getType() == Material.ARMOR_STAND))
 					// --------------------------------
 				{
-					
-					
 					
 					OwnableBlock beacon = Claim.getClosestClaim(block.getLocation());
 					
