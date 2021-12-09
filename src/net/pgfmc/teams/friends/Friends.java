@@ -12,7 +12,7 @@ import org.bukkit.event.Listener;
 import net.pgfmc.pgfessentials.Mixins;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.pgfessentials.requestAPI.Requester;
-import net.pgfmc.teams.teamscore.Main;
+import net.pgfmc.teams.main.Main;
 
 public class Friends extends Requester implements Listener {
 	
