@@ -13,7 +13,7 @@ import net.pgfmc.teams.friends.FriendAcceptCommand;
 import net.pgfmc.teams.friends.FriendRequestCommand;
 import net.pgfmc.teams.friends.Friends;
 import net.pgfmc.teams.friends.Friends.Relation;
-import net.pgfmc.teams.ownable.ContainerDatabase;
+import net.pgfmc.teams.ownable.OwnableFile;
 import net.pgfmc.teams.ownable.Ownable.Lock;
 import net.pgfmc.teams.ownable.block.events.BBEvent;
 import net.pgfmc.teams.ownable.block.events.BExEvent;
@@ -58,7 +58,7 @@ public class Main extends JavaPlugin {
 		PlayerData.setInit(x -> x.setData("friends", new HashMap<PlayerData, Relation>()));
 		
 		PlayerData.setPostLoad((x) -> Friends.load());
-		PlayerData.setPostLoad((x) -> ContainerDatabase.loadContainers());
+		PlayerData.setPostLoad((x) -> OwnableFile.loadContainers());
 		
 		// initializes all Event Listeners and Command Executors.
 		getServer().getPluginManager().registerEvents(new BlockInteractEvent(), this);
@@ -85,7 +85,7 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		if (loaded) {
-			ContainerDatabase.saveContainers();
+			OwnableFile.saveContainers();
 			Friends.save();
 		}
 	}
