@@ -14,12 +14,14 @@ public class Claim {
 	 */
 	public static OwnableBlock getClosestClaim(Location loca) { // returns the closest enemy beacon to the location input.
 		
+		/*
 		for (OwnableBlock ob : OwnableBlock.getClaims()) {
 			if (ob.getLocation().getWorld() == loca.getWorld() && 
 					ob.inRange(loca)) {
 				return ob;
 			}
 		}
+		*/
 		return null;
 		
 		
@@ -64,11 +66,13 @@ public class Claim {
 	
 	public static boolean isEnemyinRange(Location l2) {
 		
+		/*
 		for (OwnableBlock ob : OwnableBlock.getClaims()) {
 			if (ob.inRange(l2, true)) {
 				return true;
 			}
 		}
+		*/
 		return false;
 	}
 	

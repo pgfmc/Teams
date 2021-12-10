@@ -302,6 +302,7 @@ public class OwnableBlock extends Ownable {
 	
 	// all claims functions
 	
+	/*
 	public boolean inRange(Location loc) { // input a Location, and find if its in range of the beacon
 		if (loc == null) { return false; }
 		
@@ -337,7 +338,7 @@ public class OwnableBlock extends Ownable {
 		}
 		return false;
 	}
-	
+	*/
 	public double getDistance(Vector loc) { // returns the distance from this to the location input.
 		
 		Location bloke = block.getLocation();
