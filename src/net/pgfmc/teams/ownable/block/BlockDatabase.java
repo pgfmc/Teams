@@ -20,7 +20,7 @@ public class BlockDatabase {
 	 * 
 	 * 
 	 */
-	private static Map<String, ChunkRegion> regions = new HashMap<>();
+	private static Map<String, RegionGroup> regions = new HashMap<>();
 	
 	public static String getRegionId(Location loc) {
 		
@@ -36,12 +36,12 @@ public class BlockDatabase {
 	
 	
 	
-	public static class ChunkRegion {
+	public static class RegionGroup {
 		
 		private Set<OwnableBlock> containers = new HashSet<>();
 		private Set<OwnableBlock> claims = new HashSet<>();
 		
-		protected ChunkRegion() {
+		protected RegionGroup() {
 			regions.put("", this);
 		}
 		
@@ -72,6 +72,49 @@ public class BlockDatabase {
 			return null;
 		}
 		
+	}
+	
+	/**
+	 * 3 dimensional vector class.
+	 * @author CrimsonDart
+	 *
+	 */
+	public static class Vector3 {
+		
+		private int x;
+		private int y;
+		private int z;
+		
+		public Vector3(int x, int y, int z) {
+			this.x = x;
+			this.y = y;
+			this.z = z;
+		}
+		
+		public int x() {
+			return x;
+		}
+		
+		public int y() {
+			return y;
+		}
+		
+		public int z() {
+			return z;
+		}
+		
+		public String toString() {
+			return "x" + String.valueOf(x) + "y" + String.valueOf(y) + "z" + String.valueOf(z);
+		}
+		
+		public static Vector3 fromString(String s) {
+			
+			String[] xy = s.replace("x", "").split("y", 2);
+			String[] yz = xy[2].split("z", 2);
+			
+			return new Vector3(Integer.parseInt(xy[0]), Integer.parseInt(yz[0]), Integer.parseInt(yz[2]));
+			
+		}
 	}
 	
 }
