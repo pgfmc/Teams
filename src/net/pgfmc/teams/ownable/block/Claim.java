@@ -1,71 +1,28 @@
 package net.pgfmc.teams.ownable.block;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 
 public class Claim {
-	
-	
 	
 	/**
 	 * Returns the closest Effective claim to the input location.
 	 * @param loca 
 	 * @return The closest Claim that can effect the input location.
 	 */
-	public static OwnableBlock getClosestClaim(Location loca) { // returns the closest enemy beacon to the location input.
+	public static OwnableBlock getClosestClaim(Vector4 loca) { // returns the closest enemy beacon to the location input.
 		
 		for (OwnableBlock ob : OwnableBlock.getClaims()) {
-			if (ob.getLocation().getWorld() == loca.getWorld() && 
-					ob.inRange(loca)) {
+			if (ob.inRange(loca)) {
 				return ob;
 			}
 		}
 		return null;
-		
-		
-		/*
-		Optional<OwnableBlock> b = OwnableBlock.getClaims().stream()
-		.filter(x -> {
-			System.out.println("Filtering for worlds...");
-			return x.getLocation().getWorld() == loca.getWorld();
-		}) // stream to funnel down the beacons into the closest enemy beacon.
-		.filter(x -> {
-			System.out.println("Filtering for range...");
-			return x.inRange(v);
-		})
-		.findFirst();
-		
-		
-		.reduce((a, c) -> {
-			if (a == null) {
-				if (c == null) {
-					return null;
-				}
-				return c;
-			} else if (c == null) {
-				return a;
-			}
-			
-			double brah = a.getDistance(v);
-			double brbh = c.getDistance(v);
-			
-			System.out.println("Reducing!");
-			
-			return (brah > brbh) ? a : c;
-		});
-		
-		
-		if (b.isPresent()) {
-			//System.out.println(b.get().getLocation().toString());
-			return b.get();
-		}
-		return null;*/
 	}
 	
-	public static boolean isEnemyinRange(Location l2) {
+	public static boolean isEnemyinRange(Vector4 l2) {
 		
 		for (OwnableBlock ob : OwnableBlock.getClaims()) {
-			if (ob.inRange(l2, true)) {
+			if (ob.claimRange(l2)) {
 				return true;
 			}
 		}
@@ -85,10 +42,10 @@ public class Claim {
 			return -1;
 		}
 		
-		if (claim.getBlock().getType().equals(Material.GOLD_BLOCK))
+		if (claim.getType().equals(Material.GOLD_BLOCK))
 		{
 			return 7;
-		} else if (claim.getBlock().getType().equals(Material.LODESTONE))
+		} else if (claim.getType().equals(Material.LODESTONE))
 		{
 			return 35;
 		} else

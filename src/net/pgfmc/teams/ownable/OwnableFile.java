@@ -4,17 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.main.Main;
-import net.pgfmc.teams.main.Utility;
 import net.pgfmc.teams.ownable.Ownable.Lock;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
+import net.pgfmc.teams.ownable.block.Vector4;
 import net.pgfmc.teams.ownable.entities.OwnableEntity;
 
 /*
@@ -41,8 +39,6 @@ public class OwnableFile {
 				
 				ConfigurationSection configSec = database.getConfigurationSection(key);
 				
-				
-				
 				PlayerData pd = PlayerData.getPlayerData(UUID.fromString(configSec.getString("player")));
 				
 				
@@ -58,11 +54,9 @@ public class OwnableFile {
 					lock = Lock.valueOf(configSec.getString("Lock"));
 				}
 				
+				Vector4 vec = Vector4.fromString(key);
+				new OwnableBlock(pd, vec, lock);
 				
-				Block block = Utility.getBlock(key);
-				if (OwnableBlock.isOwnable(block.getType())) {
-					new OwnableBlock(pd, block, lock);
-				}
 			}
 		}
 		
@@ -89,25 +83,24 @@ public class OwnableFile {
 	
 	public static void saveContainer(OwnableBlock ob, FileConfiguration database) {
 		
-		if (!OwnableBlock.isOwnable(ob.getBlock().getType())) { 
+		if (!OwnableBlock.isOwnable(ob.getType())) { 
 			return;
 		}
 		
-		
-		Location location = ob.getLocation();
+		String id = ob.getLocation().toString();
 		PlayerData player = ob.getPlayer();
 		
 		// if location is not found, a new one is created.
-		ConfigurationSection blocc = database.getConfigurationSection(Utility.locToString(location));
+		ConfigurationSection blocc = database.getConfigurationSection(id);
 		if (blocc == null) {
-			blocc = database.createSection(Utility.locToString(location));
+			blocc = database.createSection(id);
 		}
 		
 		blocc.set("isLocked", null);
 		blocc.set("player", player.getUniqueId().toString());
 		blocc.set("Lock", ob.getLock().toString());
 		
-		database.set(Utility.locToString(location), blocc);
+		database.set(id, blocc);
 		
 		// saves data.
 		

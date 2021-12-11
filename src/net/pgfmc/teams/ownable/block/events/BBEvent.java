@@ -10,6 +10,7 @@ import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable.Security;
 import net.pgfmc.teams.ownable.block.Claim;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
+import net.pgfmc.teams.ownable.block.Vector4;
 
 /**
 @author CrimsonDart
@@ -80,7 +81,7 @@ public class BBEvent implements Listener {
 						pd.sendMessage("§cYou don't own this.");
 						return;
 					} else {
-						OwnableBlock.remove(cont);
+						cont.remove();
 						return;
 					}
 					
@@ -90,12 +91,12 @@ public class BBEvent implements Listener {
 						pd.sendMessage("§cYou don't own this.");
 						return;
 					} else {
-						OwnableBlock.remove(cont);
+						cont.remove();
 						return;
 					}
 					
 				case OWNER:
-					OwnableBlock.remove(cont);
+					cont.remove();
 					if (cont.isClaim()) {
 						pd.sendMessage("§6Claim Removed!");
 					}
@@ -109,7 +110,7 @@ public class BBEvent implements Listener {
 				}
 			}
 			
-			OwnableBlock claim = Claim.getClosestClaim(e.getBlock().getLocation());
+			OwnableBlock claim = Claim.getClosestClaim(new Vector4(e.getBlock()));
 			
 			if (claim != null) {
 				PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
@@ -126,7 +127,7 @@ public class BBEvent implements Listener {
 		} else {
 			OwnableBlock cont = OwnableBlock.getOwnable(e.getBlock());
 			if (cont != null) {
-				OwnableBlock.remove(cont);
+				cont.remove();
 			}
 		}
 	}

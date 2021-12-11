@@ -9,7 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-public class BlockDatabase {
+public class BlockManager {
 	
 	/**
 	 * HashMap of Chunk Regions.
@@ -59,62 +59,12 @@ public class BlockDatabase {
 					? claims : containers;
 			
 			for (OwnableBlock ob : list) {
-				Location l1 = ob.getLocation();
-				Location l2 = block.getLocation();
 				
-				if (l1.getWorld().equals(l2.getWorld()) &&
-						l1.getBlockX() == l2.getBlockX() && 
-						l1.getBlockY() == l1.getBlockY() && 
-						l1.getBlockZ() == l1.getBlockZ()) {
+				if (new Vector4(block).equals(ob.getLocation())) {
 					return ob;
 				}
 			}
 			return null;
 		}
-		
 	}
-	
-	/**
-	 * 3 dimensional vector class.
-	 * @author CrimsonDart
-	 *
-	 */
-	public static class Vector3 {
-		
-		private int x;
-		private int y;
-		private int z;
-		
-		public Vector3(int x, int y, int z) {
-			this.x = x;
-			this.y = y;
-			this.z = z;
-		}
-		
-		public int x() {
-			return x;
-		}
-		
-		public int y() {
-			return y;
-		}
-		
-		public int z() {
-			return z;
-		}
-		
-		public String toString() {
-			return "x" + String.valueOf(x) + "y" + String.valueOf(y) + "z" + String.valueOf(z);
-		}
-		
-		public static Vector3 fromString(String s) {
-			
-			String[] xy = s.replace("x", "").split("y", 2);
-			String[] yz = xy[2].split("z", 2);
-			
-			return new Vector3(Integer.parseInt(xy[0]), Integer.parseInt(yz[0]), Integer.parseInt(yz[2]));
-			
-		}
-	}
-	
 }

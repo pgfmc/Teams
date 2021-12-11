@@ -3,14 +3,12 @@ package net.pgfmc.teams.ownable.block;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.data.Directional;
-import org.bukkit.util.Vector;
 
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable;
@@ -35,18 +33,38 @@ public class OwnableBlock extends Ownable {
 	public static Set<OwnableBlock> containers = new HashSet<>();
 	public static Set<OwnableBlock> claims = new HashSet<>();
 	
-	private Block block;
+	private Vector4 vector;
+	private Material mat;
+	//private OwnableBlock doubleChest;
 	
-	public OwnableBlock(PlayerData player, Block block, Lock lock) {
-		
+	public OwnableBlock(PlayerData player, Vector4 vec, Lock lock) {
 		super(player, (lock == null) ? player.getData("lockMode") : lock);
 		
-		this.block = block;
+		Block block = vec.getBlock();
+		mat = block.getType();
+		vector = vec;
 		
 		if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) {
 			claims.add(this);
-		} else {
+			
+		} else if (isOwnable(mat)) {
 			containers.add(this);
+			
+		}
+	}
+	
+	private OwnableBlock(PlayerData player, Block block, Lock lock) {
+		super(player, (lock == null) ? player.getData("lockMode") : lock);
+
+		mat = block.getType();
+		vector = new Vector4(block);
+		
+		if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) {
+			claims.add(this);
+			
+		} else if (isOwnable(mat)) {
+			containers.add(this);
+			
 		}
 	}
 	
@@ -88,11 +106,14 @@ public class OwnableBlock extends Ownable {
 	@Override
 	public void setLock(Lock lock) {
 		
-		Block blake = getOtherSide(this.block);
-		if (blake != null) {
-			getOwnable(blake).lock = lock;
-		}
+		//if (doubleChest != null) {
+		//	doubleChest.setLock(lock);
+		//}
 		
+		super.setLock(lock);
+	}
+	
+	public void setLock(Lock lock, boolean dC) {
 		super.setLock(lock);
 	}
 	
@@ -195,7 +216,7 @@ public class OwnableBlock extends Ownable {
 		case DISALLOWED: {
 			pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 			
-			switch(block.getType()) {
+			switch(getType()) {
 			
 				case BARREL: pd.sendMessage("§cThis barrel is locked!"); return;
 				case BLAST_FURNACE: pd.sendMessage("§cThis blast furnace is locked!"); return;
@@ -217,7 +238,7 @@ public class OwnableBlock extends Ownable {
 	}
 	
 	private static Block getOtherSide(Block block) {
-		if ((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST)) {
+		if ((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST)) { // chest check
 			
 			Set<Block> blocks = new HashSet<Block>();
 			World world = block.getLocation().getWorld();
@@ -241,26 +262,38 @@ public class OwnableBlock extends Ownable {
 		return null;
 	}
 	
-	public static void remove(OwnableBlock ob) {
-		
-		if (ob.isClaim()) {
-			System.out.println(claims.remove(ob) ? "Claim removed!" : "Claim removal failed!");
+	/**
+	 * Removes this ownable.
+	 */
+	public void remove() {
+		if (isClaim()) {
+			System.out.println(claims.remove(this) ? "Claim removed!" : "Claim removal failed!");
 		} else {
-			System.out.println(containers.remove(ob) ? "Container removed!" : "Container removal failed!");
-			
+			System.out.println(containers.remove(this) ? "Container removed!" : "Container removal failed!");
 		}
 	}
 	
-	@Override
-	public Location getLocation() {
-		return block.getLocation();
-		
+	/**
+	 * Returns the location, in the form of a vector.
+	 * @return The vector location.
+	 */
+	public Vector4 getLocation() {
+		return vector;
 	}
 	
-	public Block getBlock() {
-		return block;
+	/**
+	 * The material type of the Ownable.
+	 * @return The material.
+	 */
+	public Material getType() {
+		return mat;
 	}
 	
+	/**
+	 * Gets an ownable from the input block.
+	 * @param block The block to get the Ownable for.
+	 * @return The block's ownable.
+	 */
 	public static OwnableBlock getOwnable(Block block) { // gets a container from block
 		
 		if (!isOwnable(block.getType())) {
@@ -271,23 +304,28 @@ public class OwnableBlock extends Ownable {
 				? claims : containers;
 		
 		for (OwnableBlock ob : list) {
-			Location l1 = ob.getLocation();
-			Location l2 = block.getLocation();
+			Vector4 v2 = new Vector4(block);
 			
-			if (l1.getWorld().equals(l2.getWorld()) &&
-					l1.getBlockX() == l2.getBlockX() && 
-					l1.getBlockY() == l1.getBlockY() && 
-					l1.getBlockZ() == l1.getBlockZ()) {
+			if (ob.getLocation().equals(v2)) {
 				return ob;
 			}
 		}
 		return null;
 	}
 	
-	public boolean isClaim() { // returns wether or not a Containers is a Beacons.
-		return (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK);
+	/**
+	 * Returns if this ownable is a claim or not.
+	 * @return true if this ownable is a claim, false if else.
+	 */
+	public boolean isClaim() {
+		return (mat == Material.LODESTONE || mat == Material.GOLD_BLOCK);
 	}
 	
+	/**
+	 * Returns if the input material is a valid ownable material.
+	 * @param type The material to test if it is Ownable.
+	 * @return True if the Material is Ownable.
+	 */
 	public static boolean isOwnable(Material type) {
 		return (type == Material.LODESTONE || 
 				type == Material.GOLD_BLOCK || 
@@ -306,46 +344,44 @@ public class OwnableBlock extends Ownable {
 	
 	// all claims functions
 	
-	public boolean inRange(Location loc) { // input a Location, and find if its in range of the beacon
-		if (loc == null) { return false; }
+	/**
+	 * Tests if the input Vector4 is in range of this ownable (only works for Claims)
+	 * @param v2 The vector to test the range for.
+	 * @return True if the vector is inside the range of this claim, false if else.
+	 */
+	public boolean inRange(Vector4 v2) { // input a Location, and find if its in range of the beacon
+		if (v2 == null) { return false; }
 		
-		Location bloke = getLocation();
-		
-		if (block.getType() == Material.GOLD_BLOCK) {
-			return (bloke.getX() - 7 <= loc.getX() &&
-					bloke.getX() + 7 >= loc.getX() &&
-					bloke.getZ() -7 <= loc.getZ() &&
-					bloke.getZ() + 7 >= loc.getZ() &&
-					bloke.getY() - 7 <= loc.getY() &&
-					bloke.getY() + 7 >= loc.getY());
-		} else if (block.getType() == Material.LODESTONE) {
-			return (bloke.getX() - 35 <= loc.getX() &&
-					bloke.getX() + 35 >= loc.getX() &&
-					bloke.getZ() - 35 <= loc.getZ() &&
-					bloke.getZ() + 35 >= loc.getZ() &&
-					bloke.getY() - 53 <= loc.getY());
+		if (mat == Material.GOLD_BLOCK) {
+			return (vector.x() - 8 < v2.x() &&
+					vector.x() + 8 > v2.x() &&
+					vector.z() - 8 < v2.z() &&
+					vector.z() + 8 > v2.z() &&
+					vector.y() - 8 < v2.y() &&
+					vector.y() + 8 > v2.y());
+		} else if (mat == Material.LODESTONE) {
+			return (vector.x() - 36 < v2.x() &&
+					vector.x() + 36 > v2.x() &&
+					vector.z() - 36 < v2.z() &&
+					vector.z() + 36 > v2.z() &&
+					vector.y() - 54 < v2.y());
 		}
 		return false;
 	}
 	
-	public boolean inRange(Location loc, boolean claim) {
-		if (!claim) {
-			return inRange(loc);
-		} else if (block.getType() == Material.GOLD_BLOCK || block.getType() == Material.LODESTONE){
-			Location bloke = block.getLocation();
+	/**
+	 * Tests if the input Claim's Vector4 location's range will overlap with this claim's range.
+	 * @param v2 Input Projected claim's location.
+	 * @return True if the input claim's location overlaps with this claim's range, false if else.
+	 */
+	public boolean claimRange(Vector4 v2) {
+		if (mat == Material.GOLD_BLOCK || mat == Material.LODESTONE) {
 			
-			return (bloke.getBlockX() - 70 <= loc.getBlockX() &&
-					bloke.getBlockX() + 70 >= loc.getBlockX() &&
-					bloke.getBlockZ() - 70 <= loc.getBlockZ() &&
-					bloke.getBlockZ() + 70 >= loc.getBlockZ());
+			return (vector.x() - 71 < v2.x() &&
+					vector.x() + 71 > v2.x() &&
+					vector.z() - 71 < v2.z() &&
+					vector.z() + 71 > v2.z());
 		}
 		return false;
-	}
-	
-	public double getDistance(Vector loc) { // returns the distance from this to the location input.
-		
-		Location bloke = block.getLocation();
-		
-		return Math.pow(loc.getX() + bloke.getX(), 2) + Math.pow(loc.getZ() + bloke.getZ(), 2);
 	}
 }

@@ -1,7 +1,5 @@
 package net.pgfmc.teams.ownable;
 
-import org.bukkit.Location;
-
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.friends.Friends;
 import net.pgfmc.teams.friends.Friends.Relation;
@@ -61,8 +59,6 @@ public abstract class Ownable {
 	public PlayerData getPlayer() {
 		return placer;
 	}
-	
-	public abstract Location getLocation();
 	
 	public Lock getLock() {
 		return lock;

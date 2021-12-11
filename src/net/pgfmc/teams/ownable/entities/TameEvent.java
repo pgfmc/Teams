@@ -11,6 +11,7 @@ import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable.Security;
 import net.pgfmc.teams.ownable.block.Claim;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
+import net.pgfmc.teams.ownable.block.Vector4;
 
 public class TameEvent implements Listener {
 	
@@ -23,7 +24,7 @@ public class TameEvent implements Listener {
 			if (player.getGameMode() == GameMode.SURVIVAL) {
 				PlayerData pd = PlayerData.getPlayerData(player);
 				
-				OwnableBlock beacon = Claim.getClosestClaim(player.getLocation());
+				OwnableBlock beacon = Claim.getClosestClaim(new Vector4(player.getLocation()));
 				
 				if (beacon != null && beacon.isAllowed(pd) == Security.DISALLOWED) {
 					player.sendMessage("§cCannot tame on claimed land.");

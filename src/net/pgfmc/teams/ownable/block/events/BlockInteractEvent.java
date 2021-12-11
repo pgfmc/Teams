@@ -22,6 +22,7 @@ import net.pgfmc.teams.ownable.Ownable.Lock;
 import net.pgfmc.teams.ownable.Ownable.Security;
 import net.pgfmc.teams.ownable.block.Claim;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
+import net.pgfmc.teams.ownable.block.Vector4;
 import net.pgfmc.teams.ownable.entities.OwnableEntity;
 
 /**
@@ -53,7 +54,7 @@ public class BlockInteractEvent implements Listener {
 				
 				if (e.getMaterial() != null && e.getMaterial().toString().contains("BUCKET")) { // Disables Bucket placing in claims
 					
-					OwnableBlock beacon = Claim.getClosestClaim(block.getLocation());
+					OwnableBlock beacon = Claim.getClosestClaim(new Vector4(block));
 					
 					if (beacon != null && beacon.isAllowed(pd) == Security.DISALLOWED) {
 						pd.sendMessage("§cThis land is claimed.");
@@ -135,7 +136,7 @@ public class BlockInteractEvent implements Listener {
 					// --------------------------------
 				{
 					
-					OwnableBlock beacon = Claim.getClosestClaim(block.getLocation());
+					OwnableBlock beacon = Claim.getClosestClaim(new Vector4(block));
 					
 					if (beacon != null && beacon.isAllowed(pd) == Security.DISALLOWED) {
 						pd.sendMessage("§cThis land is claimed.");

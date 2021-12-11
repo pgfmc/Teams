@@ -53,7 +53,6 @@ public class OwnableEntity extends Ownable {
 		entities.remove(entitiy);
 	}
 	
-	@Override
 	public Location getLocation() {
 		return Bukkit.getEntity(entity).getLocation();
 	}

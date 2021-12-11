@@ -12,6 +12,7 @@ import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable.Security;
 import net.pgfmc.teams.ownable.block.Claim;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
+import net.pgfmc.teams.ownable.block.Vector4;
 
 /*
 Written by CrimsonDart
@@ -33,7 +34,7 @@ public class BPE implements Listener {
 		if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 			
 			if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) { // for placing claims
-				if (Claim.isEnemyinRange(block.getLocation())) {
+				if (Claim.isEnemyinRange(new Vector4(block))) {
 					e.setCancelled(true);
 					pd.sendMessage("§cCannot claim land that would overlap another claim.");
 					
@@ -49,7 +50,7 @@ public class BPE implements Listener {
 				return;
 			}
 			
-			OwnableBlock claim = Claim.getClosestClaim(block.getLocation());
+			OwnableBlock claim = Claim.getClosestClaim(new Vector4(block));
 			
 			if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
 				
