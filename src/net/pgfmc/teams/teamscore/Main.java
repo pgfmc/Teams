@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.pgfmc.pgfessentials.Mixins;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerDataManager;
 import net.pgfmc.teams.data.BBEvent;
 import net.pgfmc.teams.data.BExEvent;
 import net.pgfmc.teams.data.BPE;
@@ -54,11 +55,11 @@ public class Main extends JavaPlugin {
 		Mixins.getFile(BlockContainersPath);
 		Mixins.getFile(EntityContainersPath);
 		
-		PlayerData.setInit(x -> x.setData("lockMode", Lock.FRIENDS_ONLY));
-		PlayerData.setInit(x -> x.setData("friends", new HashMap<PlayerData, Relation>()));
+		PlayerDataManager.setInit(x -> x.setData("lockMode", Lock.FRIENDS_ONLY));
+		PlayerDataManager.setInit(x -> x.setData("friends", new HashMap<PlayerData, Relation>()));
 		
-		PlayerData.setPostLoad((x) -> Friends.load());
-		PlayerData.setPostLoad((x) -> ContainerDatabase.loadContainers());
+		PlayerDataManager.setPostLoad((x) -> Friends.load());
+		PlayerDataManager.setPostLoad((x) -> ContainerDatabase.loadContainers());
 		
 		// initializes all Event Listeners and Command Executors.
 		getServer().getPluginManager().registerEvents(new BlockInteractEvent(), this);
