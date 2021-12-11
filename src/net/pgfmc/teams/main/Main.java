@@ -7,14 +7,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.pgfmc.pgfessentials.Mixins;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.pgfessentials.playerdataAPI.PlayerDataManager;
 import net.pgfmc.teams.duel.DuelEvents;
 import net.pgfmc.teams.friends.FavoriteCommand;
 import net.pgfmc.teams.friends.FriendAcceptCommand;
 import net.pgfmc.teams.friends.FriendRequestCommand;
 import net.pgfmc.teams.friends.Friends;
 import net.pgfmc.teams.friends.Friends.Relation;
-import net.pgfmc.teams.ownable.OwnableFile;
+import net.pgfmc.teams.friends.FriendsListCommand;
+import net.pgfmc.teams.friends.UnfavoriteCommand;
+import net.pgfmc.teams.friends.UnfriendCommand;
 import net.pgfmc.teams.ownable.Ownable.Lock;
+import net.pgfmc.teams.ownable.OwnableFile;
 import net.pgfmc.teams.ownable.block.events.BBEvent;
 import net.pgfmc.teams.ownable.block.events.BExEvent;
 import net.pgfmc.teams.ownable.block.events.BPE;
@@ -23,9 +27,6 @@ import net.pgfmc.teams.ownable.entities.DeathEvent;
 import net.pgfmc.teams.ownable.entities.EntityClick;
 import net.pgfmc.teams.ownable.entities.InvOpenEvent;
 import net.pgfmc.teams.ownable.entities.TameEvent;
-import net.pgfmc.teams.friends.FriendsListCommand;
-import net.pgfmc.teams.friends.UnfavoriteCommand;
-import net.pgfmc.teams.friends.UnfriendCommand;
 
 public class Main extends JavaPlugin {
 	
@@ -54,11 +55,11 @@ public class Main extends JavaPlugin {
 		Mixins.getFile(BlockContainersPath);
 		Mixins.getFile(EntityContainersPath);
 		
-		PlayerData.setInit(x -> x.setData("lockMode", Lock.FRIENDS_ONLY));
-		PlayerData.setInit(x -> x.setData("friends", new HashMap<PlayerData, Relation>()));
+		PlayerDataManager.setInit(x -> x.setData("lockMode", Lock.FRIENDS_ONLY));
+		PlayerDataManager.setInit(x -> x.setData("friends", new HashMap<PlayerData, Relation>()));
 		
-		PlayerData.setPostLoad((x) -> Friends.load());
-		PlayerData.setPostLoad((x) -> OwnableFile.loadContainers());
+		PlayerDataManager.setPostLoad((x) -> Friends.load());
+		PlayerDataManager.setPostLoad((x) -> OwnableFile.loadContainers());
 		
 		// initializes all Event Listeners and Command Executors.
 		getServer().getPluginManager().registerEvents(new BlockInteractEvent(), this);

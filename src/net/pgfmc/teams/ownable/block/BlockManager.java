@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
@@ -21,20 +20,6 @@ public class BlockManager {
 	 * 
 	 */
 	private static Map<String, RegionGroup> regions = new HashMap<>();
-	
-	public static String getRegionId(Location loc) {
-		
-		if (loc != null) {
-			
-			return "x" + String.valueOf(loc.getBlockX() + "z" + String.valueOf(loc.getBlockZ()));
-			
-		}
-		
-		return "";
-	}
-	
-	
-	
 	
 	public static class RegionGroup {
 		
