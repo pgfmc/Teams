@@ -3,6 +3,7 @@ package net.pgfmc.teams.ownable.block;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -82,6 +83,8 @@ public class OwnableBlock extends Ownable {
 					case OWNER:
 						new OwnableBlock(player, block, cont.getLock());
 						return true;
+					case FAVORITE:
+						new OwnableBlock(player, block, cont.getLock());
 					case FRIEND:
 						new OwnableBlock(cont.getPlayer(), block, cont.getLock());
 						return true;
@@ -91,7 +94,10 @@ public class OwnableBlock extends Ownable {
 					}
 				}
 			}
-			
+			if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
+				new OwnableBlock(player, block, Lock.CREATIVE);
+				return true;
+			}
 			new OwnableBlock(player, block, null);
 			return true;
 		}
@@ -123,6 +129,14 @@ public class OwnableBlock extends Ownable {
 	 * @return cancellation state.
 	 */
 	public void cycleLock(PlayerData pd) {
+		
+		if (getLock() == Lock.CREATIVE) { // for Creative Locks.
+			pd.sendMessage("§cAccess Denied.");
+			pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
+			return;
+		}
+		
+		
 		switch(isAllowed(pd)) {
 		
 		case OWNER: {
@@ -160,7 +174,8 @@ public class OwnableBlock extends Ownable {
 				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 				setLock(Lock.LOCKED);
 				return;
-			
+				
+			case CREATIVE: return;
 			}
 		}
 		

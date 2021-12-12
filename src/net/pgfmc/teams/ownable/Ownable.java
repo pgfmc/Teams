@@ -1,5 +1,7 @@
 package net.pgfmc.teams.ownable;
 
+import org.bukkit.GameMode;
+
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.friends.Friends;
 import net.pgfmc.teams.friends.Friends.Relation;
@@ -39,7 +41,8 @@ public abstract class Ownable {
 		UNLOCKED,
 		FRIENDS_ONLY,
 		FAVORITES_ONLY,
-		LOCKED
+		LOCKED,
+		CREATIVE
 	}
 	
 	public Ownable(PlayerData player, Lock lock) { // class constructor
@@ -121,6 +124,12 @@ public abstract class Ownable {
 				
 			}
 			return Security.UNLOCKED;
+		
+		case CREATIVE:
+			if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
+				return Security.OWNER;
+			}
+			return Security.DISALLOWED;
 			
 		default:
 			return Security.EXCEPTION;
