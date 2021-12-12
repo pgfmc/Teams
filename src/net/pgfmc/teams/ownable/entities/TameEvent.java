@@ -7,11 +7,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTameEvent;
 
+import net.pgfmc.pgfessentials.Vector4;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable.Security;
 import net.pgfmc.teams.ownable.block.Claim;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
-import net.pgfmc.teams.ownable.block.Vector4;
 
 public class TameEvent implements Listener {
 	

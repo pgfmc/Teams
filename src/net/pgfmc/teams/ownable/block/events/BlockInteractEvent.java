@@ -16,13 +16,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import net.pgfmc.pgfessentials.Vector4;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.main.Main;
 import net.pgfmc.teams.ownable.Ownable.Lock;
 import net.pgfmc.teams.ownable.Ownable.Security;
 import net.pgfmc.teams.ownable.block.Claim;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
-import net.pgfmc.teams.ownable.block.Vector4;
 import net.pgfmc.teams.ownable.entities.OwnableEntity;
 
 /**

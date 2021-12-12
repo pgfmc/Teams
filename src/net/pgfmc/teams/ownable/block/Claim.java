@@ -2,6 +2,8 @@ package net.pgfmc.teams.ownable.block;
 
 import org.bukkit.Material;
 
+import net.pgfmc.pgfessentials.Vector4;
+
 public class Claim {
 	
 	/**

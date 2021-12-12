@@ -8,6 +8,8 @@ import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+import net.pgfmc.pgfessentials.Vector4;
+
 public class BlockManager {
 	
 	/**

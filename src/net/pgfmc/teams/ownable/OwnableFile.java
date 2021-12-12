@@ -8,11 +8,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import net.pgfmc.pgfessentials.Vector4;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.main.Main;
 import net.pgfmc.teams.ownable.Ownable.Lock;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
-import net.pgfmc.teams.ownable.block.Vector4;
 import net.pgfmc.teams.ownable.entities.OwnableEntity;
 
 /*

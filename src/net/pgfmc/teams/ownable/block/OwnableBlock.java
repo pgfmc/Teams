@@ -11,6 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.data.Directional;
 
+import net.pgfmc.pgfessentials.Vector4;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable;
 
@@ -367,6 +368,8 @@ public class OwnableBlock extends Ownable {
 	public boolean inRange(Vector4 v2) { // input a Location, and find if its in range of the beacon
 		if (v2 == null) { return false; }
 		
+		System.out.println(v2.toString() + " -> " + vector.toString());
+		
 		if (mat == Material.GOLD_BLOCK) {
 			return (vector.x() - 8 < v2.x() &&
 					vector.x() + 8 > v2.x() &&
@@ -391,6 +394,7 @@ public class OwnableBlock extends Ownable {
 	 */
 	public boolean claimRange(Vector4 v2) {
 		if (mat == Material.GOLD_BLOCK || mat == Material.LODESTONE) {
+			System.out.println(v2.toString() + " ->[]<- " + vector.toString());
 			
 			return (vector.x() - 71 < v2.x() &&
 					vector.x() + 71 > v2.x() &&
