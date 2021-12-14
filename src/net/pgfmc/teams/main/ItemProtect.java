@@ -2,7 +2,6 @@ package net.pgfmc.teams.main;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
@@ -24,7 +23,6 @@ import net.pgfmc.pgfessentials.admin.Skull;
 import net.pgfmc.pgfessentials.dim.DimManager;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.friends.Friends;
-import oshi.util.tuples.Pair;
  /**
   * Prevents other players from picking up someone else's items on death.
   * Effect fades after 2 minutes.
@@ -33,7 +31,7 @@ import oshi.util.tuples.Pair;
   */
 public class ItemProtect implements Listener {
 	
-	private static HashMap<Item, Pair<PlayerData, Consumer<?>>> items = new HashMap<>();
+	private static HashMap<Item, Entry> items = new HashMap<>();
 	
 	@EventHandler
 	public void onDeath(PlayerDeathEvent e) {
@@ -67,17 +65,7 @@ public class ItemProtect implements Listener {
 			drop.setInvulnerable(true);
 			drop.setVelocity(new Vector());
 			
-			items.put(drop, new Pair<PlayerData, Consumer<?>>(pd, x -> {
-				//List<PlayerData> list = pd.getData("friends");
-				
-				items.remove(drop);
-				
-				if (drop.isValid()) {
-					drop.setGlowing(false);
-					drop.setInvulnerable(false);
-				}
-				
-			}));
+			items.put(drop, new Entry(pd, drop));
 		}
 		
 		// starts timer for deactivating the items
@@ -87,10 +75,10 @@ public class ItemProtect implements Listener {
 			public void run()
 			{
 				for (Item drop : droppedItems) {
-					Pair<PlayerData, Consumer<?>> data = items.get(drop);
+					Entry data = items.get(drop);
 					
 					if (data != null) {
-						data.getB().accept(null);
+						data.remove();
 					}
 					
 				}
@@ -109,23 +97,55 @@ public class ItemProtect implements Listener {
 			Item item = e.getItem();
 			
 			
-			Pair<PlayerData, Consumer<?>> data = items.get(item);
+			Entry data = items.get(item);
 			
 			if (data != null) {
 				
 				PlayerData pd = PlayerData.getPlayerData((OfflinePlayer) e.getEntity());
-				if (data.getA() == pd) {
-					data.getB().accept(null);
-				} else if (Friends.getFriendsMap(pd).containsKey(data.getA())) {
-					data.getB().accept(null);
-				} else {
-					e.setCancelled(true);
-				}
+				
+				e.setCancelled(!(data.pickup(pd)));
+				
 			}
+		}
+	}
+	
+	/**
+	 * An entry for each Item dropped by a player after death.
+	 * @author james
+	 *
+	 */
+	private static class Entry {
+		
+		PlayerData pd;
+		Item drop;
+		
+		protected Entry(PlayerData pd, Item drop) {
 			
+			this.pd = pd;
+			this.drop = drop;
 		}
 		
+		public boolean pickup(PlayerData picker) {
+			
+			if (pd == picker) {
+				remove();
+				return true;
+			} else if (Friends.getFriendsMap(picker).containsKey(pd)) {
+				remove();
+				return true;
+			} else {
+				return false;
+			}
+		}
 		
+		public void remove() {
+			items.remove(drop);
+			
+			if (drop.isValid()) {
+				drop.setGlowing(false);
+				drop.setInvulnerable(false);
+			}
+		}
 		
 		
 	}
