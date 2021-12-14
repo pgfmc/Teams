@@ -19,8 +19,8 @@ import net.pgfmc.teams.friends.UnfavoriteCommand;
 import net.pgfmc.teams.friends.UnfriendCommand;
 import net.pgfmc.teams.ownable.Ownable.Lock;
 import net.pgfmc.teams.ownable.OwnableFile;
+import net.pgfmc.teams.ownable.block.BlockManager;
 import net.pgfmc.teams.ownable.block.events.BBEvent;
-import net.pgfmc.teams.ownable.block.events.BExEvent;
 import net.pgfmc.teams.ownable.block.events.BPE;
 import net.pgfmc.teams.ownable.block.events.BlockInteractEvent;
 import net.pgfmc.teams.ownable.entities.DeathEvent;
@@ -73,7 +73,8 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ItemProtect(), this);	
 		getServer().getPluginManager().registerEvents(new DuelEvents(), this);
 		getServer().getPluginManager().registerEvents(Friends.DEFAULT, this);
-		getServer().getPluginManager().registerEvents(new BExEvent(), this);
+		//getServer().getPluginManager().registerEvents(new BExEvent(), this);
+		getServer().getPluginManager().registerEvents(new BlockManager(), this);
 		
 		getCommand("friendRequest").setExecutor(new FriendRequestCommand());
 		getCommand("friendAccept").setExecutor(new FriendAcceptCommand());

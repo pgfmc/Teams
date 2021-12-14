@@ -12,6 +12,7 @@ import net.pgfmc.pgfessentials.Vector4;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.main.Main;
 import net.pgfmc.teams.ownable.Ownable.Lock;
+import net.pgfmc.teams.ownable.block.BlockManager;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
 import net.pgfmc.teams.ownable.entities.OwnableEntity;
 
@@ -79,6 +80,9 @@ public class OwnableFile {
 				new OwnableEntity(pd, lock, uuid);
 			}
 		}
+		
+		BlockManager.calcLoop(); // stats the calcloop, which loads each player's region into memory.
+		
 	}
 	
 	public static void saveContainer(OwnableBlock ob, FileConfiguration database) {

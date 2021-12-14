@@ -4,6 +4,7 @@ import org.bukkit.Material;
 
 import net.pgfmc.pgfessentials.Vector4;
 
+@Deprecated
 public class Claim {
 	
 	/**

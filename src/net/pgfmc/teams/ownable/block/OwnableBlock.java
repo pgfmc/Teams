@@ -63,10 +63,10 @@ public class OwnableBlock extends Ownable {
 		
 		if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) {
 			claims.add(this);
-			
+			BlockManager.recalcGroup(placer);
 		} else if (isOwnable(mat)) {
 			containers.add(this);
-			
+			BlockManager.recalcGroup(placer);
 		}
 	}
 	
@@ -108,6 +108,10 @@ public class OwnableBlock extends Ownable {
 	
 	public static Set<OwnableBlock> getClaims() {
 		return claims;
+	}
+	
+	public static Set<OwnableBlock> getContainers() {
+		return containers;
 	}
 	
 	@Override
@@ -287,6 +291,7 @@ public class OwnableBlock extends Ownable {
 		} else {
 			System.out.println(containers.remove(this) ? "Container removed!" : "Container removal failed!");
 		}
+		BlockManager.recalcGroup(placer);
 	}
 	
 	/**
@@ -310,6 +315,7 @@ public class OwnableBlock extends Ownable {
 	 * @param block The block to get the Ownable for.
 	 * @return The block's ownable.
 	 */
+	@Deprecated
 	public static OwnableBlock getOwnable(Block block) { // gets a container from block
 		
 		if (!isOwnable(block.getType())) {
@@ -365,6 +371,7 @@ public class OwnableBlock extends Ownable {
 	 * @param v2 The vector to test the range for.
 	 * @return True if the vector is inside the range of this claim, false if else.
 	 */
+	@Deprecated
 	public boolean inRange(Vector4 v2) { // input a Location, and find if its in range of the beacon
 		if (v2 == null) { return false; }
 		
@@ -392,6 +399,7 @@ public class OwnableBlock extends Ownable {
 	 * @param v2 Input Projected claim's location.
 	 * @return True if the input claim's location overlaps with this claim's range, false if else.
 	 */
+	@Deprecated
 	public boolean claimRange(Vector4 v2) {
 		if (mat == Material.GOLD_BLOCK || mat == Material.LODESTONE) {
 			System.out.println(v2.toString() + " ->[]<- " + vector.toString());

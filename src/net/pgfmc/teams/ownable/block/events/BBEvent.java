@@ -9,7 +9,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import net.pgfmc.pgfessentials.Vector4;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable.Security;
-import net.pgfmc.teams.ownable.block.Claim;
+import net.pgfmc.teams.ownable.block.BlockManager.RegionGroup;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
 
 /**
@@ -54,14 +54,21 @@ public class BBEvent implements Listener {
 	@EventHandler
 	public void blockBreak(BlockBreakEvent e) {
 		
+		PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
 		if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 			
-			OwnableBlock cont = OwnableBlock.getOwnable(e.getBlock());
+			RegionGroup rg = pd.getData("regionGroup");
+			
+			if (rg == null) {
+				return;
+			}
+			
+			OwnableBlock cont = rg.getOwnable(e.getBlock());
 			
 			// removes the ownable if able to
 			if (cont != null) {
 				
-				PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
+				
 				
 				Security s = cont.isAllowed(pd);
 				
@@ -110,10 +117,9 @@ public class BBEvent implements Listener {
 				}
 			}
 			
-			OwnableBlock claim = Claim.getClosestClaim(new Vector4(e.getBlock()));
+			OwnableBlock claim = rg.testFor(new Vector4(e.getBlock()));
 			
 			if (claim != null) {
-				PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
 				
 				if (claim.isAllowed(pd) == Security.DISALLOWED) {
 					pd.sendMessage("§cThis land is claimed.");
@@ -125,7 +131,13 @@ public class BBEvent implements Listener {
 			
 			
 		} else {
-			OwnableBlock cont = OwnableBlock.getOwnable(e.getBlock());
+			RegionGroup rg = pd.getData("regionGroup");
+			
+			if (rg == null) {
+				return;
+			}
+			
+			OwnableBlock cont = rg.getOwnable(e.getBlock());
 			if (cont != null) {
 				cont.remove();
 			}
