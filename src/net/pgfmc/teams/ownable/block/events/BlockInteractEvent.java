@@ -54,7 +54,7 @@ public class BlockInteractEvent implements Listener {
 				
 				RegionGroup rg = pd.getData("regionGroup");
 				
-				if (e.getMaterial() != null && e.getMaterial().toString().contains("BUCKET")) { // Disables Bucket placing in claims
+				if (e.getMaterial() != null && e.getMaterial().toString().contains("BUCKET") && rg != null) { // Disables Bucket placing in claims
 					
 					OwnableBlock beacon = rg.testFor(new Vector4(block));
 					
@@ -65,7 +65,7 @@ public class BlockInteractEvent implements Listener {
 					}
 				}
 				
-				OwnableBlock cont = rg.getOwnable(block);
+				OwnableBlock cont = (rg != null) ? rg.getOwnable(block) : null;
 				
 				if (cont != null) { // if block is a container
 					

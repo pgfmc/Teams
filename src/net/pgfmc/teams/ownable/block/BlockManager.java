@@ -9,6 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 import net.pgfmc.pgfessentials.Vector4;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
@@ -39,27 +40,17 @@ public class BlockManager implements Listener {
 		private Set<OwnableBlock> containers;
 		private Set<OwnableBlock> claims;
 		
-		protected RegionGroup(PlayerData pd, Set<OwnableBlock> claims, Set<OwnableBlock> containers) {
-			if (claims == null || claims.isEmpty()) { // if claims is null or empty.
-				this.claims = new HashSet<>();
-				
-				if (containers == null || containers.isEmpty()) { // if containers is null or empty.
-					pd.setData("regionGroup", null);
-					return;
-				} else {
-					this.containers = containers;
-					
-				}
-			} else { // claims not null / empty.
-				this.claims = claims;
-				if (containers == null || containers.isEmpty()) { // if containers is null or empty.
-					this.containers = new HashSet<>();
-				} else {
-					this.containers = containers;
-				}
-			}
+		private Vector4 position;
+		
+		protected RegionGroup(PlayerData pd, Set<OwnableBlock> claims, Set<OwnableBlock> containers, Vector4 pos) {
+			this.claims = claims;
+			this.containers = containers;
+			
+			position = pos;
 			
 			pd.setData("regionGroup", this); // sets this player's region group.
+		    pd.sendMessage("Reevaluated Region.");
+			
 			return;
 		}
 		
@@ -119,22 +110,28 @@ public class BlockManager implements Listener {
 			for (OwnableBlock ob : claims) {
 				Vector4 v1 = ob.getLocation();
 				
-				if (v1.x() - 71 < loca.x() &&
-						v1.x() + 71 > loca.x() &&
-						v1.z() - 71 < loca.z() &&
-						v1.z() + 71 > loca.z()) {
+				if (v1.x() - 73 < loca.x() &&
+						v1.x() + 73 > loca.x() &&
+						v1.z() - 73 < loca.z() &&
+						v1.z() + 73 > loca.z()) {
 					return true;
 					
 				}
 			}
 			return false;
 		}
+		
+		public boolean outsideRecalcRange(Vector4 pos) {
+			
+			return (position.x() -25 > pos.x() &&
+					position.x() +25 < pos.x() &&
+					position.z() -25 > pos.z() &&
+					position.z() +25 < pos.z());
+			
+		}
 	}
 	
-	@EventHandler
-	public void onJoinEvent(PlayerJoinEvent e) {
-		recalcGroup(PlayerData.getPlayerData(e.getPlayer()));
-	}
+	
 	
 	/**
 	 * run async
@@ -175,18 +172,20 @@ public class BlockManager implements Listener {
 					}
 				}
 				
-				new RegionGroup(pd, clams, conties);
+				new RegionGroup(pd, clams, conties, v2);
 			}
 		};
 		t.start();
 	}
 	
+	@Deprecated
 	protected static void recalcGroups() {
 		for (PlayerData pd : PlayerData.getOnlinePlayerData()) {
 			recalcGroup(pd);
 		}
 	}
 	
+	@Deprecated
 	public static void calcLoop() {
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
 			@Override
@@ -195,5 +194,30 @@ public class BlockManager implements Listener {
 				calcLoop();
 			}
 		}, 20);
+	}
+	
+	@EventHandler
+	public void onJoinEvent(PlayerJoinEvent e) {
+		recalcGroup(PlayerData.getPlayerData(e.getPlayer()));
+	}
+	
+	@EventHandler
+	public void onMoveEvent(PlayerMoveEvent e) {
+		
+		PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
+		RegionGroup rg = pd.getData("regionGroup");
+		
+		boolean rgnull = rg == null;
+		boolean outsideR = rg.outsideRecalcRange(new Vector4(e.getPlayer().getLocation()));
+		System.out.println(String.valueOf(rgnull) + " / " + String.valueOf(outsideR));
+		
+		if (!rgnull && outsideR) {
+			recalcGroup(pd);
+		} else if (rgnull) {
+			recalcGroup(pd);
+		}
+		return;
+		
+		
 	}
 }
