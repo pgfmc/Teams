@@ -41,13 +41,22 @@ public class ClaimSection {
 				return c;
 			}
 		}
+		return null;
+	}
+	
+	public OwnableBlock getClosestClaim(Vector4 v) {
+		
+		OwnableBlock ob = getRelevantClaim(v);
+		if (ob != null) {
+			return ob;
+		}
 		
 		int xBound = v.x()%128;
 		int zBound = v.z()%128;
 		
 		if (xBound < 35) {
 			
-			OwnableBlock ob = getNeighbor(Neighbor.LEFT).getRelevantClaim(v);
+			ob = getNeighbor(Neighbor.LEFT).getRelevantClaim(v);
 			if (ob != null) {
 				return ob;
 			}
@@ -63,6 +72,7 @@ public class ClaimSection {
 						return ob;
 					}
 				}
+				return null;
 			} else if (zBound > 93) {
 				ob = getNeighbor(Neighbor.UP).getRelevantClaim(v);
 				if (ob != null) {
@@ -74,9 +84,10 @@ public class ClaimSection {
 					}
 				}
 			}
+			return null;
 		} else if (xBound > 93) {
 			
-			OwnableBlock ob = getNeighbor(Neighbor.RIGHT).getRelevantClaim(v);
+			ob = getNeighbor(Neighbor.RIGHT).getRelevantClaim(v);
 			if (ob != null) {
 				return ob;
 			}
@@ -105,18 +116,110 @@ public class ClaimSection {
 			}
 		} else if (zBound < 35) { // move left
 			
-			OwnableBlock ob = getNeighbor(Neighbor.DOWN).getRelevantClaim(v);
+			ob = getNeighbor(Neighbor.DOWN).getRelevantClaim(v);
 			if (ob != null) {
 				return ob;
 			}
 		} else if (zBound > 93) {
-			OwnableBlock ob = getNeighbor(Neighbor.UP).getRelevantClaim(v);
+			ob = getNeighbor(Neighbor.UP).getRelevantClaim(v);
 			if (ob != null) {
 				return ob;
 			}
 		}
 		return null;
 	}
+	
+	public boolean isOverlappingClaim(Vector4 v) {
+		
+		for (OwnableBlock c : claims) {
+			Vector4 v1 = c.getLocation();
+			
+			return (v1.x() - 36 < v.x() &&
+					v1.x() + 36 > v.x() &&
+					v1.z() - 36 < v.z() &&
+					v1.z() + 36 > v.z());
+			
+		}
+		
+		int xBound = v.x()%128;
+		int zBound = v.z()%128;
+		
+		if (xBound < 35) {
+			
+			OwnableBlock ob = getNeighbor(Neighbor.LEFT).getRelevantClaim(v);
+			if (ob != null) {
+				return true;
+			}
+			
+			if (zBound < 35) {
+				
+				ob = getNeighbor(Neighbor.DOWN).getRelevantClaim(v);
+				if (ob != null) {
+					return true;
+				} else {
+					ob = getNeighbor(Neighbor.DOWNLEFT).getRelevantClaim(v);
+					if (ob != null) {
+						return true;
+					}
+				}
+				return false;
+			} else if (zBound > 93) {
+				ob = getNeighbor(Neighbor.UP).getRelevantClaim(v);
+				if (ob != null) {
+					return true;
+				} else {
+					ob = getNeighbor(Neighbor.UPLEFT).getRelevantClaim(v);
+					if (ob != null) {
+						return true;
+					}
+				}
+			}
+			return false;
+		} else if (xBound > 93) {
+			
+			OwnableBlock ob = getNeighbor(Neighbor.RIGHT).getRelevantClaim(v);
+			if (ob != null) {
+				return true;
+			}
+			
+			if (zBound < 35) {
+				
+				ob = getNeighbor(Neighbor.DOWN).getRelevantClaim(v);
+				if (ob != null) {
+					return true;
+				} else {
+					ob = getNeighbor(Neighbor.DOWNRIGHT).getRelevantClaim(v);
+					if (ob != null) {
+						return true;
+					}
+				}
+			} else if (zBound > 93) {
+				ob = getNeighbor(Neighbor.UP).getRelevantClaim(v);
+				if (ob != null) {
+					return true;
+				} else {
+					ob = getNeighbor(Neighbor.UPRIGHT).getRelevantClaim(v);
+					if (ob != null) {
+						return true;
+					}
+				}
+			}
+		} else if (zBound < 35) { // move left
+			
+			OwnableBlock ob = getNeighbor(Neighbor.DOWN).getRelevantClaim(v);
+			if (ob != null) {
+				return true;
+			}
+		} else if (zBound > 93) {
+			OwnableBlock ob = getNeighbor(Neighbor.UP).getRelevantClaim(v);
+			if (ob != null) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 	
 	public OwnableBlock getOwnable(Vector4 v) {
 		if (claims.size() == 0) return null;

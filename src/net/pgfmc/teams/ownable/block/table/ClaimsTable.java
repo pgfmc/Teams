@@ -77,7 +77,7 @@ public class ClaimsTable {
 	public static OwnableBlock getRelevantClaim(Vector4 v) {
 		ClaimSection cs = getSection(v);
 		if (cs != null) {
-			OwnableBlock ob = cs.getRelevantClaim(v);
+			OwnableBlock ob = cs.getClosestClaim(v);
 			if (ob != null) {
 				return ob;
 			}
