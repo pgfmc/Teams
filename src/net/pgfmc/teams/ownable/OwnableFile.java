@@ -13,6 +13,7 @@ import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.main.Main;
 import net.pgfmc.teams.ownable.Ownable.Lock;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
+import net.pgfmc.teams.ownable.block.BlockManager;
 import net.pgfmc.teams.ownable.entities.OwnableEntity;
 
 /*
@@ -86,7 +87,7 @@ public class OwnableFile {
 	
 	public static void saveContainer(OwnableBlock ob, FileConfiguration database) {
 		
-		if (!OwnableBlock.isOwnable(ob.getType())) { 
+		if (!BlockManager.isOwnable(ob.getLocation().getBlock().getType())) { 
 			return;
 		}
 		
@@ -114,12 +115,12 @@ public class OwnableFile {
 		File file = new File(Main.getPlugin().getDataFolder() + File.separator + "BlockContainers.yml"); // Creates a File object
 		FileConfiguration database = new YamlConfiguration();
 		
-		for (OwnableBlock blocke : OwnableBlock.containers) { // for all BlockContainers and beacons.
+		for (OwnableBlock blocke : BlockManager.getContainers()) { // for all BlockContainers and beacons.
 			
 			saveContainer(blocke, database);
 		}
 		
-		for (OwnableBlock blocke : OwnableBlock.claims) {
+		for (OwnableBlock blocke : BlockManager.getClaims()) {
 			saveContainer(blocke, database);
 		}
 		

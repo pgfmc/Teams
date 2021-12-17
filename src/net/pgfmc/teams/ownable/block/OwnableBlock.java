@@ -3,7 +3,6 @@ package net.pgfmc.teams.ownable.block;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -14,6 +13,8 @@ import org.bukkit.block.data.Directional;
 import net.pgfmc.pgfessentials.Vector4;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable;
+import net.pgfmc.teams.ownable.block.table.ClaimsTable;
+import net.pgfmc.teams.ownable.block.table.ContainerTable;
 
 /*
 
@@ -32,86 +33,23 @@ Beacons.java
 
 public class OwnableBlock extends Ownable {
 	
-	public static Set<OwnableBlock> containers = new HashSet<>();
-	public static Set<OwnableBlock> claims = new HashSet<>();
-	
 	private Vector4 vector;
-	private Material mat;
 	//private OwnableBlock doubleChest;
+	private boolean isClaim;
 	
 	public OwnableBlock(PlayerData player, Vector4 vec, Lock lock) {
 		super(player, (lock == null) ? player.getData("lockMode") : lock);
 		
 		Block block = vec.getBlock();
-		mat = block.getType();
 		vector = vec;
 		
-		if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) {
-			claims.add(this);
+		if (block.getType() == Material.LODESTONE) {
 			
-		} else if (isOwnable(mat)) {
-			containers.add(this);
-			
+			//region = new Region(vector, 35);
+			BlockManager.claims.add(this);
+			return;
 		}
-	}
-	
-	private OwnableBlock(PlayerData player, Block block, Lock lock) {
-		super(player, (lock == null) ? player.getData("lockMode") : lock);
-
-		mat = block.getType();
-		vector = new Vector4(block);
-		
-		if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) {
-			claims.add(this);
-			//BlockManager.recalcGroup(placer);
-		} else if (isOwnable(mat)) {
-			containers.add(this);
-			//BlockManager.recalcGroup(placer);
-		}
-	}
-	
-	public static boolean createBlockContainer(PlayerData player, Block block) { // a router between Beacons and BlockContainer
-		
-		if (isOwnable(block.getType())) {
-			Block blake = getOtherSide(block); // code for double chests 
-			if (blake != null) {
-				OwnableBlock cont = OwnableBlock.getOwnable(blake);
-				
-				if (cont != null) {
-					
-					switch (cont.isAllowed(player)) {
-					
-					case OWNER:
-						new OwnableBlock(player, block, cont.getLock());
-						return true;
-					case FAVORITE:
-						new OwnableBlock(player, block, cont.getLock());
-					case FRIEND:
-						new OwnableBlock(cont.getPlayer(), block, cont.getLock());
-						return true;
-					default:
-						return false;
-						
-					}
-				}
-			}
-			if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
-				new OwnableBlock(player, block, Lock.CREATIVE);
-				return true;
-			}
-			new OwnableBlock(player, block, null);
-			return true;
-		}
-		
-		return false;
-	}
-	
-	public static Set<OwnableBlock> getClaims() {
-		return claims;
-	}
-	
-	public static Set<OwnableBlock> getContainers() {
-		return containers;
+		BlockManager.containers.add(this);	
 	}
 	
 	@Override
@@ -257,7 +195,7 @@ public class OwnableBlock extends Ownable {
 		}
 	}
 	
-	private static Block getOtherSide(Block block) {
+	static Block getOtherSide(Block block) {
 		if ((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST)) { // chest check
 			
 			Set<Block> blocks = new HashSet<Block>();
@@ -287,9 +225,9 @@ public class OwnableBlock extends Ownable {
 	 */
 	public void remove() {
 		if (isClaim()) {
-			System.out.println(claims.remove(this) ? "Claim removed!" : "Claim removal failed!");
+			System.out.println(BlockManager.claims.remove(this) ? "Claim removed!" : "Claim removal failed!");
 		} else {
-			System.out.println(containers.remove(this) ? "Container removed!" : "Container removal failed!");
+			System.out.println(BlockManager.containers.remove(this) ? "Container removed!" : "Container removal failed!");
 		}
 		//BlockManager.recalcGroup(placer);
 	}
@@ -306,8 +244,10 @@ public class OwnableBlock extends Ownable {
 	 * The material type of the Ownable.
 	 * @return The material.
 	 */
+	@Deprecated
 	public Material getType() {
-		return mat;
+		return null;
+		//return mat;
 	}
 	
 	/**
@@ -317,21 +257,15 @@ public class OwnableBlock extends Ownable {
 	 */
 	public static OwnableBlock getOwnable(Block block) { // gets a container from block
 		
-		if (!isOwnable(block.getType())) {
+		if (!BlockManager.isOwnable(block.getType())) {
 			return null;
 		}
 		
-		Set<OwnableBlock> list = (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK)
-				? claims : containers;
-		
-		for (OwnableBlock ob : list) {
-			Vector4 v2 = new Vector4(block);
-			
-			if (ob.getLocation().equals(v2)) {
-				return ob;
-			}
+		if (block.getType() == Material.LODESTONE) {
+			return ClaimsTable.getOwnable(new Vector4(block));
+		} else {
+			return ContainerTable.getOwnable(new Vector4(block));
 		}
-		return null;
 	}
 	
 	/**
@@ -339,86 +273,20 @@ public class OwnableBlock extends Ownable {
 	 * @return true if this ownable is a claim, false if else.
 	 */
 	public boolean isClaim() {
-		return (mat == Material.LODESTONE || mat == Material.GOLD_BLOCK);
-	}
-	
-	/**
-	 * Returns if the input material is a valid ownable material.
-	 * @param type The material to test if it is Ownable.
-	 * @return True if the Material is Ownable.
-	 */
-	public static boolean isOwnable(Material type) {
-		return (type == Material.LODESTONE || 
-				type == Material.GOLD_BLOCK || 
-				type == Material.BARREL || 
-				type == Material.BLAST_FURNACE || 
-				type == Material.BREWING_STAND || 
-				type == Material.CHEST || 
-				type == Material.DISPENSER || 
-				type == Material.DROPPER || 
-				type == Material.FURNACE || 
-				type == Material.HOPPER || 
-				type == Material.SHULKER_BOX || 
-				type == Material.SMOKER || 
-				type == Material.TRAPPED_CHEST);
+		return (isClaim);
 	}
 	
 	// all claims functions
-	
-	/**
-	 * Tests if the input Vector4 is in range of this ownable (only works for Claims)
-	 * @param v2 The vector to test the range for.
-	 * @return True if the vector is inside the range of this claim, false if else.
-	 */
-	@Deprecated
-	public boolean inRange(Vector4 v2) { // input a Location, and find if its in range of the beacon
-		if (v2 == null) { return false; }
-		
-		System.out.println(v2.toString() + " -> " + vector.toString());
-		
-		if (mat == Material.GOLD_BLOCK) {
-			return (vector.x() - 8 < v2.x() &&
-					vector.x() + 8 > v2.x() &&
-					vector.z() - 8 < v2.z() &&
-					vector.z() + 8 > v2.z() &&
-					vector.y() - 8 < v2.y() &&
-					vector.y() + 8 > v2.y());
-		} else if (mat == Material.LODESTONE) {
-			return (vector.x() - 36 < v2.x() &&
-					vector.x() + 36 > v2.x() &&
-					vector.z() - 36 < v2.z() &&
-					vector.z() + 36 > v2.z() &&
-					vector.y() - 54 < v2.y());
-		}
-		return false;
-	}
-	
-	/**
-	 * Tests if the input Claim's Vector4 location's range will overlap with this claim's range.
-	 * @param v2 Input Projected claim's location.
-	 * @return True if the input claim's location overlaps with this claim's range, false if else.
-	 */
-	@Deprecated
-	public boolean claimRange(Vector4 v2) {
-		if (mat == Material.GOLD_BLOCK || mat == Material.LODESTONE) {
-			System.out.println(v2.toString() + " ->[]<- " + vector.toString());
-			
-			return (vector.x() - 71 < v2.x() &&
-					vector.x() + 71 > v2.x() &&
-					vector.z() - 71 < v2.z() &&
-					vector.z() + 71 > v2.z());
-		}
-		return false;
-	}
 	
 	/**
 	 * Returns the closest Effective claim to the input location.
 	 * @param loca 
 	 * @return The closest Claim that can effect the input location.
 	 */
+	@Deprecated
 	public static OwnableBlock testFor(Vector4 loca) { // returns the closest enemy beacon to the location input.
 		
-		for (OwnableBlock ob : claims) {
+		for (OwnableBlock ob : BlockManager.claims) {
 			Vector4 v1 = ob.getLocation();
 			
 			if (v1.x() - 36 < loca.x() &&
@@ -437,8 +305,9 @@ public class OwnableBlock extends Ownable {
 	 * @param loca
 	 * @return
 	 */
+	@Deprecated
 	public static boolean isRangeOverlap(Vector4 loca) {
-		for (OwnableBlock ob : claims) {
+		for (OwnableBlock ob : BlockManager.claims) {
 			Vector4 v1 = ob.getLocation();
 			
 			if (v1.x() - 73 < loca.x() &&

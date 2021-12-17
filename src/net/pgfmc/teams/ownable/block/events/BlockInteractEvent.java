@@ -22,6 +22,8 @@ import net.pgfmc.teams.main.Main;
 import net.pgfmc.teams.ownable.Ownable.Lock;
 import net.pgfmc.teams.ownable.Ownable.Security;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
+import net.pgfmc.teams.ownable.block.table.ClaimsTable;
+import net.pgfmc.teams.ownable.block.table.ContainerTable;
 import net.pgfmc.teams.ownable.entities.OwnableEntity;
 
 /**
@@ -55,16 +57,16 @@ public class BlockInteractEvent implements Listener {
 				
 				if (e.getMaterial() != null && e.getMaterial().toString().contains("BUCKET")) { // Disables Bucket placing in claims
 					
-					OwnableBlock beacon = OwnableBlock.testFor(new Vector4(block));
+					OwnableBlock claim = ClaimsTable.getRelevantClaim(new Vector4(block));
 					
-					if (beacon != null && beacon.isAllowed(pd) == Security.DISALLOWED) {
+					if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
 						pd.sendMessage("§cThis land is claimed.");
 						e.setCancelled(true);
 						return;
 					}
 				}
 				
-				OwnableBlock cont = OwnableBlock.getOwnable(block);
+				OwnableBlock cont = ContainerTable.getOwnable(new Vector4(block));
 				
 				if (cont != null) { // if block is a container
 					
@@ -137,9 +139,9 @@ public class BlockInteractEvent implements Listener {
 					// --------------------------------
 				{
 					
-					OwnableBlock beacon = OwnableBlock.testFor(new Vector4(block));
+					OwnableBlock claim = ClaimsTable.getRelevantClaim(new Vector4(block));
 					
-					if (beacon != null && beacon.isAllowed(pd) == Security.DISALLOWED) {
+					if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
 						pd.sendMessage("§cThis land is claimed.");
 						e.setCancelled(true);
 						return;

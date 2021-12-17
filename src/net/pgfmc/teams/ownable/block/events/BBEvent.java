@@ -10,6 +10,7 @@ import net.pgfmc.pgfessentials.Vector4;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable.Security;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
+import net.pgfmc.teams.ownable.block.table.ClaimsTable;
 
 /**
 @author CrimsonDart
@@ -116,7 +117,7 @@ public class BBEvent implements Listener {
 				}
 			}
 			
-			OwnableBlock claim = OwnableBlock.testFor(new Vector4(e.getBlock()));
+			OwnableBlock claim = ClaimsTable.getRelevantClaim(new Vector4(e.getBlock()));
 			
 			if (claim != null) {
 				
@@ -130,11 +131,6 @@ public class BBEvent implements Listener {
 			
 			
 		} else {
-			//RegionGroup rg = pd.getData("regionGroup");
-			
-			//if (rg == null) {
-			//	return;
-			//}
 			
 			OwnableBlock cont = OwnableBlock.getOwnable(e.getBlock());
 			if (cont != null) {

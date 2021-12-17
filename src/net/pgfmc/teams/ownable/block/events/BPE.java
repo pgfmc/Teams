@@ -12,6 +12,8 @@ import net.pgfmc.pgfessentials.Vector4;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable.Security;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
+import net.pgfmc.teams.ownable.block.table.ClaimsTable;
+import net.pgfmc.teams.ownable.block.BlockManager;
 
 /*
 Written by CrimsonDart
@@ -32,21 +34,14 @@ public class BPE implements Listener {
 		
 		if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 			
-			//RegionGroup rg = pd.getData("regionGroup");
-			
-			//if (rg == null) {
-			//	e.setCancelled(true);
-			//	return;
-			//}
-			
 			if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) { // for placing claims
-				if (OwnableBlock.isRangeOverlap(new Vector4(block))) {
+				if (			OwnableBlock.isRangeOverlap(new Vector4(block))) {
 					e.setCancelled(true);
 					pd.sendMessage("§cCannot claim land that would overlap another claim.");
 					
 					pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 				} else {
-					OwnableBlock.createBlockContainer(pd, block);
+					BlockManager.createBlockContainer(pd, block);
 					pd.sendMessage("§aSurrounding land claimed!");
 					if (block.getType() == Material.GOLD_BLOCK) {
 						pd.sendMessage("§cGold blocks wont work as Claims soon! Begin to use lodestones instead.");
@@ -56,7 +51,7 @@ public class BPE implements Listener {
 				return;
 			}
 			
-			OwnableBlock claim = OwnableBlock.testFor(new Vector4(block));
+			OwnableBlock claim = ClaimsTable.getRelevantClaim(new Vector4(block));
 			
 			if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
 				
@@ -67,8 +62,8 @@ public class BPE implements Listener {
 			}
 			
 			// registers block as a container if it is a valid container.
-			if (OwnableBlock.isOwnable(block.getType())) {
-				OwnableBlock.createBlockContainer(pd, block);
+			if (BlockManager.isOwnable(block.getType())) {
+				BlockManager.createBlockContainer(pd, block);
 			}
 		}	
 	}
