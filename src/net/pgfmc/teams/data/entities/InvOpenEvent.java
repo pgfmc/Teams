@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	package net.pgfmc.teams.data.entities;
 
 import org.bukkit.GameMode;
@@ -214,6 +215,8 @@ public class InvOpenEvent implements Listener {
 	}
 }
 =======
+=======
+>>>>>>> parent of ec489d7 (k)
 =======
 >>>>>>> parent of ec489d7 (k)
 =======
