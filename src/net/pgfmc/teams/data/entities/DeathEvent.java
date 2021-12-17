@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	package net.pgfmc.teams.data.entities;
 
 import org.bukkit.event.EventHandler;
@@ -20,6 +21,8 @@ public class DeathEvent implements Listener {
 	}
 }
 =======
+=======
+>>>>>>> parent of ec489d7 (k)
 =======
 >>>>>>> parent of ec489d7 (k)
 package net.pgfmc.teams.data.entities;
