@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.InventoryHolder;
 
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.blocks.OwnableEntity;
 
 public class EntityAttackEvent implements Listener {

@@ -8,8 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.InventoryHolder;
 
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.pgfessentials.requestAPI.Request;
+import net.pgfmc.core.playerdataAPI.PlayerData;
+import net.pgfmc.core.requestAPI.Request;
 import net.pgfmc.teams.data.blocks.OwnableEntity;
 import net.pgfmc.teams.duel.Duel;
 import net.pgfmc.teams.duel.Duel.DuelState;

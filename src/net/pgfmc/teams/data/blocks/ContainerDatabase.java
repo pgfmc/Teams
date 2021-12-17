@@ -10,7 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.Ownable.Lock;
 import net.pgfmc.teams.teamscore.Main;
 import net.pgfmc.teams.teamscore.Utility;

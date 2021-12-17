@@ -16,7 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.Ownable.Lock;
 import net.pgfmc.teams.data.Ownable.Security;
 import net.pgfmc.teams.data.blocks.Claim;

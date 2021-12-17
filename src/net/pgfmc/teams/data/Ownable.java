@@ -2,7 +2,7 @@ package net.pgfmc.teams.data;
 
 import org.bukkit.Location;
 
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.friends.Friends;
 import net.pgfmc.teams.friends.Friends.Relation;
 

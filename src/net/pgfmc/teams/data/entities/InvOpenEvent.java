@@ -1,4 +1,4 @@
-package net.pgfmc.teams.data.entities;
+	package net.pgfmc.teams.data.entities;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -11,7 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.Ownable.Lock;
 import net.pgfmc.teams.data.blocks.OwnableEntity;
 

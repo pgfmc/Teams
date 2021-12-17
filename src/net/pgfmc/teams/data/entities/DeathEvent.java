@@ -1,4 +1,4 @@
-package net.pgfmc.teams.data.entities;
+	package net.pgfmc.teams.data.entities;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

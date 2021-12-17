@@ -11,7 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import net.pgfmc.pgfessentials.dim.Worlds;
+import net.pgfmc.survival.dim.Worlds;
 
 public interface Utility {
 	

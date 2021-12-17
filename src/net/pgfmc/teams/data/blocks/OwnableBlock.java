@@ -12,7 +12,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.data.Directional;
 import org.bukkit.util.Vector;
 
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.data.Ownable;
 
 /*

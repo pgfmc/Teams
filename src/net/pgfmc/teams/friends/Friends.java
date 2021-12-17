@@ -9,9 +9,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 
-import net.pgfmc.pgfessentials.Mixins;
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.pgfessentials.requestAPI.Requester;
+import net.pgfmc.core.Mixins;
+import net.pgfmc.core.playerdataAPI.PlayerData;
+import net.pgfmc.core.requestAPI.Requester;
 import net.pgfmc.teams.teamscore.Main;
 
 public class Friends extends Requester implements Listener {

@@ -5,9 +5,9 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.pgfmc.pgfessentials.Mixins;
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerDataManager;
+import net.pgfmc.core.Mixins;
+import net.pgfmc.core.playerdataAPI.PlayerData;
+import net.pgfmc.core.playerdataAPI.PlayerDataManager;
 import net.pgfmc.teams.data.BBEvent;
 import net.pgfmc.teams.data.BExEvent;
 import net.pgfmc.teams.data.BPE;

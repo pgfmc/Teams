@@ -19,10 +19,9 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.util.Vector;
 
-import net.pgfmc.pgfessentials.EssentialsMain;
-import net.pgfmc.pgfessentials.admin.Skull;
-import net.pgfmc.pgfessentials.dim.DimManager;
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.core.DimManager;
+import net.pgfmc.core.cmd.admin.Skull;
+import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.friends.Friends;
 import oshi.util.tuples.Pair;
  /**
@@ -81,7 +80,7 @@ public class ItemProtect implements Listener {
 		}
 		
 		// starts timer for deactivating the items
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EssentialsMain.plugin, new Runnable() {
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
 			
 			@Override
 			public void run()
