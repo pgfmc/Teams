@@ -63,10 +63,10 @@ public class OwnableBlock extends Ownable {
 		
 		if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) {
 			claims.add(this);
-			BlockManager.recalcGroup(placer);
+			//BlockManager.recalcGroup(placer);
 		} else if (isOwnable(mat)) {
 			containers.add(this);
-			BlockManager.recalcGroup(placer);
+			//BlockManager.recalcGroup(placer);
 		}
 	}
 	
@@ -291,7 +291,7 @@ public class OwnableBlock extends Ownable {
 		} else {
 			System.out.println(containers.remove(this) ? "Container removed!" : "Container removal failed!");
 		}
-		BlockManager.recalcGroup(placer);
+		//BlockManager.recalcGroup(placer);
 	}
 	
 	/**
@@ -315,7 +315,6 @@ public class OwnableBlock extends Ownable {
 	 * @param block The block to get the Ownable for.
 	 * @return The block's ownable.
 	 */
-	@Deprecated
 	public static OwnableBlock getOwnable(Block block) { // gets a container from block
 		
 		if (!isOwnable(block.getType())) {
@@ -408,6 +407,47 @@ public class OwnableBlock extends Ownable {
 					vector.x() + 71 > v2.x() &&
 					vector.z() - 71 < v2.z() &&
 					vector.z() + 71 > v2.z());
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns the closest Effective claim to the input location.
+	 * @param loca 
+	 * @return The closest Claim that can effect the input location.
+	 */
+	public static OwnableBlock testFor(Vector4 loca) { // returns the closest enemy beacon to the location input.
+		
+		for (OwnableBlock ob : claims) {
+			Vector4 v1 = ob.getLocation();
+			
+			if (v1.x() - 36 < loca.x() &&
+					v1.x() + 36 > loca.x() &&
+					v1.z() - 36 < loca.z() &&
+					v1.z() + 36 > loca.z() &&
+					v1.y() - 54 < loca.y()) {
+				return ob;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * looks for any overlapping claims in a 71 block radius.
+	 * @param loca
+	 * @return
+	 */
+	public static boolean isRangeOverlap(Vector4 loca) {
+		for (OwnableBlock ob : claims) {
+			Vector4 v1 = ob.getLocation();
+			
+			if (v1.x() - 73 < loca.x() &&
+					v1.x() + 73 > loca.x() &&
+					v1.z() - 73 < loca.z() &&
+					v1.z() + 73 > loca.z()) {
+				return true;
+				
+			}
 		}
 		return false;
 	}

@@ -21,7 +21,6 @@ import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.main.Main;
 import net.pgfmc.teams.ownable.Ownable.Lock;
 import net.pgfmc.teams.ownable.Ownable.Security;
-import net.pgfmc.teams.ownable.block.BlockManager.RegionGroup;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
 import net.pgfmc.teams.ownable.entities.OwnableEntity;
 
@@ -52,11 +51,11 @@ public class BlockInteractEvent implements Listener {
 			// Player is in survival mode
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
 				
-				RegionGroup rg = pd.getData("regionGroup");
+				//RegionGroup rg = pd.getData("regionGroup");
 				
-				if (e.getMaterial() != null && e.getMaterial().toString().contains("BUCKET") && rg != null) { // Disables Bucket placing in claims
+				if (e.getMaterial() != null && e.getMaterial().toString().contains("BUCKET")) { // Disables Bucket placing in claims
 					
-					OwnableBlock beacon = rg.testFor(new Vector4(block));
+					OwnableBlock beacon = OwnableBlock.testFor(new Vector4(block));
 					
 					if (beacon != null && beacon.isAllowed(pd) == Security.DISALLOWED) {
 						pd.sendMessage("§cThis land is claimed.");
@@ -65,7 +64,7 @@ public class BlockInteractEvent implements Listener {
 					}
 				}
 				
-				OwnableBlock cont = (rg != null) ? rg.getOwnable(block) : null;
+				OwnableBlock cont = OwnableBlock.getOwnable(block);
 				
 				if (cont != null) { // if block is a container
 					
@@ -138,7 +137,7 @@ public class BlockInteractEvent implements Listener {
 					// --------------------------------
 				{
 					
-					OwnableBlock beacon = rg.testFor(new Vector4(block));
+					OwnableBlock beacon = OwnableBlock.testFor(new Vector4(block));
 					
 					if (beacon != null && beacon.isAllowed(pd) == Security.DISALLOWED) {
 						pd.sendMessage("§cThis land is claimed.");

@@ -9,7 +9,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import net.pgfmc.pgfessentials.Vector4;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable.Security;
-import net.pgfmc.teams.ownable.block.BlockManager.RegionGroup;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
 
 /**
@@ -54,21 +53,21 @@ public class BBEvent implements Listener {
 	@EventHandler
 	public void blockBreak(BlockBreakEvent e) {
 		
+		
+		
 		PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
 		if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 			
-			RegionGroup rg = pd.getData("regionGroup");
+			//RegionGroup rg = pd.getData("regionGroup");
 			
-			if (rg == null) {
-				return;
-			}
+			//if (rg == null) {
+			//	return;
+			//}
 			
-			OwnableBlock cont = rg.getOwnable(e.getBlock());
+			OwnableBlock cont = OwnableBlock.getOwnable(e.getBlock());
 			
 			// removes the ownable if able to
 			if (cont != null) {
-				
-				
 				
 				Security s = cont.isAllowed(pd);
 				
@@ -117,7 +116,7 @@ public class BBEvent implements Listener {
 				}
 			}
 			
-			OwnableBlock claim = rg.testFor(new Vector4(e.getBlock()));
+			OwnableBlock claim = OwnableBlock.testFor(new Vector4(e.getBlock()));
 			
 			if (claim != null) {
 				
@@ -131,13 +130,13 @@ public class BBEvent implements Listener {
 			
 			
 		} else {
-			RegionGroup rg = pd.getData("regionGroup");
+			//RegionGroup rg = pd.getData("regionGroup");
 			
-			if (rg == null) {
-				return;
-			}
+			//if (rg == null) {
+			//	return;
+			//}
 			
-			OwnableBlock cont = rg.getOwnable(e.getBlock());
+			OwnableBlock cont = OwnableBlock.getOwnable(e.getBlock());
 			if (cont != null) {
 				cont.remove();
 			}

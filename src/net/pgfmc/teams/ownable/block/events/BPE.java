@@ -11,7 +11,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import net.pgfmc.pgfessentials.Vector4;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable.Security;
-import net.pgfmc.teams.ownable.block.BlockManager.RegionGroup;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
 
 /*
@@ -33,15 +32,15 @@ public class BPE implements Listener {
 		
 		if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 			
-			RegionGroup rg = pd.getData("regionGroup");
+			//RegionGroup rg = pd.getData("regionGroup");
 			
-			if (rg == null) {
-				e.setCancelled(true);
-				return;
-			}
+			//if (rg == null) {
+			//	e.setCancelled(true);
+			//	return;
+			//}
 			
 			if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) { // for placing claims
-				if (rg.isRangeOverlap(new Vector4(block))) {
+				if (OwnableBlock.isRangeOverlap(new Vector4(block))) {
 					e.setCancelled(true);
 					pd.sendMessage("§cCannot claim land that would overlap another claim.");
 					
@@ -57,7 +56,7 @@ public class BPE implements Listener {
 				return;
 			}
 			
-			OwnableBlock claim = rg.testFor(new Vector4(block));
+			OwnableBlock claim = OwnableBlock.testFor(new Vector4(block));
 			
 			if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
 				

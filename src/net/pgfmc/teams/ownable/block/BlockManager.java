@@ -28,6 +28,7 @@ import net.pgfmc.teams.main.Main;
  * @author CrimsonDart
  *
  */
+@Deprecated
 public class BlockManager implements Listener {
 	
 	/**
@@ -40,6 +41,9 @@ public class BlockManager implements Listener {
 		private Set<OwnableBlock> containers;
 		private Set<OwnableBlock> claims;
 		
+		/**
+		 * the position that this region is calculated for
+		 */
 		private Vector4 position;
 		
 		protected RegionGroup(PlayerData pd, Set<OwnableBlock> claims, Set<OwnableBlock> containers, Vector4 pos) {
@@ -123,15 +127,13 @@ public class BlockManager implements Listener {
 		
 		public boolean outsideRecalcRange(Vector4 pos) {
 			
-			return (position.x() -25 > pos.x() &&
-					position.x() +25 < pos.x() &&
-					position.z() -25 > pos.z() &&
-					position.z() +25 < pos.z());
+			return ((position.x() -25 > pos.x() ||
+					position.x() + 25 < pos.x()) &&
+					(position.z() -25 > pos.z() ||
+					position.z() + 25 < pos.z()));
 			
 		}
 	}
-	
-	
 	
 	/**
 	 * run async
@@ -208,16 +210,12 @@ public class BlockManager implements Listener {
 		RegionGroup rg = pd.getData("regionGroup");
 		
 		boolean rgnull = rg == null;
-		boolean outsideR = rg.outsideRecalcRange(new Vector4(e.getPlayer().getLocation()));
-		System.out.println(String.valueOf(rgnull) + " / " + String.valueOf(outsideR));
 		
-		if (!rgnull && outsideR) {
+		if (!rgnull && rg.outsideRecalcRange(new Vector4(e.getPlayer().getLocation()))) {
 			recalcGroup(pd);
 		} else if (rgnull) {
 			recalcGroup(pd);
 		}
 		return;
-		
-		
 	}
 }
