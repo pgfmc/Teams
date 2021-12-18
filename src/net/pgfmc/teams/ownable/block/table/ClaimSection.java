@@ -129,41 +129,50 @@ public class ClaimSection {
 		return null;
 	}
 	
-	public boolean isOverlappingClaim(Vector4 v) {
-		
+	public boolean isOverlappingRange(Vector4 v) {
 		for (OwnableBlock c : claims) {
 			Vector4 v1 = c.getLocation();
 			
-			return (v1.x() - 36 < v.x() &&
-					v1.x() + 36 > v.x() &&
-					v1.z() - 36 < v.z() &&
-					v1.z() + 36 > v.z());
-			
+			if (v1.x() - 72 < v.x() &&
+					v1.x() + 72 > v.x() &&
+					v1.z() - 72 < v.z() &&
+					v1.z() + 72 > v.z()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isOverlappingClaim(Vector4 v) {
+		
+		if (isOverlappingRange(v)) {
+			return true;
 		}
 		
 		int xBound = v.x()%128;
 		int zBound = v.z()%128;
 		
-		if (xBound < 35) {
+		// Since the Overlapping claim range is so large, 
+		//the bounds are used to determine which Sections NOT to search instead of deciding which ones to search.
+		
+		if (xBound > 72) { // DONT search left side
 			
-			OwnableBlock ob = getNeighbor(Neighbor.LEFT).getRelevantClaim(v);
-			if (ob != null) {
+			if (getNeighbor(Neighbor.RIGHT).isOverlappingRange(v)) {
 				return true;
 			}
 			
-			if (zBound < 35) {
+			if (zBound > 72) { // DONT search down
 				
-				ob = getNeighbor(Neighbor.DOWN).getRelevantClaim(v);
-				if (ob != null) {
+				if (getNeighbor(Neighbor.UP).isOverlappingRange(v)) {
 					return true;
 				} else {
-					ob = getNeighbor(Neighbor.DOWNLEFT).getRelevantClaim(v);
+					ob = getNeighbor(Neighbor.UPRIGHT).getRelevantClaim(v);
 					if (ob != null) {
 						return true;
 					}
 				}
 				return false;
-			} else if (zBound > 93) {
+			} else if (zBound < 53) {
 				ob = getNeighbor(Neighbor.UP).getRelevantClaim(v);
 				if (ob != null) {
 					return true;
