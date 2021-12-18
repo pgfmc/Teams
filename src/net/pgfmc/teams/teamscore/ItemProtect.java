@@ -36,7 +36,7 @@ public class ItemProtect implements Listener {
 	
 	@EventHandler
 	public void onDeath(PlayerDeathEvent e) {
-		if (!DimManager.isSurvivalWorld(e.getEntity().getWorld())) { return; }
+		if (!DimManager.isInWorld(e.getEntity().getWorld().getName(), "survival")) { return; }
 		
 		// declare variables
 		Player p = e.getEntity();

@@ -11,7 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import net.pgfmc.survival.dim.Worlds;
+import net.pgfmc.core.DimManager;
 
 public interface Utility {
 	
@@ -104,15 +104,7 @@ public interface Utility {
 	
 	static int worldToInt(World w) {
 		
-		if (w.equals(Worlds.SURVIVAL.world) ) {
-			return 0;
-		} else if (w.equals(Worlds.SURVIVAL_NETHER.world)) {
-			return 1;
-		}else if (w.equals(Worlds.SURVIVAL_END.world)) {
-			return 2;
-		}
-		
-		return 4;
+		return DimManager.worldToInt(w);
 	}
 	
 	static World intToWorld(int i) {

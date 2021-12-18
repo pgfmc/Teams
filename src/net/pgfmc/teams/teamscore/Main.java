@@ -2,7 +2,6 @@ package net.pgfmc.teams.teamscore;
 
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.pgfmc.core.Mixins;
@@ -41,12 +40,14 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		
+		/*
 		if (Bukkit.getServer().getPluginManager().getPlugin("PGF-Essentials") == null) {
 			System.out.println("PGF-Essentials isnt loaded; Disabling Teams!");
 			loaded = false;
 			Bukkit.getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
+		*/
 		
 		plugin = this;
 		
