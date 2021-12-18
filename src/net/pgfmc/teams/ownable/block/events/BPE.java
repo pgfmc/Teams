@@ -35,7 +35,7 @@ public class BPE implements Listener {
 		if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 			
 			if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) { // for placing claims
-				if (			OwnableBlock.isRangeOverlap(new Vector4(block))) {
+				if (ClaimsTable.isOverlappingClaim(new Vector4(block))) {
 					e.setCancelled(true);
 					pd.sendMessage("§cCannot claim land that would overlap another claim.");
 					

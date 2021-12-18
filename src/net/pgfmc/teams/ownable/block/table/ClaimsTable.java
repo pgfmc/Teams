@@ -60,12 +60,7 @@ public class ClaimsTable {
 	public static void remove(OwnableBlock ob) {
 		ClaimSection cs = getSection(ob.getLocation());
 		if (cs != null) {
-			cs	.put(ob);
-			
-		} else {
-			cs = new ClaimSection(getSectionKey(ob.getLocation()), ob.getLocation().w());
-			cs.put(ob);
-			getWorldTable(cs.w).put(cs.key, cs);
+			cs.remove(ob);
 		}
 	}
 	
@@ -96,6 +91,14 @@ public class ClaimsTable {
 			return cs.getOwnable(v);
 		}
 		return null;
+	}
+	
+	public static boolean isOverlappingClaim(Vector4 v) {
+		ClaimSection cs = getSection(v);
+		if (cs == null) return false;
+		
+		return cs.isOverlappingClaim(v);
+		
 	}
 	
 	/**

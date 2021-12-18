@@ -15,13 +15,16 @@ public class ContainerSection {
 	
 	public ContainerSection(long key, int w) {
 		this.key = key;
+		this.w = w;
 	}
 	
 	public OwnableBlock getOwnable(Vector4 v) {
 		if (containers.size() == 0) return null;
 		
 		for (OwnableBlock c : containers) {
-			c.getLocation().equals(v);
+			if (c.getLocation().equals(v)) {
+				return c;
+			}
 		}
 		return null;
 	}

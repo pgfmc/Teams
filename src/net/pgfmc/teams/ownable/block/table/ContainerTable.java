@@ -54,6 +54,17 @@ public class ContainerTable {
 	}
 	
 	/**
+	 * Removes this container.
+	 * @param ob The container.
+	 */
+	public static void remove(OwnableBlock ob) {
+		ContainerSection cs = getSection(ob.getLocation());
+		if (cs != null) {
+			cs.remove(ob);
+		}
+	}
+	
+	/**
 	 * gets the claimSection key (a long) based on the location.
 	 * @param v
 	 * @return

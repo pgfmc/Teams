@@ -45,19 +45,18 @@ public class OwnableBlock extends Ownable {
 		
 		if (block.getType() == Material.LODESTONE) {
 			
-			//region = new Region(vector, 35);
+			isClaim = true;
 			BlockManager.claims.add(this);
+			ClaimsTable.put(this);
 			return;
 		}
+		isClaim = false;
 		BlockManager.containers.add(this);	
+		ContainerTable.put(this);
 	}
 	
 	@Override
 	public void setLock(Lock lock) {
-		
-		//if (doubleChest != null) {
-		//	doubleChest.setLock(lock);
-		//}
 		
 		super.setLock(lock);
 	}
@@ -174,21 +173,10 @@ public class OwnableBlock extends Ownable {
 		case DISALLOWED: {
 			pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 			
-			switch(getType()) {
-			
-				case BARREL: pd.sendMessage("§cThis barrel is locked!"); return;
-				case BLAST_FURNACE: pd.sendMessage("§cThis blast furnace is locked!"); return;
-				case BREWING_STAND: pd.sendMessage("§cThis brewing stand is locked!"); return;
-				case CHEST: pd.sendMessage("§cThis chest is locked!"); return;
-				case DISPENSER: pd.sendMessage("§cThis dispenser is locked!"); return;
-				case DROPPER: pd.sendMessage("§cThis dropper is locked!"); return;
-				case FURNACE: pd.sendMessage("§cThis furnace is locked!"); return;
-				case HOPPER: pd.sendMessage("§cThis hopper is locked!"); return;
-				case SHULKER_BOX: pd.sendMessage("§cThis shulker box is locked!"); return;
-				case SMOKER: pd.sendMessage("§cThis smoker is locked!"); return;
-				case BEACON: pd.sendMessage("§cThis beacon is locked!"); return;
-				default:
-					return;
+			if (isClaim) {
+				pd.sendMessage("§cThis Lodestone is locked!");
+			} else {
+				pd.sendMessage("§cThis container is locked!");
 			}
 		}
 		case EXCEPTION: System.out.println("cont.isAllowed() returned Security.EXCEPTION!"); return;
@@ -224,10 +212,12 @@ public class OwnableBlock extends Ownable {
 	 * Removes this ownable.
 	 */
 	public void remove() {
-		if (isClaim()) {
+		if (isClaim) {
 			System.out.println(BlockManager.claims.remove(this) ? "Claim removed!" : "Claim removal failed!");
+			ClaimsTable.remove(this);
 		} else {
 			System.out.println(BlockManager.containers.remove(this) ? "Container removed!" : "Container removal failed!");
+			ContainerTable.remove(this);
 		}
 		//BlockManager.recalcGroup(placer);
 	}
@@ -241,31 +231,17 @@ public class OwnableBlock extends Ownable {
 	}
 	
 	/**
-	 * The material type of the Ownable.
-	 * @return The material.
-	 */
-	@Deprecated
-	public Material getType() {
-		return null;
-		//return mat;
-	}
-	
-	/**
 	 * Gets an ownable from the input block.
 	 * @param block The block to get the Ownable for.
 	 * @return The block's ownable.
 	 */
 	public static OwnableBlock getOwnable(Block block) { // gets a container from block
 		
-		if (!BlockManager.isOwnable(block.getType())) {
-			return null;
-		}
-		
-		if (block.getType() == Material.LODESTONE) {
+		if (!BlockManager.isOwnable(block.getType())) return null;
+		if (block.getType() == Material.LODESTONE) 
 			return ClaimsTable.getOwnable(new Vector4(block));
-		} else {
+		else 
 			return ContainerTable.getOwnable(new Vector4(block));
-		}
 	}
 	
 	/**
@@ -274,50 +250,5 @@ public class OwnableBlock extends Ownable {
 	 */
 	public boolean isClaim() {
 		return (isClaim);
-	}
-	
-	// all claims functions
-	
-	/**
-	 * Returns the closest Effective claim to the input location.
-	 * @param loca 
-	 * @return The closest Claim that can effect the input location.
-	 */
-	@Deprecated
-	public static OwnableBlock testFor(Vector4 loca) { // returns the closest enemy beacon to the location input.
-		
-		for (OwnableBlock ob : BlockManager.claims) {
-			Vector4 v1 = ob.getLocation();
-			
-			if (v1.x() - 36 < loca.x() &&
-					v1.x() + 36 > loca.x() &&
-					v1.z() - 36 < loca.z() &&
-					v1.z() + 36 > loca.z() &&
-					v1.y() - 54 < loca.y()) {
-				return ob;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * looks for any overlapping claims in a 71 block radius.
-	 * @param loca
-	 * @return
-	 */
-	@Deprecated
-	public static boolean isRangeOverlap(Vector4 loca) {
-		for (OwnableBlock ob : BlockManager.claims) {
-			Vector4 v1 = ob.getLocation();
-			
-			if (v1.x() - 73 < loca.x() &&
-					v1.x() + 73 > loca.x() &&
-					v1.z() - 73 < loca.z() &&
-					v1.z() + 73 > loca.z()) {
-				return true;
-				
-			}
-		}
-		return false;
 	}
 }
