@@ -18,29 +18,27 @@ public class BlockManager {
 
 	public static boolean createBlockContainer(PlayerData player, Block block) { // a router between Beacons and BlockContainer
 		
-		if (isOwnable(block.getType())) {
-			Block blake = OwnableBlock.getOtherSide(block); // code for double chests 
-			if (blake != null) {
-				OwnableBlock cont = OwnableBlock.getOwnable(blake);
+		OwnableBlock cont = OwnableBlock.getOtherSide(block);
+		if (cont != null) {
+			
+			switch (cont.isAllowed(player)) {
+			
+			case OWNER:
+				new OwnableBlock(player, new Vector4(block), cont.getLock());
+				return true;
+			case FAVORITE:
+				new OwnableBlock(player, new Vector4(block), cont.getLock());
+			case FRIEND:
+				new OwnableBlock(cont.getPlayer(), new Vector4(block), cont.getLock());
+				return true;
+			default:
+				return false;
 				
-				if (cont != null) {
-					
-					switch (cont.isAllowed(player)) {
-					
-					case OWNER:
-						new OwnableBlock(player, new Vector4(block), cont.getLock());
-						return true;
-					case FAVORITE:
-						new OwnableBlock(player, new Vector4(block), cont.getLock());
-					case FRIEND:
-						new OwnableBlock(cont.getPlayer(), new Vector4(block), cont.getLock());
-						return true;
-					default:
-						return false;
-						
-					}
-				}
 			}
+		}
+		
+		if (isOwnable(block.getType())) {
+			
 			if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
 				new OwnableBlock(player, new Vector4(block), Lock.CREATIVE);
 				return true;

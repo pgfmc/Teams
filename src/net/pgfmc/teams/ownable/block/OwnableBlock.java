@@ -58,11 +58,12 @@ public class OwnableBlock extends Ownable {
 	@Override
 	public void setLock(Lock lock) {
 		
-		super.setLock(lock);
-	}
-	
-	public void setLock(Lock lock, boolean dC) {
-		super.setLock(lock);
+		OwnableBlock os = getOtherSide(vector.getBlock());
+		if (os != null) {
+			os.lock = lock;
+		}
+		
+		this.lock = lock;
 	}
 	
 	/**
@@ -183,7 +184,7 @@ public class OwnableBlock extends Ownable {
 		}
 	}
 	
-	static Block getOtherSide(Block block) {
+	static OwnableBlock getOtherSide(Block block) {
 		if ((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST)) { // chest check
 			
 			Set<Block> blocks = new HashSet<Block>();
@@ -201,7 +202,7 @@ public class OwnableBlock extends Ownable {
 						((Directional) black.getBlockData()).getFacing() == ((Directional) block.getBlockData()).getFacing() &&
 						((Chest) block.getState()).getInventory().getHolder() == ((Chest) black.getState()).getInventory().getHolder()) {
 					
-					return black;
+					return OwnableBlock.getOwnable(block);
 				}
 			}
 		}

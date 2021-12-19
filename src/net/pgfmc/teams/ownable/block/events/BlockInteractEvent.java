@@ -1,16 +1,9 @@
 package net.pgfmc.teams.ownable.block.events;
 
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.stream.Stream;
-
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -18,13 +11,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import net.pgfmc.pgfessentials.Vector4;
 import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.teams.main.Main;
 import net.pgfmc.teams.ownable.Ownable.Lock;
 import net.pgfmc.teams.ownable.Ownable.Security;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
 import net.pgfmc.teams.ownable.block.table.ClaimsTable;
-import net.pgfmc.teams.ownable.block.table.ContainerTable;
-import net.pgfmc.teams.ownable.entities.OwnableEntity;
 
 /**
 Written by CrimsonDart
@@ -45,15 +35,13 @@ public class BlockInteractEvent implements Listener {
 		PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
 		
 		// Right click not air
-		if (e.getClickedBlock() != null && e.getAction() == Action.RIGHT_CLICK_BLOCK) { 
+		if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.hasBlock()) {
 			Block block = e.getClickedBlock();
 			
-			Lock lockMode = pd.getData("lockMode");
+			//Lock lockMode = pd.getData("lockMode");
 			
 			// Player is in survival mode
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
-				
-				//RegionGroup rg = pd.getData("regionGroup");
 				
 				if (e.getMaterial() != null && e.getMaterial().toString().contains("BUCKET")) { // Disables Bucket placing in claims
 					
@@ -66,7 +54,7 @@ public class BlockInteractEvent implements Listener {
 					}
 				}
 				
-				OwnableBlock cont = ContainerTable.getOwnable(new Vector4(block));
+				OwnableBlock cont = OwnableBlock.getOwnable(block);
 				
 				if (cont != null) { // if block is a container
 					
@@ -121,7 +109,7 @@ public class BlockInteractEvent implements Listener {
 						}
 					}
 				}
-				
+				/*
 				// crazy time down here!
 				
 				if (e.getAction() == Action.RIGHT_CLICK_BLOCK &&
@@ -236,6 +224,7 @@ public class BlockInteractEvent implements Listener {
 			            }
 			        }, 1);
 				}
+				*/
 			}
 		} else if (e.getAction() == Action.RIGHT_CLICK_AIR && e.getItem().getType() == Material.LEVER) {
 			

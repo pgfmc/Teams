@@ -6,7 +6,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="E:/github/javalib/spigot-1.17.1.jar">
+	<classpathentry kind="lib" path="E:/github/javalib/spigot-api-1.18.1-R0.1-SNAPSHOT.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
