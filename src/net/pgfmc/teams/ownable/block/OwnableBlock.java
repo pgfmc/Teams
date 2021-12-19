@@ -10,8 +10,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.data.Directional;
 
-import net.pgfmc.pgfessentials.Vector4;
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.core.Vector4;
+import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable;
 import net.pgfmc.teams.ownable.block.table.ClaimsTable;
 import net.pgfmc.teams.ownable.block.table.ContainerTable;

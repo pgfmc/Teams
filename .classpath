@@ -11,6 +11,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="E:/github/javalib/PGF-Essentials.jar" sourcepath="/PGF-Essentials"/>
+	<classpathentry kind="lib" path="E:/github/javalib/PGF-Core.jar" sourcepath="/PGF-Essentials"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

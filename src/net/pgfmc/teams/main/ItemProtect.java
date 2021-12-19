@@ -18,10 +18,9 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.util.Vector;
 
-import net.pgfmc.pgfessentials.EssentialsMain;
-import net.pgfmc.pgfessentials.admin.Skull;
-import net.pgfmc.pgfessentials.dim.DimManager;
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
+import net.pgfmc.core.CoreMain;
+import net.pgfmc.core.cmd.admin.Skull;
+import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.friends.Friends;
  /**
   * Prevents other players from picking up someone else's items on death.
@@ -35,7 +34,6 @@ public class ItemProtect implements Listener {
 	
 	@EventHandler
 	public void onDeath(PlayerDeathEvent e) {
-		if (!DimManager.isSurvivalWorld(e.getEntity().getWorld())) { return; }
 		
 		// declare variables
 		Player p = e.getEntity();
@@ -69,7 +67,7 @@ public class ItemProtect implements Listener {
 		}
 		
 		// starts timer for deactivating the items
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(EssentialsMain.plugin, new Runnable() {
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(CoreMain.plugin, new Runnable() {
 			
 			@Override
 			public void run()

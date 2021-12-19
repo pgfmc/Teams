@@ -2,12 +2,11 @@ package net.pgfmc.teams.main;
 
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.pgfmc.pgfessentials.Mixins;
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerData;
-import net.pgfmc.pgfessentials.playerdataAPI.PlayerDataManager;
+import net.pgfmc.core.Mixins;
+import net.pgfmc.core.playerdataAPI.PlayerData;
+import net.pgfmc.core.playerdataAPI.PlayerDataManager;
 import net.pgfmc.teams.duel.DuelEvents;
 import net.pgfmc.teams.friends.FavoriteCommand;
 import net.pgfmc.teams.friends.FriendAcceptCommand;
@@ -35,17 +34,9 @@ public class Main extends JavaPlugin {
 	public static final String EntityContainersPath = "plugins\\Teams\\EntityContainers.yml";
 	
 	public static Main plugin;
-	private transient static boolean loaded = true;
 	
 	@Override
 	public void onEnable() {
-		
-		if (Bukkit.getServer().getPluginManager().getPlugin("PGF-Essentials") == null) {
-			System.out.println("PGF-Essentials isnt loaded; Disabling Teams!");
-			loaded = false;
-			Bukkit.getServer().getPluginManager().disablePlugin(this);
-			return;
-		}
 		
 		plugin = this;
 		
@@ -85,10 +76,9 @@ public class Main extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
-		if (loaded) {
-			OwnableFile.saveContainers();
-			Friends.save();
-		}
+		OwnableFile.saveContainers();
+		Friends.save();
+		
 	}
 	
 	public static JavaPlugin getPlugin() {
