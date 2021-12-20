@@ -1,4 +1,4 @@
-package net.pgfmc.teams.main;
+package net.pgfmc.teams;
 
 import java.util.HashMap;
 
@@ -13,6 +13,8 @@ import net.pgfmc.teams.friends.FriendAcceptCommand;
 import net.pgfmc.teams.friends.FriendRequestCommand;
 import net.pgfmc.teams.friends.Friends;
 import net.pgfmc.teams.friends.Friends.Relation;
+import net.pgfmc.teams.general.AttackEvent;
+import net.pgfmc.teams.general.ItemProtect;
 import net.pgfmc.teams.friends.FriendsListCommand;
 import net.pgfmc.teams.friends.UnfavoriteCommand;
 import net.pgfmc.teams.friends.UnfriendCommand;

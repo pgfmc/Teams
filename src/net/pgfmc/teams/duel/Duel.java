@@ -13,7 +13,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.core.playerdataAPI.PlayerData;
-import net.pgfmc.teams.main.Main;
+import net.pgfmc.teams.Main;
 
 public class Duel {
 	

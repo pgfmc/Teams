@@ -2,7 +2,7 @@ name: Teams
 version: 1.4.0
 api-version: 1.18
 author: [bk, CrimsonDart]
-main: net.pgfmc.teams.main.Main
+main: net.pgfmc.teams.Main
 description: implemets the Teams system
 depend: [PGF-Core]
 commands:

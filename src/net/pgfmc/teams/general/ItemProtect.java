@@ -1,4 +1,4 @@
-package net.pgfmc.teams.main;
+package net.pgfmc.teams.general;
 
 import java.util.HashMap;
 import java.util.List;
