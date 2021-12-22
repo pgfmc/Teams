@@ -34,7 +34,7 @@ public class BPE implements Listener {
 		
 		if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
 			
-			if (block.getType() == Material.LODESTONE || block.getType() == Material.GOLD_BLOCK) { // for placing claims
+			if (block.getType() == Material.LODESTONE) { // for placing claims
 				if (ClaimsTable.isOverlappingClaim(new Vector4(block))) {
 					e.setCancelled(true);
 					pd.sendMessage("§cCannot claim land that would overlap another claim.");
@@ -43,9 +43,6 @@ public class BPE implements Listener {
 				} else {
 					BlockManager.createBlockContainer(pd, block);
 					pd.sendMessage("§aSurrounding land claimed!");
-					if (block.getType() == Material.GOLD_BLOCK) {
-						pd.sendMessage("§cGold blocks wont work as Claims soon! Begin to use lodestones instead.");
-					}
 					pd.playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
 				}
 				return;

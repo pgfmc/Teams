@@ -15,6 +15,13 @@ import org.bukkit.entity.Player;
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.Main;
 
+/**
+ * Class that instantiates a Duel;
+ * 
+ * @author CrimsonDart
+ * @since 1.0.0	
+ *
+ */
 public class Duel {
 	
 	private World world;

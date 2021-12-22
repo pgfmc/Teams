@@ -35,6 +35,7 @@ public class ClaimsTable {
 	
 	protected static ClaimSection getSection(int x, int z, int w) {
 		return getWorldTable(w).get(x, z);
+		
 	}
 	
 	/**
@@ -71,12 +72,17 @@ public class ClaimsTable {
 	 */
 	public static OwnableBlock getRelevantClaim(Vector4 v) {
 		ClaimSection cs = getSection(v);
-		if (cs != null) {
-			OwnableBlock ob = cs.getClosestClaim(v);
-			if (ob != null) {
-				return ob;
-			}
+		if (cs == null) { // if there is no CS, then it creates a new one for the position v.
+			System.out.println("cs was null, creating new cs for GRC.");
+			cs = new ClaimSection(getSectionKey(v), v.w());
+			getWorldTable(v.w()).put(getSectionKey(v), cs);
 		}
+		
+		OwnableBlock ob = cs.getClosestClaim(v);
+		if (ob != null) {
+			return ob;
+		}
+		
 		return null;
 	}
 	
@@ -95,10 +101,13 @@ public class ClaimsTable {
 	
 	public static boolean isOverlappingClaim(Vector4 v) {
 		ClaimSection cs = getSection(v);
-		if (cs == null) return false;
+		if (cs == null) {
+			System.out.println("cs was null, creating a new cs for IOC.");
+			cs = new ClaimSection(getSectionKey(v), v.w());
+			getWorldTable(v.w()).put(getSectionKey(v), cs);
+		}
 		
 		return cs.isOverlappingClaim(v);
-		
 	}
 	
 	/**

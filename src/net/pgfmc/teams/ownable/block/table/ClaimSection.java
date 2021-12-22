@@ -24,6 +24,7 @@ public class ClaimSection {
 	private Set<OwnableBlock> claims = new HashSet<>();
 	
 	public ClaimSection(long key, int w) {
+		System.out.println("new Claim section created for " + String.valueOf(key));
 		this.key = key;
 	}
 	
@@ -154,56 +155,51 @@ public class ClaimSection {
 			return true;
 		}
 		
-		int xBound = v.x()%128;
-		int zBound = v.z()%128;
+		int xBound = (v.x() > -1) ? 
+				v.x()%128 :
+				(-1 * Math.abs(v.x()%128)) + 128;
 		
-		if (!(xBound > 72)) {
-			if (isOverlappingRange(getNeighbor(Neighbor.LEFT), v)) {
-				return true;
+		int zBound = (v.z() > -1) ? 
+				v.z()%128 :
+				(-1 * Math.abs(v.z()%128)) + 128;
+		
+		if (!(xBound > 70)) {
+			if (isOverlappingRange(getNeighbor(Neighbor.LEFT), v)) return true;
+			
+			if (!(zBound < 57)) {
+				if (isOverlappingRange(getNeighbor(Neighbor.UP), v)) return true;
+				if (isOverlappingRange(getNeighbor(Neighbor.UPLEFT), v))return true;
 			}
 			
-			if (!(zBound < 53)) {
-				if (isOverlappingRange(getNeighbor(Neighbor.UP), v)) {
-					return true;
-				} 
-				if (isOverlappingRange(getNeighbor(Neighbor.UPLEFT), v)) {
-					return true;
-				}
-			}
-			
-			if (!(zBound > 72)) {
-				if (isOverlappingRange(getNeighbor(Neighbor.DOWN), v)) {
-					return true;
-				} 
-				if (isOverlappingRange(getNeighbor(Neighbor.DOWNLEFT), v)) {
-					return true;
-				}
+			if (!(zBound > 70)) {
+				if (isOverlappingRange(getNeighbor(Neighbor.DOWN), v)) return true;
+				if (isOverlappingRange(getNeighbor(Neighbor.DOWNLEFT), v)) return true;
 			}
 		}
 		
-		if (!(xBound < 53)) {
-			if (isOverlappingRange(getNeighbor(Neighbor.RIGHT), v)) {
+		if (!(xBound < 57)) {
+			if (isOverlappingRange(getNeighbor(Neighbor.RIGHT), v)) return true;
+			
+			
+			if (!(zBound < 57)) {
+				if (isOverlappingRange(getNeighbor(Neighbor.UP), v)) return true;
+				if (isOverlappingRange(getNeighbor(Neighbor.UPRIGHT), v)) return true;
+			}
+			
+			if (!(zBound > 70)) {
+				if (isOverlappingRange(getNeighbor(Neighbor.DOWN), v)) return true;
+				if (isOverlappingRange(getNeighbor(Neighbor.DOWNRIGHT), v)) return true;
+			}
+		}/*
+		System.out.println("verifying null...");
+		
+		for (Neighbor n : Neighbor.values()) {
+			if (isOverlappingRange(getNeighbor(n), v)) {
+				System.out.print("nope! -> " + n.toString());
 				return true;
 			}
-			
-			if (!(zBound < 53)) {
-				if (isOverlappingRange(getNeighbor(Neighbor.UP), v)) {
-					return true;
-				} 
-				if (isOverlappingRange(getNeighbor(Neighbor.UPRIGHT), v)) {
-					return true;
-				}
-			}
-			
-			if (!(zBound > 72)) {
-				if (isOverlappingRange(getNeighbor(Neighbor.DOWN), v)) {
-					return true;
-				} 
-				if (isOverlappingRange(getNeighbor(Neighbor.DOWNRIGHT), v)) {
-					return true;
-				}
-			}
 		}
+		System.out.print("   All good lol");*/
 		return false;
 	}
 	
@@ -228,8 +224,11 @@ public class ClaimSection {
 	
 	public ClaimSection getNeighbor(Neighbor n) {
 		
+		System.out.println("getting neighbor at " + n.toString());
+		
 		ClaimSection cs = neighbors.get(n);
 		if (cs != null) {
+			System.out.println("Neighbor referenced.");
 			return cs;
 		}
 		

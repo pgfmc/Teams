@@ -1,14 +1,11 @@
 package net.pgfmc.teams.ownable.block;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
-import org.bukkit.block.data.Directional;
+import org.bukkit.block.DoubleChest;
+import org.bukkit.inventory.InventoryHolder;
 
 import net.pgfmc.core.Vector4;
 import net.pgfmc.core.playerdataAPI.PlayerData;
@@ -59,8 +56,12 @@ public class OwnableBlock extends Ownable {
 	public void setLock(Lock lock) {
 		
 		OwnableBlock os = getOtherSide(vector.getBlock());
+		
 		if (os != null) {
+			System.out.println("not null");
 			os.lock = lock;
+		} else {
+			System.out.println("is null");
 		}
 		
 		this.lock = lock;
@@ -187,23 +188,25 @@ public class OwnableBlock extends Ownable {
 	static OwnableBlock getOtherSide(Block block) {
 		if ((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST)) { // chest check
 			
-			Set<Block> blocks = new HashSet<Block>();
-			World world = block.getLocation().getWorld();
-			
-			blocks.add(world.getBlockAt(block.getLocation().add(1, 0, 0)));
-			blocks.add(world.getBlockAt(block.getLocation().add(-1, 0, 0)));
-			blocks.add(world.getBlockAt(block.getLocation().add(0, 0, 1)));
-			blocks.add(world.getBlockAt(block.getLocation().add(0, 0, -1)));
-			
-			for (Block black : blocks) {
-				if (black != null && 
-						(black.getType() == Material.CHEST || black.getType() == Material.TRAPPED_CHEST) && 
-						black.getType() == block.getType() && 
-						((Directional) black.getBlockData()).getFacing() == ((Directional) block.getBlockData()).getFacing() &&
-						((Chest) block.getState()).getInventory().getHolder() == ((Chest) black.getState()).getInventory().getHolder()) {
+			InventoryHolder invh = ((Chest) block.getState()).getInventory().getHolder();
+			if (invh instanceof DoubleChest) {
+				DoubleChest db = (DoubleChest) invh;
+				
+				System.out.println(String.valueOf(db.getX()) + ", " + String.valueOf(db.getY()) + ", " + String.valueOf(db.getZ()));
+				
+				Vector4 v1 = new Vector4(block);
+				
+				double x = db.getX();
+				if (v1.x() == x) { // search the z axis
 					
-					return OwnableBlock.getOwnable(block);
+					double z = db.getZ();
+					
+					return getOwnable(v1.shift(0, 0, ((int) Math.ceil(z) == v1.z())	? ((z > 0) ? -1 : 1) : (z > 0 ? 1 : -1)) , false);
 				}
+				
+				return getOwnable(v1.shift(0, 0, ((int) Math.ceil(x) == v1.x())	? ((x > 0) ? -1 : 1) : (x > 0 ? 1 : -1)) , false);
+				
+				//Block block = ((DoubleChest) invh);
 			}
 		}
 		return null;
@@ -243,6 +246,14 @@ public class OwnableBlock extends Ownable {
 			return ClaimsTable.getOwnable(new Vector4(block));
 		else 
 			return ContainerTable.getOwnable(new Vector4(block));
+	}
+	
+	public static OwnableBlock getOwnable(Vector4 v, boolean claim) {
+		if (claim) {
+			return ClaimsTable.getOwnable(v);
+		} else {
+			return ContainerTable.getOwnable(v);
+		}
 	}
 	
 	/**
