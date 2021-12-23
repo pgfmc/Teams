@@ -7,6 +7,12 @@ import org.bukkit.entity.Player;
 
 import net.pgfmc.core.playerdataAPI.PlayerData;
 
+/**
+ * Sends a message of all the Player's friends to them.
+ * 
+ * @author CrimsonDart
+ * @since 1.2.0	
+ */
 public class FriendsListCommand implements CommandExecutor {
 	
 	@Override

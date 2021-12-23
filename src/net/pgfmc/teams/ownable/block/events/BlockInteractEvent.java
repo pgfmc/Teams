@@ -13,6 +13,7 @@ import net.pgfmc.core.Vector4;
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable.Lock;
 import net.pgfmc.teams.ownable.Ownable.Security;
+import net.pgfmc.teams.ownable.block.BlockManager;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
 import net.pgfmc.teams.ownable.block.table.ClaimsTable;
 
@@ -37,8 +38,6 @@ public class BlockInteractEvent implements Listener {
 		// Right click not air
 		if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.hasBlock()) {
 			Block block = e.getClickedBlock();
-			
-			//Lock lockMode = pd.getData("lockMode");
 			
 			// Player is in survival mode
 			if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
@@ -108,7 +107,32 @@ public class BlockInteractEvent implements Listener {
 						
 						}
 					}
+					
+				// creates a new Block container if the chest isnt claimed.
+				} else if (BlockManager.isOwnable(block.getType())) {
+					
+					OwnableBlock claim = ClaimsTable.getRelevantClaim(new Vector4(block));
+					
+					if (claim != null && claim.isAllowed(pd) != Security.OWNER) {
+						
+						pd.sendMessage("§cCannot claim this chest, as it's in claimed land.");
+						e.setCancelled(true);
+						pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
+						return;
+					} else {
+						BlockManager.createBlockContainer(pd, block);
+					}
 				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				/*
 				// crazy time down here!
 				

@@ -1,8 +1,6 @@
 package net.pgfmc.teams.ownable.block.events;
 
-import org.bukkit.event.Listener;
-
-public class BExEvent implements Listener {
+public class BExEvent {
 	/*
 	@EventHandler
 	public void explodeEvent(BlockExplodeEvent e) {

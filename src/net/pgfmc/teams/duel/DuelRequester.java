@@ -2,6 +2,13 @@ package net.pgfmc.teams.duel;
 
 import net.pgfmc.core.requestAPI.Requester;
 
+/**
+ * Duel Requester for managing duel requests.
+ * 
+ * @author CrimsonDart
+ * @since 1.2.0	
+ *
+ */
 public class DuelRequester extends Requester {
 	
 	public static final DuelRequester DEFAULT = new DuelRequester();

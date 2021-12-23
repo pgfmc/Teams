@@ -14,6 +14,14 @@ import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.core.requestAPI.Requester;
 import net.pgfmc.teams.Main;
 
+/**
+ * Manages friends. Use this class' static methods to access friends, NOT PlayerData.
+ * The friends are stored in a {@code HashMap<PlayerData friend, Relation r>}.
+ * Friends are stored using yml functionality from Bukkit.
+ * 
+ * @author CrimsonDart
+ * @since 1.2.0	
+ */
 public class Friends extends Requester implements Listener {
 	
 	public static final Friends DEFAULT = new Friends();

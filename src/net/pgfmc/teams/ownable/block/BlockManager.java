@@ -11,6 +11,11 @@ import net.pgfmc.core.Vector4;
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable.Lock;
 
+/**
+ * Contains Static methods to manage Block Ownables. also contains all containers and claims.
+ * @author CrimsonDart
+ * @since 1.2.0	
+ */
 public class BlockManager {
 	
 	protected static Set<OwnableBlock> containers = new HashSet<>();

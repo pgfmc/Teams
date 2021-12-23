@@ -6,6 +6,17 @@ import com.sk89q.worldguard.util.collect.LongHashTable;
 import net.pgfmc.core.Vector4;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
 
+/**
+ * Stores all Claims in a hierarchy of data;
+ * 
+ * Each claim is stored in a <ClaimSection>, which stores all claims in a 128 x 128 block region, aligned with chunks.
+ * Each <ClaimSection> in turn is stored in a (very optimized) <LongHashTable> i borrowed (stole) from WorldGuard.
+ * 
+ * There is a new <LongHashTable> created for each World, for maximum efficiency.
+ * 
+ * @author CrimsonDart
+ * @since 1.4.1
+ */
 public class ClaimsTable {
 	
 	private static LongHashTable<ClaimSection> Overworldtable = new LongHashTable<>();

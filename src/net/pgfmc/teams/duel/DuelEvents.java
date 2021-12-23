@@ -18,6 +18,13 @@ import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.duel.Duel.DuelState;
 import net.pgfmc.teams.duel.Duel.PlayerState;
 
+/**
+ * Class that manages Events relating to duels.;
+ * 
+ * @author CrimsonDart
+ * @since 1.2.0	
+ *
+ */
 public class DuelEvents implements Listener {
 	
 	@EventHandler

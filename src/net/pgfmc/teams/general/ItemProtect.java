@@ -26,7 +26,7 @@ import net.pgfmc.teams.friends.Friends;
   * Prevents other players from picking up someone else's items on death.
   * Effect fades after 2 minutes.
   * @author bk + CrimsonDart
-  *
+  * @since 1.3.0
   */
 public class ItemProtect implements Listener {
 	

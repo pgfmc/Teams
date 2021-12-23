@@ -11,6 +11,12 @@ import org.bukkit.entity.Player;
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.friends.Friends.Relation;
 
+/**
+ * Command to unfriend a Friend. lots a cheques lool
+ * 
+ * @author CrimsonDart
+ * @since 1.2.0	
+ */
 public class UnfriendCommand implements CommandExecutor{
 	
 	@Override

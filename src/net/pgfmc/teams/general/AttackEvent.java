@@ -20,7 +20,8 @@ import net.pgfmc.teams.ownable.entities.OwnableEntity;
 /**
  * class to route events to different locations to organise better
  * @author CrimsonDart
- *
+ * @since 1.2.0
+ * 
  */
 public class AttackEvent implements Listener {
 	

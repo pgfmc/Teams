@@ -9,6 +9,12 @@ import org.bukkit.entity.Player;
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.friends.Friends.Relation;
 
+/**
+ * Command to Unfavorite a favorited player.
+ * 
+ * @author CrimsonDart
+ * @since 1.2.0	
+ */
 public class UnfavoriteCommand implements CommandExecutor {
 	
 	@Override

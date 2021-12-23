@@ -11,9 +11,14 @@ import net.pgfmc.core.Vector4;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
 
 /**
- * Stores claims.
+ * Stores claims in a certain region.
+ * @see ClaimsTable
+ * 
+ * Containes additional features that make claims work.
+ * (this is where the bounds caclculations are done)
+ * 
  * @author CrimsonDart
- *
+ * @since 1.4.1
  */
 public class ClaimSection {
 	
@@ -24,7 +29,6 @@ public class ClaimSection {
 	private Set<OwnableBlock> claims = new HashSet<>();
 	
 	public ClaimSection(long key, int w) {
-		System.out.println("new Claim section created for " + String.valueOf(key));
 		this.key = key;
 	}
 	

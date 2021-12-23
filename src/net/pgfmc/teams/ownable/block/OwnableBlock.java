@@ -10,24 +10,31 @@ import org.bukkit.inventory.InventoryHolder;
 import net.pgfmc.core.Vector4;
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable;
+import net.pgfmc.teams.ownable.block.table.ClaimSection;
 import net.pgfmc.teams.ownable.block.table.ClaimsTable;
+import net.pgfmc.teams.ownable.block.table.ContainerSection;
 import net.pgfmc.teams.ownable.block.table.ContainerTable;
 
-/*
-
-Written by CrimsonDart
-
------------------------------------
-Stores data for container blocks
-subclasses: 
-
-Beacons.java
-
------------------------------------
-
+/**
+ * Block Ownable Class. 
+ * 
+ * When a new Ownable Block (OB) is created, it is automatically added to the Ownable table and The Sets in 
+ * {@code BlockManager} If the block placed is a {@code Lodestone}, then the ownable functions as a claim.
+ * if the block is anything else, then it is a normal block Ownable. 
+ * 
+ * Claims have a square radius of 36 blocks.
+ * 
+ * Access to any ownable / range inside a claim is determined by the extended {@code Ownable.isAllowed(PlayerData pd)}.
+ * @see Ownable
+ * @see BlockManager
+ * @see ClaimSection 
+ * @see ContainerSection
+ * @see ClaimsTable
+ * @see ContainerTable
+ * 
+ * @author CrimsonDart
+ * @since 1.1.0	
  */
-
-
 public class OwnableBlock extends Ownable {
 	
 	private Vector4 vector;
@@ -58,12 +65,9 @@ public class OwnableBlock extends Ownable {
 		OwnableBlock os = getOtherSide(vector.getBlock());
 		
 		if (os != null) {
-			System.out.println("not null");
 			os.lock = lock;
-		} else {
-			System.out.println("is null");
 		}
-		
+
 		this.lock = lock;
 	}
 	
@@ -85,7 +89,6 @@ public class OwnableBlock extends Ownable {
 		
 		case OWNER: {
 			
-				
 			// LOCKED -> TEAM_ONLY -> UNLOCKED -> Start over...
 			switch(getLock()) {
 			case LOCKED:
@@ -104,8 +107,6 @@ public class OwnableBlock extends Ownable {
 				
 				
 			case FRIENDS_ONLY:
-
-				
 				
 				pd.sendMessage("§6Unlocked!");
 				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
@@ -191,22 +192,21 @@ public class OwnableBlock extends Ownable {
 			InventoryHolder invh = ((Chest) block.getState()).getInventory().getHolder();
 			if (invh instanceof DoubleChest) {
 				DoubleChest db = (DoubleChest) invh;
-				
-				System.out.println(String.valueOf(db.getX()) + ", " + String.valueOf(db.getY()) + ", " + String.valueOf(db.getZ()));
-				
 				Vector4 v1 = new Vector4(block);
 				
 				double x = db.getX();
 				if (v1.x() == x) { // search the z axis
 					
 					double z = db.getZ();
+					z = z > v1.z() ? z + .5d : z - .5d;
 					
-					return getOwnable(v1.shift(0, 0, ((int) Math.ceil(z) == v1.z())	? ((z > 0) ? -1 : 1) : (z > 0 ? 1 : -1)) , false);
+					return getOwnable(new Vector4(v1.x(), v1.y(), (int) z, v1.w()) , false);
+				} else {
+					
+					x = x > v1.x() ? x + .5d : x - .5d;
+					
+					return getOwnable(new Vector4((int) x, v1.y(), v1.z(), v1.w()) , false);
 				}
-				
-				return getOwnable(v1.shift(0, 0, ((int) Math.ceil(x) == v1.x())	? ((x > 0) ? -1 : 1) : (x > 0 ? 1 : -1)) , false);
-				
-				//Block block = ((DoubleChest) invh);
 			}
 		}
 		return null;
@@ -217,10 +217,10 @@ public class OwnableBlock extends Ownable {
 	 */
 	public void remove() {
 		if (isClaim) {
-			System.out.println(BlockManager.claims.remove(this) ? "Claim removed!" : "Claim removal failed!");
+
 			ClaimsTable.remove(this);
 		} else {
-			System.out.println(BlockManager.containers.remove(this) ? "Container removed!" : "Container removal failed!");
+
 			ContainerTable.remove(this);
 		}
 		//BlockManager.recalcGroup(placer);

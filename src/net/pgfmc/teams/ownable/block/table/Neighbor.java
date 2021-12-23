@@ -1,6 +1,12 @@
 package net.pgfmc.teams.ownable.block.table;
 
-public enum Neighbor {
+/**
+ * Enum to represent the 4.5 cardinal directions.
+ * 
+ * @author CrimsonDart
+ * @since 1.4.0	
+ */
+enum Neighbor {
 	
 	DOWN(0, -1),
 	DOWNLEFT(-1, -1),

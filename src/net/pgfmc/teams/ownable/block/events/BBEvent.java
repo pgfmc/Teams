@@ -13,42 +13,15 @@ import net.pgfmc.teams.ownable.block.OwnableBlock;
 import net.pgfmc.teams.ownable.block.table.ClaimsTable;
 
 /**
-@author CrimsonDart
-
------------------------------------
-
-Block Break Event.
-
------------------------------------
-
-supported Criteria:
-
-if player is in a survival world:
-
-	if player is in survival:
-		
-		if player is in locked enemy beacon:
-			
-			Disable event.
-		
-		else:
-			
-			records block data (and deletes the associated container if it was one)
-	
-	else if player is in creative:
-		
-		if inspect mode is on:
-			
-			disable event, and output past block data.
-			
-		if inspect mode is off:
-		
-			records block data (and deletes the associated container if it was one)
-
-
+ * Class that manages Block breaks.
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @author CrimsonDart
+ * @since 1.0.0
  */
-
-
 public class BBEvent implements Listener {
 	
 	@EventHandler

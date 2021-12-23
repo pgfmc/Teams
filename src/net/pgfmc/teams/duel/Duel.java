@@ -19,7 +19,7 @@ import net.pgfmc.teams.Main;
  * Class that instantiates a Duel;
  * 
  * @author CrimsonDart
- * @since 1.0.0	
+ * @since 1.2.0	
  *
  */
 public class Duel {

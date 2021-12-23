@@ -22,6 +22,15 @@ EntityContainer
 -----------------------------------
  */
 
+/**
+ * Abstract Ownable Class to be extended by things that can be owned; usually containers, but also claims.
+ * Stores the {@code PlayerData} and {@code Lock}.
+ * 
+ * 
+ * 
+ * @author CrimsonDart
+ * @since 1.2.0	
+ */
 public abstract class Ownable {
 	
 	protected PlayerData placer;

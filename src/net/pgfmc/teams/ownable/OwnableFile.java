@@ -16,16 +16,14 @@ import net.pgfmc.teams.ownable.block.BlockManager;
 import net.pgfmc.teams.ownable.block.OwnableBlock;
 import net.pgfmc.teams.ownable.entities.OwnableEntity;
 
-/*
-Written by CrimsonDart
 
------------------------------------
 
-Handles saving and loading containers.
-
------------------------------------
+/**
+ * Manages saving ownables. 
+ * 
+ * @author CrimsonDart
+ * @since 1.1.0	
  */
-
 public class OwnableFile {
 	
 	
