@@ -3,10 +3,12 @@ package net.pgfmc.teams.ownable.block;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+import net.pgfmc.core.CoreMain;
 import net.pgfmc.core.Vector4;
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable.Lock;
@@ -21,38 +23,42 @@ public class BlockManager {
 	protected static Set<OwnableBlock> containers = new HashSet<>();
 	protected static Set<OwnableBlock> claims = new HashSet<>();
 
-	public static boolean createBlockContainer(PlayerData player, Block block) { // a router between Beacons and BlockContainer
+	public static void createBlockContainer(PlayerData player, Block block) { // a router between Beacons and BlockContainer
 		
-		OwnableBlock cont = OwnableBlock.getOtherSide(block);
-		if (cont != null) {
-			
-			switch (cont.isAllowed(player)) {
-			
-			case OWNER:
-				new OwnableBlock(player, new Vector4(block), cont.getLock());
-				return true;
-			case FAVORITE:
-				new OwnableBlock(player, new Vector4(block), cont.getLock());
-			case FRIEND:
-				new OwnableBlock(cont.getPlayer(), new Vector4(block), cont.getLock());
-				return true;
-			default:
-				return false;
-				
-			}
-		}
-		
-		if (isOwnable(block.getType())) {
-			
-			if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
-				new OwnableBlock(player, new Vector4(block), Lock.CREATIVE);
-				return true;
-			}
-			new OwnableBlock(player, new Vector4(block), null);
-			return true;
-		}
-		
-		return false;
+		Bukkit.getScheduler().runTaskTimer(CoreMain.plugin, new Runnable()
+		{
+            public void run()
+            {
+            	OwnableBlock cont = OwnableBlock.getOtherSide(block);
+        		if (cont != null) {
+        			
+        			switch (cont.isAllowed(player)) {
+        			
+        			case OWNER:
+        				new OwnableBlock(player, new Vector4(block), cont.getLock());
+        				return;
+        			case FAVORITE:
+        				new OwnableBlock(player, new Vector4(block), cont.getLock());
+        			case FRIEND:
+        				new OwnableBlock(cont.getPlayer(), new Vector4(block), cont.getLock());
+        				return;
+        			default:
+        				return;
+        				
+        			}
+        		}
+        		
+        		if (isOwnable(block.getType())) {
+        			
+        			if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
+        				new OwnableBlock(player, new Vector4(block), Lock.CREATIVE);
+        				return;
+        			}
+        			new OwnableBlock(player, new Vector4(block), null);
+        			return;
+        		}
+            }
+        }, 0, 20);
 	}
 	
 	public static Set<OwnableBlock> getClaims() {

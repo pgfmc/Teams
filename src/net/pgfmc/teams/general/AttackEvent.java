@@ -28,6 +28,13 @@ public class AttackEvent implements Listener {
 	@EventHandler
 	public void attackEvent(EntityDamageByEntityEvent e) {
 		
+		
+		
+		
+		
+		
+		
+		
 		if (e.getDamager() instanceof Player) {
 			
 			Player attacker = (Player) e.getDamager();

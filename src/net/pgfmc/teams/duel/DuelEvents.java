@@ -59,6 +59,22 @@ public class DuelEvents implements Listener {
 		}
 	}
 	
+	/*
+	@EventHandler
+	public void arrowHit(ProjectileHitEvent e) {
+		if (e.getHitEntity() != null &&
+			e.getHitEntity() instanceof Player &&
+			e.getEntityType() == EntityType.ARROW &&
+			e.getEntity().getShooter() instanceof Player) {
+			
+			
+			
+			
+			
+			
+		}
+	}*/
+	
 	@EventHandler
 	public void inventoryRestorerPt1(PlayerQuitEvent e) { // method for when a player in a duel leaves the server
 		
