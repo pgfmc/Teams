@@ -3,9 +3,11 @@ package net.pgfmc.teams.ownable.entities;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.InventoryHolder;
 
 import net.pgfmc.core.playerdataAPI.PlayerData;
@@ -15,6 +17,25 @@ public class EntityAttackEvent implements Listener {
 	
 	@EventHandler
 	public void damageEvent(EntityDamageByEntityEvent e) {
+		
+		
+		
+		if (e.getCause() == DamageCause.PROJECTILE && 
+				e.getEntityType() == EntityType.PLAYER &&
+				e.getDamager() instanceof Projectile && 
+				((Projectile) e.getDamager()).getShooter() instanceof Player) {// is an arrow lol
+			
+			
+			
+			
+			
+			
+			
+		}
+		
+		
+		
+		
 		
 		if (e.getDamager() instanceof Player && e.getEntity() instanceof InventoryHolder) {
 			

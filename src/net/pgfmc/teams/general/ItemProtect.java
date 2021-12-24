@@ -52,7 +52,7 @@ public class ItemProtect implements Listener {
 			Creeper creeper = (Creeper) p.getLastDamageCause().getEntity();
 			if (creeper.isPowered())
 			{
-				droppedItems.add(world.dropItem(loc, Skull.getHead(p.getUniqueId())));
+				droppedItems.add(world.dropItem(loc, Skull.getHead(p.getUniqueId(), null)));
 			}
 		}
 		

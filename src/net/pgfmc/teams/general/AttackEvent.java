@@ -2,10 +2,14 @@ package net.pgfmc.teams.general;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.InventoryHolder;
 
 import net.pgfmc.core.playerdataAPI.PlayerData;
@@ -28,12 +32,41 @@ public class AttackEvent implements Listener {
 	@EventHandler
 	public void attackEvent(EntityDamageByEntityEvent e) {
 		
-		
-		
-		
-		
-		
-		
+		if (e.getCause() == DamageCause.PROJECTILE && 
+				e.getEntityType() == EntityType.PLAYER &&
+				e.getDamager() instanceof Projectile && 
+				((Projectile) e.getDamager()).getShooter() instanceof Player) {
+			
+			Player attacker = (Player) ((Projectile) e.getDamager()).getShooter();
+			Player target = (Player) e.getEntity();
+			
+			if (target.getGameMode() == GameMode.SURVIVAL && attacker.getGameMode() == GameMode.SURVIVAL) { // makes sure both players are in survival
+				
+				PlayerData apd = PlayerData.getPlayerData(attacker);
+				PlayerData tpd = PlayerData.getPlayerData(target);
+				Duel ATK = apd.getData("duel");
+				
+				if (ATK != null && ATK == tpd.getData("duel") && ATK.getState() == DuelState.INBATTLE 
+						&& ATK.getPlayers().get(apd) == PlayerState.DUELING
+						&& ATK.getPlayers().get(tpd) == PlayerState.DUELING) { // if same Duel : allow attack
+					
+					if (e.getFinalDamage() >= target.getHealth()) {
+						
+						e.setDamage(0);
+						ATK.playerDie(tpd, apd, true);
+						return;
+					}
+					
+					if (e.getDamager().getType() == EntityType.ARROW) {
+						apd.playSound(Sound.BLOCK_NOTE_BLOCK_CHIME);
+					}
+					
+					tpd.setData("duelHit", true);
+					return;
+				}
+			}
+			e.setDamage(0);
+		}
 		
 		if (e.getDamager() instanceof Player) {
 			
