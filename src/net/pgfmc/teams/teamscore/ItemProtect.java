@@ -9,8 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,7 +18,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.util.Vector;
 
 import net.pgfmc.core.DimManager;
-import net.pgfmc.core.cmd.admin.Skull;
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.friends.Friends;
 import oshi.util.tuples.Pair;
@@ -48,16 +45,6 @@ public class ItemProtect implements Listener {
 		List<Item> droppedItems = e.getDrops().stream().map((x -> {
 			return world.dropItem(loc, x);
 		})).collect(Collectors.toList());
-		
-		// Drop a custom player head if death by charged creeper
-		if (p.getLastDamageCause().getEntityType().equals(EntityType.CREEPER))
-		{
-			Creeper creeper = (Creeper) p.getLastDamageCause().getEntity();
-			if (creeper.isPowered())
-			{
-				droppedItems.add(world.dropItem(loc, Skull.getHead(p.getUniqueId(), null)));
-			}
-		}
 		
 		// activates the items
 		for (Item drop : droppedItems) {
