@@ -27,16 +27,8 @@ public class BBEvent implements Listener {
 	@EventHandler
 	public void blockBreak(BlockBreakEvent e) {
 		
-		
-		
 		PlayerData pd = PlayerData.getPlayerData(e.getPlayer());
 		if (e.getPlayer().getGameMode() == GameMode.SURVIVAL) { // ---------------------------------------------- if debug mode off / not creative mode
-			
-			//RegionGroup rg = pd.getData("regionGroup");
-			
-			//if (rg == null) {
-			//	return;
-			//}
 			
 			OwnableBlock cont = OwnableBlock.getOwnable(e.getBlock());
 			
@@ -49,20 +41,24 @@ public class BBEvent implements Listener {
 				case DISALLOWED:
 					e.setCancelled(true);
 					pd.sendMessage("§cYou don't own this.");
+					System.out.println("1");
 					return;
 					
 				case EXCEPTION:
 					System.out.println("oof");
 					e.setCancelled(true);
+					System.out.println("2");
 					return;
 				case FAVORITE:
 					
 					if (cont.isClaim()) {
 						e.setCancelled(true);
 						pd.sendMessage("§cYou don't own this.");
+						System.out.println("3");
 						return;
 					} else {
 						cont.remove();
+						System.out.println("4");
 						return;
 					}
 					
@@ -70,9 +66,11 @@ public class BBEvent implements Listener {
 					if (cont.isClaim()) {
 						e.setCancelled(true);
 						pd.sendMessage("§cYou don't own this.");
+						System.out.println("5");
 						return;
 					} else {
 						cont.remove();
+						System.out.println("5");
 						return;
 					}
 					
@@ -81,12 +79,14 @@ public class BBEvent implements Listener {
 					if (cont.isClaim()) {
 						pd.sendMessage("§6Claim Removed!");
 					}
+					System.out.println("6");
 					return;
 					
 				case UNLOCKED:
 					
 					e.setCancelled(true);
 					pd.sendMessage("§cYou don't own this.");
+					System.out.println("7");
 					return;
 				}
 			}
@@ -99,9 +99,11 @@ public class BBEvent implements Listener {
 					pd.sendMessage("§cThis land is claimed.");
 					e.setCancelled(true);
 					pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
+					System.out.println("8");
 					return;
 				}
 			}
+			System.out.println("9");
 			
 			
 		} else {
@@ -109,6 +111,7 @@ public class BBEvent implements Listener {
 			OwnableBlock cont = OwnableBlock.getOwnable(e.getBlock());
 			if (cont != null) {
 				cont.remove();
+				System.out.println("10");
 			}
 		}
 	}

@@ -3,14 +3,14 @@ package net.pgfmc.teams.ownable.block;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import net.pgfmc.core.CoreMain;
 import net.pgfmc.core.Vector4;
 import net.pgfmc.core.playerdataAPI.PlayerData;
+import net.pgfmc.teams.Main;
 import net.pgfmc.teams.ownable.Ownable.Lock;
 
 /**
@@ -25,9 +25,8 @@ public class BlockManager {
 
 	public static void createBlockContainer(PlayerData player, Block block) { // a router between Beacons and BlockContainer
 		
-		Bukkit.getScheduler().runTaskTimer(CoreMain.plugin, new Runnable()
-		{
-            public void run()
+		new BukkitRunnable() {
+			public void run()
             {
             	OwnableBlock cont = OwnableBlock.getOtherSide(block);
         		if (cont != null) {
@@ -58,7 +57,7 @@ public class BlockManager {
         			return;
         		}
             }
-        }, 0, 20);
+		}.runTaskLater(Main.plugin, 1);
 	}
 	
 	public static Set<OwnableBlock> getClaims() {

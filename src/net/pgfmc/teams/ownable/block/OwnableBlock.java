@@ -217,13 +217,14 @@ public class OwnableBlock extends Ownable {
 	 */
 	public void remove() {
 		if (isClaim) {
-
+			System.out.println("1");
 			ClaimsTable.remove(this);
+			return;
 		} else {
-
+			System.out.println("2");
 			ContainerTable.remove(this);
+			return;
 		}
-		//BlockManager.recalcGroup(placer);
 	}
 	
 	/**
