@@ -29,7 +29,7 @@ public class UnfavoriteCommand implements CommandExecutor {
 		}
 		
 		Friends.setRelation(PlayerData.getPlayerData((OfflinePlayer) sender), friend, Relation.FRIEND);
-		sender.sendMessage("§cUnfavorited §n" + friend.getRankedName() + "§r§c.");
+		sender.sendMessage("§cUnfavorited §n" + friend.getNickname() + "§r§c.");
 		
 		return true;
 	}
