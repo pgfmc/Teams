@@ -18,8 +18,8 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.util.Vector;
 
-import net.pgfmc.core.CoreMain;
-import net.pgfmc.core.cmd.admin.Skull;
+import net.pgfmc.core.misc.CoreMain;
+import net.pgfmc.core.misc.Skull;
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.friends.Friends;
  /**

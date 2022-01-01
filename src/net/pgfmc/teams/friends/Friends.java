@@ -9,7 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 
-import net.pgfmc.core.Mixins;
+import net.pgfmc.core.misc.Mixins;
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.core.requestAPI.Requester;
 import net.pgfmc.teams.Main;
@@ -41,39 +41,6 @@ public class Friends extends Requester implements Listener {
 		}
 	}
 	
-	/**
-	 * HOW FRIENDS DATA IS STORED;
-	 * 
-	 * Friends data is stored as a table, like this:
-	 * 
-	 * XXX p1, p2, p3, p4
-	 * p1/ S , R , R , R
-	 * p2/ R , S , R , R
-	 * p3/ R , R , S , R
-	 * p4/ R , R , R , S
-	 * 
-	 * top row is gotten first, then gets the data.
-	 * 
-	 * in database.yml, the data is stored in a single column:
-	 * 
-	 * p1 [ 
-	 * 	p2 : R
-	 *  p3 : R
-	 *  p4 : R
-	 * ]
-	 * p2 [
-	 * 	p1 : R
-	 * 	p3 : R
-	 * 	.
-	 * 	.
-	 * 	.
-	 * 	.
-	 * 
-	 * all inferable relations are excluded, such as SELF and NONE
-	 * 
-	 * 
-	 */
-	
 	private Friends() {
 		super("Friend", 120, (x, y) -> {
 			
@@ -94,7 +61,9 @@ public class Friends extends Requester implements Listener {
 	 */
 	public static void setRelation(PlayerData p1, Relation r12, PlayerData p2, Relation r21) {
 		
-		if (p1 == p2) { return; } // if <player> and <friend> are equal
+		if (p1 == p2) return; // if <player> and <friend> are equal
+		if (p1 == null) return;
+		if (p2 == null) return;
 		
 		getFriendsMap(p1).put(p2, r12);
 		getFriendsMap(p2).put(p1, r21);

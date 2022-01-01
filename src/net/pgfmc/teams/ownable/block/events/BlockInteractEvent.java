@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import net.pgfmc.core.Vector4;
+import net.pgfmc.core.misc.Vector4;
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable.Lock;
 import net.pgfmc.teams.ownable.Ownable.Security;

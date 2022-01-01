@@ -7,7 +7,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.inventory.InventoryHolder;
 
-import net.pgfmc.core.Vector4;
+import net.pgfmc.core.misc.Vector4;
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable;
 import net.pgfmc.teams.ownable.block.table.ClaimSection;

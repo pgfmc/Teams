@@ -8,7 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import net.pgfmc.core.Vector4;
+import net.pgfmc.core.misc.Vector4;
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.ownable.Ownable.Security;
 import net.pgfmc.teams.ownable.block.BlockManager;
