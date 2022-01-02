@@ -45,12 +45,12 @@ public class UnfriendCommand implements CommandExecutor{
 		}
 		
 		if (!Friends.getFriendsMap(p1).containsKey(PlayerData.getPlayerData(target))) { // and he
-			sender.sendMessage("§n" + PlayerData.getPlayerData(target).getNickname() + "§r§c is not in your friends list.");
+			sender.sendMessage("§n" + PlayerData.getPlayerData(target).getRankedName() + "§r§c is not in your friends list.");
 			return true;
 		}
 		PlayerData p2 = PlayerData.getPlayerData(target);
 		Friends.setRelation(p1, Relation.NONE, p2, Relation.NONE);
-		p1.sendMessage("§cYou have unfriended §n" + p2.getNickname() + "§r§c.");
+		p1.sendMessage("§cYou have unfriended §n" + p2.getRankedName() + "§r§c.");
 		p1.playSound(Sound.BLOCK_CALCITE_HIT);
 		
 		return true;

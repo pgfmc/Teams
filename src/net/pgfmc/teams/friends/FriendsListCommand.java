@@ -17,7 +17,7 @@ public class FriendsListCommand implements CommandExecutor {
 		}
 		
 		for (PlayerData pd : Friends.getFriendsMap(PlayerData.getPlayerData((Player) sender)).keySet()) {
-			sender.sendMessage("§n" + pd.getNickname());
+			sender.sendMessage("§n" + pd.getRankedName());
 		}
 		
 		return true;

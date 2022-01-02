@@ -57,7 +57,7 @@ public class Duel {
 		join(PR);
 		join(CH);
 
-		PR.sendMessage("§n" + CH.getNickname() + " §r§6has accepted your challenge to §cDuel!");
+		PR.sendMessage("§n" + CH.getRankedName() + " §r§6has accepted your challenge to §cDuel!");
 		CH.sendMessage("§aYou have accepted the challenge!");
 		Duel d = this;
 		
@@ -165,7 +165,7 @@ public class Duel {
 		for (PlayerData pd : HELLOGAMERS) {
 			
 			if (killer != null) {
-				pd.sendMessage("§n" + killer.getNickname() + "§r§6defeated §n" + ded.getNickname() + "§r§6!");
+				pd.sendMessage("§n" + killer.getRankedName() + "§r§6defeated §n" + ded.getRankedName() + "§r§6!");
 				pd.playSound(Sound.ENTITY_PLAYER_BIG_FALL);
 			} else if (wasKilled) {
 				pd.sendMessage("§n" + ded.getName() + "§r§6 was defeated.");
@@ -189,7 +189,7 @@ public class Duel {
 							continue;
 						}
 						pd.playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
-						pd.sendMessage("§n" + Winner.getNickname() + " §r§ahas won the duel!");
+						pd.sendMessage("§n" + Winner.getRankedName() + " §r§ahas won the duel!");
 					}
 					
 					Winner.playSound(Sound.ENTITY_PLAYER_LEVELUP);
