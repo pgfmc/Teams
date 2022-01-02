@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.pgfmc.core.misc.Mixins;
+import net.pgfmc.core.Mixins;
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.core.playerdataAPI.PlayerDataManager;
 import net.pgfmc.teams.duel.DuelEvents;

@@ -9,7 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 
-import net.pgfmc.core.misc.Mixins;
+import net.pgfmc.core.Mixins;
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.core.requestAPI.Requester;
 import net.pgfmc.teams.Main;
