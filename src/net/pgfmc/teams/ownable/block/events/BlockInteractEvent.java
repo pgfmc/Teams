@@ -121,6 +121,11 @@ public class BlockInteractEvent implements Listener {
 						return;
 					} else {
 						BlockManager.createBlockContainer(pd, block);
+						
+						
+						
+						
+						
 					}
 				}
 				

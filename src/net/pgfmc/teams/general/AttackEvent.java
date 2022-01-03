@@ -9,7 +9,6 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.InventoryHolder;
 
 import net.pgfmc.core.playerdataAPI.PlayerData;
@@ -32,8 +31,7 @@ public class AttackEvent implements Listener {
 	@EventHandler
 	public void attackEvent(EntityDamageByEntityEvent e) {
 		
-		if (e.getCause() == DamageCause.PROJECTILE && 
-				e.getEntityType() == EntityType.PLAYER &&
+		if (e.getEntity() instanceof Player &&
 				e.getDamager() instanceof Projectile && 
 				((Projectile) e.getDamager()).getShooter() instanceof Player) {
 			

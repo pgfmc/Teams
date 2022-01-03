@@ -1,7 +1,15 @@
 package net.pgfmc.teams.ownable.block.events;
 
-public class BExEvent {
-	/*
+import org.bukkit.block.Block;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+
+import net.pgfmc.teams.ownable.block.OwnableBlock;
+
+public class BExEvent implements Listener {
+	
 	@EventHandler
 	public void explodeEvent(BlockExplodeEvent e) {
 		for (Block block : e.blockList()) {
@@ -20,5 +28,5 @@ public class BExEvent {
 				return;
 			}
 		}
-	}*/
+	}
 }

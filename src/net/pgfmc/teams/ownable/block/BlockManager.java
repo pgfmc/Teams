@@ -26,36 +26,41 @@ public class BlockManager {
 	public static void createBlockContainer(PlayerData player, Block block) { // a router between Beacons and BlockContainer
 		
 		new BukkitRunnable() {
-			public void run()
-            {
-            	OwnableBlock cont = OwnableBlock.getOtherSide(block);
-        		if (cont != null) {
-        			
-        			switch (cont.isAllowed(player)) {
-        			
-        			case OWNER:
-        				new OwnableBlock(player, new Vector4(block), cont.getLock());
-        				return;
-        			case FAVORITE:
-        				new OwnableBlock(player, new Vector4(block), cont.getLock());
-        			case FRIEND:
-        				new OwnableBlock(cont.getPlayer(), new Vector4(block), cont.getLock());
-        				return;
-        			default:
-        				return;
-        				
-        			}
-        		}
-        		
-        		if (isOwnable(block.getType())) {
-        			
-        			if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
-        				new OwnableBlock(player, new Vector4(block), Lock.CREATIVE);
-        				return;
-        			}
-        			new OwnableBlock(player, new Vector4(block), null);
-        			return;
-        		}
+			public void run() {
+				
+				if (block.getType() == Material.CHEST || block.getType() == Material.CHEST) {
+					
+					Vector4 v = OwnableBlock.getOtherSide(block);
+					Block v4 = v.getBlock();
+					OwnableBlock cont = OwnableBlock.getOwnable(v4);
+	        		if (cont != null) {
+	        			
+	        			switch (cont.isAllowed(player)) {
+	        			
+	        			case OWNER:
+	        				new OwnableBlock(player, new Vector4(block), cont.getLock());
+	        				return;
+	        			case FAVORITE:
+	        				new OwnableBlock(player, new Vector4(block), cont.getLock());
+	        			case FRIEND:
+	        				new OwnableBlock(cont.getPlayer(), new Vector4(block), cont.getLock());
+	        				return;
+	        			default:
+	        				return;
+	        				
+	        			}
+	        		} else if (v4.getType() == Material.CHEST || v4.getType() == Material.CHEST) {
+	        			
+	        			new OwnableBlock(player, v, null);
+	        		}
+				}
+				
+				if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
+    				new OwnableBlock(player, new Vector4(block), Lock.CREATIVE);
+    				return;
+    			}
+    			new OwnableBlock(player, new Vector4(block), null);
+    			
             }
 		}.runTaskLater(Main.plugin, 1);
 	}

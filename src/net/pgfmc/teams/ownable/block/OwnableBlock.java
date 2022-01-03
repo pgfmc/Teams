@@ -62,7 +62,7 @@ public class OwnableBlock extends Ownable {
 	@Override
 	public void setLock(Lock lock) {
 		
-		OwnableBlock os = getOtherSide(vector.getBlock());
+		OwnableBlock os = getOwnable(getOtherSide(vector.getBlock()).getBlock());
 		
 		if (os != null) {
 			os.lock = lock;
@@ -186,7 +186,7 @@ public class OwnableBlock extends Ownable {
 		}
 	}
 	
-	static OwnableBlock getOtherSide(Block block) {
+	static Vector4 getOtherSide(Block block) {
 		if ((block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST)) { // chest check
 			
 			InventoryHolder invh = ((Chest) block.getState()).getInventory().getHolder();
@@ -200,12 +200,12 @@ public class OwnableBlock extends Ownable {
 					double z = db.getZ();
 					z = z > v1.z() ? z + .5d : z - .5d;
 					
-					return getOwnable(new Vector4(v1.x(), v1.y(), (int) z, v1.w()) , false);
+					return new Vector4(v1.x(), v1.y(), (int) z, v1.w());
 				} else {
 					
 					x = x > v1.x() ? x + .5d : x - .5d;
 					
-					return getOwnable(new Vector4((int) x, v1.y(), v1.z(), v1.w()) , false);
+					return new Vector4((int) x, v1.y(), v1.z(), v1.w());
 				}
 			}
 		}
