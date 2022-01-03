@@ -5,6 +5,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+/**
+ * Command for Accepting a friend Request.
+ * 
+ * @author CrimsonDart
+ * @since 1.2.0	
+ */
 public class FriendAcceptCommand implements CommandExecutor {
 	
 	@Override

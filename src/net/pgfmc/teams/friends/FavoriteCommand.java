@@ -7,7 +7,12 @@ import org.bukkit.entity.Player;
 
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.friends.Friends.Relation;
-
+/**
+ * Command for Favoriting a Friend.
+ * 
+ * @author CrimsonDart
+ * @since 1.2.0	
+ */
 public class FavoriteCommand implements CommandExecutor {
 
 	@Override

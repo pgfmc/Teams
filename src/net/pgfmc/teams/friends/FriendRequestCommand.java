@@ -8,6 +8,12 @@ import org.bukkit.entity.Player;
 
 import net.pgfmc.core.playerdataAPI.PlayerData;
 
+/**
+ * Command for sending a Friend Request.
+ * 
+ * @author CrimsonDart
+ * @since 1.2.0	
+ */
 public class FriendRequestCommand implements CommandExecutor {
 	
 	@Override

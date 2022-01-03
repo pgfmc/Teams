@@ -1,10 +1,10 @@
 name: Teams
-version: 4.0.0
+version: 1.4.1
 api-version: 1.18
 author: [bk, CrimsonDart]
-main: net.pgfmc.teams.teamscore.Main
+main: net.pgfmc.teams.Main
 description: implemets the Teams system
-depend: [PGF-Core, PGF-Survival]
+depend: [PGF-Core]
 commands:
    friendRequest:
       aliases: [fr]

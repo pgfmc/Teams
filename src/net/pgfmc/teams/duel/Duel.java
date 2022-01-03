@@ -13,8 +13,15 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.core.playerdataAPI.PlayerData;
-import net.pgfmc.teams.teamscore.Main;
+import net.pgfmc.teams.Main;
 
+/**
+ * Class that instantiates a Duel;
+ * 
+ * @author CrimsonDart
+ * @since 1.2.0	
+ *
+ */
 public class Duel {
 	
 	private World world;

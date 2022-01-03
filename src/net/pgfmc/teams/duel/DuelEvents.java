@@ -18,6 +18,13 @@ import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.duel.Duel.DuelState;
 import net.pgfmc.teams.duel.Duel.PlayerState;
 
+/**
+ * Class that manages Events relating to duels.;
+ * 
+ * @author CrimsonDart
+ * @since 1.2.0	
+ *
+ */
 public class DuelEvents implements Listener {
 	
 	@EventHandler
@@ -51,6 +58,22 @@ public class DuelEvents implements Listener {
 			}
 		}
 	}
+	
+	/*
+	@EventHandler
+	public void arrowHit(ProjectileHitEvent e) {
+		if (e.getHitEntity() != null &&
+			e.getHitEntity() instanceof Player &&
+			e.getEntityType() == EntityType.ARROW &&
+			e.getEntity().getShooter() instanceof Player) {
+			
+			
+			
+			
+			
+			
+		}
+	}*/
 	
 	@EventHandler
 	public void inventoryRestorerPt1(PlayerQuitEvent e) { // method for when a player in a duel leaves the server
