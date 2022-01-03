@@ -71,7 +71,7 @@ public class BBEvent implements Listener {
 					return;
 					
 				case EXCEPTION:
-					System.out.println("");
+					// System.out.println("");
 					return;
 				case FAVORITE:
 					

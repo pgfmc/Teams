@@ -48,7 +48,7 @@ public abstract class Ownable {
 		
 		this.placer = player;
 		this.lock = lock;
-		System.out.println("Ownable created!");
+		// System.out.println("Ownable created!");
 		
 	}
 	

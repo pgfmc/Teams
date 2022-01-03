@@ -212,7 +212,7 @@ public class OwnableBlock extends Ownable {
 					return;
 			}
 		}
-		case EXCEPTION: System.out.println("cont.isAllowed() returned Security.EXCEPTION!"); return;
+		case EXCEPTION: // System.out.println("cont.isAllowed() returned Security.EXCEPTION!"); return;
 		}
 	}
 	
@@ -244,9 +244,9 @@ public class OwnableBlock extends Ownable {
 	public static void remove(OwnableBlock ob) {
 		
 		if (ob.isClaim()) {
-			System.out.println(claims.remove(ob) ? "Claim removed!" : "Claim removal failed!");
+			// System.out.println(claims.remove(ob) ? "Claim removed!" : "Claim removal failed!");
 		} else {
-			System.out.println(containers.remove(ob) ? "Container removed!" : "Container removal failed!");
+			// System.out.println(containers.remove(ob) ? "Container removed!" : "Container removal failed!");
 			
 		}
 	}

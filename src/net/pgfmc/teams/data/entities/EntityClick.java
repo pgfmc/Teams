@@ -183,7 +183,7 @@ public class EntityClick implements Listener {
 						default: return;
 					}
 				}
-				case EXCEPTION: System.out.println("cont.isAllowed() returned Security.EXCEPTION!");
+				case EXCEPTION: // System.out.println("cont.isAllowed() returned Security.EXCEPTION!");
 				}
 			}
 		}

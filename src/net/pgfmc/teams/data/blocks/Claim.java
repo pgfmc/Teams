@@ -28,11 +28,11 @@ public class Claim {
 		/*
 		Optional<OwnableBlock> b = OwnableBlock.getClaims().stream()
 		.filter(x -> {
-			System.out.println("Filtering for worlds...");
+			// System.out.println("Filtering for worlds...");
 			return x.getLocation().getWorld() == loca.getWorld();
 		}) // stream to funnel down the beacons into the closest enemy beacon.
 		.filter(x -> {
-			System.out.println("Filtering for range...");
+			// System.out.println("Filtering for range...");
 			return x.inRange(v);
 		})
 		.findFirst();
@@ -51,14 +51,14 @@ public class Claim {
 			double brah = a.getDistance(v);
 			double brbh = c.getDistance(v);
 			
-			System.out.println("Reducing!");
+			// System.out.println("Reducing!");
 			
 			return (brah > brbh) ? a : c;
 		});
 		
 		
 		if (b.isPresent()) {
-			//System.out.println(b.get().getLocation().toString());
+			//// System.out.println(b.get().getLocation().toString());
 			return b.get();
 		}
 		return null;*/

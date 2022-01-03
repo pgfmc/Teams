@@ -127,7 +127,7 @@ public class ContainerDatabase {
 		
 		try {
 			database.save(file);
-			System.out.println("Container location saved!");
+			// System.out.println("Container location saved!");
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -159,7 +159,7 @@ public class ContainerDatabase {
 			// saves data.
 			try {
 				database.save(file);
-				System.out.println("Container location saved!");
+				// System.out.println("Container location saved!");
 				
 			} catch (IOException e) {
 				e.printStackTrace();

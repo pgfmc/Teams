@@ -27,17 +27,17 @@ public class AttackEvent implements Listener {
 	@EventHandler
 	public void attackEvent(EntityDamageByEntityEvent e) {
 		
-		System.out.println("Entity Damaged!");
+		// System.out.println("Entity Damaged!");
 		
 		if (e.getDamager() instanceof Player) {
 			
 			
-			System.out.println("attacker is player");
+			// System.out.println("attacker is player");
 			Player attacker = (Player) e.getDamager();
 			
 			if (e.getEntity() instanceof Player) { // gets all players in the situation
 				
-				System.out.println("target is player");
+				// System.out.println("target is player");
 				
 				Player target = (Player) e.getEntity();
 				

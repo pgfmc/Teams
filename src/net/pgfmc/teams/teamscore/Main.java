@@ -42,7 +42,7 @@ public class Main extends JavaPlugin {
 		
 		/*
 		if (Bukkit.getServer().getPluginManager().getPlugin("PGF-Essentials") == null) {
-			System.out.println("PGF-Essentials isnt loaded; Disabling Teams!");
+			// System.out.println("PGF-Essentials isnt loaded; Disabling Teams!");
 			loaded = false;
 			Bukkit.getServer().getPluginManager().disablePlugin(this);
 			return;

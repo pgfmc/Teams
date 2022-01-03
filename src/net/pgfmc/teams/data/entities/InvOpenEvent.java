@@ -22,7 +22,7 @@ public class InvOpenEvent implements Listener {
 		
 		if (e.getPlayer().getGameMode() == GameMode.SURVIVAL && e.getPlayer() instanceof Player && e.getInventory().getHolder() instanceof Entity) {
 			
-			System.out.println(((Entity) e.getInventory().getHolder()).getUniqueId());
+			// System.out.println(((Entity) e.getInventory().getHolder()).getUniqueId());
 			
 			OwnableEntity cont = OwnableEntity.getContainer((Entity) e.getInventory().getHolder());
 			
@@ -202,11 +202,11 @@ public class InvOpenEvent implements Listener {
 										return;
 						}
 					}
-					case EXCEPTION: System.out.println("cont.isAllowed() returned Security.EXCEPTION!");
+					case EXCEPTION: // System.out.println("cont.isAllowed() returned Security.EXCEPTION!");
 					}
 				}
 			}
-			System.out.println("out 1");
+			// System.out.println("out 1");
 		}
 	}
 }

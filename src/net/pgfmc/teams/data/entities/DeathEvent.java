@@ -12,7 +12,7 @@ public class DeathEvent implements Listener {
 	public void deathEvent(EntityDeathEvent e) {
 		
 		if (OwnableEntity.getContainer(e.getEntity()) != null ) {
-			System.out.println("Entity Container deleted!");
+			// System.out.println("Entity Container deleted!");
 			OwnableEntity.remove(e.getEntity());
 		}
 	}

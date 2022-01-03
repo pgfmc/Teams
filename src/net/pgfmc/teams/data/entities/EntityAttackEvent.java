@@ -55,7 +55,7 @@ public class EntityAttackEvent implements Listener {
 					}
 					case EXCEPTION: {
 						e.setCancelled(true);
-						System.out.println("cont.isAllowed() returned Security.EXCEPTION!");
+						// System.out.println("cont.isAllowed() returned Security.EXCEPTION!");
 						return;
 					}
 					}
