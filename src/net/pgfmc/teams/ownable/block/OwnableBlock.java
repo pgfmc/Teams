@@ -59,13 +59,16 @@ public class OwnableBlock extends Ownable {
 		ContainerTable.put(this);
 	}
 	
+	/**
+	 * @since 1.0.2
+	 * @version 4.0.2
+	 */
 	@Override
 	public void setLock(Lock lock) {
 		
-		OwnableBlock os = getOwnable(getOtherSide(vector.getBlock()).getBlock());
-		
-		if (os != null) {
-			os.lock = lock;
+		Vector4 v4 = getOtherSide(vector.getBlock());
+		if (v4 != null) {
+			getOwnable(v4.getBlock()).lock = lock;
 		}
 
 		this.lock = lock;
@@ -84,8 +87,7 @@ public class OwnableBlock extends Ownable {
 			return;
 		}
 		
-		
-		switch(isAllowed(pd)) {
+		switch(getAccess(pd)) {
 		
 		case OWNER: {
 			

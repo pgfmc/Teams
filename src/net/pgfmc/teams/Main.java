@@ -20,6 +20,7 @@ import net.pgfmc.teams.general.AttackEvent;
 import net.pgfmc.teams.general.ItemProtect;
 import net.pgfmc.teams.ownable.Ownable.Lock;
 import net.pgfmc.teams.ownable.OwnableFile;
+import net.pgfmc.teams.ownable.block.InspectCommand;
 import net.pgfmc.teams.ownable.block.events.BBEvent;
 import net.pgfmc.teams.ownable.block.events.BExEvent;
 import net.pgfmc.teams.ownable.block.events.BPE;
@@ -50,6 +51,7 @@ public class Main extends JavaPlugin {
 		
 		PlayerDataManager.setInit(x -> x.setData("lockMode", Lock.UNLOCKED));
 		PlayerDataManager.setInit(x -> x.setData("friends", new HashMap<PlayerData, Relation>()));
+		PlayerDataManager.setInit(x -> x.setData("inspector", false));
 		
 		PlayerDataManager.setPostLoad((x) -> Friends.load());
 		PlayerDataManager.setPostLoad((x) -> OwnableFile.loadContainers());
@@ -74,6 +76,7 @@ public class Main extends JavaPlugin {
 		getCommand("friendlist").setExecutor(new FriendsListCommand());
 		getCommand("favorite").setExecutor(new FavoriteCommand());
 		getCommand("unfavorite").setExecutor(new UnfavoriteCommand());
+		getCommand("inspector").setExecutor(new InspectCommand());
 	}
 	
 	@Override

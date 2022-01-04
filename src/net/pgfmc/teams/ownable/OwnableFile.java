@@ -34,6 +34,7 @@ public class OwnableFile {
 		
 		
 		if (database != null) {
+			int amount = 0;
 			for (String key : database.getKeys(false)) {
 				
 				ConfigurationSection configSec = database.getConfigurationSection(key);
@@ -55,8 +56,9 @@ public class OwnableFile {
 				
 				Vector4 vec = Vector4.fromString(key);
 				new OwnableBlock(pd, vec, lock);
-				
+				amount++;
 			}
+			System.out.println("Loaded " + amount + " Ownables.");
 		}
 		
 		// Entity Containers

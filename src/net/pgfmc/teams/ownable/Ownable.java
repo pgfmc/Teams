@@ -58,8 +58,6 @@ public abstract class Ownable {
 		
 		this.placer = player;
 		this.lock = lock;
-		System.out.println("Ownable created!");
-		
 	}
 	
 	//public static void remove(containerType cont) {
@@ -80,8 +78,7 @@ public abstract class Ownable {
 		lock = sug;
 	}
 	
-	public Security isAllowed(PlayerData player) {
-		
+	public Security getAccess(PlayerData player) {
 		
 		Relation r = Friends.getRelation(placer, player);
 		

@@ -44,7 +44,7 @@ public class InvOpenEvent implements Listener {
 					
 					)) {
 					
-					switch(cont.isAllowed(pd)) {
+					switch(cont.getAccess(pd)) {
 					
 					case OWNER: {
 						if (pd.getPlayer().getInventory().getItemInMainHand() != null && pd.getPlayer().getInventory().getItemInMainHand().getType() == Material.LEVER) {

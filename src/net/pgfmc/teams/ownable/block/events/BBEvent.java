@@ -21,6 +21,7 @@ import net.pgfmc.teams.ownable.block.table.ClaimsTable;
  * 
  * @author CrimsonDart
  * @since 1.0.0
+ * @version 4.0.2
  */
 public class BBEvent implements Listener {
 	
@@ -35,7 +36,7 @@ public class BBEvent implements Listener {
 			// removes the ownable if able to
 			if (cont != null) {
 				
-				Security s = cont.isAllowed(pd);
+				Security s = cont.getAccess(pd);
 				
 				switch(s) {
 				case DISALLOWED:
@@ -95,7 +96,7 @@ public class BBEvent implements Listener {
 			
 			if (claim != null) {
 				
-				if (claim.isAllowed(pd) == Security.DISALLOWED) {
+				if (claim.getAccess(pd) == Security.DISALLOWED) {
 					pd.sendMessage("§cThis land is claimed.");
 					e.setCancelled(true);
 					pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
@@ -106,7 +107,33 @@ public class BBEvent implements Listener {
 			System.out.println("9");
 			
 			
-		} else {
+		} else if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
+			
+			boolean insp = pd.getData("inspector");
+			
+			if (insp) {
+				e.setCancelled(true);
+				
+				OwnableBlock ob = OwnableBlock.getOwnable(e.getBlock());
+				
+				if (ob != null) {
+					pd.sendMessage("§eOwnableBlock data from: §c" + ob.getLocation().toString());
+					pd.sendMessage("§eOwner: §d" + ob.getPlayer().getNicknameRaw());
+					pd.sendMessage("§eLock: §a" + ob.getLock().toString());
+				}
+				
+				OwnableBlock claim = ClaimsTable.getRelevantClaim(new Vector4(e.getBlock()));
+				
+				if (claim != null) {
+					pd.sendMessage("§bInside claim at §c" + claim.getLocation().toString());
+					pd.sendMessage("§bOwnber: §d" + claim.getPlayer().getNicknameRaw());
+					pd.sendMessage("§bLock: §a" + claim.getLock().toString());
+				} else {
+					pd.sendMessage("§bNot Inside a claim.");
+				}
+				
+				return;
+			}
 			
 			OwnableBlock cont = OwnableBlock.getOwnable(e.getBlock());
 			if (cont != null) {

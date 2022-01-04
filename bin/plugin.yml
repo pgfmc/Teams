@@ -1,5 +1,5 @@
 name: Teams
-version: 1.4.1
+version: 1.4.2
 api-version: 1.18
 author: [bk, CrimsonDart]
 main: net.pgfmc.teams.Main
@@ -36,6 +36,11 @@ commands:
       usage: /<command> <favorite>
       permission: teams.friend.unfav
       description: unfavorites a friend.
+   inspector:
+      aliases: [insp]
+      usage: /<command>
+      permission: teams.inspector
+      description: toggles Inspector mode if in Creative mode.
 #
 # -------------------------------||------------------------------
 #

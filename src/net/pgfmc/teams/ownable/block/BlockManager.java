@@ -17,6 +17,7 @@ import net.pgfmc.teams.ownable.Ownable.Lock;
  * Contains Static methods to manage Block Ownables. also contains all containers and claims.
  * @author CrimsonDart
  * @since 1.2.0	
+ * @version 4.0.2
  */
 public class BlockManager {
 	
@@ -36,7 +37,7 @@ public class BlockManager {
 						OwnableBlock cont = OwnableBlock.getOwnable(v4);
 		        		if (cont != null) {
 		        			
-		        			switch (cont.isAllowed(player)) {
+		        			switch (cont.getAccess(player)) {
 		        			
 		        			case OWNER:
 		        				new OwnableBlock(player, new Vector4(block), cont.getLock());
@@ -55,7 +56,6 @@ public class BlockManager {
 		        			new OwnableBlock(player, v, null);
 		        		}
 					}
-					
 				}
 				
 				if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
