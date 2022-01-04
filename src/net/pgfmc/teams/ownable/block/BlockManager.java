@@ -31,28 +31,31 @@ public class BlockManager {
 				if (block.getType() == Material.CHEST || block.getType() == Material.CHEST) {
 					
 					Vector4 v = OwnableBlock.getOtherSide(block);
-					Block v4 = v.getBlock();
-					OwnableBlock cont = OwnableBlock.getOwnable(v4);
-	        		if (cont != null) {
-	        			
-	        			switch (cont.isAllowed(player)) {
-	        			
-	        			case OWNER:
-	        				new OwnableBlock(player, new Vector4(block), cont.getLock());
-	        				return;
-	        			case FAVORITE:
-	        				new OwnableBlock(player, new Vector4(block), cont.getLock());
-	        			case FRIEND:
-	        				new OwnableBlock(cont.getPlayer(), new Vector4(block), cont.getLock());
-	        				return;
-	        			default:
-	        				return;
-	        				
-	        			}
-	        		} else if (v4.getType() == Material.CHEST || v4.getType() == Material.CHEST) {
-	        			
-	        			new OwnableBlock(player, v, null);
-	        		}
+					if (v != null) {
+						Block v4 = v.getBlock();
+						OwnableBlock cont = OwnableBlock.getOwnable(v4);
+		        		if (cont != null) {
+		        			
+		        			switch (cont.isAllowed(player)) {
+		        			
+		        			case OWNER:
+		        				new OwnableBlock(player, new Vector4(block), cont.getLock());
+		        				return;
+		        			case FAVORITE:
+		        				new OwnableBlock(player, new Vector4(block), cont.getLock());
+		        			case FRIEND:
+		        				new OwnableBlock(cont.getPlayer(), new Vector4(block), cont.getLock());
+		        				return;
+		        			default:
+		        				return;
+		        				
+		        			}
+		        		} else if (v4.getType() == Material.CHEST || v4.getType() == Material.CHEST) {
+		        			
+		        			new OwnableBlock(player, v, null);
+		        		}
+					}
+					
 				}
 				
 				if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
