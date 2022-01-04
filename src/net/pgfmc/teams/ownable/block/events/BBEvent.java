@@ -114,14 +114,6 @@ public class BBEvent implements Listener {
 			if (insp) {
 				e.setCancelled(true);
 				
-				OwnableBlock ob = OwnableBlock.getOwnable(e.getBlock());
-				
-				if (ob != null) {
-					pd.sendMessage("§eOwnableBlock data from: §c" + ob.getLocation().toString());
-					pd.sendMessage("§eOwner: §d" + ob.getPlayer().getNicknameRaw());
-					pd.sendMessage("§eLock: §a" + ob.getLock().toString());
-				}
-				
 				OwnableBlock claim = ClaimsTable.getRelevantClaim(new Vector4(e.getBlock()));
 				
 				if (claim != null) {
@@ -132,6 +124,15 @@ public class BBEvent implements Listener {
 					pd.sendMessage("§bNot Inside a claim.");
 				}
 				
+				OwnableBlock ob = OwnableBlock.getOwnable(e.getBlock());
+				
+				if (ob != null) {
+					pd.sendMessage("§eOwnableBlock data from: §c" + ob.getLocation().toString());
+					pd.sendMessage("§eOwner: §d" + ob.getPlayer().getNicknameRaw());
+					pd.sendMessage("§eLock: §a" + ob.getLock().toString());
+					pd.setData("OwnableCache", ob);
+					pd.sendMessage("§dOwnable Selected!");
+				}
 				return;
 			}
 			

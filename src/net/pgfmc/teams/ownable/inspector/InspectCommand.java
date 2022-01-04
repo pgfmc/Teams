@@ -1,4 +1,4 @@
-package net.pgfmc.teams.ownable.block;
+package net.pgfmc.teams.ownable.inspector;
 
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -25,7 +25,6 @@ public class InspectCommand implements CommandExecutor {
 		if (!(sender instanceof Player)) return true;
 		if (((Player) sender).getGameMode() != GameMode.CREATIVE) return true;
 		
-		
 		PlayerData pd = PlayerData.getPlayerData((Player) sender);
 		toggleInspector(pd);
 		
@@ -49,8 +48,6 @@ public class InspectCommand implements CommandExecutor {
 			pd.sendMessage("§aEnabled Inspector mode.");
 			pd.sendMessage("§o§7Break Blocks to show Claim information on the block.");
 		}
-		
-		
 		
 		return insp;
 	}

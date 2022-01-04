@@ -20,7 +20,6 @@ import net.pgfmc.teams.general.AttackEvent;
 import net.pgfmc.teams.general.ItemProtect;
 import net.pgfmc.teams.ownable.Ownable.Lock;
 import net.pgfmc.teams.ownable.OwnableFile;
-import net.pgfmc.teams.ownable.block.InspectCommand;
 import net.pgfmc.teams.ownable.block.events.BBEvent;
 import net.pgfmc.teams.ownable.block.events.BExEvent;
 import net.pgfmc.teams.ownable.block.events.BPE;
@@ -29,6 +28,7 @@ import net.pgfmc.teams.ownable.entities.DeathEvent;
 import net.pgfmc.teams.ownable.entities.EntityClick;
 import net.pgfmc.teams.ownable.entities.InvOpenEvent;
 import net.pgfmc.teams.ownable.entities.TameEvent;
+import net.pgfmc.teams.ownable.inspector.InspectCommand;
 
 public class Main extends JavaPlugin {
 	
