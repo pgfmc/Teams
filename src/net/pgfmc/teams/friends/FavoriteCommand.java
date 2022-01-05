@@ -12,6 +12,7 @@ import net.pgfmc.teams.friends.Friends.Relation;
  * 
  * @author CrimsonDart
  * @since 1.2.0	
+ * @version 4.0.3
  */
 public class FavoriteCommand implements CommandExecutor {
 
@@ -19,23 +20,42 @@ public class FavoriteCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		if (!(sender instanceof Player)) {
+			sender.sendMessage("§cOnly players can use thsi command!");
 			return true;
 		}
-		
-		if (args == null || args[0] == null) {
-			return true;
+			
+		if (args == null || args[0].isBlank()) {
+			return false;
 		}
 		
 		PlayerData friend = PlayerData.getPlayerData(args[0]);
 		
 		if (friend == null) {
+			sender.sendMessage("§cCouldn't find player " + args[0] + ".");
 			return true;
 		}
 		
-		Friends.setRelation(PlayerData.getPlayerData((Player) sender), friend, Relation.FAVORITE);
-		sender.sendMessage("§n" + friend.getRankedName() + "§r§a is now a favorite!");
+		PlayerData player = PlayerData.getPlayerData((Player) sender);
+		
+		switch(Friends.getRelation(player, friend)) {
+		case FAVORITE:
+			sender.sendMessage("§n" + friend.getRankedName() + "§r§6 is already favorited!");
+			break;
+			
+		case FRIEND:
+			Friends.setRelation(player, friend, Relation.FAVORITE);
+			sender.sendMessage("§aFavorited §n" + friend.getRankedName() + "§r§c.");
+			break;
+			
+		case NONE:
+			sender.sendMessage("§n" + friend.getRankedName() + "§r§c isn't your friend.");
+			break;
+			
+		case SELF:
+			sender.sendMessage("§6You can't favorite yourself!");
+			break;
+		}
 		
 		return true;
 	}
-	
 }

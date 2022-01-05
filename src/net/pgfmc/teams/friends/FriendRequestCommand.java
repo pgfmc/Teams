@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.pgfmc.core.playerdataAPI.PlayerData;
+import net.pgfmc.core.requestAPI.Request;
 
 /**
  * Command for sending a Friend Request.
@@ -20,21 +21,51 @@ public class FriendRequestCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
 		if (!(sender instanceof Player)) {
+			sender.sendMessage("§cOnly players can use thsi command!");
+			return true;
+		}
 			
-			sender.sendMessage("§cOnly players can execute this command.");
+		if (args == null || args[0].isBlank()) {
 			return false;
-		} else if (Bukkit.getPlayer(args[0]) == null) {
-			sender.sendMessage("§cCould not find player §6§n" + args[0] + "§r§c.");
-			return true;
-		} else if (((Player) sender).getUniqueId().equals(Bukkit.getPlayer(args[0]).getUniqueId())) {
-			sender.sendMessage("§cYou can't friend yourself!");
-			return true;
-		} else if (Friends.getRelation(PlayerData.getPlayerData((Player) sender), PlayerData.getPlayerData(args[0])).isFriend()) {
-			sender.sendMessage("§6Already friends with §n" + PlayerData.getPlayerData(Bukkit.getPlayer(args[0])).getRankedName() + "§r§6.");
+		}
+		
+		PlayerData friend = PlayerData.getPlayerData(args[0]);
+		
+		if (friend == null) {
+			sender.sendMessage("§cCouldn't find player " + args[0] + ".");
 			return true;
 		}
 		
-		Friends.DEFAULT.createRequest((Player) sender, Bukkit.getPlayer(args[0]));
+		PlayerData player = PlayerData.getPlayerData((Player) sender);
+		
+		Request r = Friends.DEFAULT.findRequest((Player) sender, (Player) sender);
+		
+		
+		
+		
+		
+		
+		switch(Friends.getRelation(player, friend)) {
+		case FAVORITE:
+			sender.sendMessage("§n" + friend.getRankedName() + "§r§6 is already your friend!");
+			break;
+			
+		case FRIEND:
+			sender.sendMessage("§n" + friend.getRankedName() + "§r§6 is already your friend!");
+			break;
+			
+		case NONE:
+			Friends.DEFAULT.createRequest((Player) sender, Bukkit.getPlayer(args[0]));
+			sender.sendMessage("§aFriend Request send to §n" + friend.getRankedName() + "§r§a.");
+			break;
+			
+		case SELF:
+			sender.sendMessage("§r§6You can't friend yourself!");
+			break;
+		}
+		
+		
+		
 		
 		return true;
 	}
