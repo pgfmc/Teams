@@ -23,6 +23,7 @@ import net.pgfmc.teams.ownable.entities.OwnableEntity;
  * 
  * @author CrimsonDart
  * @since 1.1.0	
+ * @version 4.0.2
  */
 public class OwnableFile {
 	
@@ -32,7 +33,6 @@ public class OwnableFile {
 		File file = new File(Main.getPlugin().getDataFolder() + File.separator + "BlockContainers.yml"); // Creates a File object
 		FileConfiguration database = YamlConfiguration.loadConfiguration(file); // Turns the File object into YAML and loads data
 		
-		
 		if (database != null) {
 			int amount = 0;
 			for (String key : database.getKeys(false)) {
@@ -41,15 +41,10 @@ public class OwnableFile {
 				
 				PlayerData pd = PlayerData.getPlayerData(UUID.fromString(configSec.getString("player")));
 				
-				
 				Lock lock;
 				
 				if (configSec.getString("Lock") == null) {
-					if (configSec.getBoolean("isLocked")) {
-						lock = Lock.FRIENDS_ONLY;
-					} else {
-						lock = Lock.UNLOCKED;
-					}
+					lock = Lock.FRIENDS_ONLY;
 				} else {
 					lock = Lock.valueOf(configSec.getString("Lock"));
 				}
@@ -100,7 +95,6 @@ public class OwnableFile {
 			blocc = database.createSection(id);
 		}
 		
-		blocc.set("isLocked", null);
 		blocc.set("player", player.getUniqueId().toString());
 		blocc.set("Lock", ob.getLock().toString());
 		

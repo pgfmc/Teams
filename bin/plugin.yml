@@ -1,5 +1,5 @@
 name: Teams
-version: 4.0.3
+version: 4.0.2
 api-version: 1.18
 author: [bk, CrimsonDart]
 main: net.pgfmc.teams.Main
@@ -41,6 +41,11 @@ commands:
       usage: /<command>
       permission: teams.inspector
       description: toggles Inspector mode if in Creative mode.
+   edit_ownable:
+      aliases: [ewon]
+      usage: /<command> <type> <value>
+      permission: teams.inspector
+      description: Allows editing values of the latest inspected ownable.
    
 #
 # -------------------------------||------------------------------

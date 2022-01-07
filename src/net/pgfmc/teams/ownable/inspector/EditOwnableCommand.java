@@ -1,8 +1,6 @@
 package net.pgfmc.teams.ownable.inspector;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,7 +20,6 @@ import net.pgfmc.teams.ownable.block.OwnableBlock;
  * @since 4.0.2
  *
  */
-@Deprecated
 public class EditOwnableCommand implements CommandExecutor {
 	
 	/**
@@ -42,24 +39,50 @@ public class EditOwnableCommand implements CommandExecutor {
 			return true;
 		}
 		
+		if (args == null || args.length == 0) {
+			sender.sendMessage("§dAllowed types: §b'§alock§b'§d, §b'§aowner§b'");
+		}
+		
+		
+		
+		String s = label;
+		
+		
+		
+		for (String sr : args) {
+			s = s + " " + sr;
+		}
+		sender.sendMessage(s);
+		
+		
+		
+		
 		if (cache instanceof OwnableBlock) {
 			
-			if (args[0] == "lock") {
+			if ("lock".equals(args[0])) {
 				
-				Lock lock = Lock.valueOf(args[1]);
-				if (lock != null) {
-					cache.setLock(lock);
-					sender.sendMessage("§aLock set to " + lock.toString());
-				} else {
-					sender.sendMessage("§cLock set Failed!");
-				}
-				
-			} else if (args[0] == "owner") {
-				
-				OfflinePlayer op = Bukkit.getPlayer(args[1]);
-				if (op != null) {
+				if (args[1] != null) {
+					Lock lock = Lock.valueOf(args[1]);
 					
+					if (lock != null) {
+						cache.setLock(lock);
+						sender.sendMessage("§aLock set to " + lock.toString());
+						return true;
+					}
+				} 
+				sender.sendMessage("§cLock set Failed!");
+				
+			} else if ("owner".equals(args[0])) {
+				
+				PlayerData ope = PlayerData.getPlayerData(args[1]);
+				if (ope != null) {
+					cache.setOwner(pd);
+					sender.sendMessage("§aOwner set to " + ope.getRankedName());
+				} else {
+					sender.sendMessage("§cOwner set Failed!");
 				}
+			} else {
+				sender.sendMessage("§dAllowed types: §b'§alock§b'§d, §b'§aowner§b'");
 			}
 		}
 		return true;

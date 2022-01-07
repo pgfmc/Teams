@@ -34,11 +34,11 @@ import net.pgfmc.teams.ownable.block.table.ContainerTable;
  * 
  * @author CrimsonDart
  * @since 1.1.0	
+ * @version 4.0.3
  */
 public class OwnableBlock extends Ownable {
 	
 	private Vector4 vector;
-	//private OwnableBlock doubleChest;
 	private boolean isClaim;
 	
 	public OwnableBlock(PlayerData player, Vector4 vec, Lock lock) {
