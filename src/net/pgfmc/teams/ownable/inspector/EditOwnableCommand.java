@@ -39,54 +39,54 @@ public class EditOwnableCommand implements CommandExecutor {
 			return true;
 		}
 		
-		if (args == null || args.length == 0) {
-			sender.sendMessage("§dAllowed types: §b'§alock§b'§d, §b'§aowner§b'");
-		}
-		
-		
-		
 		String s = label;
-		
-		
 		
 		for (String sr : args) {
 			s = s + " " + sr;
 		}
 		sender.sendMessage(s);
 		
-		
-		
-		
 		if (cache instanceof OwnableBlock) {
 			
-			if ("lock".equals(args[0])) {
+			if (args == null || args.length == 0) {
+				sender.sendMessage("§dAllowed types: §b'§alock§b'§d, §b'§aowner§b'");
 				
-				if (args[1] != null) {
+			} else if ("lock".equals(args[0])) {
+				
+				if (args.length > 1) {
 					Lock lock = Lock.valueOf(args[1]);
 					
 					if (lock != null) {
 						cache.setLock(lock);
 						sender.sendMessage("§aLock set to " + lock.toString());
 						return true;
+						
+					} else {
+						sender.sendMessage("§cPlease enter a valid Lock!");
+						
 					}
 				} 
-				sender.sendMessage("§cLock set Failed!");
+				sender.sendMessage("§cNo lock value input.");
 				
 			} else if ("owner".equals(args[0])) {
 				
-				PlayerData ope = PlayerData.getPlayerData(args[1]);
-				if (ope != null) {
-					cache.setOwner(pd);
-					sender.sendMessage("§aOwner set to " + ope.getRankedName());
-				} else {
-					sender.sendMessage("§cOwner set Failed!");
+				if (args.length > 1) {
+					PlayerData ope = PlayerData.getPlayerData(args[1]);
+					if (ope != null) {
+						cache.setOwner(pd);
+						sender.sendMessage("§aOwner set to " + ope.getRankedName());
+						return true;
+					}
 				}
+				sender.sendMessage("§cPlease Enter a valid player!");
+				
 			} else {
 				sender.sendMessage("§dAllowed types: §b'§alock§b'§d, §b'§aowner§b'");
 			}
+		} else {
+			
+			sender.sendMessage("§dSelect an Ownable in Inspector mode §b(/insp) §dfirst!");
 		}
 		return true;
 	}
-	
-	
 }

@@ -83,7 +83,7 @@ public class OwnableBlock extends Ownable {
 		
 		if (getLock() == Lock.CREATIVE) { // for Creative Locks.
 			pd.sendMessage("§cAccess Denied.");
-			pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
+			pd.playSound(Sound.BLOCK_ANVIL_DESTROY);
 			return;
 		}
 		

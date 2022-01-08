@@ -122,21 +122,8 @@ public class BlockInteractEvent implements Listener {
 					} else {
 						BlockManager.createBlockContainer(pd, block);
 						
-						
-						
-						
-						
 					}
 				}
-				
-				
-				
-				
-				
-				
-				
-				
-				
 				
 				/*
 				// crazy time down here!
