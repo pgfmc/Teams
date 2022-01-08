@@ -37,6 +37,15 @@ public abstract class Ownable {
 	
 	protected Lock lock;
 	
+	/**
+	 * Defines access states.
+	 * 
+	 * Each constant defines a different relationship between 
+	 * the owner, the 
+	 * 
+	 * @author james
+	 *
+	 */
 	public enum Security {
 		OWNER,
 		FAVORITE,
@@ -54,34 +63,50 @@ public abstract class Ownable {
 		CREATIVE
 	}
 	
+	/**
+	 * Constructs a new ownable.
+	 * 
+	 * 
+	 * @param player
+	 * @param lock
+	 */
 	public Ownable(PlayerData player, Lock lock) { // class constructor
 		
 		this.placer = player;
 		this.lock = lock;
-		System.out.println("Ownable created!");
-		
 	}
-	
-	//public static void remove(containerType cont) {
-		
-	//}
 	
 	// --------------------------------------------------- getters and setters
 	
+	/**
+	 * Gets the Player that owns this Ownable.
+	 * @return The player's PlayerData.
+	 */
 	public PlayerData getPlayer() {
 		return placer;
 	}
 	
+	public void setOwner(PlayerData pd) {
+		placer = pd;
+	}
+	
+	/**
+	 * Gets the ownable's Lock.
+	 * @return
+	 */
 	public Lock getLock() {
 		return lock;
 	}
 	
+	/**
+	 * Sets the lock of this ownable.
+	 * @param sug The lock that this ownable's lock is set to.
+	 */
 	public void setLock(Lock sug) {
 		lock = sug;
 	}
 	
-	public Security isAllowed(PlayerData player) {
-		
+	public Security getAccess(PlayerData player) {
 		
 		Relation r = Friends.getRelation(placer, player);
 		

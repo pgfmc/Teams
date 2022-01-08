@@ -1,11 +1,5 @@
 package net.pgfmc.teams.friends;
 
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.teams.friends.Friends.Relation;
 
@@ -14,28 +8,27 @@ import net.pgfmc.teams.friends.Friends.Relation;
  * 
  * @author CrimsonDart
  * @since 1.2.0	
+ * @version 4.0.3
  */
-public class UnfavoriteCommand implements CommandExecutor {
-	
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+public class UnfavoriteCommand extends FriendCommandBase {
 
-		if (!(sender instanceof Player)) {
-			return true;
+	@Override
+	public boolean action(PlayerData player, PlayerData friend) {
+		switch(Friends.getRelation(player, friend)) {
+		case FAVORITE:
+			Friends.setRelation(player, friend, Relation.FRIEND);
+			player.sendMessage("§6Unfavorited §n" + friend.getRankedName() + "§r§c.");
+			break;
+		case FRIEND:
+			player.sendMessage("§n" + friend.getRankedName() + "§r§6 is not favorited.");
+			break;
+		case NONE:
+			player.sendMessage("§n" + friend.getRankedName() + "§r§c isn't your friend.");
+			break;
+		case SELF:
+			player.sendMessage("§6You can't unfavorite yourself!");
+			break;
 		}
-		
-		if (args == null || args[0] == null) {
-			return true;
-		}
-		
-		PlayerData friend = PlayerData.getPlayerData(args[0]);
-		
-		if (friend == null) {
-			return true;
-		}
-		
-		Friends.setRelation(PlayerData.getPlayerData((OfflinePlayer) sender), friend, Relation.FRIEND);
-		sender.sendMessage("§cUnfavorited §n" + friend.getRankedName() + "§r§c.");
 		
 		return true;
 	}

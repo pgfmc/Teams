@@ -28,6 +28,9 @@ import net.pgfmc.teams.ownable.entities.DeathEvent;
 import net.pgfmc.teams.ownable.entities.EntityClick;
 import net.pgfmc.teams.ownable.entities.InvOpenEvent;
 import net.pgfmc.teams.ownable.entities.TameEvent;
+import net.pgfmc.teams.ownable.inspector.ClaimTPCommand;
+import net.pgfmc.teams.ownable.inspector.EditOwnableCommand;
+import net.pgfmc.teams.ownable.inspector.InspectCommand;
 
 public class Main extends JavaPlugin {
 	
@@ -48,8 +51,9 @@ public class Main extends JavaPlugin {
 		Mixins.getFile(BlockContainersPath);
 		Mixins.getFile(EntityContainersPath);
 		
-		PlayerDataManager.setInit(x -> x.setData("lockMode", Lock.UNLOCKED));
+		PlayerDataManager.setInit(x -> x.setData("lockMode", Lock.FRIENDS_ONLY));
 		PlayerDataManager.setInit(x -> x.setData("friends", new HashMap<PlayerData, Relation>()));
+		PlayerDataManager.setInit(x -> x.setData("inspector", false));
 		
 		PlayerDataManager.setPostLoad((x) -> Friends.load());
 		PlayerDataManager.setPostLoad((x) -> OwnableFile.loadContainers());
@@ -74,6 +78,9 @@ public class Main extends JavaPlugin {
 		getCommand("friendlist").setExecutor(new FriendsListCommand());
 		getCommand("favorite").setExecutor(new FavoriteCommand());
 		getCommand("unfavorite").setExecutor(new UnfavoriteCommand());
+		getCommand("inspector").setExecutor(new InspectCommand());
+		getCommand("edit_ownable").setExecutor(new EditOwnableCommand());
+		getCommand("claimtp").setExecutor(new ClaimTPCommand());
 	}
 	
 	@Override

@@ -26,7 +26,7 @@ public class TameEvent implements Listener {
 				
 				OwnableBlock beacon = ClaimsTable.getRelevantClaim(new Vector4(player.getLocation()));
 				
-				if (beacon != null && beacon.isAllowed(pd) == Security.DISALLOWED) {
+				if (beacon != null && beacon.getAccess(pd) == Security.DISALLOWED) {
 					player.sendMessage("§cCannot tame on claimed land.");
 					e.setCancelled(true);
 					return;

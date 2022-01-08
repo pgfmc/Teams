@@ -50,7 +50,7 @@ public class BPE implements Listener {
 			
 			OwnableBlock claim = ClaimsTable.getRelevantClaim(new Vector4(block));
 			
-			if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
+			if (claim != null && claim.getAccess(pd) == Security.DISALLOWED) {
 				
 				pd.sendMessage("§cCannot place blocks in claimed land.");
 				e.setCancelled(true);

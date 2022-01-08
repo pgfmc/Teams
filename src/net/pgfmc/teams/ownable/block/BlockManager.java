@@ -17,6 +17,7 @@ import net.pgfmc.teams.ownable.Ownable.Lock;
  * Contains Static methods to manage Block Ownables. also contains all containers and claims.
  * @author CrimsonDart
  * @since 1.2.0	
+ * @version 4.0.2
  */
 public class BlockManager {
 	
@@ -25,47 +26,55 @@ public class BlockManager {
 
 	public static void createBlockContainer(PlayerData player, Block block) { // a router between Beacons and BlockContainer
 		
-		new BukkitRunnable() {
-			public void run() {
-				
-				if (block.getType() == Material.CHEST || block.getType() == Material.CHEST) {
+		
+		if (block.getType() == Material.CHEST || block.getType() == Material.CHEST) {
+			
+			new BukkitRunnable() { // new java runnable :()
+				public void run() {
 					
-					Vector4 v = OwnableBlock.getOtherSide(block);
-					if (v != null) {
-						Block v4 = v.getBlock();
-						OwnableBlock cont = OwnableBlock.getOwnable(v4);
-		        		if (cont != null) {
-		        			
-		        			switch (cont.isAllowed(player)) {
-		        			
-		        			case OWNER:
-		        				new OwnableBlock(player, new Vector4(block), cont.getLock());
-		        				return;
-		        			case FAVORITE:
-		        				new OwnableBlock(player, new Vector4(block), cont.getLock());
-		        			case FRIEND:
-		        				new OwnableBlock(cont.getPlayer(), new Vector4(block), cont.getLock());
-		        				return;
-		        			default:
-		        				return;
-		        				
-		        			}
-		        		} else if (v4.getType() == Material.CHEST || v4.getType() == Material.CHEST) {
-		        			
-		        			new OwnableBlock(player, v, null);
-		        		}
+					if (block.getType() == Material.CHEST || block.getType() == Material.CHEST) {
+						
+						Vector4 v = OwnableBlock.getOtherSide(block);
+						if (v != null) {
+							Block v4 = v.getBlock();
+							OwnableBlock cont = OwnableBlock.getOwnable(v4);
+			        		if (cont != null) {
+			        			
+			        			switch (cont.getAccess(player)) {
+			        			
+			        			case OWNER:
+			        				new OwnableBlock(player, new Vector4(block), cont.getLock());
+			        				return;
+			        			case FAVORITE:
+			        				new OwnableBlock(player, new Vector4(block), cont.getLock());
+			        			case FRIEND:
+			        				new OwnableBlock(cont.getPlayer(), new Vector4(block), cont.getLock());
+			        				return;
+			        			default:
+			        				return;
+			        				
+			        			}
+			        		} else if (v4.getType() == Material.CHEST || v4.getType() == Material.CHEST) {
+			        			
+			        			new OwnableBlock(player, v, null);
+			        		}
+						}
 					}
-					
-				}
-				
-				if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
-    				new OwnableBlock(player, new Vector4(block), Lock.CREATIVE);
-    				return;
-    			}
-    			new OwnableBlock(player, new Vector4(block), null);
-    			
-            }
-		}.runTaskLater(Main.plugin, 1);
+	            }
+			}.runTaskLater(Main.plugin, 1);
+			
+			
+		} else {
+			
+			if (player.getPlayer().getGameMode() == GameMode.CREATIVE) {
+				new OwnableBlock(player, new Vector4(block), Lock.CREATIVE);
+				return;
+			}
+			new OwnableBlock(player, new Vector4(block), null);
+		}
+		
+		
+		
 	}
 	
 	public static Set<OwnableBlock> getClaims() {

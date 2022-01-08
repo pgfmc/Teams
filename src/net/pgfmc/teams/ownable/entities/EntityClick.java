@@ -38,7 +38,7 @@ public class EntityClick implements Listener {
 				
 				if (cont == null) { return; }
 				
-				Security sec = cont.isAllowed(pd);
+				Security sec = cont.getAccess(pd);
 				
 				switch(sec) {
 				

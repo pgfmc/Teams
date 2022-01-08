@@ -46,7 +46,7 @@ public class BlockInteractEvent implements Listener {
 					
 					OwnableBlock claim = ClaimsTable.getRelevantClaim(new Vector4(block));
 					
-					if (claim != null && claim.isAllowed(pd) == Security.DISALLOWED) {
+					if (claim != null && claim.getAccess(pd) == Security.DISALLOWED) {
 						pd.sendMessage("§cThis land is claimed.");
 						e.setCancelled(true);
 						return;
@@ -63,7 +63,7 @@ public class BlockInteractEvent implements Listener {
 						return;
 					} else {
 						
-						switch(cont.isAllowed(pd)) {
+						switch(cont.getAccess(pd)) {
 						case DISALLOWED:
 							e.setCancelled(true);
 							
@@ -113,7 +113,7 @@ public class BlockInteractEvent implements Listener {
 					
 					OwnableBlock claim = ClaimsTable.getRelevantClaim(new Vector4(block));
 					
-					if (claim != null && claim.isAllowed(pd) != Security.OWNER) {
+					if (claim != null && claim.getAccess(pd) != Security.OWNER) {
 						
 						pd.sendMessage("§cCannot claim this chest, as it's in claimed land.");
 						e.setCancelled(true);
@@ -122,21 +122,8 @@ public class BlockInteractEvent implements Listener {
 					} else {
 						BlockManager.createBlockContainer(pd, block);
 						
-						
-						
-						
-						
 					}
 				}
-				
-				
-				
-				
-				
-				
-				
-				
-				
 				
 				/*
 				// crazy time down here!

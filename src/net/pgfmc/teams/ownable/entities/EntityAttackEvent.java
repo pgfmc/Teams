@@ -38,7 +38,7 @@ public class EntityAttackEvent implements Listener {
 					
 					)) {
 					
-					switch(ent.isAllowed(pd)) {
+					switch(ent.getAccess(pd)) {
 					
 					case OWNER: {return;}
 					case FRIEND: {return;}

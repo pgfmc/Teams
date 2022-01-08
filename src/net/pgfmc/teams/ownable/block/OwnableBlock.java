@@ -34,11 +34,11 @@ import net.pgfmc.teams.ownable.block.table.ContainerTable;
  * 
  * @author CrimsonDart
  * @since 1.1.0	
+ * @version 4.0.3
  */
 public class OwnableBlock extends Ownable {
 	
 	private Vector4 vector;
-	//private OwnableBlock doubleChest;
 	private boolean isClaim;
 	
 	public OwnableBlock(PlayerData player, Vector4 vec, Lock lock) {
@@ -59,13 +59,16 @@ public class OwnableBlock extends Ownable {
 		ContainerTable.put(this);
 	}
 	
+	/**
+	 * @since 1.0.2
+	 * @version 4.0.2
+	 */
 	@Override
 	public void setLock(Lock lock) {
 		
-		OwnableBlock os = getOwnable(getOtherSide(vector.getBlock()).getBlock());
-		
-		if (os != null) {
-			os.lock = lock;
+		Vector4 v4 = getOtherSide(vector.getBlock());
+		if (v4 != null) {
+			getOwnable(v4.getBlock()).lock = lock;
 		}
 
 		this.lock = lock;
@@ -80,12 +83,11 @@ public class OwnableBlock extends Ownable {
 		
 		if (getLock() == Lock.CREATIVE) { // for Creative Locks.
 			pd.sendMessage("§cAccess Denied.");
-			pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
+			pd.playSound(Sound.BLOCK_ANVIL_DESTROY);
 			return;
 		}
 		
-		
-		switch(isAllowed(pd)) {
+		switch(getAccess(pd)) {
 		
 		case OWNER: {
 			
