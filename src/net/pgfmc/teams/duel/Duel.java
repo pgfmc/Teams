@@ -172,7 +172,7 @@ public class Duel {
 		for (PlayerData pd : HELLOGAMERS) {
 			
 			if (killer != null) {
-				pd.sendMessage("§n" + killer.getRankedName() + "§r§6defeated §n" + ded.getRankedName() + "§r§6!");
+				pd.sendMessage("§n" + killer.getRankedName() + " §r§6defeated §n" + ded.getRankedName() + "§r§6!");
 				pd.playSound(Sound.ENTITY_PLAYER_BIG_FALL);
 			} else if (wasKilled) {
 				pd.sendMessage("§n" + ded.getName() + "§r§6 was defeated.");
@@ -209,7 +209,7 @@ public class Duel {
 	        		}
 	    			instances.remove(d);
 	            }
-	        }, 3); // 10 seconds
+	        }, 3); // .15 seconds
 		}
 		
 		for (PlayerData planar : Players.keySet()) {
