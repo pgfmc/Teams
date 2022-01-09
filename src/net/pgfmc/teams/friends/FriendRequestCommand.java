@@ -29,7 +29,7 @@ public class FriendRequestCommand extends FriendCommandBase {
 			break;
 			
 		case NONE:
-			Friends.DEFAULT.createRequest(player.getPlayer(), friend.getPlayer());
+			Friends.DEFAULT.createRequest(player.getPlayer(), friend.getPlayer()).setMessage(Friends.RM);
 			player.sendMessage("§aFriend Request send to §n" + friend.getRankedName() + "§r§a.");
 			break;
 			

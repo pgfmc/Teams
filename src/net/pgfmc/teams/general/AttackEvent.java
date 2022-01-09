@@ -13,6 +13,7 @@ import org.bukkit.inventory.InventoryHolder;
 
 import net.pgfmc.core.playerdataAPI.PlayerData;
 import net.pgfmc.core.requestAPI.Request;
+import net.pgfmc.core.requestAPI.Request.RequestMessage;
 import net.pgfmc.teams.duel.Duel;
 import net.pgfmc.teams.duel.Duel.DuelState;
 import net.pgfmc.teams.duel.Duel.PlayerState;
@@ -63,7 +64,7 @@ public class AttackEvent implements Listener {
 					return;
 				}
 			}
-			e.setDamage(0);
+			e.setCancelled(true);
 		}
 		
 		if (e.getDamager() instanceof Player) {
@@ -93,7 +94,7 @@ public class AttackEvent implements Listener {
 							Request r = DuelRequester.DEFAULT.findRequest(target, attacker);
 							
 							if (r == null) {
-								DuelRequester.DEFAULT.createRequest(attacker, target);
+								DuelRequester.DEFAULT.createRequest(attacker, target).setMessage(RM);;
 								e.setCancelled(true);
 								return;
 								
@@ -131,7 +132,7 @@ public class AttackEvent implements Listener {
 						if (r != null) {
 							Friends.DEFAULT.accept(r);
 						} else {
-							Friends.DEFAULT.createRequest(attacker, target);
+							Friends.DEFAULT.createRequest(attacker, target).setMessage(RM);;
 						}
 						e.setCancelled(true);
 						return;
@@ -193,4 +194,30 @@ public class AttackEvent implements Listener {
 				|| mainHand == Material.NETHERITE_SWORD 
 				|| mainHand == Material.WOODEN_SWORD);
 	}
+	
+	RequestMessage RM = (init, targ, end, request) -> {
+		
+		switch(end) {
+		case Accept:
+			init.sendMessage(targ.getRankedName() + " §r§6has accepted your challenge!");
+			targ.sendMessage("§aYou have accepted the challenge!");
+			break;
+		case Deny:
+			init.sendMessage("§cHas rejected your challenge!");
+			targ.sendMessage("§cChallenge Rejected.");
+			break;
+		case Duplicate:
+			break;
+		case Force:
+			break;
+		case Quit:
+			break;
+		case Timeout:
+			init.sendMessage("§cThe challenge has timed out.");
+			targ.sendMessage("§cThe challenge has timed out.");
+			break;
+		}
+	};
+	
+	
 }
