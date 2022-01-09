@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 
 import net.pgfmc.core.Mixins;
 import net.pgfmc.core.playerdataAPI.PlayerData;
+import net.pgfmc.core.requestAPI.Request.RequestMessage;
 import net.pgfmc.core.requestAPI.Requester;
 import net.pgfmc.teams.Main;
 
@@ -37,7 +38,7 @@ public class Friends extends Requester implements Listener {
 		}
 		
 		public boolean isFriend() {
-			return isFriend(this);
+			return (this == FAVORITE || this == FRIEND);
 		}
 	}
 	
@@ -46,11 +47,37 @@ public class Friends extends Requester implements Listener {
 			
 			setRelation(x, Relation.FRIEND, y, Relation.FRIEND);
 			x.playSound(Sound.BLOCK_AMETHYST_BLOCK_HIT);
-			x.playSound(Sound.BLOCK_AMETHYST_BLOCK_HIT);
+			y.playSound(Sound.BLOCK_AMETHYST_BLOCK_HIT);
 			
 			return true;
 		});
 	}
+	
+	protected static RequestMessage RM = (init, targ, end, reqeust) -> {
+		
+		switch(end) {
+		case Accept:
+			init.sendMessage("§6Friend request sent to " + targ.getRankedName());
+			targ.sendMessage(init.getRankedName() + "§6has sent you a friend request!");
+			targ.sendMessage("§6Type §b/fa §6to accept!");
+			break;
+		case Deny:
+			init.sendMessage("§cYour friend request to " + targ.getRankedName() + "§r§chas been rejected.");
+			targ.sendMessage("§cRequest Rejected.");
+			break;
+		case Duplicate:
+			break;
+		case Force:
+			break;
+		case Quit:
+			break;
+		case Timeout:
+			init.sendMessage("§cFriend Request timed out.");
+			targ.sendMessage("§6Friend Request timed out.");
+			break;
+		}
+		
+	};
 	
 	/**
 	 * Stores data for friends functionality
@@ -72,7 +99,6 @@ public class Friends extends Requester implements Listener {
 	}
 	
 	public static void setRelation(PlayerData POV, PlayerData friend, Relation relate) {
-		
 		if (POV != null && friend != null && relate != null) {
 			getFriendsMap(POV).put(friend, relate);
 			save();
@@ -93,7 +119,6 @@ public class Friends extends Requester implements Listener {
 	}
 	
 	public static HashMap<PlayerData, Relation> getFriendsMap(PlayerData pd) {
-		
 		return pd.getData("friends");
 	}
 	

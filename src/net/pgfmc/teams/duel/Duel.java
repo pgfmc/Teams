@@ -63,9 +63,7 @@ public class Duel {
 		world = PR.getPlayer().getWorld();
 		join(PR);
 		join(CH);
-
-		PR.sendMessage("§n" + CH.getRankedName() + " §r§6has accepted your challenge to §cDuel!");
-		CH.sendMessage("§aYou have accepted the challenge!");
+		
 		Duel d = this;
 		
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
