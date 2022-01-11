@@ -23,7 +23,7 @@ import net.pgfmc.teams.Main;
  * @author CrimsonDart
  * @since 1.2.0	
  */
-public class Friends extends Requester implements Listener {
+public class Friends extends Requester {
 	
 	public static final Friends DEFAULT = new Friends();
 	
@@ -57,13 +57,13 @@ public class Friends extends Requester implements Listener {
 		
 		switch(end) {
 		case Accept:
-			init.sendMessage("§6Friend request sent to " + targ.getRankedName());
-			targ.sendMessage(init.getRankedName() + "§6has sent you a friend request!");
-			targ.sendMessage("§6Type §b/fa §6to accept!");
+			init.sendMessage("ï¿½6Friend request sent to " + targ.getRankedName());
+			targ.sendMessage(init.getRankedName() + "ï¿½6has sent you a friend request!");
+			targ.sendMessage("ï¿½6Type ï¿½b/fa ï¿½6to accept!");
 			break;
 		case Deny:
-			init.sendMessage("§cYour friend request to " + targ.getRankedName() + "§r§chas been rejected.");
-			targ.sendMessage("§cRequest Rejected.");
+			init.sendMessage("ï¿½cYour friend request to " + targ.getRankedName() + "ï¿½rï¿½chas been rejected.");
+			targ.sendMessage("ï¿½cRequest Rejected.");
 			break;
 		case Duplicate:
 			break;
@@ -72,8 +72,8 @@ public class Friends extends Requester implements Listener {
 		case Quit:
 			break;
 		case Timeout:
-			init.sendMessage("§cFriend Request timed out.");
-			targ.sendMessage("§6Friend Request timed out.");
+			init.sendMessage("ï¿½cFriend Request timed out.");
+			targ.sendMessage("ï¿½6Friend Request timed out.");
 			break;
 		}
 		
