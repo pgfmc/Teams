@@ -21,20 +21,20 @@ public class FriendRequestCommand extends FriendCommandBase {
 		
 		switch(Friends.getRelation(player, friend)) {
 		case FAVORITE:
-			player.sendMessage("§n" + friend.getRankedName() + "§r§6 is already your friend!");
+			player.sendMessage("Â§n" + friend.getRankedName() + "Â§rÂ§6 is already your friend!");
 			break;
 			
 		case FRIEND:
-			player.sendMessage("§n" + friend.getRankedName() + "§r§6 is already your friend!");
+			player.sendMessage("Â§n" + friend.getRankedName() + "Â§rÂ§6 is already your friend!");
 			break;
 			
 		case NONE:
 			Friends.DEFAULT.createRequest(player.getPlayer(), friend.getPlayer()).setMessage(Friends.RM);
-			player.sendMessage("§aFriend Request send to §n" + friend.getRankedName() + "§r§a.");
+			player.sendMessage("Â§aFriend Request send to Â§n" + friend.getRankedName() + "Â§rÂ§a.");
 			break;
 			
 		case SELF:
-			player.sendMessage("§r§6You can't friend yourself!");
+			player.sendMessage("Â§rÂ§6You can't friend yourself!");
 			break;
 		}
 		

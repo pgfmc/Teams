@@ -199,12 +199,12 @@ public class AttackEvent implements Listener {
 		
 		switch(end) {
 		case Accept:
-			init.sendMessage(targ.getRankedName() + " §r§6has accepted your challenge!");
-			targ.sendMessage("§aYou have accepted the challenge!");
+			init.sendMessage(targ.getRankedName() + " Â§rÂ§6has accepted your challenge!");
+			targ.sendMessage("Â§aYou have accepted the challenge!");
 			break;
 		case Deny:
-			init.sendMessage("§cHas rejected your challenge!");
-			targ.sendMessage("§cChallenge Rejected.");
+			init.sendMessage("Â§cHas rejected your challenge!");
+			targ.sendMessage("Â§cChallenge Rejected.");
 			break;
 		case Duplicate:
 			break;
@@ -213,8 +213,8 @@ public class AttackEvent implements Listener {
 		case Quit:
 			break;
 		case Timeout:
-			init.sendMessage("§cThe challenge has timed out.");
-			targ.sendMessage("§cThe challenge has timed out.");
+			init.sendMessage("Â§cThe challenge has timed out.");
+			targ.sendMessage("Â§cThe challenge has timed out.");
 			break;
 		}
 	};

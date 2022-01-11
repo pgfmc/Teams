@@ -35,7 +35,7 @@ public class EditOwnableCommand implements CommandExecutor {
 		
 		Ownable cache = pd.getData("OwnableCache");
 		if (cache == null) {
-			sender.sendMessage("§cNo Ownable Selected!");
+			sender.sendMessage("Â§cNo Ownable Selected!");
 			return true;
 		}
 		
@@ -49,7 +49,7 @@ public class EditOwnableCommand implements CommandExecutor {
 		if (cache instanceof OwnableBlock) {
 			
 			if (args == null || args.length == 0) {
-				sender.sendMessage("§dAllowed types: §b'§alock§b'§d, §b'§aowner§b'");
+				sender.sendMessage("Â§dAllowed types: Â§b'Â§alockÂ§b'Â§d, Â§b'Â§aownerÂ§b'");
 				
 			} else if ("lock".equals(args[0])) {
 				
@@ -58,15 +58,15 @@ public class EditOwnableCommand implements CommandExecutor {
 					
 					if (lock != null) {
 						cache.setLock(lock);
-						sender.sendMessage("§aLock set to " + lock.toString());
+						sender.sendMessage("Â§aLock set to " + lock.toString());
 						return true;
 						
 					} else {
-						sender.sendMessage("§cPlease enter a valid Lock!");
+						sender.sendMessage("Â§cPlease enter a valid Lock!");
 						
 					}
 				} 
-				sender.sendMessage("§cNo lock value input.");
+				sender.sendMessage("Â§cNo lock value input.");
 				
 			} else if ("owner".equals(args[0])) {
 				
@@ -74,18 +74,18 @@ public class EditOwnableCommand implements CommandExecutor {
 					PlayerData ope = PlayerData.getPlayerData(args[1]);
 					if (ope != null) {
 						cache.setOwner(pd);
-						sender.sendMessage("§aOwner set to " + ope.getRankedName());
+						sender.sendMessage("Â§aOwner set to " + ope.getRankedName());
 						return true;
 					}
 				}
-				sender.sendMessage("§cPlease Enter a valid player!");
+				sender.sendMessage("Â§cPlease Enter a valid player!");
 				
 			} else {
-				sender.sendMessage("§dAllowed types: §b'§alock§b'§d, §b'§aowner§b'");
+				sender.sendMessage("Â§dAllowed types: Â§b'Â§alockÂ§b'Â§d, Â§b'Â§aownerÂ§b'");
 			}
 		} else {
 			
-			sender.sendMessage("§dSelect an Ownable in Inspector mode §b(/insp) §dfirst!");
+			sender.sendMessage("Â§dSelect an Ownable in Inspector mode Â§b(/insp) Â§dfirst!");
 		}
 		return true;
 	}

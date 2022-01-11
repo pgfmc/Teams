@@ -194,16 +194,8 @@ public class ClaimSection {
 				if (isOverlappingRange(getNeighbor(Neighbor.DOWN), v)) return true;
 				if (isOverlappingRange(getNeighbor(Neighbor.DOWNRIGHT), v)) return true;
 			}
-		}/*
-		System.out.println("verifying null...");
-		
-		for (Neighbor n : Neighbor.values()) {
-			if (isOverlappingRange(getNeighbor(n), v)) {
-				System.out.print("nope! -> " + n.toString());
-				return true;
-			}
 		}
-		System.out.print("   All good lol");*/
+		
 		return false;
 	}
 	

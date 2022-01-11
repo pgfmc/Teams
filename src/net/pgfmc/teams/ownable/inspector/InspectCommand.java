@@ -43,10 +43,10 @@ public class InspectCommand implements CommandExecutor {
 		pd.setData("inspector", !insp);
 		
 		if (insp) {
-			pd.sendMessage("§6Disabled Inspector mode.");
+			pd.sendMessage("Â§6Disabled Inspector mode.");
 		} else {
-			pd.sendMessage("§aEnabled Inspector mode.");
-			pd.sendMessage("§o§7Break Blocks to show Claim information on the block.");
+			pd.sendMessage("Â§aEnabled Inspector mode.");
+			pd.sendMessage("Â§oÂ§7Break Blocks to show Claim information on the block.");
 		}
 		
 		return insp;
