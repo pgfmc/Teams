@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.Listener;
 
 import net.pgfmc.core.Mixins;
 import net.pgfmc.core.playerdataAPI.PlayerData;
@@ -23,7 +22,7 @@ import net.pgfmc.teams.Main;
  * @author CrimsonDart
  * @since 1.2.0	
  */
-public class Friends extends Requester implements Listener {
+public class Friends extends Requester {
 	
 	public static final Friends DEFAULT = new Friends();
 	
@@ -57,13 +56,13 @@ public class Friends extends Requester implements Listener {
 		
 		switch(end) {
 		case Accept:
-			init.sendMessage("§6Friend request sent to " + targ.getRankedName());
-			targ.sendMessage(init.getRankedName() + "§6has sent you a friend request!");
-			targ.sendMessage("§6Type §b/fa §6to accept!");
+			init.sendMessage("Â§6Friend request sent to " + targ.getRankedName());
+			targ.sendMessage(init.getRankedName() + "Â§6has sent you a friend request!");
+			targ.sendMessage("Â§6Type Â§b/fa Â§6to accept!");
 			break;
 		case Deny:
-			init.sendMessage("§cYour friend request to " + targ.getRankedName() + "§r§chas been rejected.");
-			targ.sendMessage("§cRequest Rejected.");
+			init.sendMessage("Â§cYour friend request to " + targ.getRankedName() + "Â§rÂ§chas been rejected.");
+			targ.sendMessage("Â§cRequest Rejected.");
 			break;
 		case Duplicate:
 			break;
@@ -72,8 +71,8 @@ public class Friends extends Requester implements Listener {
 		case Quit:
 			break;
 		case Timeout:
-			init.sendMessage("§cFriend Request timed out.");
-			targ.sendMessage("§6Friend Request timed out.");
+			init.sendMessage("Â§cFriend Request timed out.");
+			targ.sendMessage("Â§6Friend Request timed out.");
 			break;
 		}
 		

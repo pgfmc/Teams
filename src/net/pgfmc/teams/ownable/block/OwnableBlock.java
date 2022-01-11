@@ -82,7 +82,7 @@ public class OwnableBlock extends Ownable {
 	public void cycleLock(PlayerData pd) {
 		
 		if (getLock() == Lock.CREATIVE) { // for Creative Locks.
-			pd.sendMessage("§cAccess Denied.");
+			pd.sendMessage("Â§cAccess Denied.");
 			pd.playSound(Sound.BLOCK_ANVIL_DESTROY);
 			return;
 		}
@@ -95,14 +95,14 @@ public class OwnableBlock extends Ownable {
 			switch(getLock()) {
 			case LOCKED:
 				
-				pd.sendMessage("§6Favorites only!");
+				pd.sendMessage("Â§6Favorites only!");
 				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 				setLock(Lock.FAVORITES_ONLY);
 				return;
 				
 			case FAVORITES_ONLY:
 				
-				pd.sendMessage("§6Friends only!");
+				pd.sendMessage("Â§6Friends only!");
 				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 				setLock(Lock.FRIENDS_ONLY);
 				return;
@@ -110,14 +110,14 @@ public class OwnableBlock extends Ownable {
 				
 			case FRIENDS_ONLY:
 				
-				pd.sendMessage("§6Unlocked!");
+				pd.sendMessage("Â§6Unlocked!");
 				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 				setLock(Lock.UNLOCKED);
 				return;
 				
 			case UNLOCKED:
 				
-				pd.sendMessage("§6Fully Locked!");
+				pd.sendMessage("Â§6Fully Locked!");
 				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 				setLock(Lock.LOCKED);
 				return;
@@ -131,20 +131,20 @@ public class OwnableBlock extends Ownable {
 			switch(getLock()) {
 			case LOCKED:
 				
-				pd.sendMessage("§cAccess Denied.");
+				pd.sendMessage("Â§cAccess Denied.");
 				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_ANVIL_DESTROY, 0, 0);
 				return;
 				
 			case FAVORITES_ONLY:
 				
-				pd.sendMessage("§6Friends only!");
+				pd.sendMessage("Â§6Friends only!");
 				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 				setLock(Lock.FRIENDS_ONLY);
 				return;
 				
 			case FRIENDS_ONLY:
 				
-				pd.sendMessage("§6Unlocked!");
+				pd.sendMessage("Â§6Unlocked!");
 				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 				setLock(Lock.UNLOCKED);
 				return;
@@ -152,7 +152,7 @@ public class OwnableBlock extends Ownable {
 			case UNLOCKED:
 				
 				
-				pd.sendMessage("§6Favorites Only!");
+				pd.sendMessage("Â§6Favorites Only!");
 				pd.playSound(pd.getPlayer().getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 0, 0);
 				setLock(Lock.FAVORITES_ONLY);
 				return;
@@ -164,13 +164,13 @@ public class OwnableBlock extends Ownable {
 		
 		case FRIEND: {
 			
-			pd.sendMessage("§cAccess denied.");
+			pd.sendMessage("Â§cAccess denied.");
 			pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 			return;
 		}
 		case UNLOCKED: {
 			
-			pd.sendMessage("§cAccess denied.");
+			pd.sendMessage("Â§cAccess denied.");
 			pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 			return;
 		}
@@ -179,9 +179,9 @@ public class OwnableBlock extends Ownable {
 			pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
 			
 			if (isClaim) {
-				pd.sendMessage("§cThis Lodestone is locked!");
+				pd.sendMessage("Â§cThis Lodestone is locked!");
 			} else {
-				pd.sendMessage("§cThis container is locked!");
+				pd.sendMessage("Â§cThis container is locked!");
 			}
 		}
 		case EXCEPTION: System.out.println("cont.isAllowed() returned Security.EXCEPTION!"); return;

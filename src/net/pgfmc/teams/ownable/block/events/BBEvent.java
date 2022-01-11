@@ -15,10 +15,6 @@ import net.pgfmc.teams.ownable.block.table.ClaimsTable;
 /**
  * Class that manages Block breaks.
  * 
- * 
- * 
- * 
- * 
  * @author CrimsonDart
  * @since 1.0.0
  * @version 4.0.2
@@ -41,53 +37,44 @@ public class BBEvent implements Listener {
 				switch(s) {
 				case DISALLOWED:
 					e.setCancelled(true);
-					pd.sendMessage("§cYou don't own this.");
-					System.out.println("1");
+					pd.sendMessage("Â§cYou don't own this.");
 					return;
 					
 				case EXCEPTION:
-					System.out.println("oof");
 					e.setCancelled(true);
-					System.out.println("2");
 					return;
 				case FAVORITE:
 					
 					if (cont.isClaim()) {
 						e.setCancelled(true);
-						pd.sendMessage("§cYou don't own this.");
-						System.out.println("3");
+						pd.sendMessage("Â§cYou don't own this.");
 						return;
 					} else {
 						cont.remove();
-						System.out.println("4");
 						return;
 					}
 					
 				case FRIEND:
 					if (cont.isClaim()) {
 						e.setCancelled(true);
-						pd.sendMessage("§cYou don't own this.");
-						System.out.println("5");
+						pd.sendMessage("Â§cYou don't own this.");
 						return;
 					} else {
 						cont.remove();
-						System.out.println("5");
 						return;
 					}
 					
 				case OWNER:
 					cont.remove();
 					if (cont.isClaim()) {
-						pd.sendMessage("§6Claim Removed!");
+						pd.sendMessage("Â§6Claim Removed!");
 					}
-					System.out.println("6");
 					return;
 					
 				case UNLOCKED:
 					
 					e.setCancelled(true);
-					pd.sendMessage("§cYou don't own this.");
-					System.out.println("7");
+					pd.sendMessage("Â§cYou don't own this.");
 					return;
 				}
 			}
@@ -97,16 +84,12 @@ public class BBEvent implements Listener {
 			if (claim != null) {
 				
 				if (claim.getAccess(pd) == Security.DISALLOWED) {
-					pd.sendMessage("§cThis land is claimed.");
+					pd.sendMessage("Â§cThis land is claimed.");
 					e.setCancelled(true);
 					pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
-					System.out.println("8");
 					return;
 				}
 			}
-			System.out.println("9");
-			
-			
 		} else if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
 			
 			boolean insp = pd.getData("inspector");
@@ -117,21 +100,21 @@ public class BBEvent implements Listener {
 				OwnableBlock claim = ClaimsTable.getRelevantClaim(new Vector4(e.getBlock()));
 				
 				if (claim != null) {
-					pd.sendMessage("§bInside claim at §c" + claim.getLocation().toString());
-					pd.sendMessage("§bOwnber: §d" + claim.getPlayer().getNicknameRaw());
-					pd.sendMessage("§bLock: §a" + claim.getLock().toString());
+					pd.sendMessage("Â§bInside claim at Â§c" + claim.getLocation().toString());
+					pd.sendMessage("Â§bOwnber: Â§d" + claim.getPlayer().getNicknameRaw());
+					pd.sendMessage("Â§bLock: Â§a" + claim.getLock().toString());
 				} else {
-					pd.sendMessage("§bNot Inside a claim.");
+					pd.sendMessage("Â§bNot Inside a claim.");
 				}
 				
 				OwnableBlock ob = OwnableBlock.getOwnable(e.getBlock());
 				
 				if (ob != null) {
-					pd.sendMessage("§eOwnableBlock data from: §c" + ob.getLocation().toString());
-					pd.sendMessage("§eOwner: §d" + ob.getPlayer().getNicknameRaw());
-					pd.sendMessage("§eLock: §a" + ob.getLock().toString());
+					pd.sendMessage("Â§eOwnableBlock data from: Â§c" + ob.getLocation().toString());
+					pd.sendMessage("Â§eOwner: Â§d" + ob.getPlayer().getNicknameRaw());
+					pd.sendMessage("Â§eLock: Â§a" + ob.getLock().toString());
 					pd.setData("OwnableCache", ob);
-					pd.sendMessage("§dOwnable Selected!");
+					pd.sendMessage("Â§dOwnable Selected!");
 				}
 				return;
 			}
@@ -139,7 +122,6 @@ public class BBEvent implements Listener {
 			OwnableBlock cont = OwnableBlock.getOwnable(e.getBlock());
 			if (cont != null) {
 				cont.remove();
-				System.out.println("10");
 			}
 		}
 	}

@@ -15,20 +15,20 @@ public class FavoriteCommand extends FriendCommandBase {
 	public boolean action(PlayerData player, PlayerData friend) {
 		switch(Friends.getRelation(player, friend)) {
 		case FAVORITE:
-			player.sendMessage("§n" + friend.getRankedName() + "§r§6 is already favorited!");
+			player.sendMessage("Â§n" + friend.getRankedName() + "Â§rÂ§6 is already favorited!");
 			break;
 			
 		case FRIEND:
 			Friends.setRelation(player, friend, Relation.FAVORITE);
-			player.sendMessage("§aFavorited §n" + friend.getRankedName() + "§r§c.");
+			player.sendMessage("Â§aFavorited Â§n" + friend.getRankedName() + "Â§rÂ§c.");
 			break;
 			
 		case NONE:
-			player.sendMessage("§n" + friend.getRankedName() + "§r§c isn't your friend.");
+			player.sendMessage("Â§n" + friend.getRankedName() + "Â§rÂ§c isn't your friend.");
 			break;
 			
 		case SELF:
-			player.sendMessage("§6You can't favorite yourself!");
+			player.sendMessage("Â§6You can't favorite yourself!");
 			break;
 		}
 		

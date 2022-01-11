@@ -19,22 +19,22 @@ public class UnfriendCommand extends FriendCommandBase {
 		switch(Friends.getRelation(player, friend)) {
 		case FAVORITE:
 			Friends.setRelation(player, Relation.NONE, friend, Relation.NONE);
-			player.sendMessage("§cUnfriended §n" + friend.getRankedName() + "§r§c.");
+			player.sendMessage("Â§cUnfriended Â§n" + friend.getRankedName() + "Â§rÂ§c.");
 			player.playSound(Sound.BLOCK_CALCITE_HIT);
 			break;
 			
 		case FRIEND:
 			Friends.setRelation(player, Relation.NONE, friend, Relation.NONE);
-			player.sendMessage("§cUnfriended §n" + friend.getRankedName() + "§r§c.");
+			player.sendMessage("Â§cUnfriended Â§n" + friend.getRankedName() + "Â§rÂ§c.");
 			player.playSound(Sound.BLOCK_CALCITE_HIT);
 			break;
 			
 		case NONE:
-			player.sendMessage("§n" + friend.getRankedName() + "§r§c isn't your friend.");
+			player.sendMessage("Â§n" + friend.getRankedName() + "Â§rÂ§c isn't your friend.");
 			break;
 			
 		case SELF:
-			player.sendMessage("§6 You can't unfriend yourself!");
+			player.sendMessage("Â§6 You can't unfriend yourself!");
 			break;
 		}
 		
