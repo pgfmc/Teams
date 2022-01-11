@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.Listener;
 
 import net.pgfmc.core.Mixins;
 import net.pgfmc.core.playerdataAPI.PlayerData;
