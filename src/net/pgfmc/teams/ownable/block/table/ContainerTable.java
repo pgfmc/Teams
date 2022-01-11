@@ -25,6 +25,7 @@ public class ContainerTable {
 	
 	
 	private static LongHashTable<ContainerSection> getWorldTable(int w) {
+
 		switch(w) {
 		
 		case 0: return Overworldtable;
