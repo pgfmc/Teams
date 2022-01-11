@@ -15,10 +15,6 @@ import net.pgfmc.teams.ownable.block.table.ClaimsTable;
 /**
  * Class that manages Block breaks.
  * 
- * 
- * 
- * 
- * 
  * @author CrimsonDart
  * @since 1.0.0
  * @version 4.0.2
@@ -42,24 +38,19 @@ public class BBEvent implements Listener {
 				case DISALLOWED:
 					e.setCancelled(true);
 					pd.sendMessage("§cYou don't own this.");
-					System.out.println("1");
 					return;
 					
 				case EXCEPTION:
-					System.out.println("oof");
 					e.setCancelled(true);
-					System.out.println("2");
 					return;
 				case FAVORITE:
 					
 					if (cont.isClaim()) {
 						e.setCancelled(true);
 						pd.sendMessage("§cYou don't own this.");
-						System.out.println("3");
 						return;
 					} else {
 						cont.remove();
-						System.out.println("4");
 						return;
 					}
 					
@@ -67,11 +58,9 @@ public class BBEvent implements Listener {
 					if (cont.isClaim()) {
 						e.setCancelled(true);
 						pd.sendMessage("§cYou don't own this.");
-						System.out.println("5");
 						return;
 					} else {
 						cont.remove();
-						System.out.println("5");
 						return;
 					}
 					
@@ -80,14 +69,12 @@ public class BBEvent implements Listener {
 					if (cont.isClaim()) {
 						pd.sendMessage("§6Claim Removed!");
 					}
-					System.out.println("6");
 					return;
 					
 				case UNLOCKED:
 					
 					e.setCancelled(true);
 					pd.sendMessage("§cYou don't own this.");
-					System.out.println("7");
 					return;
 				}
 			}
@@ -100,13 +87,9 @@ public class BBEvent implements Listener {
 					pd.sendMessage("§cThis land is claimed.");
 					e.setCancelled(true);
 					pd.playSound(Sound.BLOCK_NOTE_BLOCK_BASS);
-					System.out.println("8");
 					return;
 				}
 			}
-			System.out.println("9");
-			
-			
 		} else if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
 			
 			boolean insp = pd.getData("inspector");
@@ -139,7 +122,6 @@ public class BBEvent implements Listener {
 			OwnableBlock cont = OwnableBlock.getOwnable(e.getBlock());
 			if (cont != null) {
 				cont.remove();
-				System.out.println("10");
 			}
 		}
 	}
