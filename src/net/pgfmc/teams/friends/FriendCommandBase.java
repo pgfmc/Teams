@@ -13,7 +13,7 @@ public abstract class FriendCommandBase implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		if (!(sender instanceof Player)) {
-			sender.sendMessage("Â§cOnly players can use this command!");
+			sender.sendMessage("§cOnly players can use this command!");
 			return true;
 		}
 			
@@ -24,7 +24,7 @@ public abstract class FriendCommandBase implements CommandExecutor {
 		PlayerData friend = PlayerData.getPlayerData(args[0]);
 		
 		if (friend == null) {
-			sender.sendMessage("Â§cCouldn't find player " + args[0] + ".");
+			sender.sendMessage("§cCouldn't find player " + args[0] + ".");
 			return true;
 		}
 		

@@ -107,16 +107,16 @@ public class Duel {
 		p.setSaturation(2);
 		
 		// The Duel begin animation.
-		p.sendTitle("ยงc3", "", 2, 16, 2); // ------------------------------------------------------- onscreen animations and countdown
+		p.sendTitle("งc3", "", 2, 16, 2); // ------------------------------------------------------- onscreen animations and countdown
 		
 		HashMap<String, Integer> introAnimation = new HashMap<>();
-		introAnimation.put("ยงc2", 20);
-		introAnimation.put("ยงc1", 40);
-		introAnimation.put("ยง6D    U    E    L    !", 60);
-		introAnimation.put("ยง6D   U   E   L   !", 62);
-		introAnimation.put("ยง6D  U  E  L  !", 64);
-		introAnimation.put("ยง6D U E L !", 66);
-		introAnimation.put("ยง6DUEL!", 68);
+		introAnimation.put("งc2", 20);
+		introAnimation.put("งc1", 40);
+		introAnimation.put("ง6D    U    E    L    !", 60);
+		introAnimation.put("ง6D   U   E   L   !", 62);
+		introAnimation.put("ง6D  U  E  L  !", 64);
+		introAnimation.put("ง6D U E L !", 66);
+		introAnimation.put("ง6DUEL!", 68);
 		
 		for (String key : introAnimation.keySet()) { // runs through the list
 			
@@ -170,10 +170,10 @@ public class Duel {
 		for (PlayerData pd : HELLOGAMERS) {
 			
 			if (killer != null) {
-				pd.sendMessage("ยงn" + killer.getRankedName() + " ยงrยง6defeated ยงn" + ded.getRankedName() + "ยงrยง6!");
+				pd.sendMessage("งn" + killer.getRankedName() + " งrง6defeated งn" + ded.getRankedName() + "งrง6!");
 				pd.playSound(Sound.ENTITY_PLAYER_BIG_FALL);
 			} else if (wasKilled) {
-				pd.sendMessage("ยงn" + ded.getName() + "ยงrยง6 was defeated.");
+				pd.sendMessage("งn" + ded.getName() + "งrง6 was defeated.");
 				pd.playSound(Sound.ENTITY_PLAYER_BIG_FALL);
 			}
 		}
@@ -194,7 +194,7 @@ public class Duel {
 							continue;
 						}
 						pd.playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
-						pd.sendMessage("ยงn" + Winner.getRankedName() + " ยงrยงahas won the duel!");
+						pd.sendMessage("งn" + Winner.getRankedName() + " งrงahas won the duel!");
 					}
 					
 					Winner.playSound(Sound.ENTITY_PLAYER_LEVELUP);

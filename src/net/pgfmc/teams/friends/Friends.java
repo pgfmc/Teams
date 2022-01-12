@@ -56,13 +56,13 @@ public class Friends extends Requester {
 		
 		switch(end) {
 		case Accept:
-			init.sendMessage("Â§6Friend request sent to " + targ.getRankedName());
-			targ.sendMessage(init.getRankedName() + "Â§6has sent you a friend request!");
-			targ.sendMessage("Â§6Type Â§b/fa Â§6to accept!");
+			init.sendMessage("§6Friend request sent to " + targ.getRankedName());
+			targ.sendMessage(init.getRankedName() + "§6has sent you a friend request!");
+			targ.sendMessage("§6Type §b/fa §6to accept!");
 			break;
 		case Deny:
-			init.sendMessage("Â§cYour friend request to " + targ.getRankedName() + "Â§rÂ§chas been rejected.");
-			targ.sendMessage("Â§cRequest Rejected.");
+			init.sendMessage("§cYour friend request to " + targ.getRankedName() + "§r§chas been rejected.");
+			targ.sendMessage("§cRequest Rejected.");
 			break;
 		case Duplicate:
 			break;
@@ -71,8 +71,8 @@ public class Friends extends Requester {
 		case Quit:
 			break;
 		case Timeout:
-			init.sendMessage("Â§cFriend Request timed out.");
-			targ.sendMessage("Â§6Friend Request timed out.");
+			init.sendMessage("§cFriend Request timed out.");
+			targ.sendMessage("§6Friend Request timed out.");
 			break;
 		}
 		

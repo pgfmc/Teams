@@ -17,16 +17,16 @@ public class UnfavoriteCommand extends FriendCommandBase {
 		switch(Friends.getRelation(player, friend)) {
 		case FAVORITE:
 			Friends.setRelation(player, friend, Relation.FRIEND);
-			player.sendMessage("ยง6Unfavorited ยงn" + friend.getRankedName() + "ยงrยงc.");
+			player.sendMessage("ง6Unfavorited งn" + friend.getRankedName() + "งrงc.");
 			break;
 		case FRIEND:
-			player.sendMessage("ยงn" + friend.getRankedName() + "ยงrยง6 is not favorited.");
+			player.sendMessage("งn" + friend.getRankedName() + "งrง6 is not favorited.");
 			break;
 		case NONE:
-			player.sendMessage("ยงn" + friend.getRankedName() + "ยงrยงc isn't your friend.");
+			player.sendMessage("งn" + friend.getRankedName() + "งrงc isn't your friend.");
 			break;
 		case SELF:
-			player.sendMessage("ยง6You can't unfavorite yourself!");
+			player.sendMessage("ง6You can't unfavorite yourself!");
 			break;
 		}
 		

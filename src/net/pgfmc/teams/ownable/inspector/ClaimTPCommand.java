@@ -22,9 +22,9 @@ public class ClaimTPCommand implements CommandExecutor {
 		
 		if (ob != null) {
 			((Player) sender).teleport(ob.getLocation().toLocation());
-			sender.sendMessage("Â§aTeleported to the active claim!");
+			sender.sendMessage("§aTeleported to the active claim!");
 		} else {
-			sender.sendMessage("Â§6No claim in range.");
+			sender.sendMessage("§6No claim in range.");
 		}
 		
 		return true;
